@@ -8,9 +8,9 @@ module.exports = {
         // or `'canary'` for less polished but more frequent updates
         updateChannel: 'stable',
         // default font size in pixels for all tabs
-        fontSize: 13,
+        fontSize: 14,
         // font family with optional fallbacks
-        fontFamily: '"FiraCode Nerd Font Mono", Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
+        fontFamily: '"Operator Mono", "FiraCode Nerd Font Mono", Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
         // fontFamily: 'Menlo, "DejaVu Sans Mono", Consolas, "Lucida Console", monospace',
         // default font weight: 'normal' or 'bold'
         fontWeight: 'normal',
@@ -19,7 +19,7 @@ module.exports = {
         // line height as a relative unit
         lineHeight: 1,
         // letter spacing as a relative unit
-        letterSpacing: 0.25,
+        letterSpacing: 0.4,
         // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
         cursorColor: 'rgba(248,28,229,0.8)',
         // terminal text color under BLOCK cursor
@@ -106,7 +106,7 @@ module.exports = {
         // An absolute file path to a sound file on the machine.
         // bellSoundURL: '/path/to/sound/file',
         // if `true` (without backticks and without quotes), selected text will automatically be copied to the clipboard
-        copyOnSelect: false,
+        copyOnSelect: true,
         // if `true` (without backticks and without quotes), hyper will be set as the default protocol client for SSH
         defaultSSHApp: true,
         // if `true` (without backticks and without quotes), on right click selected text will be copied or pasted if no
@@ -123,7 +123,7 @@ module.exports = {
         // todo: does not pick up config changes automatically, need to restart terminal :/
         webLinksActivationKey: '',
         // if `false` (without backticks and without quotes), Hyper will use ligatures provided by some fonts
-        disableLigatures: true,
+        disableLigatures: false,
         // set to true to disable auto updates
         disableAutoUpdates: false,
         // set to true to enable screen reading apps (like NVDA) to read the contents of the terminal
@@ -142,7 +142,9 @@ module.exports = {
     // in development, you can create a directory under
     // `~/.hyper_plugins/local/` and include it here
     // to load it and avoid it being `npm install`ed
-    localPlugins: [],
+    localPlugins: [
+        "dracula-pro"
+    ],
     keymaps: {
     // Example
     // 'window:devtools': 'cmd+alt+o',

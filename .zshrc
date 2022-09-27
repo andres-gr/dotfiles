@@ -59,3 +59,6 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 # eval "$(starship init zsh)"
 _evalcache starship init zsh
 
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+

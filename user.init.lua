@@ -12,6 +12,7 @@ local config = {
   },
   plugins = {
     init = {
+      ["declancm/cinnamon.nvim"] = { disable = true },
       {
         "xiyaowong/nvim-transparent",
         config = function ()
@@ -111,6 +112,8 @@ local config = {
     treesitter = {
       indent = { enable = true },
       ensure_installed = "all",
+      ignore_installed = { "javascript" },
+      auto_install = true,
     },
   },
   options = {
