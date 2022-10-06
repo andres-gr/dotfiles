@@ -19,7 +19,7 @@ module.exports = {
         // line height as a relative unit
         lineHeight: 1,
         // letter spacing as a relative unit
-        letterSpacing: 0.4,
+        letterSpacing: 0.5,
         // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
         cursorColor: 'rgba(248,28,229,0.8)',
         // terminal text color under BLOCK cursor
@@ -33,6 +33,7 @@ module.exports = {
         // terminal background color
         // opacity is only supported on macOS
         backgroundColor: '#000',
+        // backgroundColor: 'rgba(34,33,44,0.9)',
         // terminal selection color
         selectionColor: 'rgba(248,28,229,0.3)',
         // border color (window, tabs)

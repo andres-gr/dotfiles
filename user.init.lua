@@ -98,7 +98,7 @@ local config = {
     },
     ["neo-tree"] = {
       window = {
-        width = 45,
+        width = 35,
       },
     },
     notify = {
@@ -110,10 +110,11 @@ local config = {
       },
     },
     treesitter = {
-      indent = { enable = true },
+      auto_install = { "true" },
       ensure_installed = "all",
+      indent = { enable = true },
       ignore_installed = { "javascript" },
-      auto_install = true,
+      -- sync_install = true,
     },
   },
   options = {
@@ -121,10 +122,10 @@ local config = {
       transparent_enabled = true,
     },
   },
-  polish = function ()
-    local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
-    parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
-  end,
+  -- polish = function ()
+  --   local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+  --   parser_config.tsx.filetype_to_parsername = { "javascript", "typescript.tsx" }
+  -- end,
 }
 
 return config
