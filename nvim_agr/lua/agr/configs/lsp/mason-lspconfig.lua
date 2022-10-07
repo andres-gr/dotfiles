@@ -4,7 +4,7 @@ if not mason_lspconfig_status_ok then return end
 local lspconfig_status_ok, lspconfig = pcall(require, 'lspconfig')
 if not lspconfig_status_ok then return end
 
-local handlers = require 'agr.lsp.handlers'
+local handlers = require 'agr.configs.lsp.handlers'
 
 mason_lspconfig.setup {
   ensure_installed = {
@@ -38,10 +38,10 @@ mason_lspconfig.setup_handlers {
   end,
 
   ['jsonls'] = function ()
-    lspconfig.jsonls.setup(vim.tbl_deep_extend('force', require 'agr.lsp.server_settings.jsonls', opts))
+    lspconfig.jsonls.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.jsonls', opts))
   end,
   ['sumneko_lua'] = function ()
-    lspconfig.sumneko_lua.setup(vim.tbl_deep_extend('force', require 'agr.lsp.server_settings.sumneko_lua', opts))
+    lspconfig.sumneko_lua.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.sumneko_lua', opts))
   end,
 }
 

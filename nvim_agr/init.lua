@@ -1,8 +1,9 @@
-require 'agr.base'
-require 'agr.highlights'
-require 'agr.maps'
-require 'agr.plugins'
-require 'agr.colorscheme'
-require 'agr.cmp'
-require 'agr.lsp'
+local impatient_status_ok, impatient = pcall(require, 'impatient')
+if impatient_status_ok then impatient.enable_profile() end
+
+require 'agr.core.base'
+require 'agr.core.highlights'
+require 'agr.core.maps'
+require 'agr.core.plugins'
+require 'agr.core.colorscheme'
 
