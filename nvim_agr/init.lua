@@ -3,7 +3,8 @@ if impatient_status_ok then impatient.enable_profile() end
 
 require 'agr.core.base'
 require 'agr.core.highlights'
-require 'agr.core.maps'
 require 'agr.core.plugins'
+require 'agr.core.autocmds'
+require 'agr.core.maps'
 require 'agr.core.colorscheme'
 

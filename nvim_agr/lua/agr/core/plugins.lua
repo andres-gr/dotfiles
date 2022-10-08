@@ -45,7 +45,7 @@ return packer.startup(function (use)
   use {
     'nvim-lua/plenary.nvim' ,
     module = 'plenary',
-  }-- Useful lua functions used ny lots of plugins
+  }-- Useful lua functions used by lots of plugins
 
   use 'nvim-lua/popup.nvim' -- An implementation of the Popup API from vim in Neovim
   use 'lewis6991/impatient.nvim' -- Nvim optimizer
@@ -122,7 +122,7 @@ return packer.startup(function (use)
   -- Icons
   use {
     'kyazdani42/nvim-web-devicons',
-    event = 'VimEnter',
+    module = 'nvim-web-devicons',
   } -- common icons
 
   use {
@@ -130,9 +130,41 @@ return packer.startup(function (use)
     module = 'lspkind',
   } -- LSP icons
 
+  -- Tree explorer
+  use {
+    'nvim-neo-tree/neo-tree.nvim',
+    branch = 'v2.x',
+    cmd = 'Neotree',
+    config = function () require 'agr.configs.neo-tree' end,
+    module = 'neo-tree',
+    requires = {
+      {
+        'MunifTanjim/nui.nvim',
+        module = 'nui',
+      },
+    },
+    setup = function () vim.g.neo_tree_remove_legacy_commands = true end,
+  }
+
+  -- Fuzzy finder
+  use {
+    'nvim-telescope/telescope.nvim',
+    cmd = 'Telescope',
+    config = function () require 'agr.configs.telescope' end,
+    module = 'telescope',
+  }
+
+  use {
+    'nvim-telescope/telescope-fzf-native.nvim',
+    after = 'telescope.nvim',
+    config = function () require 'telescope'.load_extension('fzf') end,
+    run = 'make',
+  }
+
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
   if PACKER_BOOTSTRAP then
     require 'packer'.sync()
   end
 end)
+
