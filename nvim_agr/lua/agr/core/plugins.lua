@@ -1,4 +1,5 @@
 local fn = vim.fn
+local tele = 'telescope'
 
 -- Automatically install packer
 local install_path = fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
@@ -157,9 +158,45 @@ return packer.startup(function (use)
   use {
     'nvim-telescope/telescope-fzf-native.nvim',
     after = 'telescope.nvim',
-    config = function () require 'telescope'.load_extension('fzf') end,
+    config = function () require(tele).load_extension('fzf') end,
     run = 'make',
   }
+
+  -- Syntax highlight
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    cmd = {
+      'TSDisableAll',
+      'TSEnableAll',
+      'TSInstall',
+      'TSInstallInfo',
+      'TSInstallSync',
+      'TSUninstall',
+      'TSUpdate',
+      'TSUpdateSync',
+    },
+    config = function () require 'agr.configs.treesitter' end,
+    event = {
+      'BufNewFile',
+      'BufRead',
+    },
+    run = ':TSUpdate',
+  }
+
+  use {
+    'p00f/nvim-ts-rainbow',
+    after = 'nvim-treesitter',
+  } -- Rainbow parenthesis highlight
+
+  use {
+    'windwp/nvim-ts-autotag',
+    after = 'nvim-treesitter',
+  } -- Autoclose tags
+
+  use {
+    'JoosepAlviste/nvim-ts-context-commentstring',
+    after = 'nvim-treesitter',
+  } -- Context based comments
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
