@@ -1,6 +1,8 @@
 local neo_tree_status_ok, neo_tree = pcall(require, 'neo-tree')
 if not neo_tree_status_ok then return end
 
+local utils = require 'agr.core.utils'
+
 neo_tree.setup {
   buffers = {
     follow_current_file = true, -- This will find and focus the file in the active buffer every
@@ -143,7 +145,21 @@ neo_tree.setup {
   popup_border_style = 'rounded',
   sort_case_insensitive = false, -- used when sorting files and directories in the tree
   sort_function = nil, -- use a custom function for sorting files and directories in the tree
+  source_selector = {
+    content_layout = 'center',
+    tab_labels = {
+      buffers = '  Buffers ',
+      diagnostics = ' 裂Diagnostics ',
+      filesystem = '  Files ',
+      git_status = '  Git ',
+    },
+    -- winbar = true,
+  },
   window = {
+    mapping_options = {
+      noremap = true,
+      nowait = true,
+    },
     mappings = {
       -- ['<space>'] = {
       --   'toggle_node',
@@ -153,6 +169,7 @@ neo_tree.setup {
       ['<cr>'] = 'open',
       ['o'] = 'open',
       ['<esc>'] = 'revert_preview',
+      ['<M-o>'] = 'revert_preview',
       ['P'] = { 'toggle_preview', config = { use_float = true } },
       ['S'] = 'open_split',
       ['s'] = 'open_vsplit',
@@ -165,7 +182,21 @@ neo_tree.setup {
       --['P'] = 'toggle_preview', -- enter preview mode, which shows the current node without focusing
       ['C'] = 'close_node',
       ['h'] = 'close_node',
-      ['l'] = 'toggle_node',
+      ['l'] = {
+        function (state)
+          local cmd = state.commands
+          local node = state.tree:get_node()
+
+          cmd.toggle_node(state, node.type ~= 'directory')
+
+          local has_children = node:has_children()
+
+          if has_children and node:is_expanded() then
+            vim.fn.feedkeys(utils.key_down)
+          end
+        end
+      },
+      -- ['l'] = 'toggle_node',
       ['z'] = 'close_all_nodes',
       ['Z'] = 'expand_all_nodes',
       ['a'] = {
@@ -194,10 +225,6 @@ neo_tree.setup {
       ['?'] = 'show_help',
       ['<'] = 'prev_source',
       ['>'] = 'next_source',
-    },
-    mapping_options = {
-      noremap = true,
-      nowait = true,
     },
     position = 'left',
     width = 35,
