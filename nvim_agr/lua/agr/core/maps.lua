@@ -84,8 +84,8 @@ map('n', 'N', 'Nzz', desc_opts('Center Search'))
 -- Better indents
 map('v', '<', '<gv', desc_opts('Indent left'))
 map('v', '>', '>gv', desc_opts('Indent right'))
-map('n', '<', 'v<gv', desc_opts('Indent left'))
-map('n', '>', 'v>gv', desc_opts('Indent right'))
+map('n', '<', 'v<', desc_opts('Indent left'))
+map('n', '>', 'v>', desc_opts('Indent right'))
 
 -- Cancel search highlight
 map('n', '<leader>h', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search hightlight'))
@@ -138,4 +138,9 @@ map('n', '<leader>ls', function () builtins.lsp_document_symbols() end, desc_opt
 map('n', '<leader>lG', function () builtins.lsp_workspace_symbols() end, desc_opts('Search workspace symbols'))
 map('n', '<leader>lR', function () builtins.lsp_references() end, desc_opts('Search references'))
 map('n', '<leader>lD', function () builtins.diagnostics() end, desc_opts('Search diagnostics'))
+
+-- Packer
+map('n', '\\ps', ':PackerSync<CR>', desc_opts('Packer sync'))
+map('n', '\\pS', ':PackerStatus<CR>', desc_opts('Packer status'))
+map('n', '\\pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
 

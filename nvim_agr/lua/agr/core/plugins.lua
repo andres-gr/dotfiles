@@ -194,9 +194,31 @@ return packer.startup(function (use)
   } -- Autoclose tags
 
   use {
+    'windwp/nvim-autopairs',
+    config = function () require 'agr.configs.autopairs' end,
+    event = 'InsertEnter',
+  } -- Auto insert matching pair
+
+  use {
     'JoosepAlviste/nvim-ts-context-commentstring',
     after = 'nvim-treesitter',
   } -- Context based comments
+
+  -- Commenting
+  use {
+    'numToStr/Comment.nvim',
+    config = function () require 'agr.configs.comment' end,
+    keys = {
+      'gc',
+      'gb',
+      'g<',
+      'g>',
+    },
+    module = {
+      'Comment',
+      'Comment.api',
+    },
+  }
 
   -- Automatically set up your configuration after cloning packer.nvim
   -- Put this at the end after all plugins
