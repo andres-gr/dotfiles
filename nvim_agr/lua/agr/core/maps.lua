@@ -144,3 +144,15 @@ map('n', '\\ps', ':PackerSync<CR>', desc_opts('Packer sync'))
 map('n', '\\pS', ':PackerStatus<CR>', desc_opts('Packer status'))
 map('n', '\\pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
 
+-- Gitsigns
+local gitsigns = require 'gitsigns'
+map('n', '<leader>gj', function () gitsigns.next_hunk() end, desc_opts('Git next hunk'))
+map('n', '<leader>gk', function () gitsigns.prev_hunk() end, desc_opts('Git prev hunk'))
+map('n', '<leader>gl', function () gitsigns.blame_line() end, desc_opts('Git blame line'))
+map('n', '<leader>gp', function () gitsigns.preview_hunk() end, desc_opts('Git preview hunk'))
+map('n', '<leader>ghr', function () gitsigns.rest_hunk() end, desc_opts('Git reset hunk'))
+map('n', '<leader>gbr', function () gitsigns.reset_buffer() end, desc_opts('Git reset buffer'))
+map('n', '<leader>ghs', function () gitsigns.stage_hunk() end, desc_opts('Git stage hunk'))
+map('n', '<leader>ghu', function () gitsigns.undo_stage_hunk() end, desc_opts('Git unstage hunk'))
+map('n', '<leader>Gd', function () gitsigns.diffthis() end, desc_opts('Git view diff'))
+

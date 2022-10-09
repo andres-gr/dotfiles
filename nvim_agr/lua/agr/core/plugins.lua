@@ -1,5 +1,4 @@
 local fn = vim.fn
-local tele = 'telescope'
 
 -- Automatically install packer
 local install_path = fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
@@ -30,8 +29,9 @@ if not status_ok then
   return
 end
 
--- Have packer use a popup window
 packer.init {
+  auto_clean = true,
+  -- Have packer use a popup window
   display = {
     open_fn = function ()
       return require 'packer.util'.float { border = 'rounded' }
@@ -40,190 +40,199 @@ packer.init {
 }
 
 -- Install your plugins here
-return packer.startup(function (use)
-  -- My plugins here
-  use 'wbthomason/packer.nvim' -- Have packer manage itself
-  use {
-    'nvim-lua/plenary.nvim' ,
-    module = 'plenary',
-  }-- Useful lua functions used by lots of plugins
+return packer.startup {
+  function (use)
+    -- My plugins here
+    use 'wbthomason/packer.nvim' -- Have packer manage itself
+    use {
+      'nvim-lua/plenary.nvim' ,
+      module = 'plenary',
+    }-- Useful lua functions used by lots of plugins
 
-  use 'nvim-lua/popup.nvim' -- An implementation of the Popup API from vim in Neovim
-  use 'lewis6991/impatient.nvim' -- Nvim optimizer
+    use 'nvim-lua/popup.nvim' -- An implementation of the Popup API from vim in Neovim
+    use 'lewis6991/impatient.nvim' -- Nvim optimizer
 
-  -- Dracula theme
-  use 'Mofiqul/dracula.nvim'
+    -- Dracula theme
+    use 'Mofiqul/dracula.nvim'
 
-  -- Completions
-  use {
-    'hrsh7th/nvim-cmp',
-    config = function () require 'agr.configs.cmp' end,
-    event = 'InsertEnter',
-  } -- The completion plugin
+    -- Completions
+    use {
+      'hrsh7th/nvim-cmp',
+      config = function () require 'agr.configs.cmp' end,
+      event = 'InsertEnter',
+    } -- The completion plugin
 
-  use {
-    'hrsh7th/cmp-buffer',
-    after = 'nvim-cmp',
-  } -- buffer completions
+    use {
+      'hrsh7th/cmp-buffer',
+      after = 'nvim-cmp',
+    } -- buffer completions
 
-  use {
-    'hrsh7th/cmp-path',
-    after = 'nvim-cmp',
-  } -- path completions
+    use {
+      'hrsh7th/cmp-path',
+      after = 'nvim-cmp',
+    } -- path completions
 
-  use {
-    'hrsh7th/cmp-cmdline',
-    after = 'nvim-cmp',
-  } -- cmdline completions
+    use {
+      'hrsh7th/cmp-cmdline',
+      after = 'nvim-cmp',
+    } -- cmdline completions
 
-  use {
-    'saadparwaiz1/cmp_luasnip',
-    after = 'nvim-cmp',
-  } -- snippet completions
+    use {
+      'saadparwaiz1/cmp_luasnip',
+      after = 'nvim-cmp',
+    } -- snippet completions
 
-  use {
-    'hrsh7th/cmp-nvim-lsp',
-    after = 'nvim-cmp',
-  } -- lsp source for cmp
+    use {
+      'hrsh7th/cmp-nvim-lsp',
+      after = 'nvim-cmp',
+    } -- lsp source for cmp
 
-  use {
-    'hrsh7th/cmp-nvim-lua',
-    after = 'nvim-cmp',
-  } -- lua source for cmp
+    use {
+      'hrsh7th/cmp-nvim-lua',
+      after = 'nvim-cmp',
+    } -- lua source for cmp
 
-  -- Snippets
-  use {
-    'rafamadriz/friendly-snippets',
-    opt = true,
-  } -- a bunch of snippets to use
+    -- Snippets
+    use {
+      'rafamadriz/friendly-snippets',
+      opt = true,
+    } -- a bunch of snippets to use
 
-  use {
-    'L3MON4D3/LuaSnip',
-    module = 'luasnip',
-    wants = 'friendly-snippets',
-  } --snippet engine
+    use {
+      'L3MON4D3/LuaSnip',
+      module = 'luasnip',
+      wants = 'friendly-snippets',
+    } --snippet engine
 
-  -- LSP
-  use {
-    'williamboman/mason.nvim',
-    config = function () require 'agr.configs.lsp' end,
-  } -- simple to use language server installer
+    -- LSP
+    use {
+      'williamboman/mason.nvim',
+      config = function () require 'agr.configs.lsp' end,
+    } -- simple to use language server installer
 
-  use {
-    'williamboman/mason-lspconfig.nvim',
-    after = {
-      'mason.nvim',
-      'nvim-lspconfig',
-    },
-    config = function () require 'agr.configs.lsp.mason-lspconfig' end,
-  } -- mason config bridge
-
-  use 'neovim/nvim-lspconfig' -- enable LSP
-
-  -- Icons
-  use {
-    'kyazdani42/nvim-web-devicons',
-    module = 'nvim-web-devicons',
-  } -- common icons
-
-  use {
-    'onsails/lspkind.nvim',
-    module = 'lspkind',
-  } -- LSP icons
-
-  -- Tree explorer
-  use {
-    'nvim-neo-tree/neo-tree.nvim',
-    branch = 'v2.x',
-    cmd = 'Neotree',
-    config = function () require 'agr.configs.neo-tree' end,
-    module = 'neo-tree',
-    requires = {
-      {
-        'MunifTanjim/nui.nvim',
-        module = 'nui',
+    use {
+      'williamboman/mason-lspconfig.nvim',
+      after = {
+        'mason.nvim',
+        'nvim-lspconfig',
       },
-    },
-    setup = function () vim.g.neo_tree_remove_legacy_commands = true end,
-  }
+      config = function () require 'agr.configs.lsp.mason-lspconfig' end,
+    } -- mason config bridge
 
-  -- Fuzzy finder
-  use {
-    'nvim-telescope/telescope.nvim',
-    cmd = 'Telescope',
-    config = function () require 'agr.configs.telescope' end,
-    module = 'telescope',
-  }
+    use 'neovim/nvim-lspconfig' -- enable LSP
 
-  use {
-    'nvim-telescope/telescope-fzf-native.nvim',
-    after = 'telescope.nvim',
-    config = function () require(tele).load_extension('fzf') end,
-    run = 'make',
-  }
+    -- Icons
+    use {
+      'kyazdani42/nvim-web-devicons',
+      module = 'nvim-web-devicons',
+    } -- common icons
 
-  -- Syntax highlight
-  use {
-    'nvim-treesitter/nvim-treesitter',
-    cmd = {
-      'TSDisableAll',
-      'TSEnableAll',
-      'TSInstall',
-      'TSInstallInfo',
-      'TSInstallSync',
-      'TSUninstall',
-      'TSUpdate',
-      'TSUpdateSync',
-    },
-    config = function () require 'agr.configs.treesitter' end,
-    event = {
-      'BufNewFile',
-      'BufRead',
-    },
-    run = ':TSUpdate',
-  }
+    use {
+      'onsails/lspkind.nvim',
+      module = 'lspkind',
+    } -- LSP icons
 
-  use {
-    'p00f/nvim-ts-rainbow',
-    after = 'nvim-treesitter',
-  } -- Rainbow parenthesis highlight
+    -- Tree explorer
+    use {
+      'nvim-neo-tree/neo-tree.nvim',
+      branch = 'v2.x',
+      cmd = 'Neotree',
+      config = function () require 'agr.configs.neo-tree' end,
+      module = 'neo-tree',
+      requires = {
+        {
+          'MunifTanjim/nui.nvim',
+          module = 'nui',
+        },
+      },
+      setup = function () vim.g.neo_tree_remove_legacy_commands = true end,
+    }
 
-  use {
-    'windwp/nvim-ts-autotag',
-    after = 'nvim-treesitter',
-  } -- Autoclose tags
+    -- Fuzzy finder
+    use {
+      'nvim-telescope/telescope.nvim',
+      cmd = 'Telescope',
+      config = function () require 'agr.configs.tele-scope' end,
+      module = 'telescope',
+    }
 
-  use {
-    'windwp/nvim-autopairs',
-    config = function () require 'agr.configs.autopairs' end,
-    event = 'InsertEnter',
-  } -- Auto insert matching pair
+    use {
+      'nvim-telescope/telescope-fzf-native.nvim',
+      after = 'telescope.nvim',
+      config = function () require 'telescope'.load_extension('fzf') end,
+      run = 'make',
+    }
 
-  use {
-    'JoosepAlviste/nvim-ts-context-commentstring',
-    after = 'nvim-treesitter',
-  } -- Context based comments
+    -- Syntax highlight
+    use {
+      'nvim-treesitter/nvim-treesitter',
+      cmd = {
+        'TSDisableAll',
+        'TSEnableAll',
+        'TSInstall',
+        'TSInstallInfo',
+        'TSInstallSync',
+        'TSUninstall',
+        'TSUpdate',
+        'TSUpdateSync',
+      },
+      config = function () require 'agr.configs.treesitter' end,
+      event = {
+        'BufNewFile',
+        'BufRead',
+      },
+      run = ':TSUpdate',
+    }
 
-  -- Commenting
-  use {
-    'numToStr/Comment.nvim',
-    config = function () require 'agr.configs.comment' end,
-    keys = {
-      'gc',
-      'gb',
-      'g<',
-      'g>',
-    },
-    module = {
-      'Comment',
-      'Comment.api',
-    },
-  }
+    use {
+      'p00f/nvim-ts-rainbow',
+      after = 'nvim-treesitter',
+    } -- Rainbow parenthesis highlight
 
-  -- Automatically set up your configuration after cloning packer.nvim
-  -- Put this at the end after all plugins
-  if PACKER_BOOTSTRAP then
-    require 'packer'.sync()
-  end
-end)
+    use {
+      'windwp/nvim-ts-autotag',
+      after = 'nvim-treesitter',
+    } -- Autoclose tags
+
+    use {
+      'windwp/nvim-autopairs',
+      config = function () require 'agr.configs.autopairs' end,
+      event = 'InsertEnter',
+    } -- Auto insert matching pair
+
+    use {
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      after = 'nvim-treesitter',
+    } -- Context based comments
+
+    -- Commenting
+    use {
+      'numToStr/Comment.nvim',
+      config = function () require 'agr.configs.comment' end,
+      keys = {
+        'gc',
+        'gb',
+        'g<',
+        'g>',
+      },
+      module = {
+        'Comment',
+        'Comment.api',
+      },
+    }
+
+    -- Git integration
+    use {
+      'lewis6991/gitsigns.nvim',
+      config = function () require 'agr.configs.git-signs' end,
+      event = 'BufEnter',
+    }
+
+    -- Automatically set up your configuration after cloning packer.nvim
+    -- Put this at the end after all plugins
+    if PACKER_BOOTSTRAP then
+      require 'packer'.sync()
+    end
+  end,
+}
 
