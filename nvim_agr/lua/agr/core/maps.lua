@@ -50,11 +50,13 @@ map('n', '<C-Left>', ':vertical resize -2<CR>', desc_opts('Resize window left'))
 map('n', '<C-Right>', ':vertical resize +2<CR>', desc_opts('Resize window right'))
 
 -- Navigate buffers
-map('n', '<M-l>', ':bnext<CR>', desc_opts('Go to next buffer'))
-map('n', '<M-h>', ':bprevious<CR>', desc_opts('Go to previous buffer'))
+map('n', '<M-l>', ':BufferLineCycleNext<CR>', desc_opts('Go to next buffer'))
+map('n', '<M-h>', ':BufferLineCyclePrev<CR>', desc_opts('Go to previous buffer'))
+map('n', '<leader>>', ':BufferLineMoveNext<CR>', desc_opts('Move buffer right'))
+map('n', '<leader><', ':BufferLineMovePrev<CR>', desc_opts('Move buffer left'))
 
 -- File actions
-map('n', '\\c', ':bdelete<CR>', desc_opts('Close current buffer'))
+map('n', '\\c', ':Bdelete<CR>', desc_opts('Close current buffer'))
 map('n', '\\w', ':w!<CR>', desc_opts('Save current file'))
 map('n', '\\q', ':q!<CR>', desc_opts('Quit'))
 
@@ -88,7 +90,7 @@ map('n', '<', 'v<', desc_opts('Indent left'))
 map('n', '>', 'v>', desc_opts('Indent right'))
 
 -- Cancel search highlight
-map('n', '<leader>h', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search hightlight'))
+map('n', '<leader>n', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search hightlight'))
 map('n', '<ESC>', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search hightlight'))
 
 -- Move lines
