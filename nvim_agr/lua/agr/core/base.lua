@@ -43,6 +43,7 @@ o.shiftwidth = 2 -- Number of space inserted for indentation
 o.shortmess:append 'c' -- forget about swap file
 o.showcmd = true
 o.showmode = false -- Disable showing modes in command line
+o.showtabline = 2 -- show tabline always
 o.sidescrolloff = 8 -- Number of columns to keep at the sides of the cursor
 o.signcolumn = 'yes' -- Always show the sign column
 o.smartcase = true -- Case sensitivie searching

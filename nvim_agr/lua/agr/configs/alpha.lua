@@ -15,13 +15,17 @@ end
 -- Terminal header w/lolcat
 dash.section.terminal.command = 'cat | lolcat ' .. os.getenv('HOME') .. '/devel/configs/assets/banner.cat'
 dash.section.terminal.height = 14
-dash.section.terminal.width = 89
+dash.section.terminal.width = 78
+dash.section.terminal.opts = {
+  redraw = true,
+}
 
 -- Dash buttons group
 dash.section.buttons.val = {
   btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
-  btn('r', '   Recently used files', ':Telescope frecency<CR>'),
-  btn('f', '   Find file', ':Telescope find_files hidden=true path_display=smart<CR>'),
+  btn('r', '   Recently used files', ':Telescope oldfiles<CR>'),
+  btn('f', '   Search files', ':lua require("telescope.builtin").find_files()<CR>'),
+  btn('F', '   Search all files', ':lua require("telescope.builtin").find_files({hidden = true, no_ignore = true})<CR>'),
   btn('u', '   Sync plugins', ':PackerSync<CR>'), -- Packer sync
   btn('q', '   Quit Neovim', ':qa!<CR>'),
 }

@@ -3,7 +3,7 @@ if not bufferline_status_ok then return end
 
 bufferline.setup {
   options = {
-    always_show_bufferline = true,
+    -- always_show_bufferline = true,
     diagnostics = false, -- | 'nvim_lsp' | 'coc',
     diagnostics_update_in_insert = false,
     close_command = 'Bdelete! %d', -- can be a string | function, see 'Mouse actions'
