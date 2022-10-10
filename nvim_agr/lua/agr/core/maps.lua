@@ -171,3 +171,6 @@ map('n', '\\pI', ':Mason<CR>', desc_opts('Mason installer'))
 map('n', '\\pU', ':MasonToolsUpdate<CR>', desc_opts('Mason update'))
 map('n', '<leader>li', ':LspInfo<CR>', desc_opts('LSP info'))
 
+-- Symbols outline
+map('n', '<leader>lS', ':AerialToggle<CR>', desc_opts('Symbols outline'))
+
