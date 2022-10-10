@@ -140,7 +140,7 @@ local plugins = {
   ['nvim-neo-tree/neo-tree.nvim'] = {
     branch = 'v2.x',
     cmd = 'Neotree',
-    config = function () require 'agr.configs.neo-tree' end,
+    config = function () require 'agr.configs.neotree' end,
     module = 'neo-tree',
     requires = {
       {
@@ -294,6 +294,7 @@ local plugins = {
   -- Keymaps popup
   ['folke/which-key.nvim'] = {
     config = function() require 'agr.configs.which-key' end,
+    event = 'BufWinEnter',
     module = 'which-key',
   },
 

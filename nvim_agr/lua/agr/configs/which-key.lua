@@ -11,6 +11,11 @@ end
 
 which_key.setup {
   active = true,
+  disable = {
+    filetypes = {
+      'TelescopePrompt',
+    },
+  },
   hidden = {
     '<CR>',
     '<Cmd>',

@@ -8,12 +8,12 @@ require 'luasnip/loaders/from_vscode'.lazy_load()
 
 local check_backspace = function ()
   -- lunarvim style
-  -- local col = vim.fn.col '.' - 1
-  -- return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s'
+  local col = vim.fn.col '.' - 1
+  return col == 0 or vim.fn.getline('.'):sub(col, col):match '%s'
 
   -- astronvim style
-  local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
+  -- local line, col = table.unpack(vim.api.nvim_win_get_cursor(0))
+  -- return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match "%s" == nil
 end
 
 --   פּ ﯟ   some other good icons

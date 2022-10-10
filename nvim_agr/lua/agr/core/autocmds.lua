@@ -6,7 +6,7 @@ cmd('BufEnter', {
   callback = function ()
     local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
     if stats and stats.type == 'directory' then
-      require('neo-tree.setup.netrw').hijack()
+      require 'neo-tree.setup.netrw'.hijack()
     end
   end,
   desc = 'Open Neo-Tree on startup with directory',
@@ -30,16 +30,46 @@ cmd('FileType', {
 
 cmd('FileType', {
   callback = function ()
+    local prev_height = vim.opt.cmdheight
     local prev_status = vim.opt.laststatus
+    vim.opt.cmdheight = 0
     vim.opt.laststatus = 0
     cmd('BufUnload', {
-      callback = function () vim.opt.laststatus = prev_status end,
+      callback = function ()
+        vim.opt.cmdheight = prev_height
+        vim.opt.laststatus = prev_status
+      end,
       pattern = '<buffer>',
     })
   end,
   desc = 'Disable statusline for alpha',
   group = 'alpha_settings',
   pattern = 'alpha',
+})
+
+cmd('FileType', {
+  callback = function ()
+    vim.cmd [[ setlocal nofoldenable ]]
+  end,
+  desc = 'Disable fold for alpha',
+  group = 'alpha_settings',
+  pattern = 'alpha',
+})
+
+cmd('User', {
+  callback = function (event)
+    local fallback_name = vim.api.nvim_buf_get_name(event.buf)
+    local fallback_ft = vim.api.nvim_buf_get_option(event.buf, 'filetype')
+    local fallback_on_empty = fallback_name == '' and fallback_ft == ''
+
+    if fallback_on_empty then
+      require 'neo-tree'.close_all()
+      vim.cmd [[ :Alpha ]]
+    end
+  end,
+  desc = 'Go to dash if no open files',
+  group = 'alpha_settings',
+  pattern = 'BDeletePost*',
 })
 
 cmd('VimEnter', {

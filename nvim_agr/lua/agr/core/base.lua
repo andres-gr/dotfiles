@@ -1,5 +1,3 @@
-vim.cmd('autocmd!')
-
 local a = vim.api
 local o = vim.opt
 local w = vim.wo
@@ -12,7 +10,7 @@ o.fileencoding = 'uft-8'
 w.number = true
 
 o.autoindent = true
-o.backspace = vim.opt.backspace + { 'nostop' } -- Don't stop backspace at insert
+o.backspace = o.backspace + { 'nostop' } -- Don't stop backspace at insert
 o.backup = false
 o.backupskip = { '/tmp/*', '/private/tmp/*' }
 o.breakindent = true
@@ -63,11 +61,11 @@ o.wrap = false -- Disable wrapping of lines longer than the width of window
 o.writebackup = false -- Disable making a backup before overwriting a file
 
 -- Undercurl
-vim.cmd([[let &t_Cs = '\e[4:3m']])
-vim.cmd([[let &t_Ce = '\e[4:0m']])
+vim.cmd [[ let &t_Cs = '\e[4:3m' ]]
+vim.cmd [[ let &t_Ce = '\e[4:0m' ]]
 
 -- Automatically wrap left or right
-vim.cmd 'set whichwrap+=<,>,[,],h,l'
+vim.cmd [[ set whichwrap+=<,>,[,],h,l ]]
 
 -- Turn off paste mode when leaving insert
 a.nvim_create_autocmd('InsertLeave', {

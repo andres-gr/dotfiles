@@ -8,7 +8,7 @@ local dash = require 'alpha.themes.dashboard'
 local btn = function (sc, txt, keybind, opts)
   local b = dash.button(sc, txt, keybind, opts)
   b.opts.hl = 'AlphaButtonText'
-  b.opts.hl_shorcut = 'AlphaButtonShortcut'
+  b.opts.hl_shortcut = 'AlphaButtonShortcut'
   return b
 end
 
@@ -22,10 +22,10 @@ dash.section.terminal.opts = {
 
 -- Dash buttons group
 dash.section.buttons.val = {
-  btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
-  btn('r', '   Recently used files', ':Telescope oldfiles<CR>'),
+  btn('o', '   Recently used files', ':Telescope oldfiles<CR>'),
   btn('f', '   Search files', ':lua require("telescope.builtin").find_files()<CR>'),
   btn('F', '   Search all files', ':lua require("telescope.builtin").find_files({hidden = true, no_ignore = true})<CR>'),
+  btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
   btn('u', '   Sync plugins', ':PackerSync<CR>'), -- Packer sync
   btn('q', '   Quit Neovim', ':qa!<CR>'),
 }
@@ -46,8 +46,6 @@ end
 
 dash.section.footer.val = footer()
 dash.section.footer.opts.hl = 'AlphaFooter'
-
-dash.config.opts.noautocmd = true
 
 alpha.setup {
   layout = {
