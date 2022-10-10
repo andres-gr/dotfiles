@@ -12,7 +12,7 @@ if fn.empty(fn.glob(install_path)) > 0 then
     install_path,
   }
   print 'Installing packer close and reopen Neovim...'
-  vim.cmd [[packadd packer.nvim]]
+  vim.cmd [[ packadd packer.nvim ]]
 end
 
 -- Autocommand that reloads neovim whenever you save the plugins.lua file
@@ -303,6 +303,11 @@ local plugins = {
     cmd = 'Alpha',
     config = function() require 'agr.configs.alpha' end,
     module = 'alpha',
+  },
+
+  -- Status line
+  ['rebelot/heirline.nvim'] = {
+    config = function () require 'agr.configs.heir-line' end,
   },
 }
 
