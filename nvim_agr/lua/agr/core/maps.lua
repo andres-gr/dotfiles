@@ -115,7 +115,9 @@ map('n', '<leader>o', ':Neotree focus<CR>', desc_opts('Focus file tree explorer'
 -- Fuzzy finder
 local builtins = require 'telescope.builtin'
 -- map('n', '<leader>f', function () builtins. end, desc_opts(''))
-map('n', '<leader>fw', function () builtins.live_grep() end, desc_opts('Search words'))
+map('n', '<leader>fw', function () builtins.live_grep({
+  initial_mode = 'insert',
+}) end, desc_opts('Search words'))
 map('n', '<leader>fW', function () builtins.live_grep({
   additional_args = function (args)
     return vim.list_extend(args, {
@@ -123,6 +125,7 @@ map('n', '<leader>fW', function () builtins.live_grep({
       '--no-ignore',
     })
   end,
+  initial_mode = 'insert',
 }) end, desc_opts('Search words in all files'))
 map('n', '<leader>ff', function () builtins.find_files() end, desc_opts('Search files'))
 map('n', '<leader>fF', function () builtins.find_files {
@@ -130,7 +133,7 @@ map('n', '<leader>fF', function () builtins.find_files {
   no_ignore = true,
 } end, desc_opts('Search all files'))
 map('n', '<leader>fb', function () builtins.buffers() end, desc_opts('Search buffers'))
-map('n', '<leader>fh', function () builtins.hep_tags() end, desc_opts('Search help'))
+map('n', '<leader>fh', function () builtins.help_tags() end, desc_opts('Search help'))
 map('n', '<leader>fo', function () builtins.oldfiles() end, desc_opts('Search file history'))
 map('n', '<leader>fc', function () builtins.grep_string() end, desc_opts('Search word under cursor'))
 map('n', '<leader>fr', function () builtins.registers() end, desc_opts('Search registers'))
