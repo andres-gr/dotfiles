@@ -112,6 +112,15 @@ local plugins = {
     config = function () require 'agr.configs.lsp.mason-lspconfig' end,
   },
 
+  -- Null ls manager
+  ['jayp0521/mason-null-ls.nvim'] = {
+    after = {
+      'mason.nvim',
+      'null-ls.nvim',
+    },
+    config = function () require 'agr.configs.lsp.mason-null-ls' end,
+  },
+
   -- Enable LSP
   ['neovim/nvim-lspconfig'] = {},
 
@@ -125,6 +134,11 @@ local plugins = {
     },
     config = function() require 'agr.configs.aerial' end,
     module = 'aerial',
+  },
+
+  ['jose-elias-alvarez/null-ls.nvim'] = {
+    config = function () require 'agr.configs.lsp.null-ls' end,
+    event = 'BufEnter',
   },
 
   -- Icons

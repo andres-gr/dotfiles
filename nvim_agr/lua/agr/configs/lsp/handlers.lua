@@ -103,8 +103,8 @@ H.on_attach = function (client, bufnr)
   buf_set_keymap('n', '[d', '<cmd>lua vim.diagnostic.goto_prev()<CR>', descOpts('LSP prev diagnostic'))
   buf_set_keymap('n', ']d', '<cmd>lua vim.diagnostic.goto_next()<CR>', descOpts('LSP next diagnostic'))
   buf_set_keymap('n', 'gq', '<cmd>lua vim.diagnostic.setloclist()<CR>', descOpts('LSP diagnostic set loclist'))
-  buf_set_keymap('n', '\\f', '<cmd>lua vim.lsp.buf.formatting()<CR>', descOpts('LSP format'))
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting()' ]]
+  buf_set_keymap('n', '\\f', '<cmd>lua vim.lsp.buf.formatting_sync()<CR>', descOpts('LSP format'))
+  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.formatting_sync()' ]]
 
   lsp_highlight_document(client)
 end

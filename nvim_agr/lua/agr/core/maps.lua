@@ -166,3 +166,8 @@ map('n', '<leader>Gd', function () gitsigns.diffthis() end, desc_opts('Git view 
 -- Dash
 map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))
 
+-- LSP Installer
+map('n', '\\pI', ':Mason<CR>', desc_opts('Mason installer'))
+map('n', '\\pU', ':MasonToolsUpdate<CR>', desc_opts('Mason update'))
+map('n', '<leader>li', ':LspInfo<CR>', desc_opts('LSP info'))
+
