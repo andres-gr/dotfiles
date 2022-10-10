@@ -115,6 +115,18 @@ local plugins = {
   -- Enable LSP
   ['neovim/nvim-lspconfig'] = {},
 
+
+  -- LSP symbols
+  ['stevearc/aerial.nvim'] = {
+    cmd = {
+      'AerialInfo',
+      'AerialOpen',
+      'AerialToggle',
+    },
+    config = function() require 'agr.configs.aerial' end,
+    module = 'aerial',
+  },
+
   -- Icons
   ['kyazdani42/nvim-web-devicons'] = {
     module = 'nvim-web-devicons',
@@ -233,6 +245,63 @@ local plugins = {
   -- Better handle repeat actions
   ['tpope/vim-repeat'] = {
     event = 'BufEnter',
+  },
+
+  -- Indent detection
+  ['Darazaki/indent-o-matic'] = {
+    config = function () require 'agr.configs.indent' end,
+    event = 'BufReadPost',
+  },
+
+  -- Notification Enhancer
+  ['rcarriga/nvim-notify'] = {
+    config = function() require 'agr.configs.notify' end,
+    event = 'UIEnter',
+  },
+
+  -- Neovim UI Enhancer
+  ['stevearc/dressing.nvim'] = {
+    config = function() end,
+    event = 'UIEnter',
+  },
+
+  -- Color highlighting
+  ['NvChad/nvim-colorizer.lua'] = {
+    config = function() require 'agr.configs.colorizer' end,
+    event = {
+      'BufNewFile',
+      'BufRead',
+    },
+  },
+
+  -- Indentation
+  ['lukas-reineke/indent-blankline.nvim'] = {
+    config = function() require 'agr.configs.indent-line' end,
+    event = 'BufRead',
+  },
+
+  -- Smooth escaping
+  ['max397574/better-escape.nvim'] = {
+    config = function() require 'agr.configs.escape' end,
+    event = 'InsertCharPre',
+  },
+
+  -- Get extra JSON schemas
+  ['b0o/SchemaStore.nvim'] = {
+    module = 'schemastore',
+  },
+
+  -- Keymaps popup
+  ['folke/which-key.nvim'] = {
+    config = function() require 'agr.configs.which-key' end,
+    module = 'which-key',
+  },
+
+  -- Start screen
+  ['goolord/alpha-nvim'] = {
+    cmd = 'Alpha',
+    config = function() require 'agr.configs.alpha' end,
+    module = 'alpha',
   },
 }
 

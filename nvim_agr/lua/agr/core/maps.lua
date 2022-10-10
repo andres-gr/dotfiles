@@ -57,8 +57,10 @@ map('n', '<leader><', ':BufferLineMovePrev<CR>', desc_opts('Move buffer left'))
 
 -- File actions
 map('n', '\\c', ':Bdelete<CR>', desc_opts('Close current buffer'))
+map('n', '\\C', ':Bdelete!<CR>', desc_opts('Close w/force current buffer'))
 map('n', '\\w', ':w!<CR>', desc_opts('Save current file'))
-map('n', '\\q', ':q!<CR>', desc_opts('Quit'))
+map('n', '\\q', ':q<CR>', desc_opts('Quit'))
+map('n', '\\Q', ':q!<CR>', desc_opts('Quit w/force'))
 
 -- Netrw file tree
 -- map('n', '<leader>e', ':Lex 30<cr>', desc_opts('Toggle Netrw file tree'))
@@ -160,4 +162,7 @@ map('n', '<leader>gbr', function () gitsigns.reset_buffer() end, desc_opts('Git 
 map('n', '<leader>ghs', function () gitsigns.stage_hunk() end, desc_opts('Git stage hunk'))
 map('n', '<leader>ghu', function () gitsigns.undo_stage_hunk() end, desc_opts('Git unstage hunk'))
 map('n', '<leader>Gd', function () gitsigns.diffthis() end, desc_opts('Git view diff'))
+
+-- Dash
+map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))
 
