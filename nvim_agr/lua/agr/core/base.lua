@@ -61,8 +61,8 @@ o.wrap = false -- Disable wrapping of lines longer than the width of window
 o.writebackup = false -- Disable making a backup before overwriting a file
 
 -- Undercurl
-vim.cmd [[ let &t_Cs = '\e[4:3m' ]]
-vim.cmd [[ let &t_Ce = '\e[4:0m' ]]
+-- vim.cmd [[ let &t_Cs = '\e[4:3m' ]]
+-- vim.cmd [[ let &t_Ce = '\e[4:0m' ]]
 
 -- Automatically wrap left or right
 vim.cmd [[ set whichwrap+=<,>,[,],h,l ]]
