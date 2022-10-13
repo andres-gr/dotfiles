@@ -34,3 +34,9 @@ treesitter.setup {
   },
 }
 
+local parser_status_ok, parser = pcall(require, 'agr.core.ts-parser')
+if parser_status_ok then
+  parser.directives()
+  parser.queries()
+end
+
