@@ -21,9 +21,10 @@ typeset -U fpath
 
 export TERM="xterm-256color"
 export CONFIGS_DIR="$HOME/devel/configs/"
+export PATH="$HOME/neovim/bin:$PATH"
 
 # The following lines were added by compinstall
-zstyle :compinstall filename '/Users/andres/.zshrc'
+zstyle :compinstall filename '$HOME/.zshrc'
 
 autoload -Uz compinit
 compinit
@@ -41,9 +42,13 @@ source $CONFIGS_DIR/alias.zsh
 source $CONFIGS_DIR/keybinds.zsh
 
 # pnpm
-export PNPM_HOME="/Users/andres/Library/pnpm"
+export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
+
+export PATH="/usr/local/opt/curl/bin:$PATH"
+export LDFLAGS="-L/usr/local/opt/curl/lib"
+export CPPFLAGS="-I/usr/local/opt/curl/include"
 
 # Ruby env setup
 #
@@ -56,9 +61,8 @@ source $(dirname $(gem which colorls))/tab_complete.sh
 # export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
 # eval "$(starship init zsh)"
 _evalcache starship init zsh
-
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
