@@ -9,7 +9,19 @@ local colors = require 'agr.core.colors'.dracula_colors
 dracula.setup({
   colors = colors,
   italic_comment = true,
-  -- overrides = {},
+  overrides = {
+    AlphaButtonText = { fg = colors.bright_blue },
+    AlphaButtonShortcut = {
+      fg = colors.green,
+      bold = true,
+    },
+    AlphaFooter = { fg = colors.bright_cyan },
+    CursorLine = { bg = colors.bg },
+    IlluminatedWordRead = { bg = colors.selection },
+    IlluminatedWordText = { bg = colors.selection },
+    IlluminatedWordWrite = { bg = colors.selection },
+    MatchParen = { bg = colors.selection },
+  },
   transparent_bg = true,
 })
 
@@ -21,14 +33,14 @@ if not color_status_ok then
   return
 end
 
-vim.api.nvim_set_hl(0, 'AlphaButtonText', {
-  fg = colors.bright_blue,
-})
-vim.api.nvim_set_hl(0, 'AlphaButtonShortcut', {
-  fg = colors.green,
-  bold = true,
-})
-vim.api.nvim_set_hl(0, 'AlphaFooter', {
-  fg = colors.bright_cyan,
-})
+-- vim.api.nvim_set_hl(0, 'AlphaButtonText', {
+--   fg = colors.bright_blue,
+-- })
+-- vim.api.nvim_set_hl(0, 'AlphaButtonShortcut', {
+--   fg = colors.green,
+--   bold = true,
+-- })
+-- vim.api.nvim_set_hl(0, 'AlphaFooter', {
+--   fg = colors.bright_cyan,
+-- })
 

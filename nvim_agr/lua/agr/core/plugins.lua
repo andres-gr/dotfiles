@@ -323,6 +323,11 @@ local plugins = {
   ['rebelot/heirline.nvim'] = {
     config = function () require 'agr.configs.heir-line' end,
   },
+
+  -- Highlight under cursor
+  ['RRethy/vim-illuminate'] = {
+    config = function () require 'agr.configs.illuminate' end,
+  },
 }
 
 -- Install your plugins here

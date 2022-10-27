@@ -31,6 +31,7 @@ o.laststatus = 3 -- globalstatus
 o.lazyredraw = true -- lazily redraw screen
 o.mouse = 'a' -- Enable mouse support
 o.number = true -- Show numberline
+o.numberwidth = 4 -- Set number column width {default 4}
 o.path:append { '**' } -- Finding files - Search down into subfolders
 o.preserveindent = true -- Preserve indent structure as much as possible
 o.pumheight = 10 -- Height of the pop up menu
@@ -56,6 +57,7 @@ o.timeoutlen = 500 -- Length of time to wait for a mapped sequence
 o.title = false
 o.undofile = true -- Enable persistent undo
 o.updatetime = 300 -- Length of time to wait before triggering the plugin
+o.whichwrap:append '<,>,[,],h,l' -- Automatically wrap left or right
 o.wildignore:append { '*/node_modules/*' }
 o.wrap = false -- Disable wrapping of lines longer than the width of window
 o.writebackup = false -- Disable making a backup before overwriting a file
@@ -63,9 +65,6 @@ o.writebackup = false -- Disable making a backup before overwriting a file
 -- Undercurl
 -- vim.cmd [[ let &t_Cs = '\e[4:3m' ]]
 -- vim.cmd [[ let &t_Ce = '\e[4:0m' ]]
-
--- Automatically wrap left or right
-vim.cmd [[ set whichwrap+=<,>,[,],h,l ]]
 
 -- Turn off paste mode when leaving insert
 a.nvim_create_autocmd('InsertLeave', {
