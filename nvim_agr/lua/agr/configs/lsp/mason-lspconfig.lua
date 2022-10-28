@@ -7,6 +7,7 @@ if not lspconfig_status_ok then return end
 local handlers = require 'agr.configs.lsp.handlers'
 
 mason_lspconfig.setup {
+  automatic_installation = true,
   ensure_installed = {
     'bashls',
     'cssls',
@@ -40,8 +41,22 @@ mason_lspconfig.setup_handlers {
   ['jsonls'] = function ()
     lspconfig.jsonls.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.jsonls', opts))
   end,
+
   ['sumneko_lua'] = function ()
     lspconfig.sumneko_lua.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.sumneko_lua', opts))
+  end,
+
+  ['tsserver'] = function ()
+    local typescript_status, typescript = pcall(require, 'typescript')
+    if not typescript_status then return false end
+
+    typescript.setup {
+      server = {
+        capabilities = handlers.capabilities,
+        on_attach = handlers.on_attach,
+        root_dir = handlers.root_dir,
+      },
+    }
   end,
 }
 

@@ -18,6 +18,7 @@ cmd('FileType', {
   callback = function ()
     local prev_showtabline = vim.opt.showtabline
     vim.opt.showtabline = 0
+    vim.opt_local.winbar = nil
     cmd('BufUnload', {
       callback = function () vim.opt.showtabline = prev_showtabline end,
       pattern = '<buffer>',
@@ -93,5 +94,18 @@ cmd('VimEnter', {
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
   group = 'alpha_settings',
+})
+
+augroup('_general_settings', { clear = true })
+cmd('TextYankPost', {
+  callback = function ()
+    require 'vim.highlight'.on_yank {
+      higroup = 'Search',
+      timeout = 200,
+    }
+  end,
+  desc = 'Highlight text on yank',
+  group = '_general_settings',
+  pattern = '*',
 })
 
