@@ -13,5 +13,8 @@ saga.init_lsp_saga {
     next = '<C-j>',
     prev = '<C-k>',
   },
+  server_filetype_map = {
+    typescript = 'typescript',
+  },
 }
 

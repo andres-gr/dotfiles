@@ -24,7 +24,10 @@ treesitter.setup {
     disable = { 'css' },
     enable = true,
   },
-  indent = { enable = true },
+  indent = {
+    disable = { 'css' },
+    enable = true,
+  },
   incremental_selection = { enable = true },
   rainbow = {
     disable = { 'html' },
