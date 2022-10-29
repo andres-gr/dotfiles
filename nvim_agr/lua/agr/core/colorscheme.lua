@@ -11,16 +11,55 @@ dracula.setup({
   italic_comment = true,
   overrides = {
     AlphaButtonText = { fg = colors.bright_blue },
-    AlphaButtonShortcut = {
-      fg = colors.green,
-      bold = true,
-    },
+    AlphaButtonShortcut = { fg = colors.green, bold = true },
     AlphaFooter = { fg = colors.bright_cyan },
     CursorLine = { bg = colors.bg },
     IlluminatedWordRead = { bg = colors.gutter_fg },
     IlluminatedWordText = { bg = colors.gutter_fg },
     IlluminatedWordWrite = { bg = colors.gutter_fg },
     MatchParen = { bg = colors.gutter_fg },
+
+    -- cmp highlights
+    PmenuSel = { bg = 'NONE' },
+    Pmenu = { fg = colors.fg, bg = 'NONE' },
+
+    CmpItemAbbrDeprecated = { fg = colors.purple, bg = 'NONE', strikethrough = true },
+    CmpItemAbbrMatch = { fg = colors.cyan, bg = 'NONE', bold = true },
+    CmpItemAbbrMatchFuzzy = { fg = colors.cyan, bg = 'NONE', bold = true },
+    CmpItemMenu = { fg = colors.gutter_fg, bg = 'NONE', italic = true },
+
+    CmpItemKindField = { fg = colors.bright_red },
+    CmpItemKindProperty = { fg = colors.bright_red },
+    CmpItemKindEvent = { fg = colors.bright_red },
+
+    CmpItemKindText = { fg = colors.bright_yellow },
+    CmpItemKindEnum = { fg = colors.bright_green },
+    CmpItemKindKeyword = { fg = colors.fg },
+
+    CmpItemKindConstant = { fg = colors.orange },
+    CmpItemKindConstructor = { fg = colors.orange },
+    CmpItemKindReference = { fg = colors.orange },
+
+    CmpItemKindFunction = { fg = colors.bright_magenta },
+    CmpItemKindStruct = { fg = colors.bright_magenta },
+    CmpItemKindClass = { fg = colors.bright_magenta },
+    CmpItemKindModule = { fg = colors.bright_magenta },
+    CmpItemKindOperator = { fg = colors.bright_magenta },
+
+    CmpItemKindVariable = { fg = colors.bright_cyan },
+    CmpItemKindFile = { fg = colors.bright_cyan },
+
+    CmpItemKindUnit = { fg = colors.bright_blue },
+    CmpItemKindSnippet = { fg = colors.bright_blue },
+    CmpItemKindFolder = { fg = colors.bright_blue },
+
+    CmpItemKindMethod = { fg = colors.yellow },
+    CmpItemKindValue = { fg = colors.yellow },
+    CmpItemKindEnumMember = { fg = colors.yellow },
+
+    CmpItemKindInterface = { fg = colors.green },
+    CmpItemKindColor = { fg = colors.green },
+    CmpItemKindTypeParameter = { fg = colors.green },
   },
   transparent_bg = true,
 })
