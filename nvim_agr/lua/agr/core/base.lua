@@ -10,6 +10,7 @@ o.fileencoding = 'uft-8'
 w.number = true
 
 o.autoindent = true
+o.background = 'dark'
 o.backspace = o.backspace + { 'nostop' } -- Don't stop backspace at insert
 o.backup = false
 o.backupskip = { '/tmp/*', '/private/tmp/*' }
@@ -34,6 +35,7 @@ o.number = true -- Show numberline
 o.numberwidth = 4 -- Set number column width {default 4}
 o.path:append { '**' } -- Finding files - Search down into subfolders
 o.preserveindent = true -- Preserve indent structure as much as possible
+o.pumblend = 5
 o.pumheight = 10 -- Height of the pop up menu
 o.relativenumber = true -- Show relative numberline
 o.scrolloff = 8 -- Number of lines to keep above and below the cursor
@@ -59,6 +61,8 @@ o.undofile = true -- Enable persistent undo
 o.updatetime = 300 -- Length of time to wait before triggering the plugin
 o.whichwrap:append '<,>,[,],h,l' -- Automatically wrap left or right
 o.wildignore:append { '*/node_modules/*' }
+o.wildoptions = 'pum'
+o.winblend = 0
 o.wrap = false -- Disable wrapping of lines longer than the width of window
 o.writebackup = false -- Disable making a backup before overwriting a file
 

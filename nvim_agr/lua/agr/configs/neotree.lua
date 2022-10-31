@@ -47,7 +47,7 @@ neo_tree.setup {
     },
     modified = {
       highlight = 'NeoTreeModified',
-      symbol = '[+]',
+      symbol = '',
     },
     name = {
       highlight = 'NeoTreeFileName',

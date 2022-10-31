@@ -60,6 +60,19 @@ dracula.setup({
     CmpItemKindInterface = { fg = colors.green },
     CmpItemKindColor = { fg = colors.green },
     CmpItemKindTypeParameter = { fg = colors.green },
+
+    -- Neo-tree
+    NeoTreeCursorLine = { bg = colors.selection },
+    NeoTreeDirectoryIcon = { fg = colors.bright_blue },
+    NeoTreeDirectoryName = { fg = colors.fg },
+    NeoTreeGitAdded = { fg = colors.bright_green },
+    NeoTreeGitConflict = { fg = colors.yellow },
+    NeoTreeGitDeleted = { fg = colors.bright_red },
+    NeoTreeGitModified = { fg = colors.cyan },
+    NeoTreeGitStaged = { fg = colors.green },
+    NeoTreeGitUnstaged = { fg = colors.pink },
+    NeoTreeGitUntracked = { fg = colors.bright_yellow },
+    NeoTreeIndentMarker = { fg = colors.comment },
   },
   transparent_bg = true,
 })
