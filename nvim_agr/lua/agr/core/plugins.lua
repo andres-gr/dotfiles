@@ -343,6 +343,20 @@ local plugins = {
   ['RRethy/vim-illuminate'] = {
     config = function () require 'agr.configs.illuminate' end,
   },
+
+  -- Minimap
+  -- ['wfxr/minimap.vim'] = {
+  --   config = function ()
+  --     vim.g.minimap_width = 10
+  --     vim.g.minimap_auto_start = 1
+  --     vim.g.minimap_auto_start_win_enter = 1
+  --   end,
+  --   run = 'cargo install --locked code-minimap',
+  -- },
+
+  ['ahmedkhalf/project.nvim'] = {
+    config = function () require 'agr.configs.project' end,
+  },
 }
 
 -- Install your plugins here

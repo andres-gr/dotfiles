@@ -120,6 +120,7 @@ telescope.setup {
   },
 }
 
-telescope.load_extension('notify')
 telescope.load_extension('aerial')
+telescope.load_extension('notify')
+telescope.load_extension('projects')
 

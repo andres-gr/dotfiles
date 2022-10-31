@@ -20,7 +20,7 @@ dracula.setup({
     MatchParen = { bg = colors.gutter_fg },
 
     -- cmp highlights
-    PmenuSel = { bg = 'NONE' },
+    PmenuSel = { bg = colors.selection },
     Pmenu = { fg = colors.fg, bg = 'NONE' },
 
     CmpItemAbbrDeprecated = { fg = colors.purple, bg = 'NONE', strikethrough = true },
