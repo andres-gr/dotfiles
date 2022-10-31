@@ -90,7 +90,7 @@ H.on_attach = function (client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gf', '<CMD>Lspsaga lsp_finder()<CR>', descOpts('LSP definition, references'))
+  buf_set_keymap('n', 'gf', '<CMD>Lspsaga lsp_finder<CR>', descOpts('LSP definition, references'))
   buf_set_keymap('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', descOpts('LSP declaration'))
   buf_set_keymap('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', descOpts('LSP definition'))
   buf_set_keymap('n', 'K', '<CMD>Lspsaga hover_doc<CR>', descOpts('LSP hover'))
