@@ -17,10 +17,14 @@ augroup('alpha_settings', { clear = true })
 cmd('FileType', {
   callback = function ()
     local prev_showtabline = vim.opt.showtabline
+    local prev_winbar = vim.opt_local.winbar
     vim.opt.showtabline = 0
     vim.opt_local.winbar = nil
     cmd('BufUnload', {
-      callback = function () vim.opt.showtabline = prev_showtabline end,
+      callback = function ()
+        vim.opt.showtabline = prev_showtabline
+        vim.opt_local.winbar = prev_winbar
+      end,
       pattern = '<buffer>',
     })
   end,
