@@ -4,7 +4,14 @@ if not telescope_status_ok then return end
 local actions = require 'telescope.actions'
 
 telescope.setup {
-  extensions = {},
+  extensions = {
+    fzf = {
+      case_mode = 'smart_case', -- or 'ignore_case' or 'respect_case'
+      fuzzy = true, -- false will only do exact matching
+      override_file_sorter = true, -- override the file sorter
+      override_generic_sorter = true, -- override the generic sorter
+    },
+  },
   defaults = {
     initial_mode = 'normal',
     layout_config = {
@@ -93,6 +100,27 @@ telescope.setup {
       },
     },
   },
-  pickers = {},
+  pickers = {
+    buffers = {
+      mappings = {
+        i = {
+          ['<C-d>'] = actions.delete_buffer,
+        },
+        n = {
+          ['dd'] = actions.delete_buffer,
+        },
+      },
+    },
+    find_files = {
+      hidden = true,
+    },
+    live_grep = {
+      initial_mode = 'insert',
+      only_sort_text = true,
+    },
+  },
 }
+
+telescope.load_extension('notify')
+telescope.load_extension('aerial')
 
