@@ -64,7 +64,6 @@ telescope.setup {
         ['<C-l>'] = actions.complete_tag,
         ['<C-h>'] = actions.which_key,
       },
-
       n = {
         ['<esc>'] = actions.close,
         ['<C-c>'] = actions.close,

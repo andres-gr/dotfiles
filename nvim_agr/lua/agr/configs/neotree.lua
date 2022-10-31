@@ -225,6 +225,15 @@ neo_tree.setup {
       ['?'] = 'show_help',
       ['<'] = 'prev_source',
       ['>'] = 'next_source',
+      ['['] = function ()
+        local width = vim.api.nvim_win_get_width(0) - 3
+        print(width)
+        vim.api.nvim_win_set_width(0, width)
+      end,
+      [']'] = function ()
+        local width = vim.api.nvim_win_get_width(0) + 3
+        vim.api.nvim_win_set_width(0, width)
+      end,
     },
     position = 'left',
     width = 35,
