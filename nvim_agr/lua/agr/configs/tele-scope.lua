@@ -1,6 +1,7 @@
 local telescope_status_ok, telescope = pcall(require, 'telescope')
 if not telescope_status_ok then return end
 
+local utils = require 'agr.core.utils'
 local actions = require 'telescope.actions'
 
 telescope.setup {
@@ -120,7 +121,15 @@ telescope.setup {
   },
 }
 
-telescope.load_extension('aerial')
-telescope.load_extension('notify')
-telescope.load_extension('projects')
+if utils.has_plugin 'aerial' then
+  telescope.load_extension('aerial')
+end
+
+if utils.has_plugin 'notify' then
+  telescope.load_extension('notify')
+end
+
+if utils.has_plugin 'project' then
+  telescope.load_extension('projects')
+end
 

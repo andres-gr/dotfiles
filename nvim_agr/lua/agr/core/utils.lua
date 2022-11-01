@@ -92,9 +92,19 @@ local lualine_mode = function (mode, fallback)
   return lualine_opts and type(lualine_opts.a) == 'table' and lualine_opts.a.bg or fallback
 end
 
+local has_plugin = function (plug)
+  local status, plugin = pcall(require, plug)
+  if not status then
+    return false
+  end
+
+  return plugin
+end
+
 U.default_tbl = default_tbl
 U.dump = dump
 U.get_hlgroup = get_hlgroup
+U.has_plugin = has_plugin
 U.is_available = is_available
 U.key_down = key_down
 U.lualine_mode = lualine_mode

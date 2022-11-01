@@ -1,12 +1,15 @@
+local utils = require 'agr.core.utils'
 local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
 augroup('neotree_start', { clear = true })
 cmd('BufEnter', {
   callback = function ()
-    local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
-    if stats and stats.type == 'directory' then
-      require 'neo-tree.setup.netrw'.hijack()
+    if utils.has_plugin 'neo-tree' then
+      local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+      if stats and stats.type == 'directory' then
+        require 'neo-tree.setup.netrw'.hijack()
+      end
     end
   end,
   desc = 'Open Neo-Tree on startup with directory',
@@ -63,13 +66,15 @@ cmd('FileType', {
 
 cmd('User', {
   callback = function (event)
-    local fallback_name = vim.api.nvim_buf_get_name(event.buf)
-    local fallback_ft = vim.api.nvim_buf_get_option(event.buf, 'filetype')
-    local fallback_on_empty = fallback_name == '' and fallback_ft == ''
+    if utils.has_plugin 'alpha' then
+      local fallback_name = vim.api.nvim_buf_get_name(event.buf)
+      local fallback_ft = vim.api.nvim_buf_get_option(event.buf, 'filetype')
+      local fallback_on_empty = fallback_name == '' and fallback_ft == ''
 
-    if fallback_on_empty then
-      require 'neo-tree'.close_all()
-      vim.cmd [[ :Alpha ]]
+      if fallback_on_empty then
+        require 'neo-tree'.close_all()
+        vim.cmd [[ :Alpha ]]
+      end
     end
   end,
   desc = 'Go to dash if no open files',
@@ -80,8 +85,8 @@ cmd('User', {
 cmd('VimEnter', {
   callback = function ()
     -- optimized start check from https://github.com/goolord/alpha-nvim
-    local alpha_avail, alpha = pcall(require, 'alpha')
-    if alpha_avail then
+    local alpha =  utils.has_plugin 'alpha'
+    if alpha then
       local should_skip = false
       if vim.fn.argc() > 0 or vim.fn.line2byte '$' ~= -1 or not vim.o.modifiable then
         should_skip = true

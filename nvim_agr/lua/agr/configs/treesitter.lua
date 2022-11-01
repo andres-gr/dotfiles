@@ -17,6 +17,7 @@ treesitter.setup {
     'json',
     'lua',
     'tsx',
+    'typescript',
     'vim',
   },
   highlight = {

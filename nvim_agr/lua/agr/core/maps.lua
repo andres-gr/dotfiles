@@ -1,3 +1,4 @@
+local utils = require 'agr.core.utils'
 local map = vim.keymap.set
 local opts = {
   noremap = true,
@@ -115,31 +116,38 @@ map('n', '<leader>e', ':Neotree toggle<CR>', desc_opts('Open file tree explorer'
 map('n', '<leader>o', ':Neotree focus<CR>', desc_opts('Focus file tree explorer'))
 
 -- Fuzzy finder
-local builtins = require 'telescope.builtin'
--- map('n', '<leader>f', function () builtins. end, desc_opts(''))
-map('n', '<leader>fw', builtins.live_grep, desc_opts('Search words'))
-map('n', '<leader>fW', function () builtins.live_grep({
-  additional_args = function (args)
-    return vim.list_extend(args, {
-      '--hidden',
-      '--no-ignore',
-    })
-  end,
-}) end, desc_opts('Search words in all files'))
-map('n', '<leader>ff', builtins.find_files, desc_opts('Search files'))
-map('n', '<leader>fF', function () builtins.find_files { no_ignore = true, } end, desc_opts('Search all files'))
-map('n', '<leader>fb', builtins.buffers, desc_opts('Search buffers'))
-map('n', '<leader>fh', builtins.help_tags, desc_opts('Search help'))
-map('n', '<leader>fo', builtins.oldfiles, desc_opts('Search file history'))
-map('n', '<leader>fc', builtins.grep_string, desc_opts('Search word under cursor'))
-map('n', '<leader>fr', builtins.registers, desc_opts('Search registers'))
-map('n', '<leader>fk', builtins.keymaps, desc_opts('Search keymaps'))
-map('n', '<leader>fm', builtins.commands, desc_opts('Search commands'))
-map('n', '<leader>fn', require 'telescope'.extensions.notify.notify, desc_opts('Search messages'))
-map('n', '<leader>ls', require 'telescope'.extensions.aerial.aerial, desc_opts('Search symbols'))
-map('n', '<leader>lG', builtins.lsp_workspace_symbols, desc_opts('Search workspace symbols'))
-map('n', '<leader>lR', builtins.lsp_references, desc_opts('Search references'))
-map('n', '<leader>lD', builtins.diagnostics, desc_opts('Search diagnostics'))
+local telescope_status, _ = pcall(require, 'telescope')
+if telescope_status then
+  local builtins = require 'telescope.builtin'
+  -- map('n', '<leader>f', function () builtins. end, desc_opts(''))
+  map('n', '<leader>fw', builtins.live_grep, desc_opts('Search words'))
+  map('n', '<leader>fW', function () builtins.live_grep({
+    additional_args = function (args)
+      return vim.list_extend(args, {
+        '--hidden',
+        '--no-ignore',
+      })
+    end,
+  }) end, desc_opts('Search words in all files'))
+  map('n', '<leader>ff', builtins.find_files, desc_opts('Search files'))
+  map('n', '<leader>fF', function () builtins.find_files { no_ignore = true, } end, desc_opts('Search all files'))
+  map('n', '<leader>fb', builtins.buffers, desc_opts('Search buffers'))
+  map('n', '<leader>fh', builtins.help_tags, desc_opts('Search help'))
+  map('n', '<leader>fo', builtins.oldfiles, desc_opts('Search file history'))
+  map('n', '<leader>fc', builtins.grep_string, desc_opts('Search word under cursor'))
+  map('n', '<leader>fr', builtins.registers, desc_opts('Search registers'))
+  map('n', '<leader>fk', builtins.keymaps, desc_opts('Search keymaps'))
+  map('n', '<leader>fm', builtins.commands, desc_opts('Search commands'))
+  if utils.has_plugin 'aerial' then
+    map('n', '<leader>ls', '<CMD>Telescope aerial<CR>', desc_opts('Search symbols'))
+  end
+  if utils.has_plugin 'notify' then
+    map('n', '<leader>fn', '<CMD>Telescope notify<CR>', desc_opts('Search messages'))
+  end
+  map('n', '<leader>lG', builtins.lsp_workspace_symbols, desc_opts('Search workspace symbols'))
+  map('n', '<leader>lR', builtins.lsp_references, desc_opts('Search references'))
+  map('n', '<leader>lD', builtins.diagnostics, desc_opts('Search diagnostics'))
+end
 
 -- Packer
 map('n', '\\ps', ':PackerSync<CR>', desc_opts('Packer sync'))
@@ -147,16 +155,18 @@ map('n', '\\pS', ':PackerStatus<CR>', desc_opts('Packer status'))
 map('n', '\\pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
 
 -- Gitsigns
-local gitsigns = require 'gitsigns'
-map('n', '<leader>gj', function () gitsigns.next_hunk() end, desc_opts('Git next hunk'))
-map('n', '<leader>gk', function () gitsigns.prev_hunk() end, desc_opts('Git prev hunk'))
-map('n', '<leader>gl', function () gitsigns.blame_line() end, desc_opts('Git blame line'))
-map('n', '<leader>gp', function () gitsigns.preview_hunk() end, desc_opts('Git preview hunk'))
-map('n', '<leader>ghr', function () gitsigns.rest_hunk() end, desc_opts('Git reset hunk'))
-map('n', '<leader>gbr', function () gitsigns.reset_buffer() end, desc_opts('Git reset buffer'))
-map('n', '<leader>ghs', function () gitsigns.stage_hunk() end, desc_opts('Git stage hunk'))
-map('n', '<leader>ghu', function () gitsigns.undo_stage_hunk() end, desc_opts('Git unstage hunk'))
-map('n', '<leader>Gd', function () gitsigns.diffthis() end, desc_opts('Git view diff'))
+if utils.has_plugin 'gitsigns' then
+  local gitsigns = require 'gitsigns'
+  map('n', '<leader>gj', function () gitsigns.next_hunk() end, desc_opts('Git next hunk'))
+  map('n', '<leader>gk', function () gitsigns.prev_hunk() end, desc_opts('Git prev hunk'))
+  map('n', '<leader>gl', function () gitsigns.blame_line() end, desc_opts('Git blame line'))
+  map('n', '<leader>gp', function () gitsigns.preview_hunk() end, desc_opts('Git preview hunk'))
+  map('n', '<leader>ghr', function () gitsigns.rest_hunk() end, desc_opts('Git reset hunk'))
+  map('n', '<leader>gbr', function () gitsigns.reset_buffer() end, desc_opts('Git reset buffer'))
+  map('n', '<leader>ghs', function () gitsigns.stage_hunk() end, desc_opts('Git stage hunk'))
+  map('n', '<leader>ghu', function () gitsigns.undo_stage_hunk() end, desc_opts('Git unstage hunk'))
+  map('n', '<leader>Gd', function () gitsigns.diffthis() end, desc_opts('Git view diff'))
+end
 
 -- Dash
 map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))
