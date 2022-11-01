@@ -8,6 +8,9 @@ saga.init_lsp_saga {
   finder_action_keys = {
     open = '<CR>', -- Use enter to open file in finder
   },
+  finder_request_timeout = 3500,
+  -- preview lines of lsp_finder and definition preview
+  max_preview_lines = 30,
   -- Keybinds for navigation in saga window
   move_in_saga = {
     next = '<C-j>',
