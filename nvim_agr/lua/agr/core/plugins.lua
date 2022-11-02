@@ -251,6 +251,10 @@ local plugins = {
     event = 'BufEnter',
   },
 
+  ['tpope/vim-fugitive'] = {
+    event = 'UIEnter',
+  },
+
   -- Buffer management
   ['akinsho/bufferline.nvim'] = {
     config = function () require 'agr.configs.buffer-line' end,

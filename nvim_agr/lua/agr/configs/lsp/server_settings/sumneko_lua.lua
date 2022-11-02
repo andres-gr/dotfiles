@@ -4,6 +4,7 @@ return {
 			diagnostics = {
 				globals = {
 					'bit',
+					'packer_plugins',
 					'vim',
 				},
 			},

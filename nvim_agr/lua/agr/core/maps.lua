@@ -170,6 +170,9 @@ if utils.has_plugin 'gitsigns' then
   map('n', '<leader>Gd', '<CMD>Gitsigns diffthis<CR>', desc_opts('Git view diff'))
 end
 
+-- Git fugitive
+map('n', '<leader>Gl', ':0Gllog<CR>', desc_opts('Git show file history'))
+
 -- Dash
 map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))
 
