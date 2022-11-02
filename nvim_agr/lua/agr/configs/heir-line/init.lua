@@ -4,6 +4,7 @@ if not heirline_status_ok then return end
 local C = require 'agr.core.colors'
 local utils = require 'agr.core.utils'
 local status = require 'agr.astro.status'
+local vimode = require 'agr.configs.heir-line.vimode'
 
 local setup_colors = function ()
   local StatusLine = utils.get_hlgroup('StatusLine', { fg = C.fg, bg = C.grey_4 })
@@ -68,7 +69,8 @@ heirline.load_colors(heir_colors)
 local heirline_opts = {
   {
     hl = { fg = 'fg', bg = 'bg' },
-    status.component.mode(),
+    -- status.component.mode(),
+    vimode,
     status.component.git_branch(),
     status.component.file_info(
       utils.is_available 'bufferline.nvim' and { filetype = {}, filename = false, file_modified = false } or nil
