@@ -4,6 +4,9 @@ if not telescope_status_ok then return end
 local utils = require 'agr.core.utils'
 local actions = require 'telescope.actions'
 
+local project = utils.has_plugin 'project_nvim.project'
+local cwd = project ~= nil and project.get_project_root() or nil
+
 telescope.setup {
   extensions = {
     fzf = {
@@ -112,11 +115,19 @@ telescope.setup {
       },
     },
     find_files = {
+      cwd = cwd,
       hidden = true,
     },
+    grep_string = {
+      cwd = cwd,
+    },
     live_grep = {
+      cwd = cwd,
       initial_mode = 'insert',
       only_sort_text = true,
+    },
+    oldfiles = {
+      only_cwd = true,
     },
   },
 }

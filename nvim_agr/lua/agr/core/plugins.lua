@@ -345,16 +345,7 @@ local plugins = {
     config = function () require 'agr.configs.illuminate' end,
   },
 
-  -- Minimap
-  -- ['wfxr/minimap.vim'] = {
-  --   config = function ()
-  --     vim.g.minimap_width = 10
-  --     vim.g.minimap_auto_start = 1
-  --     vim.g.minimap_auto_start_win_enter = 1
-  --   end,
-  --   run = 'cargo install --locked code-minimap',
-  -- },
-
+  -- Project management
   ['ahmedkhalf/project.nvim'] = {
     config = function () require 'agr.configs.project' end,
   },
