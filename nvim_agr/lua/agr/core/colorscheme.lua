@@ -10,23 +10,29 @@ dracula.setup({
   colors = colors,
   italic_comment = true,
   overrides = {
-    AlphaButtonText = { fg = colors.bright_blue },
-    AlphaButtonShortcut = { fg = colors.green, bold = true },
-    AlphaFooter = { fg = colors.bright_cyan },
+    -- Standard
     CursorLine = { bg = colors.bg },
+    MatchParen = { bg = colors.gutter_fg },
+    TabLineFill = { bg = colors.none },
+
+    -- Alpha dash
+    AlphaButtonShortcut = { fg = colors.green, bold = true },
+    AlphaButtonText = { fg = colors.bright_blue },
+    AlphaFooter = { fg = colors.bright_cyan },
+
+    -- Vim illuminate
     IlluminatedWordRead = { bg = colors.gutter_fg },
     IlluminatedWordText = { bg = colors.gutter_fg },
     IlluminatedWordWrite = { bg = colors.gutter_fg },
-    MatchParen = { bg = colors.gutter_fg },
 
-    -- cmp highlights
+    -- CMP
     PmenuSel = { bg = colors.selection },
-    Pmenu = { fg = colors.fg, bg = 'NONE' },
+    Pmenu = { fg = colors.fg, bg = colors.none },
 
-    CmpItemAbbrDeprecated = { fg = colors.purple, bg = 'NONE', strikethrough = true },
-    CmpItemAbbrMatch = { fg = colors.cyan, bg = 'NONE', bold = true },
-    CmpItemAbbrMatchFuzzy = { fg = colors.cyan, bg = 'NONE', bold = true },
-    CmpItemMenu = { fg = colors.gutter_fg, bg = 'NONE', italic = true },
+    CmpItemAbbrDeprecated = { fg = colors.purple, bg =colors.none , strikethrough = true },
+    CmpItemAbbrMatch = { fg = colors.cyan, bg =colors.none , bold = true },
+    CmpItemAbbrMatchFuzzy = { fg = colors.cyan, bg =colors.none , bold = true },
+    CmpItemMenu = { fg = colors.gutter_fg, bg =colors.none , italic = true },
 
     CmpItemKindField = { fg = colors.bright_red },
     CmpItemKindProperty = { fg = colors.bright_red },
@@ -73,6 +79,9 @@ dracula.setup({
     NeoTreeGitUnstaged = { fg = colors.pink },
     -- NeoTreeGitUntracked = { fg = colors.bright_yellow },
     NeoTreeIndentMarker = { fg = colors.comment },
+
+    -- Bufferline
+    BufferLineFill = { bg = colors.none },
   },
   transparent_bg = true,
 })
@@ -84,15 +93,4 @@ if not color_status_ok then
   vim.notify('colorscheme ' .. colorscheme .. ' not found!')
   return
 end
-
--- vim.api.nvim_set_hl(0, 'AlphaButtonText', {
---   fg = colors.bright_blue,
--- })
--- vim.api.nvim_set_hl(0, 'AlphaButtonShortcut', {
---   fg = colors.green,
---   bold = true,
--- })
--- vim.api.nvim_set_hl(0, 'AlphaFooter', {
---   fg = colors.bright_cyan,
--- })
 

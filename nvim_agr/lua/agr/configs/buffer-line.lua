@@ -34,7 +34,10 @@ bufferline.setup {
     -- can also be a table containing 2 custom separators
     -- [focused and unfocused]. eg: { '|', '|' }
     right_mouse_command = 'Bdelete! %d', -- can be a string | function, see 'Mouse actions'
-    separator_style = 'thin',
+    separator_style = {
+      '▎',
+      ' ',
+    },
     show_buffer_close_icons = false,
     show_buffer_icons = true,
     show_close_icon = false,

@@ -255,6 +255,7 @@ local plugins = {
   ['akinsho/bufferline.nvim'] = {
     config = function () require 'agr.configs.buffer-line' end,
     event = 'UIEnter',
+    tag = 'v3.*',
   }, -- Buffers like tabs
 
   ['famiu/bufdelete.nvim'] = {
