@@ -156,16 +156,18 @@ map('n', '\\pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
 
 -- Gitsigns
 if utils.has_plugin 'gitsigns' then
-  local gitsigns = require 'gitsigns'
-  map('n', '<leader>gj', function () gitsigns.next_hunk() end, desc_opts('Git next hunk'))
-  map('n', '<leader>gk', function () gitsigns.prev_hunk() end, desc_opts('Git prev hunk'))
-  map('n', '<leader>gl', function () gitsigns.blame_line() end, desc_opts('Git blame line'))
-  map('n', '<leader>gp', function () gitsigns.preview_hunk() end, desc_opts('Git preview hunk'))
-  map('n', '<leader>ghr', function () gitsigns.rest_hunk() end, desc_opts('Git reset hunk'))
-  map('n', '<leader>gbr', function () gitsigns.reset_buffer() end, desc_opts('Git reset buffer'))
-  map('n', '<leader>ghs', function () gitsigns.stage_hunk() end, desc_opts('Git stage hunk'))
-  map('n', '<leader>ghu', function () gitsigns.undo_stage_hunk() end, desc_opts('Git unstage hunk'))
-  map('n', '<leader>Gd', function () gitsigns.diffthis() end, desc_opts('Git view diff'))
+  local blame_line = '<CMD>lua require "agr.core.utils".fix_float_ui("Gitsigns blame_line")<CR>'
+  local preview_hunk = '<CMD>lua require "agr.core.utils".fix_float_ui("Gitsigns preview_hunk")<CR>'
+
+  map('n', '<leader>gk', '<CMD>Gitsigns prev_hunk<CR>', desc_opts('Git prev hunk'))
+  map('n', '<leader>gj', '<CMD>Gitsigns next_hunk<CR>', desc_opts('Git next hunk'))
+  map('n', '<leader>gl', blame_line, desc_opts('Git blame line'))
+  map('n', '<leader>gp', preview_hunk, desc_opts('Git preview hunk'))
+  map('n', '<leader>ghr', '<CMD>Gitsigns reset_hunk<CR>', desc_opts('Git reset hunk'))
+  map('n', '<leader>gbr', '<CMD>Gitsigns reset_buffer<CR>', desc_opts('Git reset buffer'))
+  map('n', '<leader>ghs', '<CMD>Gitsigns stage_hunk<CR>', desc_opts('Git stage hunk'))
+  map('n', '<leader>ghu', '<CMD>Gitsigns undo_stage_hunk<CR>', desc_opts('Git unstage hunk'))
+  map('n', '<leader>Gd', '<CMD>Gitsigns diffthis<CR>', desc_opts('Git view diff'))
 end
 
 -- Dash

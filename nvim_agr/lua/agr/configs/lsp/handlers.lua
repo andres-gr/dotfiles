@@ -88,13 +88,17 @@ H.on_attach = function (client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
+  local hover_doc = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga hover_doc")<CR>'
+  local cursor_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_cursor_diagnostics")<CR>'
+  local line_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_line_diagnostics")<CR>'
+
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap('n', 'gf', '<CMD>Lspsaga lsp_finder<CR>', descOpts('LSP definition, references'))
   buf_set_keymap('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', descOpts('LSP declaration'))
   buf_set_keymap('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', descOpts('LSP definition'))
-  buf_set_keymap('n', 'K', '<CMD>lua require("agr.configs.lsp.utils").saga_hover_doc()<CR>', descOpts('LSP hover'))
-  buf_set_keymap('n', 'gh', '<CMD>lua require("agr.configs.lsp.utils").saga_hover_doc()<CR>', descOpts('LSP hover'))
+  buf_set_keymap('n', 'K', hover_doc, descOpts('LSP hover'))
+  buf_set_keymap('n', 'gh', hover_doc, descOpts('LSP hover'))
   buf_set_keymap('n', 'gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', descOpts('LSP implementation'))
   buf_set_keymap('n', '<leader>k', '<CMD>lua vim.lsp.buf.signature_help()<CR>', descOpts('LSP signature help'))
   buf_set_keymap('n', '<leader>wa', '<CMD>lua vim.lsp.buf.add_workspace_folder()<CR>', descOpts('LSP add workspace folder'))
@@ -104,8 +108,8 @@ H.on_attach = function (client, bufnr)
   buf_set_keymap('n', '<leader>gr', '<CMD>Lspsaga rename<CR>', descOpts('LSP rename'))
   buf_set_keymap('n', '<leader>.', '<CMD>Lspsaga code_action<CR>', descOpts('LSP code actions'))
   buf_set_keymap('n', 'gr', '<CMD>lua vim.lsp.buf.references()<CR>', descOpts('LSP references'))
-  buf_set_keymap('n', 'gl', '<CMD>lua require("agr.configs.lsp.utils").saga_cursor_diagnostics()<CR>', descOpts('LSP show cursor diagnostics'))
-  buf_set_keymap('n', 'gl', '<CMD>lua require("agr.configs.lsp.utils").saga_line_diagnostics()<CR>', descOpts('LSP show line diagnostics'))
+  buf_set_keymap('n', 'gl', cursor_diagnostics, descOpts('LSP show cursor diagnostics'))
+  buf_set_keymap('n', 'gl', line_diagnostics, descOpts('LSP show line diagnostics'))
   buf_set_keymap('n', '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>', descOpts('LSP prev diagnostic'))
   buf_set_keymap('n', ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>', descOpts('LSP next diagnostic'))
   buf_set_keymap('n', 'gq', '<CMD>lua vim.diagnostic.setloclist()<CR>', descOpts('LSP diagnostic set loclist'))

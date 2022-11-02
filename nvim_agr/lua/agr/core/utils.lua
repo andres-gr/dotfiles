@@ -101,8 +101,19 @@ local has_plugin = function (plug)
   return plugin
 end
 
+---Call lua fn and fix float window UI
+---@param cmd string
+local fix_float_ui = function (cmd)
+  vim.cmd(cmd)
+  vim.defer_fn(function ()
+    local esc = vim.api.nvim_replace_termcodes(':noh<CR>:echon \'\'<CR>', true, false, true)
+    vim.api.nvim_feedkeys(esc, 'n', false)
+  end, 50)
+end
+
 U.default_tbl = default_tbl
 U.dump = dump
+U.fix_float_ui = fix_float_ui
 U.get_hlgroup = get_hlgroup
 U.has_plugin = has_plugin
 U.is_available = is_available
