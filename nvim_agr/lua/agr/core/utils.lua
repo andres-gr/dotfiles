@@ -106,7 +106,7 @@ end
 local fix_float_ui = function (cmd)
   vim.cmd(cmd)
   vim.defer_fn(function ()
-    local key = vim.api.nvim_replace_termcodes(':noh<CR>:echon \'\'<CR>', true, true, true)
+    local key = vim.api.nvim_replace_termcodes(':echon <CR>', true, false, true)
     vim.api.nvim_feedkeys(key, 'n', false)
   end, 100)
 end

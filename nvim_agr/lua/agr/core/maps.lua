@@ -62,6 +62,10 @@ map('n', '\\C', ':Bdelete!<CR>', desc_opts('Close w/force current buffer'))
 map('n', '\\w', ':w!<CR>', desc_opts('Save current file'))
 map('n', '\\q', ':q<CR>', desc_opts('Quit'))
 map('n', '\\Q', ':q!<CR>', desc_opts('Quit w/force'))
+map('n', '<leader>q', ':q<CR>', desc_opts('Quit'))
+map('n', '<leader>Q', ':q!<CR>', desc_opts('Quit w/force'))
+map('n', '<leader>z', ':Bdelete<CR>', desc_opts('Close current buffer'))
+map('n', '<leader>Z', ':Bdelete!<CR>', desc_opts('Close w/force current buffer'))
 map('n', '<leader>Wd', ':windo bd<CR>', desc_opts('Quit window tab'))
 
 -- Netrw file tree
