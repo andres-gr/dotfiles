@@ -94,6 +94,7 @@ local plugins = {
   }, -- a bunch of snippets to use
 
   ['L3MON4D3/LuaSnip'] = {
+    after = 'nvim-cmp',
     module = 'luasnip',
     wants = 'friendly-snippets',
   }, --snippet engine
@@ -229,6 +230,10 @@ local plugins = {
   ['JoosepAlviste/nvim-ts-context-commentstring'] = {
     after = 'nvim-treesitter',
   }, -- Context based comments
+
+  ['nvim-treesitter/playground'] = {
+    after = 'nvim-treesitter',
+  },
 
   -- Commenting
   ['numToStr/Comment.nvim'] = {

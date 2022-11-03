@@ -30,6 +30,23 @@ treesitter.setup {
     enable = true,
   },
   incremental_selection = { enable = true },
+  playground = {
+    enable = true,
+    keybindings = {
+      focus_language = 'f',
+      goto_node = '<CR>',
+      show_help = '?',
+      toggle_anonymous_nodes = 'a',
+      toggle_hl_groups = 'i',
+      toggle_injected_languages = 't',
+      toggle_language_display = 'I',
+      toggle_query_editor = 'o',
+      unfocus_language = 'F',
+      update = 'R',
+    },
+    persist_queries = false, -- Whether the query persists across vim sessions
+    updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+  },
   rainbow = {
     disable = { 'html' },
     enable = true,
