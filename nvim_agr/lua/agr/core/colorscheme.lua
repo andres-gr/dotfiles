@@ -82,6 +82,9 @@ dracula.setup({
 
     -- Bufferline
     BufferLineFill = { bg = colors.none },
+
+    -- TS
+    ['@tag.delimiter'] = { fg = colors.fg },
   },
   transparent_bg = true,
 })
