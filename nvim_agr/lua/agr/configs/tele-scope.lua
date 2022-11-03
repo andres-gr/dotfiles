@@ -46,6 +46,7 @@ telescope.setup {
         ['<C-k>'] = actions.move_selection_previous,
 
         ['<C-c>'] = actions.close,
+        ['<C-e>'] = actions.close,
 
         ['<Down>'] = actions.move_selection_next,
         ['<Up>'] = actions.move_selection_previous,
@@ -71,6 +72,8 @@ telescope.setup {
       n = {
         ['<esc>'] = actions.close,
         ['<C-c>'] = actions.close,
+        ['<C-e>'] = actions.close,
+        ['q'] = actions.close,
         ['<CR>'] = actions.select_default,
         ['<C-x>'] = actions.select_horizontal,
         ['<C-v>'] = actions.select_vertical,
@@ -100,6 +103,7 @@ telescope.setup {
         ['<C-b>'] = actions.results_scrolling_up,
         ['<C-f>'] = actions.results_scrolling_down,
         ['<C-h>'] = actions.which_key,
+        ['?'] = actions.which_key,
       },
     },
   },
