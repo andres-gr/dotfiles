@@ -62,6 +62,7 @@ map('n', '\\C', ':Bdelete!<CR>', desc_opts('Close w/force current buffer'))
 map('n', '\\w', ':w!<CR>', desc_opts('Save current file'))
 map('n', '\\q', ':q<CR>', desc_opts('Quit'))
 map('n', '\\Q', ':q!<CR>', desc_opts('Quit w/force'))
+map('n', '<leader>Wd', ':windo bd<CR>', desc_opts('Quit window tab'))
 
 -- Netrw file tree
 -- map('n', '<leader>e', ':Lex 30<cr>', desc_opts('Toggle Netrw file tree'))
@@ -172,6 +173,9 @@ end
 
 -- Git fugitive
 map('n', '<leader>Gl', ':0Gllog<CR>', desc_opts('Git show file history'))
+
+-- Git time lapse
+map('n', '<leader>Gt', ':GitTimeLapse<CR>', desc_opts('Git show file time lapse'))
 
 -- Dash
 map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))

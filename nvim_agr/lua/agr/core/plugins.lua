@@ -251,7 +251,13 @@ local plugins = {
     event = 'BufEnter',
   },
 
+  -- Git commands
   ['tpope/vim-fugitive'] = {
+    event = 'UIEnter',
+  },
+
+  -- Git time lapse
+  ['junkblocker/git-time-lapse'] = {
     event = 'UIEnter',
   },
 

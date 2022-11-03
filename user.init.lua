@@ -77,7 +77,8 @@ local config = {
       {
         "glepnir/lspsaga.nvim",
         config = function ()
-          local saga = require("lspsaga")
+          local s = 'lspsaga'
+          local saga = require(s)
           saga.init_lsp_saga()
         end,
       },
