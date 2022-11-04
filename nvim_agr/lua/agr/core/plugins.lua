@@ -364,6 +364,18 @@ local plugins = {
   ['ahmedkhalf/project.nvim'] = {
     config = function () require 'agr.configs.project' end,
   },
+
+  -- Better motion
+  ['ggandor/leap.nvim'] = {
+    config = function () require 'agr.configs.leap' end,
+    event = 'BufEnter',
+  },
+
+  -- Camelcase motion
+  ['chaoren/vim-wordmotion'] = {
+    config = function () require 'agr.configs.wordmotion' end,
+    event = 'BufEnter',
+  },
 }
 
 -- Install your plugins here

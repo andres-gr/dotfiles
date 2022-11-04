@@ -66,7 +66,7 @@ map('n', '<leader>q', ':q<CR>', desc_opts('Quit'))
 map('n', '<leader>Q', ':q!<CR>', desc_opts('Quit w/force'))
 map('n', '<leader>z', ':Bdelete<CR>', desc_opts('Close current buffer'))
 map('n', '<leader>Z', ':Bdelete!<CR>', desc_opts('Close w/force current buffer'))
-map('n', '<leader>Wd', ':windo bd<CR>', desc_opts('Quit window tab'))
+map('n', '\\t', ':windo bd<CR>', desc_opts('Quit window tab'))
 
 -- Netrw file tree
 -- map('n', '<leader>e', ':Lex 30<cr>', desc_opts('Toggle Netrw file tree'))
@@ -191,4 +191,18 @@ map('n', '<leader>li', ':LspInfo<CR>', desc_opts('LSP info'))
 
 -- Symbols outline
 map('n', '<leader>lS', ':AerialToggle<CR>', desc_opts('Symbols outline'))
+
+-- Better motion
+map('n', '<leader>s', '<Plug>(leap-forward)', desc_opts('Leap forward'))
+map('n', '<leader>S', '<Plug>(leap-backward)', desc_opts('Leap bacward'))
+map('n', '<leader>w', '<Plug>WordMotion_w', desc_opts('Wordmotion w'))
+map('n', '<leader><leader>iw', '<Plug>WordMotion_iw', desc_opts('Wordmotion iw'))
+map('n', '<leader><leader>aw', '<Plug>WordMotion_aw', desc_opts('Wordmotion aw'))
+map('n', '<leader>e', '<Plug>WordMotion_e', desc_opts('Wordmotion e'))
+map('n', '<leader>b', '<Plug>WordMotion_b', desc_opts('Wordmotion b'))
+map('n', '<leader>W', '<Plug>WordMotion_W', desc_opts('Wordmotion W'))
+map('n', '<leader><leader>iW', '<Plug>WordMotion_iW', desc_opts('Wordmotion iW'))
+map('n', '<leader><leader>aW', '<Plug>WordMotion_aW', desc_opts('Wordmotion aW'))
+map('n', '<leader>E', '<Plug>WordMotion_E', desc_opts('Wordmotion E'))
+map('n', '<leader>B', '<Plug>WordMotion_B', desc_opts('Wordmotion B'))
 
