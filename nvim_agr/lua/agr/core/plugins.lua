@@ -373,8 +373,10 @@ local plugins = {
 
   -- Camelcase motion
   ['chaoren/vim-wordmotion'] = {
-    config = function () require 'agr.configs.wordmotion' end,
-    event = 'BufEnter',
+    config = function ()
+      vim.g.wordmotion_nomap = 1
+    end,
+    event = 'UIEnter',
   },
 }
 

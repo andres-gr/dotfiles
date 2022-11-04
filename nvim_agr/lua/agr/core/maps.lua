@@ -117,7 +117,7 @@ map('t', '<C-k>', '<C-\\><C-N><C-w>k', term_opts)
 map('t', '<C-l>', '<C-\\><C-N><C-w>l', term_opts)
 
 -- File tree
-map('n', '<leader>e', ':Neotree toggle<CR>', desc_opts('Open file tree explorer'))
+map('n', '<leader>v', ':Neotree toggle<CR>', desc_opts('Open file tree explorer'))
 map('n', '<leader>o', ':Neotree focus<CR>', desc_opts('Focus file tree explorer'))
 
 -- Fuzzy finder
