@@ -17,6 +17,10 @@ telescope.setup {
     },
   },
   defaults = {
+    dynamic_preview_title = true,
+    file_ignore_patterns = {
+      '^.git.',
+    },
     initial_mode = 'normal',
     layout_config = {
       height = 0.80,
@@ -32,15 +36,22 @@ telescope.setup {
       width = 0.85,
     },
     layout_strategy = 'horizontal',
-    path_display = { 'truncate' },
+    path_display = {
+      truncate = 3,
+    },
     prompt_prefix = '  ',
+    prompt_title = false,
+    results_title = false,
     selection_caret = '❯ ',
     selection_strategy = 'reset',
+    set_env = {
+      ['COLORTERM'] = 'truecolor',
+    },
     sorting_strategy = 'ascending',
     mappings = {
       i = {
-        ['<C-n>'] = actions.cycle_history_next,
-        ['<C-p>'] = actions.cycle_history_prev,
+        ['<C-n>'] = actions.move_selection_next,
+        ['<C-p>'] = actions.move_selection_previous,
 
         ['<C-j>'] = actions.move_selection_next,
         ['<C-k>'] = actions.move_selection_previous,
@@ -117,21 +128,29 @@ telescope.setup {
           ['dd'] = actions.delete_buffer,
         },
       },
+      prompt_title = false,
     },
     find_files = {
       cwd = cwd,
       hidden = true,
+      prompt_title = false,
+    },
+    git_status = {
+      prompt_title = false,
     },
     grep_string = {
       cwd = cwd,
+      prompt_title = false,
     },
     live_grep = {
       cwd = cwd,
       initial_mode = 'insert',
       only_sort_text = true,
+      prompt_title = false,
     },
     oldfiles = {
       only_cwd = true,
+      prompt_title = false,
     },
   },
 }

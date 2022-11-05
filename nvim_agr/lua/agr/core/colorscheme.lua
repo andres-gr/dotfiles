@@ -85,6 +85,9 @@ dracula.setup({
 
     -- TS
     ['@tag.delimiter'] = { fg = colors.fg },
+
+    -- Telescope
+    TelescopePromptCounter = { fg = colors.comment },
   },
   transparent_bg = true,
 })

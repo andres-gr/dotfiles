@@ -24,7 +24,7 @@ neo_tree.setup {
     },
     indent = {
       indent_size = 2,
-      padding = 0, -- extra padding on left hand side
+      padding = 1, -- extra padding on left hand side
       -- indent guides
       highlight = 'NeoTreeIndentMarker',
       indent_marker = '│',
@@ -79,6 +79,7 @@ neo_tree.setup {
     },
   },
   filesystem = {
+    async_directory_scan = 'always',
     filtered_items = {
       always_show = {}, -- remains visible even if other settings would normally hide it
       hide_by_name = {
@@ -235,6 +236,6 @@ neo_tree.setup {
       end,
     },
     position = 'left',
-    width = 35,
+    width = 37,
   },
 }

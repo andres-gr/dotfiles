@@ -143,6 +143,7 @@ if telescope_status then
   map('n', '<leader>fr', builtins.registers, desc_opts('Search registers'))
   map('n', '<leader>fk', builtins.keymaps, desc_opts('Search keymaps'))
   map('n', '<leader>fm', builtins.commands, desc_opts('Search commands'))
+  map('n', '<leader>fg', builtins.git_status, desc_opts('Search git status'))
   if utils.has_plugin 'aerial' then
     map('n', '<leader>ls', '<CMD>Telescope aerial<CR>', desc_opts('Search symbols'))
   end
@@ -205,4 +206,8 @@ map('n', '<leader><leader>iW', '<Plug>WordMotion_iW', desc_opts('Wordmotion iW')
 map('n', '<leader><leader>aW', '<Plug>WordMotion_aW', desc_opts('Wordmotion aW'))
 map('n', '<leader>E', '<Plug>WordMotion_E', desc_opts('Wordmotion E'))
 map('n', '<leader>B', '<Plug>WordMotion_B', desc_opts('Wordmotion B'))
+
+-- Increment/decrement numbers
+map('n', '-', '<C-x>', desc_opts('Decrement number'))
+map('n', '+', '<C-a>', desc_opts('Increment number'))
 
