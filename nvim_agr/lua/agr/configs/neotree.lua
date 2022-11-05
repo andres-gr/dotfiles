@@ -80,9 +80,7 @@ neo_tree.setup {
   },
   filesystem = {
     filtered_items = {
-      always_show = { -- remains visible even if other settings would normally hide it
-        '.gitignored',
-      },
+      always_show = {}, -- remains visible even if other settings would normally hide it
       hide_by_name = {
         'node_modules',
       },
@@ -96,6 +94,7 @@ neo_tree.setup {
       never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
         --'.DS_Store',
         --'thumbs.db'
+        '.git',
       },
       never_show_by_pattern = { -- uses glob style patterns
         --'.null-ls_*',
