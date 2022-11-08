@@ -179,6 +179,12 @@ function: (identifier) @_name
 arguments: ((template_string) @css
   (#offset! @css 0 1 0 -1)
   (#inject_without_children! @css)))
+
+; gql tag
+(variable_declarator
+  (comment) @gql_comment
+  (#eq? @gql_comment "/* GraphQL */")
+  (template_string) @graphql)
 ]]
 
 function M.queries()
