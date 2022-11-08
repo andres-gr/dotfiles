@@ -24,15 +24,24 @@ H.setup = function ()
     vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = '' })
   end
 
+  local float = {
+    border = 'rounded',
+    focusable = false,
+    format = function (d)
+      local code = d.code or (d.user_data and d.user_data.lsp.code)
+      if code then
+        return string.format('%s [%s]', d.message, code):gsub('1. ', '')
+      end
+      return d.message
+    end,
+    header = '',
+    prefix = '',
+    source = 'always',
+    style = 'minimal',
+  }
+
   local config = {
-    float = {
-      border = 'rounded',
-      focusable = false,
-      header = '',
-      prefix = '',
-      source = 'always',
-      style = 'minimal',
-    },
+    float = float,
     severity_sort = true,
     signs = {
       active = signs,
@@ -120,12 +129,15 @@ H.on_attach = function (client, bufnr)
   -- lsp_highlight_document(client)
 end
 
-local cmp_status_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-if cmp_status_ok then
-  -- Add additional capabilities supported by nvim-cmp
-  -- See: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
+local common_capabilities = function ()
+  local cmp_status_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+  if cmp_status_ok then
+    -- Add additional capabilities supported by nvim-cmp
+    -- See: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
+    return cmp_nvim_lsp.default_capabilities()
+  end
+
   local capabilities = vim.lsp.protocol.make_client_capabilities()
-  capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 
   capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
   capabilities.textDocument.completion.completionItem.snippetSupport = true
@@ -143,9 +155,10 @@ if cmp_status_ok then
     },
   }
 
-  H.capabilities = capabilities
+  return capabilities
 end
 
+H.capabilities = common_capabilities()
 H.root_dir = function () return vim.fn.getcwd() end
 
 return H

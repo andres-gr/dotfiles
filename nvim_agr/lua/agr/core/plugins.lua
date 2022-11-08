@@ -127,18 +127,14 @@ local plugins = {
 
   -- Improved LSP UI
   ['glepnir/lspsaga.nvim'] = {
-    after = {
-      'nvim-lspconfig',
-    },
+    after = 'nvim-lspconfig',
     branch = 'main',
     config = function () require 'agr.configs.lsp.lspsaga' end,
   },
 
   -- Additional functionality fo TypeScript
   ['jose-elias-alvarez/typescript.nvim'] = {
-    after = {
-      'nvim-lspconfig',
-    },
+    after = 'nvim-lspconfig',
   },
 
   -- LSP symbols
