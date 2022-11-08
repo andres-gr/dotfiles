@@ -118,3 +118,12 @@ cmd('TextYankPost', {
   pattern = '*',
 })
 
+augroup('agr_highlights', { clear = true })
+cmd({ 'VimEnter', 'ColorScheme' }, {
+  callback = function ()
+    vim.cmd [[ doautocmd User AGRColorScheme ]]
+  end,
+  desc = 'Load highlights',
+  group = 'agr_highlights',
+})
+
