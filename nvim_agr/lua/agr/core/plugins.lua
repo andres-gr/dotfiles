@@ -274,6 +274,7 @@ local plugins = {
       'Bdelete',
       'Bwipeout',
     },
+    event = 'BufWinEnter',
   }, -- Better buffer close
 
   -- Handle surround characters
@@ -349,16 +350,19 @@ local plugins = {
   -- Status line
   ['rebelot/heirline.nvim'] = {
     config = function () require 'agr.configs.heir-line' end,
+    event = 'BufWinEnter',
   },
 
   -- Highlight under cursor
   ['RRethy/vim-illuminate'] = {
     config = function () require 'agr.configs.illuminate' end,
+    event = 'BufWinEnter',
   },
 
   -- Project management
   ['ahmedkhalf/project.nvim'] = {
     config = function () require 'agr.configs.project' end,
+    event = 'BufWinEnter',
   },
 
   -- Better motion
