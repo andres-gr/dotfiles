@@ -20,7 +20,7 @@ typeset -U path
 typeset -U fpath
 
 export TERM="xterm-256color"
-export CONFIGS_DIR="$HOME/devel/configs/"
+export CONFIGS_DIR="$HOME/devel/configs"
 export PATH="$HOME/neovim/bin:$PATH"
 
 # The following lines were added by compinstall
@@ -39,7 +39,7 @@ source $CONFIGS_DIR/plugins.zsh
 source $CONFIGS_DIR/alias.zsh
 
 # keybinds
-source $CONFIGS_DIR/keybinds.zsh
+# source $CONFIGS_DIR/keybinds.zsh
 
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
@@ -50,18 +50,15 @@ export PATH="/usr/local/opt/curl/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/curl/lib"
 export CPPFLAGS="-I/usr/local/opt/curl/include"
 
-# Ruby env setup
-#
-export RBENV_ROOT="/usr/local/var/rbenv"
-if which rbenv > /dev/null; then _evalcache rbenv init -; fi
-source $(dirname $(gem which colorls))/tab_complete.sh
-#
-# Ruby env setup end
+# Ruby init
+if [ -d "/usr/local/opt/ruby/bin" ]; then
+  export PATH=/usr/local/opt/ruby/bin:$PATH
+  export PATH=`gem environment gemdir`/bin:$PATH
+fi
+# end Ruby init
 
-# export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# init fnm
+eval "$(fnm env --use-on-cd)"
 
 # eval "$(starship init zsh)"
 _evalcache starship init zsh

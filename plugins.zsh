@@ -46,11 +46,6 @@ source $PLUGINS_DIR/ohmyzsh/plugins/common-aliases/common-aliases.plugin.zsh
 # pnpm plugin
 source $PLUGINS_DIR/omz-plugin-pnpm/pnpm.plugin.zsh
 
-# nvm plugin
-export NVM_LAZY_LOAD=true
-export NVM_COMPLETION=true
-source $PLUGINS_DIR/zsh-nvm/zsh-nvm.plugin.zsh
-
 # eval cache plugin
 source $PLUGINS_DIR/evalcache/evalcache.plugin.zsh
 
