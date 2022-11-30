@@ -19,6 +19,7 @@ export LANG=en_US.UTF-8
 typeset -U path
 typeset -U fpath
 
+export XDG_CONFIG_HOME="$HOME/.config"
 export TERM="xterm-256color"
 export CONFIGS_DIR="$HOME/devel/configs"
 

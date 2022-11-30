@@ -11,3 +11,5 @@ do
   $(eval "ln -sf $PWD/$i $HOME")
 done
 
+$(eval "ln -sf $PWD/lazygit/config.yml $HOME/.config/lazygit")
+
