@@ -122,8 +122,8 @@ neo_tree.setup {
         ['D'] = 'fuzzy_finder_directory',
         ['f'] = 'filter_on_submit',
         ['<c-x>'] = 'clear_filter',
-        ['[g'] = 'prev_git_modified',
-        [']g'] = 'next_git_modified',
+        ['g['] = 'prev_git_modified',
+        ['g]'] = 'next_git_modified',
       },
     },
   },
@@ -210,6 +210,21 @@ neo_tree.setup {
       ['d'] = 'delete',
       ['r'] = 'rename',
       ['y'] = 'copy_to_clipboard',
+      ['Y'] = function (state)
+        local node = state.tree:get_node()
+        -- relative
+        local content = node.path:gsub(state.path, ''):sub(2)
+        vim.fn.setreg('"', content)
+        vim.fn.setreg('1', content)
+        vim.fn.setreg('+', content)
+      end,
+      ['<M-y>'] = function (state)
+        local node = state.tree:get_node()
+        local content = node.path
+        vim.fn.setreg('"', content)
+        vim.fn.setreg('1', content)
+        vim.fn.setreg('+', content)
+      end,
       ['x'] = 'cut_to_clipboard',
       ['p'] = 'paste_from_clipboard',
       ['c'] = 'copy', -- takes text input for destination, also accepts the optional config.show_path option like 'add':

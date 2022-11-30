@@ -63,3 +63,8 @@ cdpm() {
   fi
 }
 
+# get current git branch
+git_current_branch() {
+  print "$(git branch --show-current)"
+}
+
