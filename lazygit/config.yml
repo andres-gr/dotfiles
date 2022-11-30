@@ -1,8 +1,6 @@
 gui:
   showIcons: true
   theme:
-    defaultFgColor:
-      - white
     selectedLineBgColor:
       - '#454158'
       - reverse
