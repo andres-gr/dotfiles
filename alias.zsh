@@ -8,6 +8,7 @@ alias grep="grep --color=auto"
 alias lg="lazygit"
 alias ls='colorls'
 alias l='ls -la'
+alias n="nvim"
 alias tm="tmux"
 alias v="nvim"
 alias vi="/usr/bin/vim"
