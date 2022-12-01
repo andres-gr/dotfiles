@@ -118,6 +118,13 @@ cmd('TextYankPost', {
   pattern = '*',
 })
 
+cmd({ 'BufRead', 'BufNewFile' }, {
+  callback = function () vim.diagnostic.disable(0) end,
+  desc = 'Diable LSP on node_modules',
+  group = '_general_settings',
+  pattern = '*/node_modules/*',
+})
+
 augroup('agr_highlights', { clear = true })
 cmd({ 'VimEnter', 'ColorScheme' }, {
   callback = function ()

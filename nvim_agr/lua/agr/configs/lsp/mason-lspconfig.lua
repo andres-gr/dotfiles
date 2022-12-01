@@ -25,6 +25,9 @@ handlers.setup()
 
 local opts = {
   capabilities = handlers.capabilities,
+  flags = {
+    debounce_text_changes = 150,
+  },
   on_attach = handlers.on_attach,
   root_dir = handlers.root_dir,
 }
@@ -32,10 +35,7 @@ local opts = {
 mason_lspconfig.setup_handlers {
   -- default handler
   function (server_name)
-    lspconfig[server_name].setup {
-      capabilities = handlers.capabilities,
-      on_attach = handlers.on_attach,
-    }
+    lspconfig[server_name].setup(opts)
   end,
 
   ['jsonls'] = function ()
@@ -51,11 +51,7 @@ mason_lspconfig.setup_handlers {
     if not typescript_status then return false end
 
     typescript.setup {
-      server = {
-        capabilities = handlers.capabilities,
-        on_attach = handlers.on_attach,
-        root_dir = handlers.root_dir,
-      },
+      server = opts,
     }
   end,
 }
