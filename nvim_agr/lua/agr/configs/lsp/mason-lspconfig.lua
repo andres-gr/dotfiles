@@ -54,5 +54,12 @@ mason_lspconfig.setup_handlers {
       server = opts,
     }
   end,
+
+  ['emmet_ls'] = function ()
+    lspconfig.emmet_ls.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.emmet', {
+      flags = opts.flags,
+      root_dir = opts.root_dir,
+    }))
+  end,
 }
 
