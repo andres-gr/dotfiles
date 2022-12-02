@@ -7,59 +7,59 @@
     "snippets": [
       {
         "language": "css",
-        "path": "./css.json"
+        "path": "./snips/css.json"
       },
       {
         "language": "dart",
-        "path": "./.json"
+        "path": "./snips/.json"
       },
       {
         "language": "graphql",
-        "path": "./graphql.json"
+        "path": "./snips/graphql.json"
       },
       {
         "language": "handlebars",
-        "path": "./handlebars.json"
+        "path": "./snips/handlebars.json"
       },
       {
         "language": "html",
-        "path": "./html.json"
+        "path": "./snips/html.json"
       },
       {
         "language": "javascript",
-        "path": "./javascript.json"
+        "path": "./snips/javascript.json"
       },
       {
         "language": "javascriptreact",
-        "path": "./javascriptreact.json"
+        "path": "./snips/javascriptreact.json"
       },
       {
         "language": "json",
-        "path": "./json.json"
+        "path": "./snips/json.json"
       },
       {
         "language": "jsx",
-        "path": "./jsx.json"
+        "path": "./snips/jsx.json"
       },
       {
         "language": "less",
-        "path": "./less.json"
+        "path": "./snips/less.json"
       },
       {
         "language": "scss",
-        "path": "./scss.json"
+        "path": "./snips/scss.json"
       },
       {
         "language": "svelte",
-        "path": "./svelte.json"
+        "path": "./snips/svelte.json"
       },
       {
         "language": "typescript",
-        "path": "./typescript.json"
+        "path": "./snips/typescript.json"
       },
       {
         "language": "typescriptreact",
-        "path": "./typescriptreact.json"
+        "path": "./snips/typescriptreact.json"
       }
     ]
   }
