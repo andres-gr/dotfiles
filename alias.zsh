@@ -5,9 +5,10 @@
 alias co="code ."
 alias cup="cd .."
 alias grep="grep --color=auto"
+alias lc="lolcat"
 alias lg="lazygit"
-alias ls='colorls'
-alias l='ls -la'
+alias ls="colorls"
+alias l="ls -la"
 alias n="nvim"
 alias tm="tmux"
 alias v="nvim"
