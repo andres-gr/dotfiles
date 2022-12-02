@@ -26,7 +26,7 @@ handlers.setup()
 local opts = {
   capabilities = handlers.capabilities,
   flags = {
-    debounce_text_changes = 150,
+    debounce_text_changes = 200,
   },
   on_attach = handlers.on_attach,
   root_dir = handlers.root_dir,

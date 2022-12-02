@@ -94,6 +94,10 @@ H.on_attach = function (client, bufnr)
     buf_set_keymap('n', '<leader>gu', ':TypescriptRemoveUnused<CR>', descOpts('LSP TS remove unused vars'))
   end
 
+  if client.name == 'graphql' then
+    client.server_capabilities.hoverProvider = false
+  end
+
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -122,9 +126,9 @@ H.on_attach = function (client, bufnr)
   buf_set_keymap('n', '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>', descOpts('LSP prev diagnostic'))
   buf_set_keymap('n', ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>', descOpts('LSP next diagnostic'))
   buf_set_keymap('n', 'gq', '<CMD>lua vim.diagnostic.setloclist()<CR>', descOpts('LSP diagnostic set loclist'))
-  buf_set_keymap('n', '\\f', '<CMD>lua vim.lsp.buf.format()<CR>', descOpts('LSP format'))
+  buf_set_keymap('n', '\\f', '<CMD>lua vim.lsp.buf.format { async = true }<CR>', descOpts('LSP format'))
 
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format()' ]]
+  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format { async = true }' ]]
 
   -- lsp_highlight_document(client)
 end
