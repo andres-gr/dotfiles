@@ -21,7 +21,6 @@ typeset -U fpath
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export TERM="xterm-256color"
-export CONFIGS_DIR="$HOME/devel/configs"
 
 # The following lines were added by compinstall
 zstyle :compinstall filename '$HOME/.zshrc'
@@ -31,16 +30,16 @@ compinit
 # End of lines added by compinstall
 
 # plugins
-source $CONFIGS_DIR/plugins.zsh
+source $PWD/plugins.zsh
 
 # aliases
-source $CONFIGS_DIR/alias.zsh
+source $PWD/alias.zsh
 
 # keybinds
-# source $CONFIGS_DIR/keybinds.zsh
+# source $PWD/keybinds.zsh
 
 # funtions
-source $CONFIGS_DIR/functions.zsh
+source $PWD/functions.zsh
 
 # neovim
 export PATH="$HOME/neovim/bin:$PATH"
