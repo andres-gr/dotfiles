@@ -21,5 +21,7 @@ fi
 
 $(eval "ln -sf $PWD/lazygit/config.yml $HOME/.config/lazygit")
 
-$(eval "ln -sf $PWD/startship.toml $HOME/.config")
+$(eval "ln -sf $PWD/nvim_agr $HOME/.config/nvim")
+
+$(eval "ln -sf $PWD/starship.toml $HOME/.config")
 
