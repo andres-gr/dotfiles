@@ -29,9 +29,11 @@ H.setup = function ()
     focusable = false,
     format = function (d)
       local code = d.code or (d.user_data and d.user_data.lsp.code)
+
       if code then
         return string.format('%s [%s]', d.message, code):gsub('1. ', '')
       end
+
       return d.message
     end,
     header = '',
@@ -47,11 +49,12 @@ H.setup = function ()
       active = signs,
     },
     underline = true,
-    update_in_insert = true,
-    virtual_text = false,
+    update_in_insert = false,
+    virtual_text = true,
   }
 
   vim.diagnostic.config(config)
+
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
   vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 end
@@ -143,14 +146,12 @@ local common_capabilities = function ()
 
   local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+  capabilities.textDocument.completion.completionItem.deprecatedSupport = true
   capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.preselectSupport = true
   capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
   capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-  capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+  capabilities.textDocument.completion.completionItem.preselectSupport = true
   capabilities.textDocument.completion.completionItem.resolveSupport = {
     properties = {
       'documentation',
@@ -158,6 +159,8 @@ local common_capabilities = function ()
       'additionalTextEdits',
     },
   }
+  capabilities.textDocument.completion.completionItem.snippetSupport = true
+  capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
 
   return capabilities
 end
