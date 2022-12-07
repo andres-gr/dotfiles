@@ -94,9 +94,7 @@ end
 
 local has_plugin = function (plug)
   local status, plugin = pcall(require, plug)
-  if not status then
-    return false
-  end
+  if not status then return false end
 
   return plugin
 end

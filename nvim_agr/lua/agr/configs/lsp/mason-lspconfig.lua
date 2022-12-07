@@ -5,6 +5,7 @@ local lspconfig_status_ok, lspconfig = pcall(require, 'lspconfig')
 if not lspconfig_status_ok then return end
 
 local handlers = require 'agr.configs.lsp.handlers'
+local utils = require 'agr.core.utils'
 
 mason_lspconfig.setup {
   automatic_installation = true,
@@ -32,18 +33,25 @@ local opts = {
   root_dir = handlers.root_dir,
 }
 
+local config_servers = {
+  'jsonls',
+  'sumneko_lua',
+}
+
+local server_settings = 'agr.configs.lsp.server_settings.'
+
 mason_lspconfig.setup_handlers {
   -- default handler
   function (server_name)
     lspconfig[server_name].setup(opts)
-  end,
 
-  ['jsonls'] = function ()
-    lspconfig.jsonls.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.jsonls', opts))
-  end,
+    for _, config_server_name in pairs(config_servers) do
+      local server_opts = utils.has_plugin(server_settings .. config_server_name)
 
-  ['sumneko_lua'] = function ()
-    lspconfig.sumneko_lua.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.sumneko_lua', opts))
+      if server_opts then
+        lspconfig[config_server_name].setup(vim.tbl_deep_extend('force', server_opts, opts))
+      end
+    end
   end,
 
   ['tsserver'] = function ()
@@ -56,10 +64,9 @@ mason_lspconfig.setup_handlers {
   end,
 
   ['emmet_ls'] = function ()
-    lspconfig.emmet_ls.setup(vim.tbl_deep_extend('force', require 'agr.configs.lsp.server_settings.emmet', {
+    lspconfig.emmet_ls.setup(vim.tbl_deep_extend('force', require(server_settings .. 'emmet_ls'), {
       flags = opts.flags,
       root_dir = opts.root_dir,
     }))
   end,
 }
-

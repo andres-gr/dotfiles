@@ -79,6 +79,8 @@ dracula.setup({
     NeoTreeGitUnstaged = { fg = colors.pink },
     -- NeoTreeGitUntracked = { fg = colors.bright_yellow },
     NeoTreeIndentMarker = { fg = colors.comment },
+    NeoTreeNormal = { bg = colors.none },
+    NeoTreeNormalNC = { bg = colors.none },
 
     -- Bufferline
     BufferLineFill = { bg = colors.none },
