@@ -29,10 +29,10 @@ dracula.setup({
     PmenuSel = { bg = colors.selection },
     Pmenu = { fg = colors.fg, bg = colors.none },
 
-    CmpItemAbbrDeprecated = { fg = colors.purple, bg =colors.none , strikethrough = true },
-    CmpItemAbbrMatch = { fg = colors.cyan, bg =colors.none , bold = true },
-    CmpItemAbbrMatchFuzzy = { fg = colors.cyan, bg =colors.none , bold = true },
-    CmpItemMenu = { fg = colors.gutter_fg, bg =colors.none , italic = true },
+    CmpItemAbbrDeprecated = { fg = colors.purple, bg = colors.none , strikethrough = true },
+    CmpItemAbbrMatch = { fg = colors.cyan, bg = colors.none , bold = true },
+    CmpItemAbbrMatchFuzzy = { fg = colors.cyan, bg = colors.none , bold = true },
+    CmpItemMenu = { fg = colors.gutter_fg, bg = colors.none , italic = true },
 
     CmpItemKindField = { fg = colors.bright_red },
     CmpItemKindProperty = { fg = colors.bright_red },
@@ -91,6 +91,9 @@ dracula.setup({
 
     -- Telescope
     TelescopePromptCounter = { fg = colors.comment },
+
+    -- Diff
+    diffFile = { fg = colors.comment },
   },
   transparent_bg = true,
 })
