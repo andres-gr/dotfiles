@@ -102,8 +102,8 @@ map('n', '<', 'v<', desc_opts('Indent left'))
 map('n', '>', 'v>', desc_opts('Indent right'))
 
 -- Cancel search highlight
-map('n', '<leader>n', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search hightlight'))
-map('n', '<ESC>', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search hightlight'))
+map('n', '<leader>n', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search highlight'))
+map('n', '<ESC>', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search highlight'))
 
 -- Move lines
 map('x', '<M-k>', ":m '<-2<CR>gv-gv", desc_opts('Move lines up'))
@@ -142,21 +142,22 @@ if telescope_status then
   map('n', '<leader>fF', function () builtins.find_files { no_ignore = true, } end, desc_opts('Search all files'))
   map('n', '<leader>fb', builtins.buffers, desc_opts('Search buffers'))
   map('n', '<leader>fh', builtins.help_tags, desc_opts('Search help'))
+  map('n', '<leader>fH', builtins.highlights, desc_opts('Search highlights'))
   map('n', '<leader>fo', builtins.oldfiles, desc_opts('Search file history'))
   map('n', '<leader>fc', builtins.grep_string, desc_opts('Search word under cursor'))
   map('n', '<leader>fr', builtins.registers, desc_opts('Search registers'))
   map('n', '<leader>fk', builtins.keymaps, desc_opts('Search keymaps'))
-  map('n', '<leader>fm', builtins.commands, desc_opts('Search commands'))
+  map('n', '<leader>fn', builtins.commands, desc_opts('Search commands'))
   map('n', '<leader>fg', builtins.git_status, desc_opts('Search git status'))
   if utils.has_plugin 'aerial' then
-    map('n', '<leader>ls', '<CMD>Telescope aerial<CR>', desc_opts('Search symbols'))
+    map('n', '<leader>fa', '<CMD>Telescope aerial<CR>', desc_opts('Search symbols'))
   end
   if utils.has_plugin 'notify' then
-    map('n', '<leader>fn', '<CMD>Telescope notify<CR>', desc_opts('Search messages'))
+    map('n', '<leader>fm', '<CMD>Telescope notify<CR>', desc_opts('Search messages'))
   end
-  map('n', '<leader>lG', builtins.lsp_workspace_symbols, desc_opts('Search workspace symbols'))
-  map('n', '<leader>lR', builtins.lsp_references, desc_opts('Search references'))
-  map('n', '<leader>lD', builtins.diagnostics, desc_opts('Search diagnostics'))
+  map('n', '<leader>lg', builtins.lsp_workspace_symbols, desc_opts('Search workspace symbols'))
+  map('n', '<leader>lr', builtins.lsp_references, desc_opts('Search references'))
+  map('n', '<leader>ld', builtins.diagnostics, desc_opts('Search diagnostics'))
 end
 
 -- Packer

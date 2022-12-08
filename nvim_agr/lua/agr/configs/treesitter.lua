@@ -21,7 +21,7 @@ treesitter.setup {
     'vim',
   },
   highlight = {
-    additional_vim_regex_highlighting = true,
+    additional_vim_regex_highlighting = false,
     disable = { 'css' },
     enable = true,
   },
