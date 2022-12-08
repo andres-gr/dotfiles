@@ -87,9 +87,13 @@ map({ 'n', 'v' }, '<leader>X', '"_X', desc_opts('Black hole Remove'))
 map({ 'n', 'v' }, '<leader>R', '"_R', desc_opts('Black hole Replace'))
 map('v', 'p', '"_dP', desc_opts('Paste without replace in visual'))
 
--- Center search
-map('n', 'n', 'nzz', desc_opts('Center search'))
-map('n', 'N', 'Nzz', desc_opts('Center Search'))
+-- Center navigation
+map('n', 'N', 'Nzz', desc_opts('Center search backwards'))
+map('n', 'n', 'nzz', desc_opts('Center search forwards'))
+map('n', '#', '#zz', desc_opts('Center prev cursor word'))
+map('n', '*', '*zz', desc_opts('Center next cursor word'))
+map('n', '<C-u>', '<C-u>zz', desc_opts('Center half page up'))
+map('n', '<C-d>', '<C-d>zz', desc_opts('Center half page down'))
 
 -- Better indents
 map('v', '<', '<gv', desc_opts('Indent left'))
@@ -187,7 +191,6 @@ map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))
 
 -- LSP Installer
 map('n', '\\pI', ':Mason<CR>', desc_opts('Mason installer'))
-map('n', '\\pU', ':MasonToolsUpdate<CR>', desc_opts('Mason update'))
 map('n', '<leader>li', ':LspInfo<CR>', desc_opts('LSP info'))
 
 -- Symbols outline
