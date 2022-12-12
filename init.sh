@@ -63,6 +63,7 @@ if [ ! -d $local_bin ]; then
 fi
 
 to_bin=(
+  "starship/git_check_if_inside"
   "starship/git_get_host"
   "starship/git_time_since_change"
 )
