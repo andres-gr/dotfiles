@@ -69,12 +69,15 @@ git_current_branch() {
 }
 
 is_inside_git() {
- [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]] 
+  # See https://git.io/fp8Pa for related discussion
+  [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]
 }
 
 # Determine the time since last commit. If branch is clean,
 # use a neutral color, otherwise colors will vary according to time.
 starship_git_time_since_last_commit() {
+  echo 'heere in git'
+  return
   is_inside_git || return
 
   # Only proceed if there is actually a commit.

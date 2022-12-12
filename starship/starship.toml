@@ -1,0 +1,20 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+command_timeout = 1500
+
+continuation_prompt = ""
+
+right_format = "${custom.git-time-since-change}"
+
+scan_timeout = 200
+
+[character]
+error_symbol = "[💥 ](red)"
+success_symbol = "[🚀 ](green)"
+
+[custom.git-time-since-change]
+command = "git_time_since_change"
+description = "Show time since last commit to current branch"
+format = "($output)"
+when = "test is_inside_git"
+

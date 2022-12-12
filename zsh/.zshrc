@@ -21,7 +21,7 @@ typeset -U fpath
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export TERM="xterm-256color"
-export DOTFILES_DIR="$HOME/devel/dotfiles-next"
+export ZSH_FILES="$HOME/devel/dotfiles-next/zsh"
 
 # The following lines were added by compinstall
 zstyle :compinstall filename '$HOME/.zshrc'
@@ -31,16 +31,16 @@ compinit
 # End of lines added by compinstall
 
 # plugins
-source $DOTFILES_DIR/plugins.zsh
+source $ZSH_FILES/plugins.zsh
 
 # aliases
-source $DOTFILES_DIR/alias.zsh
+source $ZSH_FILES/alias.zsh
 
 # keybinds
-# source $DOTFILES_DIR/keybinds.zsh
+# source $ZSH_FILES/keybinds.zsh
 
 # funtions
-source $DOTFILES_DIR/functions.zsh
+source $ZSH_FILES/functions.zsh
 
 # neovim
 export PATH="$HOME/neovim/bin:$PATH"
@@ -59,6 +59,9 @@ if [ -d "/usr/local/opt/ruby/bin" ]; then
   export PATH=/usr/local/opt/ruby/bin:$PATH
   export PATH=`gem environment gemdir`/bin:$PATH
 fi
+
+# local bin files path
+export PATH="$HOME/.local/bin:$PATH"
 
 # set misc variables
 FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=green'
