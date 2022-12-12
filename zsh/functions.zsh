@@ -73,35 +73,13 @@ is_inside_git() {
   [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]
 }
 
-# Determine the time since last commit. If branch is clean,
-# use a neutral color, otherwise colors will vary according to time.
-starship_git_time_since_last_commit() {
-  echo 'heere in git'
-  return
-  is_inside_git || return
+c() {
+  re='^[0-9]+$'
+  count=1
 
-  # Only proceed if there is actually a commit.
-  if last_commit=$(git log --pretty=format:'%at' -1 2>/dev/null); then
-    now=$(date +%s)
-    seconds_since_last_commit=$((now - last_commit))
-
-    # Totals
-    minutes=$((seconds_since_last_commit / 60))
-    hours=$((seconds_since_last_commit / 3600))
-
-    # Sub-hours and sub-minutes
-    days=$((seconds_since_last_commit / 86400))
-    sub_hours=$((hours % 24))
-    sub_minutes=$((minutes % 60))
-
-    if [ $hours -ge 24 ]; then
-      commit_age="${days}d"
-    elif [ $minutes -gt 60 ]; then
-      commit_age="${sub_hours}h${sub_minutes}m"
-    else
-      commit_age="${minutes}m"
-    fi
-
-    echo "$commit_age ago"
+  if ! [[ $num =~ $re ]]; then
+    count=$num
   fi
+
+  cd $(printf "%0.s../" $(seq 1 $1))
 }

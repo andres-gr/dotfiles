@@ -63,11 +63,13 @@ if [ ! -d $local_bin ]; then
 fi
 
 to_bin=(
+  "starship/git_get_host"
   "starship/git_time_since_change"
 )
 
 for i in "${to_bin[@]}"
 do
+  $(chmod +x $PWD/$i)
   $(ln -sf $PWD/$i $local_bin)
 done
 
