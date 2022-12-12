@@ -1,10 +1,11 @@
-❯ brew ls -1
+🚀  brew ls -1
 ==> Formulae
 autoconf
 automake
 brotli
 ca-certificates
 cmake
+coreutils
 curl
 fd
 fnm
@@ -12,6 +13,7 @@ fzf
 gdbm
 gettext
 git
+gmp
 lazygit
 libevent
 libidn2
