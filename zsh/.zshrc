@@ -21,7 +21,7 @@ typeset -U fpath
 
 export XDG_CONFIG_HOME="$HOME/.config"
 export TERM="xterm-256color"
-export ZSH_FILES="$HOME/devel/dotfiles-next/zsh"
+export ZSH_FILES="$HOME/devel/dotfiles/zsh"
 
 # The following lines were added by compinstall
 zstyle :compinstall filename '$HOME/.zshrc'
