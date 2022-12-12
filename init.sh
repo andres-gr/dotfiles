@@ -76,6 +76,19 @@ done
 
 echo "created local bin symlinks"
 
+# make executable scripts
+to_make_exec=(
+  "rmParser.sh"
+  "rmUpdate.sh"
+)
+
+for i in "${to_make_exec[@]}"
+do
+  $(chmod +x $PWD/$i)
+done
+
+echo "made scripts executable"
+
 # setup plugins for .zshrc to use
 
 plugins_dir=$HOME/devel/plugins
