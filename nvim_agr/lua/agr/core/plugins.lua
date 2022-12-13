@@ -381,6 +381,12 @@ local plugins = {
     config = function () require 'agr.configs.hlslens' end,
     event = 'BufReadPost',
   },
+
+  -- Scrollbar
+  ['petertriho/nvim-scrollbar'] = {
+    config = function () require 'agr.configs.scrollbar' end,
+    event = 'BufReadPost',
+  },
 }
 
 -- Install your plugins here
