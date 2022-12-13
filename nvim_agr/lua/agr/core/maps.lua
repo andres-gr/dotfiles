@@ -161,9 +161,9 @@ if telescope_status then
 end
 
 -- Packer
-map('n', '\\ps', ':PackerSync<CR>', desc_opts('Packer sync'))
-map('n', '\\pS', ':PackerStatus<CR>', desc_opts('Packer status'))
-map('n', '\\pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
+map('n', '<leader>ps', ':PackerSync<CR>', desc_opts('Packer sync'))
+map('n', '<leader>pS', ':PackerStatus<CR>', desc_opts('Packer status'))
+map('n', '<leader>pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
 
 -- Gitsigns
 if utils.has_plugin 'gitsigns' then
@@ -191,7 +191,7 @@ map('n', '<leader>Gt', ':GitTimeLapse<CR>', desc_opts('Git show file time lapse'
 map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))
 
 -- LSP Installer
-map('n', '\\pI', ':Mason<CR>', desc_opts('Mason installer'))
+map('n', '<leader>pi', ':Mason<CR>', desc_opts('Mason installer'))
 map('n', '<leader>li', ':LspInfo<CR>', desc_opts('LSP info'))
 
 -- Symbols outline
