@@ -26,7 +26,8 @@ dash.section.buttons.val = {
   btn('f', '   Search files', ':lua require("telescope.builtin").find_files()<CR>'),
   btn('F', '   Search all files', ':lua require("telescope.builtin").find_files({hidden = true, no_ignore = true})<CR>'),
   btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
-  btn('u', '   Sync plugins', ':PackerSync<CR>'), -- Packer sync
+  btn('s', '   Sync plugins', ':PackerSync<CR>'), -- Packer sync
+  btn('u', 'ﮮ   Update plugins', ':PackerUpdate<CR>'), -- Packer update
   btn('q', '   Quit Neovim', ':qa!<CR>'),
 }
 
@@ -56,7 +57,7 @@ alpha.setup {
     dash.section.terminal,
     {
       type = 'padding',
-      val = 16,
+      val = 18,
     },
     dash.section.buttons,
     {
