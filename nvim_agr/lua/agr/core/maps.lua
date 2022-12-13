@@ -88,10 +88,12 @@ map({ 'n', 'v' }, '<leader>R', '"_R', desc_opts('Black hole Replace'))
 map('v', 'p', '"_dP', desc_opts('Paste without replace in visual'))
 
 -- Center navigation
-map('n', 'N', 'Nzz', desc_opts('Center search backwards'))
-map('n', 'n', 'nzz', desc_opts('Center search forwards'))
-map('n', '#', '#zz', desc_opts('Center prev cursor word'))
-map('n', '*', '*zz', desc_opts('Center next cursor word'))
+map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center search backwards'))
+map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center search forwards'))
+map('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center prev cursor word'))
+map('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center next cursor word'))
+map('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center prev cursor word'))
+map('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center next cursor word'))
 map('n', '<C-u>', '<C-u>zz', desc_opts('Center half page up'))
 map('n', '<C-d>', '<C-d>zz', desc_opts('Center half page down'))
 

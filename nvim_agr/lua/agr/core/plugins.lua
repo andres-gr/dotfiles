@@ -375,6 +375,12 @@ local plugins = {
   ['chaoren/vim-wordmotion'] = {
     event = 'UIEnter',
   },
+
+  -- Better highlight lens
+  ['kevinhwang91/nvim-hlslens'] = {
+    config = function () require 'agr.configs.hlslens' end,
+    event = 'BufReadPost',
+  },
 }
 
 -- Install your plugins here
