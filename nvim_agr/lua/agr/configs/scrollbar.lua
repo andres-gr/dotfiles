@@ -11,7 +11,6 @@ scrollbar.setup {
   },
   handle = {
     color = colors.dracula_colors.menu,
-    hide_if_all_visible = false,
   },
   handlers = {
     cursor = false,

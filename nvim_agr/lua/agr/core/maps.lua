@@ -141,7 +141,7 @@ if telescope_status then
       })
     end,
   }) end, desc_opts('Search words in all files'))
-  map('n', '<leader>ff', builtins.find_files, desc_opts('Search files'))
+  map('n', '<leader>ff', builtins.fd, desc_opts('Search files'))
   map('n', '<leader>fF', function () builtins.find_files { no_ignore = true, } end, desc_opts('Search all files'))
   map('n', '<leader>fb', builtins.buffers, desc_opts('Search buffers'))
   map('n', '<leader>fh', builtins.help_tags, desc_opts('Search help'))
