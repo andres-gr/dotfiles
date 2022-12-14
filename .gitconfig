@@ -24,3 +24,9 @@
   po = push --set-upstream origin
   pu = push
   s = status
+[merge]
+	tool = nvim
+[mergetool "nvim"]
+	cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
+[mergetool]
+	prompt = false
