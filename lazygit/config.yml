@@ -8,4 +8,4 @@ gui:
       - reverse
 os:
   editCommand: 'nvim'
-  openCommand: 'open {{filename}}'
+  openCommand: 'nvim {{filename}}'

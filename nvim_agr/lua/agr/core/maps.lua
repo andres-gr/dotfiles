@@ -114,7 +114,8 @@ map('n', '<M-k>', ":m-2<CR>==", desc_opts('Move line up'))
 map('n', '<M-j>', ":m+1<CR>==", desc_opts('Move line down'))
 
 -- Sort lines
-map('v', '<leader>o', ':sort<CR>', desc_opts('Sort lines'))
+map('v', '<leader>o', ':sort i<CR>', desc_opts('Sort lines'))
+map('v', '<leader>O', ':sort<CR>', desc_opts('Sort lines case sensitive'))
 
 -- Better terminal navigation
 map('t', '<C-h>', '<C-\\><C-N><C-w>h', term_opts)

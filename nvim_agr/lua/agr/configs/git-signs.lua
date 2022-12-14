@@ -71,3 +71,7 @@ gitsigns.setup {
   },
 }
 
+local scrollbar_status, scrollbar = pcall(require, 'scrollbar.handlers.gitsigns')
+if not scrollbar_status then return end
+
+scrollbar.setup()
