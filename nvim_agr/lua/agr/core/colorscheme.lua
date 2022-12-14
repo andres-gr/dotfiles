@@ -11,7 +11,7 @@ dracula.setup({
   italic_comment = true,
   overrides = {
     -- Standard
-    CursorLine = { bg = colors.bg },
+    CursorLine = { bg = colors.menu },
     MatchParen = { bg = colors.gutter_fg },
     TabLineFill = { bg = colors.none },
 
@@ -32,7 +32,7 @@ dracula.setup({
     CmpItemAbbrDeprecated = { fg = colors.purple, bg = colors.none , strikethrough = true },
     CmpItemAbbrMatch = { fg = colors.cyan, bg = colors.none , bold = true },
     CmpItemAbbrMatchFuzzy = { fg = colors.cyan, bg = colors.none , bold = true },
-    CmpItemMenu = { fg = colors.gutter_fg, bg = colors.none , italic = true },
+    CmpItemMenu = { fg = colors.comment, bg = colors.none , italic = true },
 
     CmpItemKindField = { fg = colors.bright_red },
     CmpItemKindProperty = { fg = colors.bright_red },

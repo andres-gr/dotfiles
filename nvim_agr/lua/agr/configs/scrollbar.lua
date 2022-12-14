@@ -1,6 +1,8 @@
 local scrollbar_status, scrollbar = pcall(require, 'scrollbar')
 if not scrollbar_status then return end
 
+local colors = require 'agr.core.colors'
+
 scrollbar.setup {
   excluded_filetypes = {
     'alpha',
@@ -8,10 +10,11 @@ scrollbar.setup {
     'TelescopePrompt',
   },
   handle = {
-    highlight = 'CursorLine',
-    text = '',
+    color = colors.dracula_colors.menu,
+    hide_if_all_visible = false,
   },
   handlers = {
+    cursor = false,
     gitsigns = true,
     search = true,
   },
