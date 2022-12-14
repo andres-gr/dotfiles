@@ -14,7 +14,7 @@ end
 
 -- Terminal header w/lolcat
 dash.section.terminal.command = 'cat | lolcat ' .. os.getenv('HOME') .. '/devel/dotfiles/assets/banner.cat'
-dash.section.terminal.height = 14
+dash.section.terminal.height = 16
 dash.section.terminal.width = 78
 dash.section.terminal.opts = {
   redraw = true,
@@ -58,7 +58,7 @@ alpha.setup {
     dash.section.terminal,
     {
       type = 'padding',
-      val = 18,
+      val = 16,
     },
     dash.section.buttons,
     {
