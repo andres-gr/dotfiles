@@ -303,7 +303,7 @@ local plugins = {
 
   -- Neovim UI Enhancer
   ['stevearc/dressing.nvim'] = {
-    config = function() end,
+    config = function() require 'agr.configs.dressing-ui' end,
     event = 'UIEnter',
   },
 

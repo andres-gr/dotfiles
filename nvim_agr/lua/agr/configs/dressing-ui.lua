@@ -4,7 +4,7 @@ if not dressing_status_ok then return end
 dressing.setup {
   input = {
     default_prompt = '➤ ',
-    winhighlight = 'Normal:Normal,NormalNC:Normal',
+    win_options = { winhighlight = 'Normal:Normal,NormalNC:Normal' },
   },
   select = {
     backend = {
@@ -12,7 +12,7 @@ dressing.setup {
       'telescope',
     },
     builtin = {
-      winhighlight = 'Normal:Normal,NormalNC:Normal',
+      win_options = { winhighlight = 'Normal:Normal,NormalNC:Normal' },
     },
   },
 }
