@@ -1,7 +1,7 @@
 local utils = require 'agr.core.utils'
 local map = vim.keymap.set
 local opts = {
-  noremap = true,
+  remap = false,
   silent = true,
 }
 local term_opts = { silent = true }

@@ -7,6 +7,11 @@ if not snip_status_ok then return end
 local lspkind_status, lspkind = pcall(require, 'lspkind')
 if not lspkind_status then return end
 
+luasnip.config.set_config {
+  delete_check_events = 'InsertLeave',
+  region_check_events = 'InsertEnter',
+}
+
 require 'luasnip/loaders/from_vscode'.lazy_load {
   paths = {
     '~/.local/share/nvim/site/pack/packer/opt/friendly-snippets',
@@ -173,7 +178,7 @@ cmp.setup {
     return true
   end,
   experimental = {
-    ghost_text = true,
+    ghost_text = false,
     native_menu = false,
   },
   formatting = {
@@ -185,18 +190,6 @@ cmp.setup {
     },
     duplicates_default = 0,
     fields = { 'abbr', 'kind', 'menu' },
-    -- format = function (entry, vim_item)
-    --   -- Kind icons
-    --   vim_item.kind = string.format('%s', kind_icons[vim_item.kind])
-    --   -- vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind) -- This concatonates the icons with the name of the item kind
-    --   vim_item.menu = ({
-    --     nvim_lsp = '(LSP)',
-    --     luasnip = '(Snippet)',
-    --     buffer = '(Buffer)',
-    --     path = '(Path)',
-    --   })[entry.source.name]
-    --   return vim_item
-    -- end,
     format = lspkind.cmp_format({
       ellipsis_char = '...',
       maxwidth = 50,
@@ -238,7 +231,7 @@ cmp.setup {
     ['<CR>'] = cmp.mapping.confirm { select = true },
     ['<Tab>'] = cmp.mapping(function (fallback)
       if cmp.visible() then
-        cmp.select_next_item()
+        fallback()
       elseif luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
       elseif jumpable(1) then
@@ -251,7 +244,7 @@ cmp.setup {
     end, { 'i', 's', }),
     ['<S-Tab>'] = cmp.mapping(function (fallback)
       if cmp.visible() then
-        cmp.select_prev_item()
+        fallback()
       elseif luasnip.jumpable(-1) then
         luasnip.jump(-1)
       else

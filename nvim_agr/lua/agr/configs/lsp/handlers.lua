@@ -49,7 +49,7 @@ H.setup = function ()
       active = signs,
     },
     underline = true,
-    update_in_insert = false,
+    update_in_insert = true,
     virtual_text = true,
   }
 
@@ -59,42 +59,35 @@ H.setup = function ()
   vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 end
 
--- local function lsp_highlight_document (client)
---   -- Set autocommands conditional on server_capabilities
---   if client.server_capabilities.document_highlight then
---     vim.api.nvim_exec([[
---     augroup lsp_document_highlight
---     autocmd! * <buffer>
---     autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
---     autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
---     augroup END
---     ]], false)
---   end
--- end
+H.on_attach = function (client, bufnr)
+  local descOpts = function (desc)
+    local result = {
+      buffer = bufnr,
+      desc = desc,
+    }
+    local opts = {
+      remap = false,
+      silent = true,
+    }
 
-local descOpts = function (desc)
-  local result = { desc = desc }
-  local opts = {
-    noremap = true,
-    silent = true,
-  }
+    for key, val in pairs(opts) do
+      result[key] = val
+    end
 
-  for key, val in pairs(opts) do
-    result[key] = val
+    return result
   end
 
-  return result
-end
+  local map = function (m, lhs, rhs, desc)
+    vim.keymap.set(m, lhs, rhs, descOpts(desc))
+  end
 
-H.on_attach = function (client, bufnr)
-  local function buf_set_keymap (...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
   local function buf_set_option (...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   if client.name == 'tsserver' then
     client.server_capabilities.document_formatting = false
-    buf_set_keymap('n', '<leader>gf', ':TypescriptRenameFile<CR>', descOpts('LSP TS rename file'))
-    buf_set_keymap('n', '<leader>go', ':TypescriptOrganizeImports<CR>', descOpts('LSP TS organize imports'))
-    buf_set_keymap('n', '<leader>gu', ':TypescriptRemoveUnused<CR>', descOpts('LSP TS remove unused vars'))
+    map('n', '<leader>gf', ':TypescriptRenameFile<CR>', 'LSP TS rename file')
+    map('n', '<leader>go', ':TypescriptOrganizeImports<CR>', 'LSP TS organize imports')
+    map('n', '<leader>gu', ':TypescriptRemoveUnused<CR>', 'LSP TS remove unused vars')
   end
 
   if client.name == 'graphql' then
@@ -110,26 +103,26 @@ H.on_attach = function (client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gf', '<CMD>Lspsaga lsp_finder<CR>', descOpts('LSP definition, references'))
-  buf_set_keymap('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', descOpts('LSP declaration'))
-  buf_set_keymap('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', descOpts('LSP definition'))
-  buf_set_keymap('n', 'K', hover_doc, descOpts('LSP hover'))
-  buf_set_keymap('n', 'gh', hover_doc, descOpts('LSP hover'))
-  buf_set_keymap('n', 'gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', descOpts('LSP implementation'))
-  buf_set_keymap('n', '<leader>k', '<CMD>lua vim.lsp.buf.signature_help()<CR>', descOpts('LSP signature help'))
-  -- buf_set_keymap('n', '<leader>wa', '<CMD>lua vim.lsp.buf.add_workspace_folder()<CR>', descOpts('LSP add workspace folder'))
-  -- buf_set_keymap('n', '<leader>wr', '<CMD>lua vim.lsp.buf.remove_workspace_folder()<CR>', descOpts('LSP remove workspace folder'))
-  -- buf_set_keymap('n', '<leader>wl', '<CMD>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', descOpts('LSP list workspace folders'))
-  buf_set_keymap('n', '<leader>gd', '<CMD>lua vim.lsp.buf.type_definition()<CR>', descOpts('LSP type definition'))
-  buf_set_keymap('n', '<leader>gr', '<CMD>Lspsaga rename<CR>', descOpts('LSP rename'))
-  buf_set_keymap('n', '<leader>.', '<CMD>Lspsaga code_action<CR>', descOpts('LSP code actions'))
-  buf_set_keymap('n', 'gr', '<CMD>lua vim.lsp.buf.references()<CR>', descOpts('LSP references'))
-  buf_set_keymap('n', 'gl', cursor_diagnostics, descOpts('LSP show cursor diagnostics'))
-  buf_set_keymap('n', 'gl', line_diagnostics, descOpts('LSP show line diagnostics'))
-  buf_set_keymap('n', '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>', descOpts('LSP prev diagnostic'))
-  buf_set_keymap('n', ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>', descOpts('LSP next diagnostic'))
-  buf_set_keymap('n', 'gq', '<CMD>lua vim.diagnostic.setloclist()<CR>', descOpts('LSP diagnostic set loclist'))
-  buf_set_keymap('n', '\\f', '<CMD>lua vim.lsp.buf.format { async = true }<CR>', descOpts('LSP format'))
+  map('n', 'gf', '<CMD>Lspsaga lsp_finder<CR>', 'LSP definition, references')
+  map('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', 'LSP declaration')
+  map('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', 'LSP definition')
+  map('n', 'K', hover_doc, 'LSP hover')
+  map('n', 'gh', hover_doc, 'LSP hover')
+  map('n', 'gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', 'LSP implementation')
+  map('n', '<leader>k', '<CMD>lua vim.lsp.buf.signature_help()<CR>', 'LSP signature help')
+  -- map('n', '<leader>wa', '<CMD>lua vim.lsp.buf.add_workspace_folder()<CR>', 'LSP add workspace folder')
+  -- map('n', '<leader>wr', '<CMD>lua vim.lsp.buf.remove_workspace_folder()<CR>', 'LSP remove workspace folder')
+  -- map('n', '<leader>wl', '<CMD>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', 'LSP list workspace folders')
+  map('n', '<leader>gd', '<CMD>lua vim.lsp.buf.type_definition()<CR>', 'LSP type definition')
+  map('n', '<leader>gr', '<CMD>Lspsaga rename<CR>', 'LSP rename')
+  map('n', '<leader>.', '<CMD>Lspsaga code_action<CR>', 'LSP code actions')
+  map('n', 'gr', '<CMD>lua vim.lsp.buf.references()<CR>', 'LSP references')
+  map('n', 'gl', cursor_diagnostics, 'LSP show cursor diagnostics')
+  map('n', 'gl', line_diagnostics, 'LSP show line diagnostics')
+  map('n', '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>', 'LSP prev diagnostic')
+  map('n', ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>', 'LSP next diagnostic')
+  map('n', 'gq', '<CMD>lua vim.diagnostic.setloclist()<CR>', 'LSP diagnostic set loclist')
+  map('n', '\\f', '<CMD>lua vim.lsp.buf.format { async = true }<CR>', 'LSP format')
 
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format { async = true }' ]]
 

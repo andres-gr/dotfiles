@@ -157,8 +157,8 @@ neo_tree.setup {
   },
   window = {
     mapping_options = {
-      noremap = true,
       nowait = true,
+      remap = false,
     },
     mappings = {
       -- ['<space>'] = {
