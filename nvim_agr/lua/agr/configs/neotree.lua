@@ -2,6 +2,30 @@ local neo_tree_status_ok, neo_tree = pcall(require, 'neo-tree')
 if not neo_tree_status_ok then return end
 
 local utils = require 'agr.core.utils'
+local renderer = require 'neo-tree.ui.renderer'
+local fs = require 'neo-tree.sources.filesystem'
+
+local toggle_dir = function (state, node)
+  fs.toggle_directory(state, node, nil, true, true)
+end
+
+-- toggle a node open or descend to it's first child
+local dive = function (state)
+  local node = state.tree:get_node()
+  if node.type ~= 'directory' then return end
+
+  local id = node:get_id()
+  if not node:is_expanded() then
+    toggle_dir(state, node)
+  end
+
+  renderer.redraw(state)
+
+  local children = state.tree:get_nodes(id)
+  if children then
+   vim.fn.feedkeys(utils.key_down)
+  end
+end
 
 neo_tree.setup {
   buffers = {
@@ -79,7 +103,7 @@ neo_tree.setup {
     },
   },
   filesystem = {
-    async_directory_scan = 'always',
+    async_directory_scan = 'auto',
     filtered_items = {
       always_show = {}, -- remains visible even if other settings would normally hide it
       hide_by_name = {
@@ -182,20 +206,7 @@ neo_tree.setup {
       --['P'] = 'toggle_preview', -- enter preview mode, which shows the current node without focusing
       ['C'] = 'close_node',
       ['h'] = 'close_node',
-      ['l'] = {
-        function (state)
-          local cmd = state.commands
-          local node = state.tree:get_node()
-
-          cmd.toggle_node(state, node.type ~= 'directory')
-
-          local has_children = node:has_children()
-
-          if has_children and node:is_expanded() then
-            vim.fn.feedkeys(utils.key_down)
-          end
-        end
-      },
+      ['l'] = dive,
       -- ['l'] = 'toggle_node',
       ['z'] = 'close_all_nodes',
       ['Z'] = 'expand_all_nodes',
