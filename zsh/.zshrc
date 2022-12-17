@@ -20,7 +20,7 @@ typeset -U path
 typeset -U fpath
 
 export XDG_CONFIG_HOME="$HOME/.config"
-export TERM="xterm-256color"
+export TERM="screen-256color"
 export ZSH_FILES="$HOME/devel/dotfiles/zsh"
 
 # The following lines were added by compinstall
