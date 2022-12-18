@@ -60,7 +60,7 @@ H.setup = function ()
 end
 
 H.on_attach = function (client, bufnr)
-  local descOpts = function (desc)
+  local desc_opts = function (desc)
     local result = {
       buffer = bufnr,
       desc = desc,
@@ -78,7 +78,7 @@ H.on_attach = function (client, bufnr)
   end
 
   local map = function (m, lhs, rhs, desc)
-    vim.keymap.set(m, lhs, rhs, descOpts(desc))
+    vim.keymap.set(m, lhs, rhs, desc_opts(desc))
   end
 
   local function buf_set_option (...) vim.api.nvim_buf_set_option(bufnr, ...) end
