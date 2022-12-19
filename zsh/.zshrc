@@ -42,9 +42,6 @@ source $ZSH_FILES/alias.zsh
 # funtions
 source $ZSH_FILES/functions.zsh
 
-# neovim
-export PATH="$HOME/neovim/bin:$PATH"
-
 # pnpm
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"

@@ -8,6 +8,7 @@ o.encoding = 'utf-8'
 o.fileencoding = 'uft-8'
 
 w.number = true
+w.numberwidth = 4
 
 o.autoindent = true
 o.background = 'dark'
