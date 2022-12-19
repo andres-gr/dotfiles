@@ -1,6 +1,6 @@
 #!/bin/bash
 
-parser=$HOME/neovim/lib/nvim/parser
+parser=$HOME/nvim/lib/nvim/parser
 
 if [ ! -d $parser ]; then
   echo "no parser dir"
