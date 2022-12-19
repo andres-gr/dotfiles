@@ -14,6 +14,7 @@ dracula.setup({
     CursorLine = { bg = colors.menu },
     MatchParen = { bg = colors.gutter_fg },
     TabLineFill = { bg = colors.none },
+    Visual = { reverse = true },
 
     -- Alpha dash
     AlphaButtonShortcut = { fg = colors.green, bold = true },
