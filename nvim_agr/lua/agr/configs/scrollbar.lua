@@ -13,14 +13,16 @@ scrollbar.setup {
     color = colors.dracula_colors.menu,
   },
   handlers = {
-    cursor = false,
     gitsigns = true,
     search = true,
   },
   marks = {
+    Cursor = {
+      highlight = 'NeoTreeIndentMarker',
+      text = '',
+    },
     Search = {
       highlight = 'CmpItemKindConstant',
     },
   },
-  throttle_ms = 150,
 }

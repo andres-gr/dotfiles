@@ -2,7 +2,7 @@ local utils = require 'agr.core.utils'
 local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
 
-augroup('neotree_start', { clear = true })
+local neotree = augroup('neotree_start', { clear = true })
 cmd('BufEnter', {
   callback = function ()
     if utils.has_plugin 'neo-tree' then
@@ -13,10 +13,10 @@ cmd('BufEnter', {
     end
   end,
   desc = 'Open Neo-Tree on startup with directory',
-  group = 'neotree_start',
+  group = neotree,
 })
 
-augroup('alpha_settings', { clear = true })
+local alpha = augroup('alpha_settings', { clear = true })
 cmd('FileType', {
   callback = function ()
     local prev_showtabline = vim.opt.showtabline
@@ -32,7 +32,7 @@ cmd('FileType', {
     })
   end,
   desc = 'Disable tabline for alpha',
-  group = 'alpha_settings',
+  group = alpha,
   pattern = 'alpha',
 })
 
@@ -51,7 +51,7 @@ cmd('FileType', {
     })
   end,
   desc = 'Disable statusline for alpha',
-  group = 'alpha_settings',
+  group = alpha,
   pattern = 'alpha',
 })
 
@@ -60,7 +60,7 @@ cmd('FileType', {
     vim.cmd [[ setlocal nofoldenable ]]
   end,
   desc = 'Disable fold for alpha',
-  group = 'alpha_settings',
+  group = alpha,
   pattern = 'alpha',
 })
 
@@ -78,7 +78,7 @@ cmd('User', {
     end
   end,
   desc = 'Go to dash if no open files',
-  group = 'alpha_settings',
+  group = alpha,
   pattern = 'BDeletePost*',
 })
 
@@ -102,10 +102,10 @@ cmd('VimEnter', {
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
-  group = 'alpha_settings',
+  group = alpha,
 })
 
-augroup('_general_settings', { clear = true })
+local general = augroup('_general_settings', { clear = true })
 cmd('TextYankPost', {
   callback = function ()
     require 'vim.highlight'.on_yank {
@@ -114,23 +114,23 @@ cmd('TextYankPost', {
     }
   end,
   desc = 'Highlight text on yank',
-  group = '_general_settings',
+  group = general,
   pattern = '*',
 })
 
 cmd({ 'BufRead', 'BufNewFile' }, {
   callback = function () vim.diagnostic.disable(0) end,
   desc = 'Diable LSP on node_modules',
-  group = '_general_settings',
+  group = general,
   pattern = '*/node_modules/*',
 })
 
-augroup('agr_highlights', { clear = true })
+local agr = augroup('agr_highlights', { clear = true })
 cmd({ 'VimEnter', 'ColorScheme' }, {
   callback = function ()
     vim.cmd [[ doautocmd User AGRColorScheme ]]
   end,
   desc = 'Load highlights',
-  group = 'agr_highlights',
+  group = agr,
 })
 

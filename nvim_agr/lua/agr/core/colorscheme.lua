@@ -26,45 +26,45 @@ dracula.setup({
     IlluminatedWordWrite = { bg = colors.gutter_fg },
 
     -- CMP
-    PmenuSel = { bg = colors.selection },
     Pmenu = { fg = colors.fg, bg = colors.none },
+    PmenuSel = { bg = colors.selection },
 
     CmpItemAbbrDeprecated = { fg = colors.purple, bg = colors.none , strikethrough = true },
     CmpItemAbbrMatch = { fg = colors.cyan, bg = colors.none , bold = true },
     CmpItemAbbrMatchFuzzy = { fg = colors.cyan, bg = colors.none , bold = true },
     CmpItemMenu = { fg = colors.comment, bg = colors.none , italic = true },
 
+    CmpItemKindEvent = { fg = colors.bright_red },
     CmpItemKindField = { fg = colors.bright_red },
     CmpItemKindProperty = { fg = colors.bright_red },
-    CmpItemKindEvent = { fg = colors.bright_red },
 
-    CmpItemKindText = { fg = colors.bright_yellow },
     CmpItemKindEnum = { fg = colors.bright_green },
     CmpItemKindKeyword = { fg = colors.fg },
+    CmpItemKindText = { fg = colors.bright_yellow },
 
     CmpItemKindConstant = { fg = colors.orange },
     CmpItemKindConstructor = { fg = colors.orange },
     CmpItemKindReference = { fg = colors.orange },
 
-    CmpItemKindFunction = { fg = colors.bright_magenta },
-    CmpItemKindStruct = { fg = colors.bright_magenta },
     CmpItemKindClass = { fg = colors.bright_magenta },
+    CmpItemKindFunction = { fg = colors.bright_magenta },
     CmpItemKindModule = { fg = colors.bright_magenta },
     CmpItemKindOperator = { fg = colors.bright_magenta },
+    CmpItemKindStruct = { fg = colors.bright_magenta },
 
-    CmpItemKindVariable = { fg = colors.bright_cyan },
     CmpItemKindFile = { fg = colors.bright_cyan },
+    CmpItemKindVariable = { fg = colors.bright_cyan },
 
-    CmpItemKindUnit = { fg = colors.bright_blue },
-    CmpItemKindSnippet = { fg = colors.bright_blue },
     CmpItemKindFolder = { fg = colors.bright_blue },
+    CmpItemKindSnippet = { fg = colors.bright_blue },
+    CmpItemKindUnit = { fg = colors.bright_blue },
 
+    CmpItemKindEnumMember = { fg = colors.yellow },
     CmpItemKindMethod = { fg = colors.yellow },
     CmpItemKindValue = { fg = colors.yellow },
-    CmpItemKindEnumMember = { fg = colors.yellow },
 
-    CmpItemKindInterface = { fg = colors.green },
     CmpItemKindColor = { fg = colors.green },
+    CmpItemKindInterface = { fg = colors.green },
     CmpItemKindTypeParameter = { fg = colors.green },
 
     -- Neo-tree
