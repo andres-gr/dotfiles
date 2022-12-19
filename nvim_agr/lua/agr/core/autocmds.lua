@@ -16,7 +16,7 @@ cmd('BufEnter', {
   group = neotree,
 })
 
-local alpha = augroup('alpha_settings', { clear = true })
+local alpha_settings = augroup('alpha_settings', { clear = true })
 cmd('FileType', {
   callback = function ()
     local prev_showtabline = vim.opt.showtabline
@@ -32,7 +32,7 @@ cmd('FileType', {
     })
   end,
   desc = 'Disable tabline for alpha',
-  group = alpha,
+  group = alpha_settings,
   pattern = 'alpha',
 })
 
@@ -51,7 +51,7 @@ cmd('FileType', {
     })
   end,
   desc = 'Disable statusline for alpha',
-  group = alpha,
+  group = alpha_settings,
   pattern = 'alpha',
 })
 
@@ -60,7 +60,7 @@ cmd('FileType', {
     vim.cmd [[ setlocal nofoldenable ]]
   end,
   desc = 'Disable fold for alpha',
-  group = alpha,
+  group = alpha_settings,
   pattern = 'alpha',
 })
 
@@ -78,7 +78,7 @@ cmd('User', {
     end
   end,
   desc = 'Go to dash if no open files',
-  group = alpha,
+  group = alpha_settings,
   pattern = 'BDeletePost*',
 })
 
@@ -102,7 +102,7 @@ cmd('VimEnter', {
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
-  group = alpha,
+  group = alpha_settings,
 })
 
 local general = augroup('_general_settings', { clear = true })

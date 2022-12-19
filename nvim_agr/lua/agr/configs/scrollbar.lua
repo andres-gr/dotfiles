@@ -7,6 +7,7 @@ scrollbar.setup {
   excluded_filetypes = {
     'alpha',
     'neo-tree',
+    'sagarename',
     'TelescopePrompt',
   },
   handle = {
