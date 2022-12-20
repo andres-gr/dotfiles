@@ -4,9 +4,13 @@ if not scrollbar_status then return end
 local colors = require 'agr.core.colors'
 
 scrollbar.setup {
+  excluded_buftypes = {
+    'nofile',
+  },
   excluded_filetypes = {
     'alpha',
     'neo-tree',
+    'neo-tree-popup',
     'notify',
     'sagarename',
     'TelescopePrompt',
