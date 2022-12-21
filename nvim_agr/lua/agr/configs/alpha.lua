@@ -23,8 +23,8 @@ dash.section.terminal.opts = {
 -- Dash buttons group
 dash.section.buttons.val = {
   btn('o', '   Recently used files', ':Telescope oldfiles<CR>'),
-  btn('f', '   Search files', ':Telescope fd<CR>'),
-  btn('F', '   Search all files', ':lua require("telescope.builtin").find_files({ hidden = true, no_ignore = true })<CR>'),
+  btn('f', '   Search files', ':Telescope find_files<CR>'),
+  btn('F', '   Search all files', ':lua require("telescope.builtin").find_files({ no_ignore = true })<CR>'),
   btn('w', '   Search words', ':Telescope live_grep<CR>'),
   btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
   btn('s', '   Sync plugins', ':PackerSync<CR>'), -- Packer sync
