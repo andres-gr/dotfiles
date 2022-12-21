@@ -41,7 +41,6 @@ telescope.setup {
     },
     prompt_prefix = '  ',
     prompt_title = false,
-    results_title = false,
     selection_caret = '❯ ',
     selection_strategy = 'reset',
     set_env = {
@@ -119,6 +118,10 @@ telescope.setup {
     },
   },
   pickers = {
+    aerial = {
+      initial_mode = 'insert',
+      prompt_title = false,
+    },
     buffers = {
       mappings = {
         i = {
@@ -128,6 +131,13 @@ telescope.setup {
           ['dd'] = actions.delete_buffer,
         },
       },
+      prompt_title = false,
+    },
+    commands = {
+      initial_mode = 'insert',
+      prompt_title = false,
+    },
+    diagnostics = {
       prompt_title = false,
     },
     find_files = {
@@ -142,14 +152,39 @@ telescope.setup {
       cwd = cwd,
       prompt_title = false,
     },
+    help_tags = {
+      initial_mode = 'insert',
+      prompt_title = false,
+    },
+    highlights = {
+      initial_mode = 'insert',
+      prompt_title = false,
+    },
+    keymaps = {
+      initial_mode = 'insert',
+      prompt_title = false,
+    },
     live_grep = {
       cwd = cwd,
       initial_mode = 'insert',
       only_sort_text = true,
       prompt_title = false,
     },
+    lsp_references = {
+      prompt_title = false,
+    },
+    lsp_workspace_symbols = {
+      initial_mode = 'insert',
+      prompt_title = false,
+    },
+    notify = {
+      prompt_title = false,
+    },
     oldfiles = {
       only_cwd = true,
+      prompt_title = false,
+    },
+    registers = {
       prompt_title = false,
     },
   },

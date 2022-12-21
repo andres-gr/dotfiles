@@ -96,6 +96,12 @@ dracula.setup({
 
     -- Diff
     diffFile = { fg = colors.comment },
+
+    -- LSP
+    DiagnosticVirtualTextError = { fg = colors.bright_red },
+    DiagnosticVirtualTextHint = { fg = colors.bright_cyan },
+    DiagnosticVirtualTextInfo = { fg = colors.bright_cyan },
+    DiagnosticVirtualTextWarn = { fg = colors.bright_yellow },
   },
   transparent_bg = true,
 })
