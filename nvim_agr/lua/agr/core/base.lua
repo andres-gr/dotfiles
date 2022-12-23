@@ -1,6 +1,11 @@
 local a = vim.api
 local o = vim.opt
 local w = vim.wo
+local g = vim.g
+
+-- Remap space as leader
+g.mapleader = ' '
+g.maplocalleader = ' '
 
 -- Encodings
 vim.scriptencoding = 'utf-8'

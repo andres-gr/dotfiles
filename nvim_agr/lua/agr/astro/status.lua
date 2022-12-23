@@ -625,7 +625,7 @@ end
 --- A condition function if Aerial is available
 -- @return boolean of wether or not aerial plugin is installed
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.aerial_available }
-function status.condition.aerial_available() return utils.is_available 'aerial.nvim' end
+function status.condition.aerial_available() return utils.has_plugin 'aerial.nvim' end
 
 --- A condition function if LSP is attached
 -- @return boolean of wether or not LSP is attached
@@ -798,7 +798,7 @@ function status.component.git_branch(opts)
     on_click = {
       name = 'heirline_branch',
       callback = function()
-        if utils.is_available 'telescope.nvim' then
+        if utils.has_plugin 'telescope.nvim' then
           vim.defer_fn(function() require('telescope.builtin').git_branches() end, 100)
         end
       end,
@@ -822,7 +822,7 @@ function status.component.git_diff(opts)
     on_click = {
       name = 'heirline_git',
       callback = function()
-        if utils.is_available 'telescope.nvim' then
+        if utils.has_plugin 'telescope.nvim' then
           vim.defer_fn(function() require('telescope.builtin').git_status() end, 100)
         end
       end,
@@ -859,7 +859,7 @@ function status.component.diagnostics(opts)
     on_click = {
       name = 'heirline_diagnostic',
       callback = function()
-        if utils.is_available 'telescope.nvim' then
+        if utils.has_plugin 'telescope.nvim' then
           vim.defer_fn(function() require('telescope.builtin').diagnostics() end, 100)
         end
       end,
