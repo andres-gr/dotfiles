@@ -140,7 +140,7 @@ local plugins = {
 
   ['jose-elias-alvarez/null-ls.nvim'] = {
     config = function () require 'agr.configs.lsp.null-ls' end,
-    event = 'BufEnter',
+    event = 'BufReadPre',
   },
 
   -- Icons
@@ -244,18 +244,18 @@ local plugins = {
 
   -- Git commands
   ['tpope/vim-fugitive'] = {
-    event = 'UIEnter',
+    event = 'BufEnter',
   },
 
   -- Git time lapse
   ['junkblocker/git-time-lapse'] = {
-    event = 'UIEnter',
+    event = 'BufEnter',
   },
 
   -- Buffer management
   ['akinsho/bufferline.nvim'] = {
     config = function () require 'agr.configs.buffer-line' end,
-    event = 'UIEnter',
+    event = 'BufReadPre',
     tag = 'v3.*',
   }, -- Buffers like tabs
 
@@ -270,7 +270,7 @@ local plugins = {
   -- Handle surround characters
   ['kylechui/nvim-surround'] = {
     config = function () require 'agr.configs.surround' end,
-    event = 'BufEnter',
+    event = 'BufReadPost',
     tag = '*',
   },
 
@@ -288,13 +288,13 @@ local plugins = {
   -- Notification Enhancer
   ['rcarriga/nvim-notify'] = {
     config = function() require 'agr.configs.notify' end,
-    event = 'UIEnter',
+    event = 'BufWinEnter',
   },
 
   -- Neovim UI Enhancer
   ['stevearc/dressing.nvim'] = {
     config = function() require 'agr.configs.dressing-ui' end,
-    event = 'UIEnter',
+    event = 'BufWinEnter',
   },
 
   -- Color highlighting
@@ -346,7 +346,7 @@ local plugins = {
   -- Highlight under cursor
   ['RRethy/vim-illuminate'] = {
     config = function () require 'agr.configs.illuminate' end,
-    event = 'BufWinEnter',
+    event = 'BufReadPre',
   },
 
   -- Project management
@@ -363,7 +363,7 @@ local plugins = {
 
   -- Camelcase motion
   ['chaoren/vim-wordmotion'] = {
-    event = 'UIEnter',
+    event = 'BufEnter',
   },
 
   -- Better highlight lens

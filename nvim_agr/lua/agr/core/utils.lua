@@ -15,10 +15,6 @@ end
 
 local key_down = vim.api.nvim_replace_termcodes('<Down>', true, true, true)
 
-local is_available = function (plugin)
-  return packer_plugins ~= nil and packer_plugins[plugin] ~= nil
-end
-
 local default_tbl = function (opts, default)
   opts = opts or {}
   return default and vim.tbl_deep_extend('force', default, opts) or opts
@@ -77,12 +73,19 @@ end
 -- @param name highlight group name
 -- @return table of highlight group properties
 local get_hlgroup = function (name, fallback)
-  local hl = vim.fn.hlexists(name) == 1 and vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors) or {}
-  return default_tbl(
-    vim.o.termguicolors and { fg = hl.foreground, bg = hl.background, sp = hl.special }
-      or { cterfm = hl.foreground, ctermbg = hl.background },
-    fallback
-  )
+  if vim.fn.hlexists(name) == 1 then
+    local hl = vim.api.nvim_get_hl_by_name(name, vim.o.termguicolors)
+
+    if not hl['foreground'] then hl['foreground'] = 'NONE' end
+    if not hl['background'] then hl['background'] = 'NONE' end
+
+    hl.fg, hl.bg, hl.sp = hl.foreground, hl.background, hl.special
+    hl.ctermfg, hl.ctermbg = hl.foreground, hl.background
+
+    return hl
+  end
+
+  return fallback
 end
 
 local lualine_mode = function (mode, fallback)
@@ -114,7 +117,6 @@ U.dump = dump
 U.fix_float_ui = fix_float_ui
 U.get_hlgroup = get_hlgroup
 U.has_plugin = has_plugin
-U.is_available = is_available
 U.key_down = key_down
 U.lualine_mode = lualine_mode
 U.null_ls_providers = null_ls_providers

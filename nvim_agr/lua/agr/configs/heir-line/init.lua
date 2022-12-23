@@ -83,7 +83,7 @@ local heirline_opts = {
     vimode,
     status.component.git_branch(),
     status.component.file_info(
-      utils.is_available 'bufferline.nvim' and { filetype = {}, filename = false, file_modified = false } or nil
+      utils.has_plugin 'bufferline.nvim' and { filetype = {}, filename = false, file_modified = false } or nil
     ),
     status.component.git_diff(),
     status.component.diagnostics(),
