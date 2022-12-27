@@ -98,7 +98,7 @@ cmd('VimEnter', {
           end
         end
       end
-      if not should_skip then vim.cmd '<CMD>Alpha<CR>' end
+      if not should_skip then alpha.start(true) end
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',

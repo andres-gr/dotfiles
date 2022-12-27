@@ -170,10 +170,10 @@ if telescope_status then
   map('n', '<leader>ld', builtins.diagnostics, desc_opts('Search diagnostics'))
 end
 
--- Packer
-map('n', '<leader>ps', ':PackerSync<CR>', desc_opts('Packer sync'))
-map('n', '<leader>pS', ':PackerStatus<CR>', desc_opts('Packer status'))
-map('n', '<leader>pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
+-- Lazy
+map('n', '<leader>pS', ':Lazy sync<CR>', desc_opts('Lazy sync'))
+map('n', '<leader>ps', ':Lazy<CR>', desc_opts('Lazy status'))
+map('n', '<leader>pU', ':Lazy update<CR>', desc_opts('Lazy update'))
 
 -- Gitsigns
 if utils.has_plugin 'gitsigns' then

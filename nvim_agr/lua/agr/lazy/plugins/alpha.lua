@@ -32,8 +32,8 @@ A.config = function ()
     btn('F', '   Search all files', ':lua require("telescope.builtin").find_files({ no_ignore = true })<CR>'),
     btn('w', '   Search words', ':Telescope live_grep<CR>'),
     btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
-    btn('s', '   Sync plugins', ':PackerSync<CR>'), -- Plugins sync
-    btn('u', 'ﮮ   Update plugins', ':PackerUpdate<CR>'), -- Plugins update
+    btn('s', '   Show Lazy plugins', ':Lazy<CR>'), -- Show lazy plugin manager
+    btn('u', 'ﮮ   Update plugins', ':Lazy update<CR>'), -- Plugins update
     btn('q', '   Quit Neovim', ':qa!<CR>'),
   }
 
@@ -43,12 +43,11 @@ A.config = function ()
 
   -- Footer
   local function footer()
-    -- local total_plugins = #vim.tbl_keys(packer_plugins)
+    local total_plugins = require 'lazy'.stats().count
     local version = vim.version()
     local nvim_version_info = '  Neovim v' .. version.major .. '.' .. version.minor .. '.' .. version.patch
 
-    -- return ' ' .. total_plugins .. ' plugins' .. nvim_version_info
-    return nvim_version_info
+    return ' ' .. total_plugins .. ' plugins' .. nvim_version_info
   end
 
   dash.section.footer.val = footer()
