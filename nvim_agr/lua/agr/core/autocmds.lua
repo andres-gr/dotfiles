@@ -82,7 +82,7 @@ cmd('User', {
   pattern = 'BDeletePost*',
 })
 
-cmd('VimEnter', {
+cmd('UIEnter', {
   callback = function ()
     -- optimized start check from https://github.com/goolord/alpha-nvim
     local alpha =  utils.has_plugin 'alpha'
