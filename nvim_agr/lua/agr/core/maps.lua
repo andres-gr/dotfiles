@@ -174,6 +174,7 @@ end
 map('n', '<leader>pS', ':Lazy sync<CR>', desc_opts('Lazy sync'))
 map('n', '<leader>ps', ':Lazy<CR>', desc_opts('Lazy status'))
 map('n', '<leader>pU', ':Lazy update<CR>', desc_opts('Lazy update'))
+map('n', '<leader>pc', ':Lazy check<CR>', desc_opts('Lazy check for updates'))
 
 -- Gitsigns
 if utils.has_plugin 'gitsigns' then
