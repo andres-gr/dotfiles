@@ -21,12 +21,9 @@ local desc_opts = function (desc)
   return result
 end
 
+-- Unmap space and Q
 map('', 'Q', '<Nop>', opts)
-
--- Remap space as leader
 map('', '<Space>', '<Nop>', opts)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
 
 -- map('', '', '', desc_opts(''))
 
@@ -142,7 +139,7 @@ if telescope_status then
     end,
   }) end, desc_opts('Search words in all files'))
   map('n', '<leader>ff', builtins.find_files, desc_opts('Search files'))
-  map('n', '<leader>fF', function () builtins.find_files { no_ignore = true, } end, desc_opts('Search all files'))
+  map('n', '<leader>fF', function () builtins.find_files { no_ignore = true } end, desc_opts('Search all files'))
   map('n', '<leader>fb', builtins.buffers, desc_opts('Search buffers'))
   map('n', '<leader>fh', builtins.help_tags, desc_opts('Search help'))
   map('n', '<leader>fH', function () builtins.highlights {
@@ -173,10 +170,10 @@ if telescope_status then
   map('n', '<leader>ld', builtins.diagnostics, desc_opts('Search diagnostics'))
 end
 
--- Packer
-map('n', '<leader>ps', ':PackerSync<CR>', desc_opts('Packer sync'))
-map('n', '<leader>pS', ':PackerStatus<CR>', desc_opts('Packer status'))
-map('n', '<leader>pu', ':PackerUpdate<CR>', desc_opts('Packer update'))
+-- Lazy
+map('n', '<leader>pS', ':Lazy sync<CR>', desc_opts('Lazy sync'))
+map('n', '<leader>ps', ':Lazy<CR>', desc_opts('Lazy status'))
+map('n', '<leader>pU', ':Lazy update<CR>', desc_opts('Lazy update'))
 
 -- Gitsigns
 if utils.has_plugin 'gitsigns' then
