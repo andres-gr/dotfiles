@@ -1,8 +1,6 @@
-local M = {
-  'jayp0521/mason-null-ls.nvim',
-}
+local M = {}
 
-M.config = function ()
+M.setup = function ()
   local mason_nls = require 'mason-null-ls'
 
   mason_nls.setup {}

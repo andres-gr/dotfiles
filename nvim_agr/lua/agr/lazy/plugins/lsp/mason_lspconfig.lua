@@ -1,8 +1,6 @@
-local M = {
-  'williamboman/mason-lspconfig.nvim',
-}
+local M = {}
 
-M.config = function ()
+M.setup = function ()
   local mason_lspconfig = require 'mason-lspconfig'
   local lspconfig = require 'lspconfig'
   local handlers = require 'agr.lazy.plugins.lsp.handlers'

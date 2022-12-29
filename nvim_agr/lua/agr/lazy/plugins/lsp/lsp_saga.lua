@@ -1,9 +1,6 @@
-local S = {
-  'glepnir/lspsaga.nvim',
-  branch = 'main',
-}
+local S = {}
 
-S.config = function ()
+S.setup = function ()
   local saga = require 'lspsaga'
 
   saga.init_lsp_saga {

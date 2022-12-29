@@ -162,4 +162,3 @@ H.capabilities = common_capabilities()
 H.root_dir = function () return vim.fn.getcwd() end
 
 return H
-

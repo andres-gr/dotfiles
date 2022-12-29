@@ -1,12 +1,6 @@
-local M = {
-  'williamboman/mason.nvim',
-  dependencies = {
-    'jayp0521/mason-null-ls.nvim',
-    'williamboman/mason-lspconfig.nvim',
-  },
-}
+local M = {}
 
-M.config = function ()
+M.setup = function ()
   local mason = require 'mason'
 
   mason.setup {
@@ -18,6 +12,14 @@ M.config = function ()
       },
     },
   }
+
+  local lspconfig = require 'agr.lazy.plugins.lsp.mason_lspconfig'
+
+  lspconfig.setup()
+
+  local nls = require 'agr.lazy.plugins.lsp.mason_null_ls'
+
+  nls.setup()
 end
 
 return M

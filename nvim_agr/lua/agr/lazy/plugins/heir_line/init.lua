@@ -8,7 +8,7 @@ H.config = function ()
   local C = require 'agr.core.colors'
   local utils = require 'agr.core.utils'
   local status = require 'agr.astro.status'
-  local vimode = require 'agr.lazy.plugins.heir-line.vimode'.setup()
+  local vimode = require 'agr.lazy.plugins.heir_line.vimode'.setup()
 
   local setup_colors = function ()
     local StatusLine = utils.get_hlgroup('StatusLine', { fg = C.fg, bg = C.grey_4 })
