@@ -33,7 +33,7 @@ A.config = function ()
     btn('w', '   Search words', ':Telescope live_grep<CR>'),
     btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
     btn('s', '   Show Lazy plugins', ':Lazy<CR>'), -- Show lazy plugin manager
-    btn('u', 'ﮮ   Update plugins', ':Lazy update<CR>'), -- Plugins update
+    btn('c', 'ﮮ   Check plugins', ':Lazy check<CR>'), -- Check lazy plugins update
     btn('q', '   Quit Neovim', ':qa!<CR>'),
   }
 
