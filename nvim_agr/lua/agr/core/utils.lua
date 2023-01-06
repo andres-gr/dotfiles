@@ -112,6 +112,34 @@ local fix_float_ui = function (cmd)
   end, 100)
 end
 
+--- Navigate left and right by n places in the bufferline
+-- @param n the number of tabs to navigate to (positive = right, negative = left)
+local nav_buf = function (n)
+  local current = vim.api.nvim_get_current_buf()
+  for i, v in ipairs(vim.t.bufs) do
+    if current == v then
+      vim.cmd.b(vim.t.bufs[(i + n - 1) % #vim.t.bufs + 1])
+      break
+    end
+  end
+end
+
+--- Close a given buffer
+-- @param bufnr? the buffer number to close or the current buffer if not provided
+local close_buf = function (bufnr, force)
+  if force == nil then force = false end
+  local current = vim.api.nvim_get_current_buf()
+  if not bufnr or bufnr == 0 then bufnr = current end
+  if bufnr == current then nav_buf(-1) end
+
+  if has_plugin 'bufdelete.nvim' then
+    require('bufdelete').bufdelete(bufnr, force)
+  else
+    vim.cmd((force and 'bd!' or 'confirm bd') .. bufnr)
+  end
+end
+
+U.close_buf = close_buf
 U.default_tbl = default_tbl
 U.dump = dump
 U.fix_float_ui = fix_float_ui
@@ -119,10 +147,10 @@ U.get_hlgroup = get_hlgroup
 U.has_plugin = has_plugin
 U.key_down = key_down
 U.lualine_mode = lualine_mode
+U.nav_buf = nav_buf
 U.null_ls_providers = null_ls_providers
 U.null_ls_register = null_ls_register
 U.null_ls_sources = null_ls_sources
 U.pad_string = pad_string
 
 return U
-

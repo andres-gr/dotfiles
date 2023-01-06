@@ -104,10 +104,10 @@ local default_colors = {
   woff2 = '#abb2bf',
   zip = '#f9d71c',
   md = '#519aba',
+  pkg = '#d39ede',
 }
 
 C.default_colors = default_colors
 C.dracula_colors = dracula_colors
 
 return C
-

@@ -144,7 +144,13 @@ if telescope_status then
   map('n', '<leader>fh', builtins.help_tags, desc_opts('Search help'))
   map('n', '<leader>fH', function () builtins.highlights {
     attach_mappings = function (_, _map)
-      _map({ 'i', 'n' }, '<C-y>', function ()
+      _map('i', '<C-y>', function ()
+        local entry = require 'telescope.actions.state'.get_selected_entry()
+        vim.fn.setreg('*', entry.value)
+        vim.notify('Yanked ' .. entry.value)
+      end)
+
+      _map('n', '<C-y>', function ()
         local entry = require 'telescope.actions.state'.get_selected_entry()
         vim.fn.setreg('*', entry.value)
         vim.notify('Yanked ' .. entry.value)

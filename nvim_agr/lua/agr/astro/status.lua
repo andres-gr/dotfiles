@@ -1,8 +1,8 @@
---- ### status
+--- ### AstroNvim Status
 --
--- This module is automatically loaded by AstroNvim on during it's initialization into global variable `status`
+-- This module is automatically loaded by AstroNvim on during it's initialization into global variable `astronvim.status`
 --
--- This module can also be manually loaded with `local status = require "core.utils.status"`
+-- This module can also be manually loaded with `local status = require 'core.utils.status'`
 --
 -- @module core.utils.status
 -- @copyright 2022
@@ -12,7 +12,6 @@ local utils = require 'agr.core.utils'
 local get_icon = require 'agr.astro.icons'.get_icon
 
 local status = { hl = {}, init = {}, provider = {}, condition = {}, component = {}, utils = {}, env = {} }
-local devicons_avail, devicons = pcall(require, 'nvim-web-devicons')
 
 status.env.modes = {
   ['n'] = { 'NORMAL', 'normal' },
@@ -26,8 +25,8 @@ status.env.modes = {
   ['i'] = { 'INSERT', 'insert' },
   ['ic'] = { 'INSERT', 'insert' },
   ['ix'] = { 'INSERT', 'insert' },
-  ['t'] = { 'TERM', 'insert' },
-  ['nt'] = { 'TERM', 'insert' },
+  ['t'] = { 'TERM', 'terminal' },
+  ['nt'] = { 'TERM', 'terminal' },
   ['v'] = { 'VISUAL', 'visual' },
   ['vs'] = { 'VISUAL', 'visual' },
   ['V'] = { 'LINES', 'visual' },
@@ -51,6 +50,29 @@ status.env.modes = {
   ['null'] = { 'null', 'inactive' },
 }
 
+status.env.separators = {
+  none = { '', '' },
+  left = { '', '  ' },
+  right = { '  ', '' },
+  center = { '  ', '  ' },
+  tab = { '', ' ' },
+}
+
+status.env.attributes = {
+  buffer_active = { bold = true, italic = true },
+  buffer_picker = { bold = true },
+  macro_recording = { bold = true },
+  git_branch = { bold = true },
+  git_diff = { bold = true },
+}
+
+status.env.icon_highlights = {
+  file_icon = {
+    tabline = function (self) return self.is_active or self.is_visible end,
+    statusline = true,
+  },
+}
+
 local function pattern_match(str, pattern_list)
   for _, pattern in ipairs(pattern_list) do
     if str:find(pattern) then return true end
@@ -59,17 +81,11 @@ local function pattern_match(str, pattern_list)
 end
 
 status.env.buf_matchers = {
-  filetype = function(pattern_list) return pattern_match(vim.bo.filetype, pattern_list) end,
-  buftype = function(pattern_list) return pattern_match(vim.bo.buftype, pattern_list) end,
-  bufname = function(pattern_list) return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ':t'), pattern_list) end,
-}
-
-status.env.separators = {
-  none = { '', '' },
-  left = { '', '  ' },
-  right = { '  ', '' },
-  center = { '  ', '  ' },
-  tab = { '', '' },
+  filetype = function (pattern_list, bufnr) return pattern_match(vim.bo[bufnr or 0].filetype, pattern_list) end,
+  buftype = function (pattern_list, bufnr) return pattern_match(vim.bo[bufnr or 0].buftype, pattern_list) end,
+  bufname = function (pattern_list, bufnr)
+    return pattern_match(vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr or 0), ':t'), pattern_list)
+  end,
 }
 
 --- Get the highlight background color of the lualine theme for the current colorscheme
@@ -77,7 +93,7 @@ status.env.separators = {
 -- @param  fallback the color to fallback on if a lualine theme is not present
 -- @return The background color of the lualine theme or the fallback parameter if one doesn't exist
 function status.hl.lualine_mode(mode, fallback)
-  local lualine_avail, lualine = pcall(require, 'lualine.themes.' .. (vim.g.colors_name or 'default_theme'))
+  local lualine_avail, lualine = pcall(require, 'lualine.themes.dracula-nvim')
   local lualine_opts = lualine_avail and lualine[mode]
   return lualine_opts and type(lualine_opts.a) == 'table' and lualine_opts.a.bg or fallback
 end
@@ -97,6 +113,7 @@ function status.hl.mode_bg() return status.env.modes[vim.fn.mode()][2] end
 -- @return the highlight group for the current filetype foreground
 -- @usage local heirline_component = { provider = status.provider.fileicon(), hl = status.hl.filetype_color },
 function status.hl.filetype_color(self)
+  local devicons_avail, devicons = pcall(require, 'nvim-web-devicons')
   if not devicons_avail then return {} end
   local _, color = devicons.get_icon_color(
     vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ':t'),
@@ -106,18 +123,42 @@ function status.hl.filetype_color(self)
   return { fg = color }
 end
 
+--- Merge the color and attributes from user settings for a given name
+-- @param name string, the name of the element to get the attributes and colors for
+-- @param include_bg boolean whether or not to include background color (Default: false)
+-- @return a table of highlight information
+-- @usage local heirline_component = { provider = 'Example Provider', hl = status.hl.get_attributes('treesitter') },
+function status.hl.get_attributes(name, include_bg)
+  local hl = status.env.attributes[name] or {}
+  hl.fg = name .. '_fg'
+  if include_bg then hl.bg = name .. '_bg' end
+  return hl
+end
+
+--- Enable filetype color highlight if enabled in icon_highlights.file_icon options
+-- @param name string of the icon_highlights.file_icon table element
+-- @return function for setting hl property in a component
+-- @usage local heirline_component = { provider = 'Example Provider', hl = status.hl.file_icon('winbar') },
+function status.hl.file_icon(name)
+  return function (self)
+    local hl_enabled = status.env.icon_highlights.file_icon[name]
+    if type(hl_enabled) == 'function' then hl_enabled = hl_enabled(self) end
+    if hl_enabled then return status.hl.filetype_color(self) end
+  end
+end
+
 --- An `init` function to build a set of children components for LSP breadcrumbs
 -- @param opts options for configuring the breadcrumbs (default: `{ separator = ' > ', icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }`)
 -- @return The Heirline init function
 -- @usage local heirline_component = { init = status.init.breadcrumbs { padding = { left = 1 } } }
 function status.init.breadcrumbs(opts)
-  local aerial_avail, aerial = pcall(require, 'aerial')
-  opts = utils.default_tbl(
-    opts,
-    { separator = ' > ', icon = { enabled = true, hl = false }, padding = { left = 0, right = 0 } }
-  )
-  return function(self)
-    local data = aerial_avail and aerial.get_location(true) or {}
+  opts = utils.default_tbl(opts, {
+    separator = ' > ',
+    icon = { enabled = true, hl = status.env.icon_highlights.breadcrumbs },
+    padding = { left = 0, right = 0 },
+  })
+  return function (self)
+    local data = require('aerial').get_location(true) or {}
     local children = {}
     -- create a child for each level
     for i, d in ipairs(data) do
@@ -126,7 +167,7 @@ function status.init.breadcrumbs(opts)
         { provider = string.gsub(d.name, '%%', '%%%%'):gsub('%s*->%s*', '') }, -- add symbol name
         on_click = { -- add on click function
           minwid = pos,
-          callback = function(_, minwid)
+          callback = function (_, minwid)
             local lnum, col, winnr = status.utils.decode_pos(minwid)
             vim.api.nvim_win_set_cursor(vim.fn.win_getid(winnr), { lnum, col })
           end,
@@ -134,9 +175,11 @@ function status.init.breadcrumbs(opts)
         },
       }
       if opts.icon.enabled then -- add icon and highlight if enabled
+        local hl = opts.icon.hl
+        if type(hl) == 'function' then hl = hl(self) end
         table.insert(child, 1, {
           provider = string.format('%s ', d.icon),
-          hl = opts.icon.hl and string.format('Aerial%sIcon', d.kind) or nil,
+          hl = hl and string.format('Aerial%sIcon', d.kind) or nil,
         })
       end
       if #data > 1 and i < #data then table.insert(child, { provider = opts.separator }) end -- add a separator only if needed
@@ -158,9 +201,9 @@ end
 -- @return The Heirline init function
 -- @usage local heirline_component = { init = status.init.update_events { 'BufEnter', { 'User', pattern = 'LspProgressUpdate' } } }
 function status.init.update_events(opts)
-  return function(self)
+  return function (self)
     if not rawget(self, 'once') then
-      local clear_cache = function() self._win_cache = nil end
+      local clear_cache = function () self._win_cache = nil end
       for _, event in ipairs(opts) do
         local event_opts = { callback = clear_cache }
         if type(event) == 'table' then
@@ -181,6 +224,13 @@ end
 -- @usage local heirline_component = { provider = status.provider.fill }
 function status.provider.fill() return '%=' end
 
+--- A provider function for the current tab numbre
+-- @return the statusline function to return a string for a tab number
+-- @usage local heirline_component = { provider = status.provider.tabnr() }
+function status.provider.tabnr()
+  return function (self) return (self and self.tabnr) and '%' .. self.tabnr .. 'T ' .. self.tabnr .. ' %T' or '' end
+end
+
 --- A provider function for showing if spellcheck is on
 -- @param opts options passed to the stylize function
 -- @return the function for outputting if spell is enabled
@@ -188,7 +238,7 @@ function status.provider.fill() return '%=' end
 -- @see status.utils.stylize
 function status.provider.spell(opts)
   opts = utils.default_tbl(opts, { str = '', icon = { kind = 'Spellcheck' }, show_empty = true })
-  return function() return status.utils.stylize(vim.wo.spell and opts.str, opts) end
+  return function () return status.utils.stylize(vim.wo.spell and opts.str, opts) end
 end
 
 --- A provider function for showing if paste is enabled
@@ -199,7 +249,7 @@ end
 -- @see status.utils.stylize
 function status.provider.paste(opts)
   opts = utils.default_tbl(opts, { str = '', icon = { kind = 'Paste' }, show_empty = true })
-  return function() return status.utils.stylize(vim.opt.paste:get() and opts.str, opts) end
+  return function () return status.utils.stylize(vim.opt.paste:get() and opts.str, opts) end
 end
 
 --- A provider function for displaying if a macro is currently being recorded
@@ -209,7 +259,7 @@ end
 -- @see status.utils.stylize
 function status.provider.macro_recording(opts)
   opts = utils.default_tbl(opts, { prefix = '@' })
-  return function()
+  return function ()
     local register = vim.fn.reg_recording()
     if register ~= '' then register = opts.prefix .. register end
     return status.utils.stylize(register, opts)
@@ -222,11 +272,19 @@ end
 -- @usage local heirline_component = { provider = status.provider.search_count() }
 -- @see status.utils.stylize
 function status.provider.search_count(opts)
-  return function()
-    local search = vim.fn.searchcount(opts)
-    if search.total then
+  local search_func = vim.tbl_isempty(opts or {}) and function () return vim.fn.searchcount() end
+    or function () return vim.fn.searchcount(opts) end
+  return function ()
+    local search_ok, search = pcall(search_func)
+    if search_ok and type(search) == 'table' and search.total then
       return status.utils.stylize(
-        string.format('%d/%d', search.current, math.min(search.total, search.maxcount)),
+        string.format(
+          '%s%d/%s%d',
+          search.current > search.maxcount and '>' or '',
+          math.min(search.current, search.maxcount),
+          search.incomplete == 2 and '>' or '',
+          math.min(search.total, search.maxcount)
+        ),
         opts
       )
     end
@@ -240,8 +298,8 @@ end
 -- @see status.utils.stylize
 function status.provider.mode_text(opts)
   local max_length =
-    math.max(table.unpack(vim.tbl_map(function(str) return #str[1] end, vim.tbl_values(status.env.modes))))
-  return function()
+    math.max(table.unpack(vim.tbl_map(function (str) return #str[1] end, vim.tbl_values(status.env.modes))))
+  return function ()
     local text = status.env.modes[vim.fn.mode()][1]
     if opts.pad_text then
       local padding = max_length - #text
@@ -264,7 +322,7 @@ end
 -- @see status.utils.stylize
 function status.provider.percentage(opts)
   opts = utils.default_tbl(opts, { fixed_width = false, edge_text = true })
-  return function()
+  return function ()
     local text = '%' .. (opts.fixed_width and '3' or '') .. 'p%%'
     if opts.edge_text then
       local current_line = vim.fn.line '.'
@@ -285,7 +343,12 @@ end
 -- @see status.utils.stylize
 function status.provider.ruler(opts)
   opts = utils.default_tbl(opts, { pad_ruler = { line = 0, char = 0 } })
-  return status.utils.stylize(string.format('%%%dl:%%%dc', opts.pad_ruler.line, opts.pad_ruler.char), opts)
+  local padding_str = string.format('%%%dd:%%%dd', opts.pad_ruler.line, opts.pad_ruler.char)
+  return function ()
+    local line = vim.fn.line '.'
+    local char = vim.fn.virtcol '.'
+    return status.utils.stylize(string.format(padding_str, line, char), opts)
+  end
 end
 
 --- A provider function for showing the current location as a scrollbar
@@ -295,7 +358,7 @@ end
 -- @see status.utils.stylize
 function status.provider.scrollbar(opts)
   local sbar = { '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' }
-  return function()
+  return function ()
     local curr_line = vim.api.nvim_win_get_cursor(0)[1]
     local lines = vim.api.nvim_buf_line_count(0)
     local i = math.floor((curr_line - 1) / lines * #sbar) + 1
@@ -319,7 +382,7 @@ end
 -- @usage local heirline_component = { provider = status.provider.filetype() }
 -- @see status.utils.stylize
 function status.provider.filetype(opts)
-  return function(self)
+  return function (self)
     local buffer = vim.bo[self and self.bufnr or 0]
     return status.utils.stylize(string.lower(buffer.filetype), opts)
   end
@@ -331,10 +394,13 @@ end
 -- @usage local heirline_component = { provider = status.provider.filename() }
 -- @see status.utils.stylize
 function status.provider.filename(opts)
-  opts = utils.default_tbl(opts, { fname = function(nr) return vim.api.nvim_buf_get_name(nr) end, modify = ':t' })
-  return function(self)
+  opts = utils.default_tbl(
+    opts,
+    { fallback = '[No Name]', fname = function (nr) return vim.api.nvim_buf_get_name(nr) end, modify = ':t' }
+  )
+  return function (self)
     local filename = vim.fn.fnamemodify(opts.fname(self and self.bufnr or 0), opts.modify)
-    return status.utils.stylize((filename == '' and '[No Name]' or filename), opts)
+    return status.utils.stylize((filename == '' and opts.fallback or filename), opts)
   end
 end
 
@@ -345,16 +411,17 @@ end
 -- @see status.utils.stylize
 function status.provider.unique_path(opts)
   opts = utils.default_tbl(opts, {
-    buf_name = function(bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':t') end,
+    buf_name = function (bufnr) return vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ':t') end,
     bufnr = 0,
     max_length = 16,
   })
-  return function(self)
+  return function (self)
     opts.bufnr = self and self.bufnr or opts.bufnr
     local name = opts.buf_name(opts.bufnr)
     local unique_path = ''
     -- check for same buffer names under different dirs
-    for _, value in ipairs(status.utils.get_valid_buffers()) do
+    -- TODO v3: remove get_valid_buffers
+    for _, value in ipairs(vim.g.heirline_bufferline and vim.t.bufs or status.utils.get_valid_buffers()) do
       if name == opts.buf_name(value) and value ~= opts.bufnr then
         local other = {}
         for match in (vim.api.nvim_buf_get_name(value) .. '/'):gmatch('(.-)' .. '/') do
@@ -398,7 +465,7 @@ end
 -- @see status.utils.stylize
 function status.provider.file_modified(opts)
   opts = utils.default_tbl(opts, { str = '', icon = { kind = 'FileModified' }, show_empty = true })
-  return function(self)
+  return function (self)
     return status.utils.stylize(
       status.condition.file_modified((self or {}).bufnr) and opts.str,
       opts
@@ -413,7 +480,7 @@ end
 -- @see status.utils.stylize
 function status.provider.file_read_only(opts)
   opts = utils.default_tbl(opts, { str = '', icon = { kind = 'FileReadOnly' }, show_empty = true })
-  return function(self)
+  return function (self)
     return status.utils.stylize(
       status.condition.file_read_only((self or {}).bufnr) and opts.str,
       opts
@@ -427,8 +494,9 @@ end
 -- @usage local heirline_component = { provider = status.provider.file_icon() }
 -- @see status.utils.stylize
 function status.provider.file_icon(opts)
-  if not devicons_avail then return '' end
-  return function(self)
+  return function (self)
+    local devicons_avail, devicons = pcall(require, 'nvim-web-devicons')
+    if not devicons_avail then return '' end
     local ft_icon, _ = devicons.get_icon(
       vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ':t'),
       nil,
@@ -444,7 +512,7 @@ end
 -- @usage local heirline_component = { provider = status.provider.git_branch() }
 -- @see status.utils.stylize
 function status.provider.git_branch(opts)
-  return function(self) return status.utils.stylize(vim.b[self and self.bufnr or 0].gitsigns_head or '', opts) end
+  return function (self) return status.utils.stylize(vim.b[self and self.bufnr or 0].gitsigns_head or '', opts) end
 end
 
 --- A provider function for showing the current git diff count of a specific type
@@ -454,7 +522,7 @@ end
 -- @see status.utils.stylize
 function status.provider.git_diff(opts)
   if not opts or not opts.type then return end
-  return function(self)
+  return function (self)
     local stat = vim.b[self and self.bufnr or 0].gitsigns_status_dict
     return status.utils.stylize(
       stat and stat[opts.type] and stat[opts.type] > 0 and tostring(stat[opts.type]) or '',
@@ -470,7 +538,7 @@ end
 -- @see status.utils.stylize
 function status.provider.diagnostics(opts)
   if not opts or not opts.severity then return end
-  return function(self)
+  return function (self)
     local bufnr = self and self.bufnr or 0
     local count = #vim.diagnostic.get(bufnr, opts.severity and { severity = vim.diagnostic.severity[opts.severity] })
     return status.utils.stylize(count ~= 0 and tostring(count) or '', opts)
@@ -483,7 +551,7 @@ end
 -- @usage local heirline_component = { provider = status.provider.lsp_progress() }
 -- @see status.utils.stylize
 function status.provider.lsp_progress(opts)
-  return function()
+  return function ()
     local Lsp = vim.lsp.util.get_progress_messages()[1]
     return status.utils.stylize(
       Lsp
@@ -511,7 +579,7 @@ end
 -- @see status.utils.stylize
 function status.provider.lsp_client_names(opts)
   opts = utils.default_tbl(opts, { expand_null_ls = true, truncate = 0.25 })
-  return function(self)
+  return function (self)
     local buf_client_names = {}
     for _, client in pairs(vim.lsp.get_active_clients { bufnr = self and self.bufnr or 0 }) do
       if client.name == 'null-ls' and opts.expand_null_ls then
@@ -541,9 +609,8 @@ end
 -- @usage local heirline_component = { provider = status.provider.treesitter_status() }
 -- @see status.utils.stylize
 function status.provider.treesitter_status(opts)
-  return function()
-    local ts_avail, ts = pcall(require, 'nvim-treesitter.parsers')
-    return status.utils.stylize((ts_avail and ts.has_parser()) and 'TS' or '', opts)
+  return function ()
+    return status.utils.stylize(require('nvim-treesitter.parser').has_parser() and 'TS' or '', opts)
   end
 end
 
@@ -563,11 +630,13 @@ end
 function status.condition.is_active() return vim.api.nvim_get_current_win() == tonumber(vim.g.actual_curwin) end
 
 --- A condition function if the buffer filetype,buftype,bufname match a pattern
+-- @param patterns the table of patterns to match
+-- @param bufnr number of the buffer to match (Default: 0 [current])
 -- @return boolean of wether or not LSP is attached
--- @usage local heirline_component = { provider = 'Example Provider', condition = function() return status.condition.buffer_matches { buftype = { 'terminal' } } end }
-function status.condition.buffer_matches(patterns)
+-- @usage local heirline_component = { provider = 'Example Provider', condition = function () return status.condition.buffer_matches { buftype = { 'terminal' } } end }
+function status.condition.buffer_matches(patterns, bufnr)
   for kind, pattern_list in pairs(patterns) do
-    if status.env.buf_matchers[kind](pattern_list) then return true end
+    if status.env.buf_matchers[kind](pattern_list, bufnr) then return true end
   end
   return false
 end
@@ -583,61 +652,85 @@ function status.condition.is_macro_recording() return vim.fn.reg_recording() ~= 
 function status.condition.is_hlsearch() return vim.v.hlsearch ~= 0 end
 
 --- A condition function if the current file is in a git repo
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current file is in a git repo
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.is_git_repo }
-function status.condition.is_git_repo() return vim.b.gitsigns_head or vim.b.gitsigns_status_dict end
+function status.condition.is_git_repo(bufnr)
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
+  return vim.b[bufnr or 0].gitsigns_head or vim.b[bufnr or 0].gitsigns_status_dict
+end
 
 --- A condition function if there are any git changes
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not there are any git changes
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.git_changed }
-function status.condition.git_changed()
-  local git_status = vim.b.gitsigns_status_dict
+function status.condition.git_changed(bufnr)
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
+  local git_status = vim.b[bufnr or 0].gitsigns_status_dict
   return git_status and (git_status.added or 0) + (git_status.removed or 0) + (git_status.changed or 0) > 0
 end
 
 --- A condition function if the current buffer is modified
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current buffer is modified
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.file_modified }
-function status.condition.file_modified(bufnr) return vim.bo[bufnr or 0].modified end
+function status.condition.file_modified(bufnr)
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
+  return vim.bo[bufnr or 0].modified
+end
 
 --- A condition function if the current buffer is read only
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current buffer is read only or not modifiable
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.file_read_only }
 function status.condition.file_read_only(bufnr)
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
   local buffer = vim.bo[bufnr or 0]
   return not buffer.modifiable or buffer.readonly
 end
 
 --- A condition function if the current file has any diagnostics
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not the current file has any diagnostics
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.has_diagnostics }
-function status.condition.has_diagnostics()
-  return vim.g.status_diagnostics_enabled and #vim.diagnostic.get(0) > 0
+function status.condition.has_diagnostics(bufnr)
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
+  return vim.g.status_diagnostics_enabled and #vim.diagnostic.get(bufnr or 0) > 0
 end
 
 --- A condition function if there is a defined filetype
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not there is a filetype
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.has_filetype }
-function status.condition.has_filetype()
-  return vim.fn.empty(vim.fn.expand '%:t') ~= 1 and vim.bo.filetype and vim.bo.filetype ~= ''
+function status.condition.has_filetype(bufnr)
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
+  return vim.fn.empty(vim.fn.expand '%:t') ~= 1 and vim.bo[bufnr or 0].filetype and vim.bo[bufnr or 0].filetype ~= ''
 end
 
 --- A condition function if Aerial is available
 -- @return boolean of wether or not aerial plugin is installed
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.aerial_available }
-function status.condition.aerial_available() return utils.has_plugin 'aerial.nvim' end
+-- function status.condition.aerial_available() return is_available 'aerial.nvim' end
+function status.condition.aerial_available() return package.loaded['aerial'] end
 
 --- A condition function if LSP is attached
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not LSP is attached
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.lsp_attached }
-function status.condition.lsp_attached() return next(vim.lsp.buf_get_clients()) ~= nil end
+function status.condition.lsp_attached(bufnr)
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
+  return next(vim.lsp.get_active_clients { bufnr = bufnr or 0 }) ~= nil
+end
 
 --- A condition function if treesitter is in use
+-- @param bufnr a buffer number to check the condition for, a table with bufnr property, or nil to get the current buffer
 -- @return boolean of wether or not treesitter is active
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.treesitter_available }
-function status.condition.treesitter_available()
-  local ts_avail, ts = pcall(require, 'nvim-treesitter.parsers')
-  return ts_avail and ts.has_parser()
+function status.condition.treesitter_available(bufnr)
+  if not package.loaded['nvim-treesitter'] then return false end
+  if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
+  local parsers = require 'nvim-treesitter.parsers'
+  return parsers.has_parser(parsers.get_buf_lang(bufnr or vim.api.nvim_get_current_buf()))
 end
 
 --- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding
@@ -660,9 +753,12 @@ function status.utils.stylize(str, opts)
 end
 
 --- A Heirline component for filling in the empty space of the bar
+-- @param opts options for configuring the other fields of the heirline component
 -- @return The heirline component table
 -- @usage local heirline_component = status.component.fill()
-function status.component.fill() return { provider = status.provider.fill() } end
+function status.component.fill(opts)
+  return utils.default_tbl(opts, { provider = status.provider.fill() })
+end
 
 --- A function to build a set of children components for an entire file information section
 -- @param opts options for configuring file_icon, filename, filetype, file_modified, file_read_only, and the overall padding
@@ -670,12 +766,15 @@ function status.component.fill() return { provider = status.provider.fill() } en
 -- @usage local heirline_component = status.component.file_info()
 function status.component.file_info(opts)
   opts = utils.default_tbl(opts, {
-    file_icon = { hl = status.hl.filetype_color, padding = { left = 1, right = 1 } },
+    file_icon = {
+      hl = status.hl.file_icon 'statusline',
+      padding = { left = 1, right = 1 },
+    }, -- TODO: REWORK THIS
     filename = {},
     file_modified = { padding = { left = 1 } },
     file_read_only = { padding = { left = 1 } },
     surround = { separator = 'left', color = 'file_info_bg', condition = status.condition.has_filetype },
-    hl = { fg = 'file_info_fg' },
+    hl = status.hl.get_attributes 'file_info',
   })
   return status.component.builder(status.utils.setup_providers(opts, {
     'file_icon',
@@ -685,6 +784,38 @@ function status.component.file_info(opts)
     'file_modified',
     'file_read_only',
     'close_button',
+  }))
+end
+
+--- A function with different file_info defaults specifically for use in the tabline
+-- @param opts options for configuring file_icon, filename, filetype, file_modified, file_read_only, and the overall padding
+-- @return The Heirline component table
+-- @usage local heirline_component = status.component.tabline_file_info()
+function status.component.tabline_file_info(opts)
+  return status.component.file_info(utils.default_tbl(opts, {
+    file_icon = {
+      condition = function (self) return not self._show_picker end,
+      hl = status.hl.file_icon 'tabline',
+    },
+    unique_path = {
+      hl = function (self) return status.hl.get_attributes(self.tab_type .. '_path') end,
+    },
+    close_button = {
+      hl = function (self) return status.hl.get_attributes(self.tab_type .. '_close') end,
+      padding = { left = 1, right = 1 },
+      on_click = {
+        callback = function (_, minwid) utils.close_buf(minwid) end,
+        minwid = function (self) return self.bufnr end,
+        name = 'heirline_tabline_close_buffer_callback',
+      },
+    },
+    padding = { left = 1, right = 1 },
+    hl = function (self)
+      local tab_type = self.tab_type
+      if self._show_picker and self.tab_type ~= 'buffer_active' then tab_type = 'buffer_visible' end
+      return status.hl.get_attributes(tab_type)
+    end,
+    surround = false,
   }))
 end
 
@@ -698,7 +829,7 @@ function status.component.nav(opts)
     percentage = { padding = { left = 1 } },
     scrollbar = { padding = { left = 1 }, hl = { fg = 'scrollbar' } },
     surround = { separator = 'right', color = 'nav_bg' },
-    hl = { fg = 'nav_fg' },
+    hl = status.hl.get_attributes 'nav',
     update = { 'CursorMoved', 'BufEnter' },
   })
   return status.component.builder(
@@ -719,7 +850,7 @@ function status.component.macro_recording(opts)
       color = 'macro_recording_bg',
       condition = status.condition.is_macro_recording,
     },
-    hl = { fg = 'macro_recording_fg', bold = true },
+    hl = status.hl.get_attributes 'macro_recording',
     update = { 'RecordingEnter', 'RecordingLeave' },
   })
   return status.component.builder(status.utils.setup_providers(opts, { 'macro_recording' }))
@@ -744,10 +875,12 @@ function status.component.cmd_info(opts)
     surround = {
       separator = 'center',
       color = 'cmd_info_bg',
-      condition = function() return status.condition.is_hlsearch() or status.condition.is_macro_recording() end,
+      condition = function ()
+        return status.condition.is_hlsearch() or status.condition.is_macro_recording()
+      end,
     },
-    condition = function() return vim.opt.cmdheight:get() == 0 end,
-    hl = { fg = 'cmd_info_fg' },
+    condition = function () return vim.opt.cmdheight:get() == 0 end,
+    hl = status.hl.get_attributes 'cmd_info',
   })
   return status.component.builder(
     status.utils.setup_providers(opts, { 'macro_recording', 'search_count' })
@@ -764,7 +897,7 @@ function status.component.mode(opts)
     paste = false,
     spell = false,
     surround = { separator = 'left', color = status.hl.mode_bg },
-    hl = { fg = 'bg' },
+    hl = status.hl.get_attributes 'mode',
     update = 'ModeChanged',
   })
   if not opts['mode_text'] then opts.str = { str = ' ' } end
@@ -794,12 +927,12 @@ function status.component.git_branch(opts)
   opts = utils.default_tbl(opts, {
     git_branch = { icon = { kind = 'GitBranch', padding = { right = 1 } } },
     surround = { separator = 'left', color = 'git_branch_bg', condition = status.condition.is_git_repo },
-    hl = { fg = 'git_branch_fg', bold = true },
+    hl = status.hl.get_attributes 'git_branch',
     on_click = {
       name = 'heirline_branch',
-      callback = function()
+      callback = function ()
         if utils.has_plugin 'telescope.nvim' then
-          vim.defer_fn(function() require('telescope.builtin').git_branches() end, 100)
+          vim.defer_fn(function () require('telescope.builtin').git_branches() end, 100)
         end
       end,
     },
@@ -818,12 +951,12 @@ function status.component.git_diff(opts)
     added = { icon = { kind = 'GitAdd', padding = { left = 1, right = 1 } } },
     changed = { icon = { kind = 'GitChange', padding = { left = 1, right = 1 } } },
     removed = { icon = { kind = 'GitDelete', padding = { left = 1, right = 1 } } },
-    hl = { fg = 'git_diff_fg', bold = true },
+    hl = status.hl.get_attributes 'git_diff',
     on_click = {
       name = 'heirline_git',
-      callback = function()
+      callback = function ()
         if utils.has_plugin 'telescope.nvim' then
-          vim.defer_fn(function() require('telescope.builtin').git_status() end, 100)
+          vim.defer_fn(function () require('telescope.builtin').git_status() end, 100)
         end
       end,
     },
@@ -832,12 +965,12 @@ function status.component.git_diff(opts)
     init = status.init.update_events { 'BufEnter' },
   })
   return status.component.builder(
-    status.utils.setup_providers(opts, { 'added', 'changed', 'removed' }, function(p_opts, provider)
+    status.utils.setup_providers(opts, { 'added', 'changed', 'removed' }, function (p_opts, provider)
       local out = status.utils.build_provider(p_opts, provider)
       if out then
         out.provider = 'git_diff'
         out.opts.type = provider
-        out.hl = { fg = 'git_' .. provider }
+        if out.hl == nil then out.hl = { fg = 'git_' .. provider } end
       end
       return out
     end)
@@ -855,24 +988,24 @@ function status.component.diagnostics(opts)
     INFO = { icon = { kind = 'DiagnosticInfo', padding = { left = 1, right = 1 } } },
     HINT = { icon = { kind = 'DiagnosticHint', padding = { left = 1, right = 1 } } },
     surround = { separator = 'left', color = 'diagnostics_bg', condition = status.condition.has_diagnostics },
-    hl = { fg = 'diagnostics_fg' },
+    hl = status.hl.get_attributes 'diagnostics',
     on_click = {
       name = 'heirline_diagnostic',
-      callback = function()
+      callback = function ()
         if utils.has_plugin 'telescope.nvim' then
-          vim.defer_fn(function() require('telescope.builtin').diagnostics() end, 100)
+          vim.defer_fn(function () require('telescope.builtin').diagnostics() end, 100)
         end
       end,
     },
     update = { 'DiagnosticChanged', 'BufEnter' },
   })
   return status.component.builder(
-    status.utils.setup_providers(opts, { 'ERROR', 'WARN', 'INFO', 'HINT' }, function(p_opts, provider)
+    status.utils.setup_providers(opts, { 'ERROR', 'WARN', 'INFO', 'HINT' }, function (p_opts, provider)
       local out = status.utils.build_provider(p_opts, provider)
       if out then
         out.provider = 'diagnostics'
         out.opts.severity = provider
-        out.hl = { fg = 'diag_' .. provider }
+        if out.hl == nil then out.hl = { fg = 'diag_' .. provider } end
       end
       return out
     end)
@@ -891,7 +1024,7 @@ function status.component.treesitter(opts)
       color = 'treesitter_bg',
       condition = status.condition.treesitter_available,
     },
-    hl = { fg = 'treesitter_fg' },
+    hl = status.hl.get_attributes 'treesitter',
     update = { 'OptionSet', pattern = 'syntax' },
     init = status.init.update_events { 'BufEnter' },
   })
@@ -904,18 +1037,22 @@ end
 -- @usage local heirline_component = status.component.lsp()
 function status.component.lsp(opts)
   opts = utils.default_tbl(opts, {
-    lsp_progress = { str = '', padding = { right = 1 } },
+    lsp_progress = {
+      str = '',
+      padding = { right = 1 },
+      update = { 'User', pattern = { 'LspProgressUpdate', 'LspRequest' } },
+    },
     lsp_client_names = {
       str = 'LSP',
       update = { 'LspAttach', 'LspDetach', 'BufEnter' },
       icon = { kind = 'ActiveLSP', padding = { right = 2 } },
     },
-    hl = { fg = 'lsp_fg' },
+    hl = status.hl.get_attributes 'lsp',
     surround = { separator = 'right', color = 'lsp_bg', condition = status.condition.lsp_attached },
     on_click = {
       name = 'heirline_lsp',
-      callback = function()
-        vim.defer_fn(function() vim.cmd 'LspInfo' end, 100)
+      callback = function ()
+        vim.defer_fn(function () vim.cmd.LspInfo() end, 100)
       end,
     },
   })
@@ -923,7 +1060,7 @@ function status.component.lsp(opts)
     status.utils.setup_providers(
       opts,
       { 'lsp_progress', 'lsp_client_names' },
-      function(p_opts, provider, i)
+      function (p_opts, provider, i)
         return p_opts
             and {
               flexible = i,
@@ -1024,14 +1161,14 @@ function status.utils.surround(separator, color, component, condition)
   if separator[1] ~= '' then
     table.insert(surrounded, {
       provider = separator[1],
-      hl = function(self)
+      hl = function (self)
         local s_color = surround_color(self)
         if s_color then return { fg = s_color.main, bg = s_color.left } end
       end,
     })
   end
   table.insert(surrounded, {
-    hl = function(self)
+    hl = function (self)
       local s_color = surround_color(self)
       if s_color then return { bg = s_color.main } end
     end,
@@ -1040,7 +1177,7 @@ function status.utils.surround(separator, color, component, condition)
   if separator[2] ~= '' then
     table.insert(surrounded, {
       provider = separator[2],
-      hl = function(self)
+      hl = function (self)
         local s_color = surround_color(self)
         if s_color then return { fg = s_color.main, bg = s_color.right } end
       end,
@@ -1052,14 +1189,14 @@ end
 --- Check if a buffer is valid
 -- @param bufnr the buffer to check
 -- @return true if the buffer is valid or false
-function status.utils.is_valid_buffer(bufnr)
+function status.utils.is_valid_buffer(bufnr) -- TODO v3: remove this function
   if not bufnr or bufnr < 1 then return false end
   return vim.bo[bufnr].buflisted and vim.api.nvim_buf_is_valid(bufnr)
 end
 
 --- Get all valid buffers
 -- @return array-like table of valid buffer numbers
-function status.utils.get_valid_buffers()
+function status.utils.get_valid_buffers() -- TODO v3: remove this function
   return vim.tbl_filter(status.utils.is_valid_buffer, vim.api.nvim_list_bufs())
 end
 

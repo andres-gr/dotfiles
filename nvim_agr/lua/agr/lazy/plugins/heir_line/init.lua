@@ -11,18 +11,17 @@ H.config = function ()
   local vimode = require 'agr.lazy.plugins.heir_line.vimode'.setup()
 
   local setup_colors = function ()
+    local Normal = utils.get_hlgroup('Normal', { fg = C.fg, bg = C.bg })
+    local Comment = utils.get_hlgroup('Comment', { fg = C.grey_2, bg = C.bg })
+    local Error = utils.get_hlgroup('Error', { fg = C.red, bg = C.bg })
     local StatusLine = utils.get_hlgroup('StatusLine', { fg = C.fg, bg = C.grey_4 })
+    local TabLine = utils.get_hlgroup('TabLine', { fg = C.grey, bg = C.none })
+    local TabLineSel = utils.get_hlgroup('TabLineSel', { fg = C.fg, bg = C.none })
     local WinBar = utils.get_hlgroup('WinBar', { fg = C.grey_2, bg = C.bg })
     local WinBarNC = utils.get_hlgroup('WinBarNC', { fg = C.grey, bg = C.bg })
     local Conditional = utils.get_hlgroup('Conditional', { fg = C.purple_1, bg = C.grey_4 })
     local String = utils.get_hlgroup('String', { fg = C.green, bg = C.grey_4 })
     local TypeDef = utils.get_hlgroup('TypeDef', { fg = C.yellow, bg = C.grey_4 })
-    local HeirlineNormal = utils.get_hlgroup('HerlineNormal', { fg = C.blue, bg = C.grey_4 })
-    local HeirlineInsert = utils.get_hlgroup('HeirlineInsert', { fg = C.green, bg = C.grey_4 })
-    local HeirlineVisual = utils.get_hlgroup('HeirlineVisual', { fg = C.purple, bg = C.grey_4 })
-    local HeirlineReplace = utils.get_hlgroup('HeirlineReplace', { fg = C.red_1, bg = C.grey_4 })
-    local HeirlineCommand = utils.get_hlgroup('HeirlineCommand', { fg = C.yellow_1, bg = C.grey_4 })
-    local HeirlineInactive = utils.get_hlgroup('HeirlineInactive', { fg = C.grey_7, bg = C.grey_4 })
     local GitSignsAdd = utils.get_hlgroup('GitSignsAdd', { fg = C.green, bg = C.grey_4 })
     local GitSignsChange = utils.get_hlgroup('GitSignsChange', { fg = C.orange_1, bg = C.grey_4 })
     local GitSignsDelete = utils.get_hlgroup('GitSignsDelete', { fg = C.red_1, bg = C.grey_4 })
@@ -30,13 +29,22 @@ H.config = function ()
     local DiagnosticWarn = utils.get_hlgroup('DiagnosticWarn', { fg = C.orange_1, bg = C.grey_4 })
     local DiagnosticInfo = utils.get_hlgroup('DiagnosticInfo', { fg = C.white_2, bg = C.grey_4 })
     local DiagnosticHint = utils.get_hlgroup('DiagnosticHint', { fg = C.yellow_1, bg = C.grey_4 })
+    local HeirlineInactive = utils.get_hlgroup('HeirlineInactive', { fg = nil }).fg or status.hl.lualine_mode('inactive', C.grey_7)
+    local HeirlineNormal = utils.get_hlgroup('HeirlineNormal', { fg = nil }).fg or status.hl.lualine_mode('normal', C.blue)
+    local HeirlineInsert = utils.get_hlgroup('HeirlineInsert', { fg = nil }).fg or status.hl.lualine_mode('insert', C.green)
+    local HeirlineVisual = utils.get_hlgroup('HeirlineVisual', { fg = nil }).fg or status.hl.lualine_mode('visual', C.purple)
+    local HeirlineReplace = utils.get_hlgroup('HeirlineReplace', { fg = nil }).fg or status.hl.lualine_mode('replace', C.red_1)
+    local HeirlineCommand = utils.get_hlgroup('HeirlineCommand', { fg = nil }).fg or status.hl.lualine_mode('command', C.yellow_1)
+    local HeirlineTerminal = utils.get_hlgroup('HeirlineTerminal', { fg = nil }).fg or status.hl.lualine_mode('inactive', HeirlineInsert)
 
     local colors = {
+      close_fg = Error.fg,
       fg = StatusLine.fg,
       bg = StatusLine.bg,
       section_fg = StatusLine.fg,
       section_bg = StatusLine.bg,
       git_branch_fg = Conditional.fg,
+      mode_fg = StatusLine.bg,
       treesitter_fg = String.fg,
       scrollbar = TypeDef.fg,
       git_added = GitSignsAdd.fg,
@@ -46,16 +54,40 @@ H.config = function ()
       diag_WARN = DiagnosticWarn.fg,
       diag_INFO = DiagnosticInfo.fg,
       diag_HINT = DiagnosticHint.fg,
-      normal = utils.lualine_mode('normal', HeirlineNormal.fg),
-      insert = utils.lualine_mode('insert', HeirlineInsert.fg),
-      visual = utils.lualine_mode('visual', HeirlineVisual.fg),
-      replace = utils.lualine_mode('replace', HeirlineReplace.fg),
-      command = utils.lualine_mode('command', HeirlineCommand.fg),
-      inactive = HeirlineInactive.fg,
       winbar_fg = WinBar.fg,
       winbar_bg = WinBar.bg,
       winbarnc_fg = WinBarNC.fg,
       winbarnc_bg = WinBarNC.bg,
+      tabline_bg = StatusLine.bg,
+      tabline_fg = StatusLine.bg,
+      buffer_fg = Comment.fg,
+      buffer_path_fg = WinBarNC.fg,
+      buffer_close_fg = Comment.fg,
+      buffer_bg = StatusLine.bg,
+      buffer_active_fg = Normal.fg,
+      buffer_active_path_fg = WinBarNC.fg,
+      buffer_active_close_fg = Error.fg,
+      buffer_active_bg = Normal.bg,
+      buffer_visible_fg = Normal.fg,
+      buffer_visible_path_fg = WinBarNC.fg,
+      buffer_visible_close_fg = Error.fg,
+      buffer_visible_bg = Normal.bg,
+      buffer_overflow_fg = Comment.fg,
+      buffer_overflow_bg = StatusLine.bg,
+      buffer_picker_fg = Error.fg,
+      tab_close_fg = Error.fg,
+      tab_close_bg = StatusLine.bg,
+      tab_fg = TabLine.fg,
+      tab_bg = TabLine.bg,
+      tab_active_fg = TabLineSel.fg,
+      tab_active_bg = TabLineSel.bg,
+      inactive = HeirlineInactive,
+      normal = HeirlineNormal,
+      insert = HeirlineInsert,
+      visual = HeirlineVisual,
+      replace = HeirlineReplace,
+      command = HeirlineCommand,
+      terminal = HeirlineTerminal,
     }
 
     for _, section in ipairs {
@@ -99,38 +131,60 @@ H.config = function ()
       status.component.mode { surround = { separator = 'right' } },
     },
     {
+      static = {
+        disabled = {
+          buftype = { 'terminal', 'prompt', 'nofile', 'help', 'quickfix' },
+          filetype = { 'NvimTree', 'neo%-tree', 'dashboard', 'Outline', 'aerial' },
+        },
+      },
+      init = function (self) self.bufnr = vim.api.nvim_get_current_buf() end,
       fallthrough = false,
       {
-        condition = function()
-          return status.condition.buffer_matches {
-            buftype = { 'terminal', 'prompt', 'nofile', 'help', 'quickfix' },
-            filetype = { 'NvimTree', 'neo-tree', 'dashboard', 'Outline', 'aerial' },
-          }
+        condition = function (self)
+          return vim.opt.diff:get() or status.condition.buffer_matches(self.disabled or {})
         end,
-        init = function() vim.opt_local.winbar = nil end,
-      },
-      {
-        condition = status.condition.is_active,
-        status.component.breadcrumbs { hl = { fg = heir_colors.winbar_fg, bg = heir_colors.winbar_bg } },
+        init = function () vim.opt_local.winbar = nil end,
       },
       status.component.file_info {
-        file_icon = { hl = false },
-        hl = { fg = heir_colors.winbarnc_fg, bg = heir_colors.winbarnc_bg },
+        condition = function () return not status.condition.is_active() end,
+        file_icon = { hl = status.hl.file_icon 'winbar' },
+        file_modified = false,
+        file_read_only = false,
+        hl = status.hl.get_attributes('winbarnc', true),
         surround = false,
+        unique_path = {},
+        update = 'BufEnter',
       },
+      status.component.breadcrumbs { hl = status.hl.get_attributes('winbar', true) }
     },
   }
 
-  heirline.setup(heirline_opts[1], heirline_opts[2], heirline_opts[3])
+  heirline.setup(heirline_opts[1], heirline_opts[2])
 
-  vim.api.nvim_create_augroup('Heirline', { clear = true })
+  local augroup = vim.api.nvim_create_augroup('Heirline', { clear = true })
   vim.api.nvim_create_autocmd('User', {
     callback = function ()
       require 'heirline.utils'.on_colorscheme(setup_colors())
     end,
     desc = 'Refresh heirline colors',
-    group = 'Heirline',
+    group = augroup,
     pattern = 'AGRColorScheme',
+  })
+  vim.api.nvim_create_autocmd('User', {
+    callback = function ()
+      if
+        vim.opt.diff:get()
+        or status.condition.buffer_matches(require('heirline').winbar.disabled or {
+          buftype = { 'terminal', 'prompt', 'nofile', 'help', 'quickfix' },
+          filetype = { 'NvimTree', 'neo%-tree', 'dashboard', 'Outline', 'aerial' },
+        }) -- TODO v3: remove the default fallback here
+      then
+        vim.opt_local.winbar = nil
+      end
+    end,
+    desc = 'Disable winbar for some filetypes',
+    group = augroup,
+    pattern = 'HeirlineInitWinbar',
   })
 end
 

@@ -102,6 +102,9 @@ dracula.setup({
     DiagnosticVirtualTextHint = { fg = colors.bright_cyan },
     DiagnosticVirtualTextInfo = { fg = colors.bright_cyan },
     DiagnosticVirtualTextWarn = { fg = colors.bright_yellow },
+
+    -- Heirline
+    StatusLine = { fg = colors.fg, bg = colors.menu },
   },
   transparent_bg = true,
 })
