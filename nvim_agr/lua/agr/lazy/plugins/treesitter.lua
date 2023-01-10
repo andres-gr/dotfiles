@@ -14,7 +14,7 @@ local T = {
   dependencies = {
     'JoosepAlviste/nvim-ts-context-commentstring',
     'nvim-treesitter/playground',
-    'p00f/nvim-ts-rainbow',
+    'mrjones2014/nvim-ts-rainbow',
     'windwp/nvim-ts-autotag',
   },
   event = {

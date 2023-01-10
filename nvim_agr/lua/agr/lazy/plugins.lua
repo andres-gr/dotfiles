@@ -16,7 +16,7 @@ return {
   'MunifTanjim/nui.nvim',
 
   -- Rainbow parenthesis highlight
-  'p00f/nvim-ts-rainbow',
+  'mrjones2014/nvim-ts-rainbow',
 
   -- Autoclose tags
   'windwp/nvim-ts-autotag',

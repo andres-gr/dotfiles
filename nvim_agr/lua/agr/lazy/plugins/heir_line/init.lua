@@ -112,7 +112,7 @@ H.config = function ()
 
   heirline.load_colors(heir_colors)
 
-  local heirline_opts = {
+  local statusline = {
     {
       hl = { fg = 'fg', bg = 'bg' },
       vimode,
@@ -130,36 +130,40 @@ H.config = function ()
       status.component.nav(),
       status.component.mode { surround = { separator = 'right' } },
     },
-    {
-      static = {
-        disabled = {
-          buftype = { 'terminal', 'prompt', 'nofile', 'help', 'quickfix' },
-          filetype = { 'NvimTree', 'neo%-tree', 'dashboard', 'Outline', 'aerial' },
-        },
-      },
-      init = function (self) self.bufnr = vim.api.nvim_get_current_buf() end,
-      fallthrough = false,
-      {
-        condition = function (self)
-          return vim.opt.diff:get() or status.condition.buffer_matches(self.disabled or {})
-        end,
-        init = function () vim.opt_local.winbar = nil end,
-      },
-      status.component.file_info {
-        condition = function () return not status.condition.is_active() end,
-        file_icon = { hl = status.hl.file_icon 'winbar' },
-        file_modified = false,
-        file_read_only = false,
-        hl = status.hl.get_attributes('winbarnc', true),
-        surround = false,
-        unique_path = {},
-        update = 'BufEnter',
-      },
-      status.component.breadcrumbs { hl = status.hl.get_attributes('winbar', true) }
-    },
   }
 
-  heirline.setup(heirline_opts[1], heirline_opts[2])
+  local winbar = {
+    static = {
+      disabled = {
+        buftype = { 'terminal', 'prompt', 'nofile', 'help', 'quickfix' },
+        filetype = { 'NvimTree', 'neo%-tree', 'dashboard', 'Outline', 'aerial' },
+      },
+    },
+    init = function (self) self.bufnr = vim.api.nvim_get_current_buf() end,
+    fallthrough = false,
+    {
+      condition = function (self)
+        return vim.opt.diff:get() or status.condition.buffer_matches(self.disabled or {})
+      end,
+      init = function () vim.opt_local.winbar = nil end,
+    },
+    status.component.file_info {
+      condition = function () return not status.condition.is_active() end,
+      file_icon = { hl = status.hl.file_icon 'winbar' },
+      file_modified = false,
+      file_read_only = false,
+      hl = status.hl.get_attributes('winbarnc', true),
+      surround = false,
+      unique_path = {},
+      update = 'BufEnter',
+    },
+    status.component.breadcrumbs { hl = status.hl.get_attributes('winbar', true) }
+  }
+
+  heirline.setup {
+    statusline = statusline,
+    winbar = winbar,
+  }
 
   local augroup = vim.api.nvim_create_augroup('Heirline', { clear = true })
   vim.api.nvim_create_autocmd('User', {
