@@ -3,14 +3,7 @@ local S = {}
 S.setup = function ()
   local saga = require 'lspsaga'
 
-  saga.init_lsp_saga {
-    code_action_lightbulb = {
-      cache_code_action = false,
-      enable = true,
-      enable_in_insert = false,
-      update_time = 250,
-      virtual_text = false,
-    },
+  saga.setup {
     definition_action_keys = {
       edit = '<CR>', -- Use enter to open file in preview definition
     },
@@ -18,6 +11,13 @@ S.setup = function ()
       open = '<CR>', -- Use enter to open file in finder
     },
     finder_request_timeout = 6000,
+    lightbulb = {
+      cache_code_action = false,
+      enable = true,
+      enable_in_insert = false,
+      update_time = 250,
+      virtual_text = false,
+    },
     -- preview lines of lsp_finder and definition preview
     max_preview_lines = 30,
     -- Keybinds for navigation in saga window
