@@ -2509,7 +2509,7 @@ Max second:Restore Window Arrangement</string>
 			<key>Close Sessions On End</key>
 			<true/>
 			<key>Columns</key>
-			<integer>238</integer>
+			<integer>320</integer>
 			<key>Command</key>
 			<string></string>
 			<key>Cursor Boost</key>
@@ -2583,7 +2583,7 @@ Max second:Restore Window Arrangement</string>
 			<key>Guid</key>
 			<string>B88FC97E-4E3B-4A50-BC5B-3DCDB5B9CACD</string>
 			<key>Horizontal Spacing</key>
-			<real>1.05</real>
+			<real>1.01</real>
 			<key>Icon</key>
 			<integer>0</integer>
 			<key>Idle Code</key>
@@ -2908,7 +2908,7 @@ Max second:Restore Window Arrangement</string>
 			<key>Name</key>
 			<string>Default</string>
 			<key>Non Ascii Font</key>
-			<string>HackNerdFontComplete-Regular 13</string>
+			<string>FiraCodeNerdFontComplete-Regular 13</string>
 			<key>Non-ASCII Anti Aliased</key>
 			<true/>
 			<key>Non-ASCII Ligatures</key>
@@ -2926,7 +2926,7 @@ Max second:Restore Window Arrangement</string>
 			<key>Right Option Key Sends</key>
 			<integer>0</integer>
 			<key>Rows</key>
-			<integer>64</integer>
+			<integer>88</integer>
 			<key>Screen</key>
 			<integer>-2</integer>
 			<key>Scrollback Lines</key>
@@ -3147,6 +3147,8 @@ Max second:Restore Window Arrangement</string>
 								<real>120</real>
 								<key>minwidth</key>
 								<string>0</string>
+								<key>path</key>
+								<string>username</string>
 								<key>shared text color</key>
 								<dict>
 									<key>Alpha Component</key>
@@ -3184,6 +3186,8 @@ Max second:Restore Window Arrangement</string>
 			<string>xterm-256color</string>
 			<key>Transparency</key>
 			<real>0.099999999999999992</real>
+			<key>Unicode Version</key>
+			<integer>9</integer>
 			<key>Unlimited Scrollback</key>
 			<false/>
 			<key>Use Bold Font</key>
@@ -3279,13 +3283,13 @@ Max second:Restore Window Arrangement</string>
 		<array>
 			<dict>
 				<key>Desired Columns</key>
-				<integer>80</integer>
+				<integer>240</integer>
 				<key>Desired Rows</key>
-				<integer>25</integer>
+				<integer>66</integer>
 				<key>Has Toolbelt</key>
 				<false/>
 				<key>Height</key>
-				<real>1055</real>
+				<real>1415</real>
 				<key>Hide After Opening</key>
 				<false/>
 				<key>Hiding Toolbelt Should Resize Window</key>
@@ -3308,7 +3312,7 @@ Max second:Restore Window Arrangement</string>
 						<key>Root</key>
 						<dict>
 							<key>Splitter ID</key>
-							<string>8FE959CB-4630-4E70-BF65-0C153F068D25</string>
+							<string>360F593D-F9B2-4CC3-B689-32E907377154</string>
 							<key>Subviews</key>
 							<array>
 								<dict>
@@ -3600,7 +3604,7 @@ Max second:Restore Window Arrangement</string>
 											<key>Close Sessions On End</key>
 											<true/>
 											<key>Columns</key>
-											<integer>80</integer>
+											<integer>240</integer>
 											<key>Command</key>
 											<string></string>
 											<key>Cursor Boost</key>
@@ -3674,7 +3678,7 @@ Max second:Restore Window Arrangement</string>
 											<key>Guid</key>
 											<string>B88FC97E-4E3B-4A50-BC5B-3DCDB5B9CACD</string>
 											<key>Horizontal Spacing</key>
-											<real>1.05</real>
+											<real>1.01</real>
 											<key>Icon</key>
 											<integer>0</integer>
 											<key>Idle Code</key>
@@ -3999,7 +4003,7 @@ Max second:Restore Window Arrangement</string>
 											<key>Name</key>
 											<string>Default</string>
 											<key>Non Ascii Font</key>
-											<string>HackNerdFontComplete-Regular 13</string>
+											<string>FiraCodeNerdFontComplete-Regular 13</string>
 											<key>Non-ASCII Anti Aliased</key>
 											<true/>
 											<key>Non-ASCII Ligatures</key>
@@ -4017,7 +4021,7 @@ Max second:Restore Window Arrangement</string>
 											<key>Right Option Key Sends</key>
 											<integer>0</integer>
 											<key>Rows</key>
-											<integer>25</integer>
+											<integer>66</integer>
 											<key>Screen</key>
 											<integer>-2</integer>
 											<key>Scrollback Lines</key>
@@ -4238,6 +4242,8 @@ Max second:Restore Window Arrangement</string>
 																<real>120</real>
 																<key>minwidth</key>
 																<string>0</string>
+																<key>path</key>
+																<string>username</string>
 																<key>shared text color</key>
 																<dict>
 																	<key>Alpha Component</key>
@@ -4275,6 +4281,8 @@ Max second:Restore Window Arrangement</string>
 											<string>xterm-256color</string>
 											<key>Transparency</key>
 											<real>0.099999999999999992</real>
+											<key>Unicode Version</key>
+											<integer>9</integer>
 											<key>Unlimited Scrollback</key>
 											<false/>
 											<key>Use Bold Font</key>
@@ -4301,7 +4309,7 @@ Max second:Restore Window Arrangement</string>
 											<string>/Users/andres</string>
 										</dict>
 										<key>Columns</key>
-										<integer>238</integer>
+										<integer>318</integer>
 										<key>Commands</key>
 										<array/>
 										<key>Directories</key>
@@ -4324,17 +4332,9 @@ Max second:Restore Window Arrangement</string>
 											<key>icon title stack</key>
 											<array>
 												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
 											</array>
 											<key>window title stack</key>
 											<array>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
 												<integer>0</integer>
 											</array>
 										</dict>
@@ -4344,9 +4344,9 @@ Max second:Restore Window Arrangement</string>
 											<string>Shell Launcher</string>
 										</dict>
 										<key>Rows</key>
-										<integer>64</integer>
+										<integer>87</integer>
 										<key>Session GUID</key>
-										<string>7E6C43C7-FD3D-4690-9305-33F673C62DE1</string>
+										<string>DCED06B9-90B0-4222-8FE0-C9B458187042</string>
 										<key>Short Lived Single Use</key>
 										<false/>
 										<key>Should Expect Current Dir Updates</key>
@@ -4368,9 +4368,9 @@ Max second:Restore Window Arrangement</string>
 									<key>frame</key>
 									<dict>
 										<key>height</key>
-										<real>1041</real>
+										<real>1401</real>
 										<key>width</key>
-										<real>1920</real>
+										<real>2560</real>
 										<key>x</key>
 										<real>0.0</real>
 										<key>y</key>
@@ -4383,9 +4383,9 @@ Max second:Restore Window Arrangement</string>
 							<key>frame</key>
 							<dict>
 								<key>height</key>
-								<real>1041</real>
+								<real>1401</real>
 								<key>width</key>
-								<real>1920</real>
+								<real>2560</real>
 								<key>x</key>
 								<real>0.0</real>
 								<key>y</key>
@@ -4395,11 +4395,11 @@ Max second:Restore Window Arrangement</string>
 							<false/>
 						</dict>
 						<key>Tab GUID</key>
-						<string>D6D2E24A-A618-4F97-80EC-6B03E4BC83BD</string>
+						<string>CCE3B365-ADE6-4854-AC9D-1915565E17B4</string>
 					</dict>
 				</array>
 				<key>TerminalGuid</key>
-				<string>pty-34D315C7-B6E5-4FB5-8E61-64CE89724ED5</string>
+				<string>pty-6A91EE26-0FA9-4A17-B5E0-03B1A6BB7399</string>
 				<key>Toolbelt</key>
 				<dict>
 					<key>Profiles</key>
@@ -4428,7 +4428,7 @@ Max second:Restore Window Arrangement</string>
 				<key>Use Transparency</key>
 				<true/>
 				<key>Width</key>
-				<real>1920</real>
+				<real>2560</real>
 				<key>Window Type</key>
 				<integer>12</integer>
 				<key>X Origin</key>
@@ -4441,9 +4441,9 @@ Max second:Restore Window Arrangement</string>
 		<array>
 			<dict>
 				<key>Desired Columns</key>
-				<integer>80</integer>
+				<integer>240</integer>
 				<key>Desired Rows</key>
-				<integer>25</integer>
+				<integer>66</integer>
 				<key>Has Toolbelt</key>
 				<false/>
 				<key>Height</key>
@@ -4451,7 +4451,7 @@ Max second:Restore Window Arrangement</string>
 				<key>Hide After Opening</key>
 				<false/>
 				<key>Hiding Toolbelt Should Resize Window</key>
-				<true/>
+				<false/>
 				<key>Initial Profile</key>
 				<dict/>
 				<key>Is Hotkey Window</key>
@@ -4470,7 +4470,7 @@ Max second:Restore Window Arrangement</string>
 						<key>Root</key>
 						<dict>
 							<key>Splitter ID</key>
-							<string>8FE959CB-4630-4E70-BF65-0C153F068D25</string>
+							<string>D3861F06-939F-4350-BF25-A1CCC0F5D671</string>
 							<key>Subviews</key>
 							<array>
 								<dict>
@@ -4762,7 +4762,7 @@ Max second:Restore Window Arrangement</string>
 											<key>Close Sessions On End</key>
 											<true/>
 											<key>Columns</key>
-											<integer>80</integer>
+											<integer>240</integer>
 											<key>Command</key>
 											<string></string>
 											<key>Cursor Boost</key>
@@ -5179,7 +5179,7 @@ Max second:Restore Window Arrangement</string>
 											<key>Right Option Key Sends</key>
 											<integer>0</integer>
 											<key>Rows</key>
-											<integer>25</integer>
+											<integer>66</integer>
 											<key>Screen</key>
 											<integer>-2</integer>
 											<key>Scrollback Lines</key>
@@ -5486,17 +5486,9 @@ Max second:Restore Window Arrangement</string>
 											<key>icon title stack</key>
 											<array>
 												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
 											</array>
 											<key>window title stack</key>
 											<array>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
-												<integer>0</integer>
 												<integer>0</integer>
 											</array>
 										</dict>
@@ -5508,7 +5500,7 @@ Max second:Restore Window Arrangement</string>
 										<key>Rows</key>
 										<integer>64</integer>
 										<key>Session GUID</key>
-										<string>7E6C43C7-FD3D-4690-9305-33F673C62DE1</string>
+										<string>4C0FF981-587D-4EB6-9927-B9A7B0AC7121</string>
 										<key>Short Lived Single Use</key>
 										<false/>
 										<key>Should Expect Current Dir Updates</key>
@@ -5557,11 +5549,11 @@ Max second:Restore Window Arrangement</string>
 							<false/>
 						</dict>
 						<key>Tab GUID</key>
-						<string>D6D2E24A-A618-4F97-80EC-6B03E4BC83BD</string>
+						<string>C9F6CCE5-C3F8-47BA-9C05-1FD773E30741</string>
 					</dict>
 				</array>
 				<key>TerminalGuid</key>
-				<string>pty-34D315C7-B6E5-4FB5-8E61-64CE89724ED5</string>
+				<string>pty-C9ABDD19-C1A5-44EA-B3E1-E31C43F608AF</string>
 				<key>Toolbelt</key>
 				<dict>
 					<key>Profiles</key>
