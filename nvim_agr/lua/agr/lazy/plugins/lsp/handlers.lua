@@ -97,17 +97,17 @@ H.on_attach = function (client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  local hover_doc = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga hover_doc")<CR>'
-  local cursor_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_cursor_diagnostics")<CR>'
-  local line_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_line_diagnostics")<CR>'
+  -- local hover_doc = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga hover_doc")<CR>'
+  -- local cursor_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_cursor_diagnostics")<CR>'
+  -- local line_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_line_diagnostics")<CR>'
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   map('n', 'gf', '<CMD>Lspsaga lsp_finder<CR>', 'LSP definition, references')
   map('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', 'LSP declaration')
   map('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', 'LSP definition')
-  map('n', 'K', hover_doc, 'LSP hover')
-  map('n', 'gh', hover_doc, 'LSP hover')
+  map('n', 'K', '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
+  map('n', 'gh',  '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
   map('n', 'gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', 'LSP implementation')
   map('n', '<leader>k', '<CMD>lua vim.lsp.buf.signature_help()<CR>', 'LSP signature help')
   -- map('n', '<leader>wa', '<CMD>lua vim.lsp.buf.add_workspace_folder()<CR>', 'LSP add workspace folder')
@@ -117,8 +117,8 @@ H.on_attach = function (client, bufnr)
   map('n', '<leader>gr', '<CMD>Lspsaga rename<CR>', 'LSP rename')
   map('n', '<leader>.', '<CMD>Lspsaga code_action<CR>', 'LSP code actions')
   map('n', 'gr', '<CMD>lua vim.lsp.buf.references()<CR>', 'LSP references')
-  map('n', 'gl', cursor_diagnostics, 'LSP show cursor diagnostics')
-  map('n', 'gl', line_diagnostics, 'LSP show line diagnostics')
+  map('n', 'gl', '<CMD>Lspsaga show_cursor_diagnostics<CR>', 'LSP show cursor diagnostics')
+  map('n', 'gl', '<CMD>Lspsaga show_line_diagnostics<CR>', 'LSP show line diagnostics')
   map('n', '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>', 'LSP prev diagnostic')
   map('n', ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>', 'LSP next diagnostic')
   map('n', 'gq', '<CMD>lua vim.diagnostic.setloclist()<CR>', 'LSP diagnostic set loclist')

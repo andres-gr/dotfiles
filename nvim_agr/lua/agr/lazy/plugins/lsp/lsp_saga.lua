@@ -1,16 +1,14 @@
+local colors = require 'agr.core.colors'.dracula_colors
+
 local S = {}
 
 S.setup = function ()
   local saga = require 'lspsaga'
 
   saga.setup {
-    definition_action_keys = {
-      edit = '<CR>', -- Use enter to open file in preview definition
+    definition = {
+      edit = '<CR>',
     },
-    finder_action_keys = {
-      open = '<CR>', -- Use enter to open file in finder
-    },
-    finder_request_timeout = 6000,
     lightbulb = {
       cache_code_action = false,
       enable = true,
@@ -18,15 +16,33 @@ S.setup = function ()
       update_time = 250,
       virtual_text = false,
     },
-    -- preview lines of lsp_finder and definition preview
-    max_preview_lines = 30,
+    preview = {
+      lines_below = 5,
+    },
+    request_timeout = 6000,
     -- Keybinds for navigation in saga window
-    move_in_saga = {
-      next = '<C-j>',
-      prev = '<C-k>',
+    scroll_preview = {
+      scroll_down = '<C-j>',
+      scroll_up = '<C-k>',
     },
     server_filetype_map = {
       typescript = 'typescript',
+    },
+    ui = {
+      colors = {
+        black = colors.bg,
+        blue = colors.bright_blue,
+        cyan = colors.cyan,
+        green = colors.green,
+        magenta = colors.bright_magenta,
+        normal_bg = colors.menu,
+        orange = colors.orange,
+        purple = colors.purple,
+        red = colors.red,
+        title_bg = colors.menu,
+        white = colors.fg,
+        yellow = colors.yellow,
+      },
     },
   }
 end
