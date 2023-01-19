@@ -25,9 +25,6 @@ S.setup = function ()
       scroll_down = '<C-j>',
       scroll_up = '<C-k>',
     },
-    server_filetype_map = {
-      typescript = 'typescript',
-    },
     ui = {
       colors = {
         black = colors.bg,
