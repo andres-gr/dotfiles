@@ -146,6 +146,7 @@ T.config = function ()
       },
       find_files = {
         cwd = cwd,
+        initial_mode = 'insert',
         hidden = true,
         prompt_title = false,
       },
