@@ -10,7 +10,7 @@ local L = {
     'onsails/lspkind.nvim',
     {
       'glepnir/lspsaga.nvim',
-      event = 'BufRead',
+      event = 'BufReadPre',
     },
   },
   event = 'BufReadPre',
