@@ -57,15 +57,17 @@ M.setup = function ()
       local typescript = require 'typescript'
 
       typescript.setup {
-        server = opts,
+        server = vim.tbl_deep_extend('force', opts, {
+          init_options = {
+            preferences = {
+              includeCompletionsForModuleExports = false,
+            },
+            tsserver = {
+              path = '/Users/andres/Library/pnpm/global/5/.pnpm/typescript@4.9.5/node_modules/typescript/lib',
+            },
+          },
+        }),
       }
-    end,
-
-    ['emmet_ls'] = function ()
-      lspconfig.emmet_ls.setup(vim.tbl_deep_extend('force', require(server_settings .. 'emmet_ls').setup(), {
-        flags = opts.flags,
-        root_dir = opts.root_dir,
-      }))
     end,
   }
 end
