@@ -270,25 +270,25 @@ M.config = function ()
         luasnip.lsp_expand(args.body) -- For `luasnip` users.
       end,
     },
-    sources = {
+    sources = cmp.config.sources({
       {
         name = 'nvim_lsp',
-        entry_filter = function (entry, ctx)
+        entry_filter = function (entry)
           local kind = require('cmp.types').lsp.CompletionItemKind[entry:get_kind()]
 
-          if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then
-            return false
-          end
+          -- if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then
+          --   return false
+          -- end
 
-          if kind == 'Text' then return false end
+          -- if kind == 'Text' then return false end
 
-          return true
+          return kind ~= 'Text'
         end,
       },
       { name = 'luasnip' },
       { name = 'buffer' },
       { name = 'path' },
-    },
+    }),
     window = {
       completion = cmp.config.window.bordered(),
       documentation = cmp.config.window.bordered(),

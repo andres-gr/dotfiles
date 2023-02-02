@@ -1,5 +1,6 @@
 local C = {
   'numToStr/Comment.nvim',
+  event = 'BufReadPost',
   keys = {
     'gc',
     'gb',

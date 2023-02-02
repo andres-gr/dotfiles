@@ -59,9 +59,6 @@ M.setup = function ()
       typescript.setup {
         server = vim.tbl_deep_extend('force', opts, {
           init_options = {
-            preferences = {
-              includeCompletionsForModuleExports = false,
-            },
             tsserver = {
               path = '/Users/andres/Library/pnpm/global/5/.pnpm/typescript@4.9.5/node_modules/typescript/lib',
             },
