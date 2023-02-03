@@ -15,6 +15,7 @@ local M = {
 
 M.config = function ()
   local cmp = require 'cmp'
+  local types = require 'cmp.types'
   local luasnip = require 'luasnip'
   local lspkind = require 'lspkind'
 
@@ -270,17 +271,11 @@ M.config = function ()
         luasnip.lsp_expand(args.body) -- For `luasnip` users.
       end,
     },
-    sources = cmp.config.sources({
+    sources = {
       {
         name = 'nvim_lsp',
-        entry_filter = function (entry)
-          local kind = require('cmp.types').lsp.CompletionItemKind[entry:get_kind()]
-
-          -- if kind == 'Snippet' and ctx.prev_context.filetype == 'java' then
-          --   return false
-          -- end
-
-          -- if kind == 'Text' then return false end
+        entry_filter = function (entry, ctx)
+          local kind = types.lsp.CompletionItemKind[entry:get_kind()]
 
           return kind ~= 'Text'
         end,
@@ -288,7 +283,7 @@ M.config = function ()
       { name = 'luasnip' },
       { name = 'buffer' },
       { name = 'path' },
-    }),
+    },
     window = {
       completion = cmp.config.window.bordered(),
       documentation = cmp.config.window.bordered(),
