@@ -23,32 +23,32 @@ cmd('BufEnter', {
 
 local alpha_settings = augroup('alpha_settings', { clear = true })
 cmd('FileType', {
-  callback = function ()
-    vim.opt.cmdheight = 0
-    vim.opt.laststatus = 0
-    vim.opt.showtabline = 0
-    vim.opt_local.winbar = nil
-
-    vim.cmd [[ setlocal nofoldenable ]]
-  end,
-  desc = 'Disable features in alpha',
-  group = alpha_settings,
-  pattern = 'alpha',
-})
-
-cmd('BufUnload', {
   callback = function (event)
     local type = vim.api.nvim_buf_get_option(event.buf, 'filetype')
 
     if type == 'alpha' then
-      vim.opt.cmdheight = prev_height
-      vim.opt.laststatus = prev_status
-      vim.opt.showtabline = prev_showtabline
-      vim.opt_local.winbar = prev_winbar
+      vim.opt.cmdheight = 0
+      vim.opt.laststatus = 0
+      vim.opt.showtabline = 0
+      vim.opt_local.winbar = nil
+
+      vim.cmd [[ setlocal nofoldenable ]]
+
+      cmd('BufUnload', {
+        callback = function ()
+          vim.opt.cmdheight = prev_height
+          vim.opt.laststatus = prev_status
+          vim.opt.showtabline = prev_showtabline
+          vim.opt_local.winbar = prev_winbar
+        end,
+        group = alpha_settings,
+        pattern = '<buffer>',
+      })
     end
   end,
+  desc = 'Disable editor features in alpha',
   group = alpha_settings,
-  pattern = '<buffer>',
+  pattern = 'alpha',
 })
 
 cmd('User', {
@@ -85,7 +85,10 @@ cmd('UIEnter', {
           end
         end
       end
-      if not should_skip then vim.cmd [[ :Alpha ]] end
+      if not should_skip then
+        vim.cmd [[ :Alpha ]]
+        vim.cmd [[ setlocal showtabline=0 ]]
+      end
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
