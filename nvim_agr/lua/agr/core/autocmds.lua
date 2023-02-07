@@ -7,6 +7,26 @@ local prev_showtabline = vim.opt.showtabline
 local prev_status = vim.opt.laststatus
 local prev_winbar = vim.opt_local.winbar
 
+local is_empty_buf = function (buf)
+  local fallback_name = vim.api.nvim_buf_get_name(buf)
+  local fallback_ft = vim.api.nvim_buf_get_option(buf, 'filetype')
+  local fallback_on_empty = fallback_name == '' and fallback_ft == ''
+
+  return fallback_on_empty
+end
+
+local del_empty_bufs = function ()
+  local bufs_loaded = {}
+
+  for _, buf_hndl in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_is_loaded(buf_hndl) and is_empty_buf(buf_hndl) then
+      vim.api.nvim_buf_delete(buf_hndl, {})
+    end
+  end
+
+  return bufs_loaded
+end
+
 local neotree = augroup('neotree_start', { clear = true })
 cmd('BufEnter', {
   callback = function ()
@@ -33,7 +53,7 @@ cmd('FileType', {
       vim.opt_local.winbar = nil
 
       vim.cmd [[ setlocal nofoldenable ]]
-      pcall(vim.api.nvim_buf_delete, 1, {})
+      pcall(del_empty_bufs)
 
       cmd('BufUnload', {
         callback = function ()
@@ -42,7 +62,7 @@ cmd('FileType', {
           vim.opt.showtabline = prev_showtabline
           vim.opt_local.winbar = prev_winbar
 
-          pcall(vim.api.nvim_buf_delete, 1, {})
+          pcall(del_empty_bufs)
         end,
         group = alpha_settings,
         pattern = '<buffer>',
@@ -57,9 +77,7 @@ cmd('FileType', {
 cmd('User', {
   callback = function (event)
     if utils.has_plugin 'alpha' then
-      local fallback_name = vim.api.nvim_buf_get_name(event.buf)
-      local fallback_ft = vim.api.nvim_buf_get_option(event.buf, 'filetype')
-      local fallback_on_empty = fallback_name == '' and fallback_ft == ''
+      local fallback_on_empty = is_empty_buf(event.buf)
 
       if fallback_on_empty then
         require 'neo-tree'.close_all()
