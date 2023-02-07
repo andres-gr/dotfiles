@@ -1,6 +1,11 @@
 local utils = require 'agr.core.utils'
-local cmd = vim.api.nvim_create_autocmd
 local augroup = vim.api.nvim_create_augroup
+local cmd = vim.api.nvim_create_autocmd
+
+local prev_height = vim.opt.cmdheight
+local prev_showtabline = vim.opt.showtabline
+local prev_status = vim.opt.laststatus
+local prev_winbar = vim.opt_local.winbar
 
 local neotree = augroup('neotree_start', { clear = true })
 cmd('BufEnter', {
@@ -19,49 +24,31 @@ cmd('BufEnter', {
 local alpha_settings = augroup('alpha_settings', { clear = true })
 cmd('FileType', {
   callback = function ()
-    local prev_showtabline = vim.opt.showtabline
-    local prev_winbar = vim.opt_local.winbar
-    vim.opt.showtabline = 0
-    vim.opt_local.winbar = nil
-    cmd('BufUnload', {
-      callback = function ()
-        vim.opt.showtabline = prev_showtabline
-        vim.opt_local.winbar = prev_winbar
-      end,
-      pattern = '<buffer>',
-    })
-  end,
-  desc = 'Disable tabline for alpha',
-  group = alpha_settings,
-  pattern = 'alpha',
-})
-
-cmd('FileType', {
-  callback = function ()
-    local prev_height = vim.opt.cmdheight
-    local prev_status = vim.opt.laststatus
     vim.opt.cmdheight = 0
     vim.opt.laststatus = 0
-    cmd('BufUnload', {
-      callback = function ()
-        vim.opt.cmdheight = prev_height
-        vim.opt.laststatus = prev_status
-      end,
-      pattern = '<buffer>',
-    })
+    vim.opt.showtabline = 0
+    vim.opt_local.winbar = nil
+
+    vim.cmd [[ setlocal nofoldenable ]]
   end,
-  desc = 'Disable statusline for alpha',
+  desc = 'Disable features in alpha',
   group = alpha_settings,
   pattern = 'alpha',
 })
 
-cmd('FileType', {
-  callback = function ()
-    vim.cmd [[ setlocal nofoldenable ]]
+cmd('BufUnload', {
+  callback = function (event)
+    local type = vim.api.nvim_buf_get_option(event.buf, 'filetype')
+
+    if type == 'alpha' then
+      vim.opt.cmdheight = prev_height
+      vim.opt.laststatus = prev_status
+      vim.opt.showtabline = prev_showtabline
+      vim.opt_local.winbar = prev_winbar
+    end
   end,
-  desc = 'Disable fold for alpha',
   group = alpha_settings,
-  pattern = 'alpha',
+  pattern = '<buffer>',
 })
 
 cmd('User', {
@@ -98,7 +85,7 @@ cmd('UIEnter', {
           end
         end
       end
-      if not should_skip then alpha.start(true) end
+      if not should_skip then vim.cmd [[ :Alpha ]] end
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
