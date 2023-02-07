@@ -33,6 +33,7 @@ cmd('FileType', {
       vim.opt_local.winbar = nil
 
       vim.cmd [[ setlocal nofoldenable ]]
+      pcall(vim.api.nvim_buf_delete, 1, {})
 
       cmd('BufUnload', {
         callback = function ()
@@ -40,6 +41,8 @@ cmd('FileType', {
           vim.opt.laststatus = prev_status
           vim.opt.showtabline = prev_showtabline
           vim.opt_local.winbar = prev_winbar
+
+          pcall(vim.api.nvim_buf_delete, 1, {})
         end,
         group = alpha_settings,
         pattern = '<buffer>',
