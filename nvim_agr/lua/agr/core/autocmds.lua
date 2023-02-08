@@ -53,6 +53,7 @@ cmd('FileType', {
       vim.opt_local.winbar = nil
 
       vim.cmd [[ setlocal nofoldenable ]]
+
       pcall(del_empty_bufs)
 
       cmd('BufUnload', {
@@ -106,10 +107,7 @@ cmd('UIEnter', {
           end
         end
       end
-      if not should_skip then
-        vim.cmd [[ :Alpha ]]
-        vim.cmd [[ setlocal showtabline=0 ]]
-      end
+      if not should_skip then vim.cmd [[ :Alpha ]] end
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
