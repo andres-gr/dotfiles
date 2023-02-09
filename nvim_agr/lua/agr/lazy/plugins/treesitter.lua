@@ -41,6 +41,8 @@ T.config = function ()
       'javascript',
       'json',
       'lua',
+      'markdown',
+      'markdown_inline',
       'tsx',
       'typescript',
       'vim',
