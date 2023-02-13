@@ -139,7 +139,10 @@ local close_buf = function (bufnr, force)
   end
 end
 
+local contains = function (t, key) return t[key] ~= nil end
+
 U.close_buf = close_buf
+U.contains = contains
 U.default_tbl = default_tbl
 U.dump = dump
 U.fix_float_ui = fix_float_ui

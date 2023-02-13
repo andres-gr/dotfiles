@@ -14,7 +14,7 @@ M.setup = function ()
       'graphql',
       'html',
       'jsonls',
-      'sumneko_lua',
+      'lua_ls',
       'tsserver',
       'vimls',
       'yamlls',
@@ -23,7 +23,7 @@ M.setup = function ()
 
   handlers.setup()
 
-  local opts = {
+  local default_opts = {
     capabilities = handlers.capabilities,
     flags = {
       debounce_text_changes = 200,
@@ -33,31 +33,34 @@ M.setup = function ()
   }
 
   local config_servers = {
-    'jsonls',
-    'sumneko_lua',
+    ['jsonls'] = true,
+    ['lua_ls'] = true,
   }
 
-  local server_settings = 'agr.lazy.plugins.lsp.server_settings.'
+  local server_settings_path = 'agr.lazy.plugins.lsp.server_settings.'
 
   mason_lspconfig.setup_handlers {
     -- default handler
     function (server_name)
-      lspconfig[server_name].setup(opts)
+      local opts = default_opts
 
-      for _, config_server_name in pairs(config_servers) do
-        local server_opts = utils.has_plugin(server_settings .. config_server_name).setup()
+      if utils.contains(config_servers, server_name) then
+        local server_opts = utils.has_plugin(server_settings_path .. server_name).setup()
 
         if server_opts then
-          lspconfig[config_server_name].setup(vim.tbl_deep_extend('force', server_opts, opts))
+          opts = vim.tbl_deep_extend('force', default_opts, server_opts)
         end
       end
+
+      lspconfig[server_name].setup(opts)
     end,
 
     ['tsserver'] = function ()
       local typescript = require 'typescript'
 
       typescript.setup {
-        server = vim.tbl_deep_extend('force', opts, {
+        server = vim.tbl_deep_extend('force', default_opts, {
+          autostart = true,
           init_options = {
             tsserver = {
               path = '/Users/andres/Library/pnpm/global/5/.pnpm/typescript@4.9.5/node_modules/typescript/lib',

@@ -13,8 +13,7 @@ local L = {
       event = 'BufReadPre',
     },
   },
-  event = 'BufReadPre',
-  name = 'lsp',
+  event = 'VeryLazy',
 }
 
 L.config = function ()
