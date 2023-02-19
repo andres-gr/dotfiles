@@ -198,6 +198,16 @@ if utils.has_plugin 'gitsigns' then
   map('n', '<leader>Gd', '<CMD>Gitsigns diffthis<CR>', desc_opts('Git view diff'))
 end
 
+-- Git conflict
+if utils.has_plugin 'git-conflict' then
+  map('n', '<leader>gco', '<Plug>(git-conflict-ours)', desc_opts('Git conflict choose ours'))
+  map('n', '<leader>gct', '<Plug>(git-conflict-theirs)', desc_opts('Git conflict choose theirs'))
+  map('n', '<leader>gcb', '<Plug>(git-conflict-both)', desc_opts('Git conflict choose both'))
+  map('n', '<leader>gcn', '<Plug>(git-conflict-none)', desc_opts('Git conflict choose none'))
+  map('n', '[x', '<Plug>(git-conflict-prev-conflict)', desc_opts('Git prev conflict'))
+  map('n', ']x', '<Plug>(git-conflict-next-conflict)', desc_opts('Git next conflict'))
+end
+
 -- Git fugitive
 map('n', '<leader>Gl', ':0Gllog<CR>', desc_opts('Git show file history'))
 
