@@ -1,6 +1,9 @@
 local G = {
   'akinsho/git-conflict.nvim',
-  event = 'BufReadPre',
+  event = {
+    'BufReadPre',
+    'BufNewFile',
+  },
 }
 
 G.config = function ()

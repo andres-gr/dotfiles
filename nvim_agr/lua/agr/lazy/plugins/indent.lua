@@ -1,6 +1,9 @@
 local I = {
   'Darazaki/indent-o-matic',
-  event = 'BufReadPost',
+  event = {
+    'BufReadPre',
+    'BufNewFile',
+  },
 }
 
 I.config = function ()

@@ -1,6 +1,9 @@
 local G = {
   'lewis6991/gitsigns.nvim',
-  event = 'BufReadPre',
+  event = {
+    'BufReadPre',
+    'BufNewFile',
+  },
 }
 
 G.config = function ()

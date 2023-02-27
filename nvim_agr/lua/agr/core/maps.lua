@@ -242,3 +242,9 @@ map('n', '<leader>B', '<Plug>WordMotion_B', desc_opts('Wordmotion B'))
 map('n', '-', '<C-x>', desc_opts('Decrement number'))
 map('n', '+', '<C-a>', desc_opts('Increment number'))
 
+-- Find and replace
+map('n', '<leader>fRo', function () require 'spectre'.open() end, desc_opts('Find and replace in files'))
+map('n', '<leader>fRw', function () require 'spectre'.open_visual { select_word = true } end, desc_opts('Find and replace current word in files'))
+map('v', '<leader>fR', "<ESC>:lua require('spectre').open_visual()<CR>", desc_opts('Find and current word replace in files'))
+map('n', '<leader>fRc', function () require 'spectre'.open_file_search() end, desc_opts('Find and replace in current file'))
+
