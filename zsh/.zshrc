@@ -20,7 +20,8 @@ typeset -U path
 typeset -U fpath
 
 export XDG_CONFIG_HOME="$HOME/.config"
-export ZSH_FILES="$HOME/devel/dotfiles/zsh"
+export DOTFILES="$HOME/devel/dotfiles"
+export ZSH_FILES="$DOTFILES/zsh"
 
 # The following lines were added by compinstall
 zstyle :compinstall filename '$HOME/.zshrc'
