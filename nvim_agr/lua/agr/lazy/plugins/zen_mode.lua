@@ -12,7 +12,8 @@ Z.config = function ()
     },
     window = {
       backdrop = 1,
-      width = 0.55,
+      height = 0.8,
+      width = 0.65,
     },
   }
 end
