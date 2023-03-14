@@ -248,3 +248,5 @@ map('n', '<leader>fRw', function () require 'spectre'.open_visual { select_word 
 map('v', '<leader>fR', "<ESC>:lua require('spectre').open_visual()<CR>", desc_opts('Find and current word replace in files'))
 map('n', '<leader>fRc', function () require 'spectre'.open_file_search() end, desc_opts('Find and replace in current file'))
 
+-- Zen mode
+map('n', '\\z', '<CMD>ZenMode<CR>', desc_opts('Toggle Zen Mode'))
