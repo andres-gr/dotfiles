@@ -19,7 +19,7 @@ A.config = function ()
 
   -- Terminal header w/lolcat
   dash.section.terminal.command = 'cat | lolcat ' .. os.getenv('HOME') .. '/devel/dotfiles/assets/banner.cat'
-  dash.section.terminal.height = 24
+  dash.section.terminal.height = 20
   dash.section.terminal.width = 78
   dash.section.terminal.opts = {
     redraw = true,
@@ -56,14 +56,10 @@ A.config = function ()
 
   alpha.setup {
     layout = {
-      {
-        type = 'padding',
-        val = 16,
-      },
       dash.section.terminal,
       {
         type = 'padding',
-        val = 16,
+        val = 10,
       },
       dash.section.buttons,
       {
