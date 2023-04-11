@@ -10,28 +10,25 @@ local N = {
 
 N.config = function ()
   local neo_tree = require 'neo-tree'
-  local utils = require 'agr.core.utils'
-  local renderer = require 'neo-tree.ui.renderer'
+  local neo_utils = require 'neo-tree.utils'
   local fs = require 'neo-tree.sources.filesystem'
+  local utils = require 'agr.core.utils'
 
   local toggle_dir = function (state, node)
-    fs.toggle_directory(state, node, nil, true, true)
+    fs.toggle_directory(state, node, nil, false, false)
+    return true
   end
 
   -- toggle a node open or descend to it's first child
   local dive = function (state)
-    local node = state.tree:get_node()
-    if node.type ~= 'directory' then return end
+    local tree = state.tree
+    local node = tree:get_node()
 
-    local id = node:get_id()
+    if not neo_utils.is_expandable(node) then return end
+
     if not node:is_expanded() then
       toggle_dir(state, node)
-    end
 
-    renderer.redraw(state)
-
-    local children = state.tree:get_nodes(id)
-    if children then
       vim.fn.feedkeys(utils.key_down)
     end
   end
@@ -190,8 +187,8 @@ N.config = function ()
     },
     window = {
       mapping_options = {
-        nowait = true,
-        remap = false,
+        noremap = true,
+        nowait = false,
       },
       mappings = {
         ['<space>'] = false,
