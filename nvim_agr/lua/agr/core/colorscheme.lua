@@ -17,8 +17,8 @@ dracula.setup({
     Visual = { reverse = true },
 
     -- Alpha dash
-    AlphaButtonShortcut = { fg = colors.cyan, bold = true },
-    AlphaButtonText = { fg = colors.orange },
+    AlphaButtonShortcut = { fg = colors.green, bold = true },
+    AlphaButtonText = { fg = colors.bright_magenta },
 
     -- Vim illuminate
     IlluminatedWordRead = { bg = colors.gutter_fg },
