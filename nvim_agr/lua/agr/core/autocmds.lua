@@ -75,6 +75,24 @@ cmd('FileType', {
   pattern = 'alpha',
 })
 
+cmd('FileType', {
+  callback = function (event)
+    local type = vim.api.nvim_buf_get_option(event.buf, 'filetype')
+
+    if type == 'neo-tree' then
+      vim.keymap.set('n', '<leader>o', '<C-w>l', {
+        buffer = event.buf,
+        desc = 'Focus right buffer',
+        remap = false,
+        silent = true,
+      })
+    end
+  end,
+  desc = 'Add neo tree buffer maps',
+  group = neotree,
+  pattern = 'neo-tree',
+})
+
 cmd('User', {
   callback = function (event)
     if utils.has_plugin 'alpha' then
