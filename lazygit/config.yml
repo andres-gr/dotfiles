@@ -7,5 +7,5 @@ gui:
     selectedRangeBgColor:
       - reverse
 os:
-  editCommand: 'nvim'
-  openCommand: 'nvim {{filename}}'
+  edit: 'nvim'
+  open: 'nvim {{filename}}'
