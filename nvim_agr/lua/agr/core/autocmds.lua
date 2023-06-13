@@ -99,8 +99,8 @@ cmd('User', {
       local fallback_on_empty = is_empty_buf(event.buf)
 
       if fallback_on_empty then
-        require 'neo-tree'.close_all()
-        vim.cmd [[ :Alpha ]]
+        vim.cmd [[ Neotree close ]]
+        vim.cmd [[ Alpha ]]
       end
     end
   end,

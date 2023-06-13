@@ -15,9 +15,6 @@ return {
   -- Component library
   'MunifTanjim/nui.nvim',
 
-  -- Rainbow parenthesis highlight
-  'mrjones2014/nvim-ts-rainbow',
-
   -- Autoclose tags
   'windwp/nvim-ts-autotag',
 
