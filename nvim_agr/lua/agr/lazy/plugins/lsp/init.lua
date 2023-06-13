@@ -8,6 +8,7 @@ local L = {
     'jose-elias-alvarez/null-ls.nvim',
     'jayp0521/mason-null-ls.nvim',
     'jose-elias-alvarez/typescript.nvim',
+    'joeveiga/ng.nvim',
     'onsails/lspkind.nvim',
     {
       'glepnir/lspsaga.nvim',

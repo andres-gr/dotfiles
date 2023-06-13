@@ -71,3 +71,6 @@ eval "$(fnm env --use-on-cd)"
 # eval "$(starship init zsh)"
 _evalcache starship init zsh
 
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+

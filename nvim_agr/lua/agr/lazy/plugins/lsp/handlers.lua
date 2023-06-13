@@ -94,6 +94,14 @@ H.on_attach = function (client, bufnr)
     client.server_capabilities.hoverProvider = false
   end
 
+  if client.name == 'angularls' then
+    local ng = require 'ng'
+
+    map('n', '<leader>gat', ng.goto_template_for_component, 'LSP Angular go to template')
+    map('n', '<leader>gac', ng.goto_component_with_template_file, 'LSP Angular go to component')
+    map('n', '<leader>gaT', ng.get_template_tcb, 'LSP Angular get template')
+  end
+
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
