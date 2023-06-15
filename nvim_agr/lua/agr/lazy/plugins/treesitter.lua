@@ -12,6 +12,7 @@ local T = {
     'TSUpdateSync',
   },
   dependencies = {
+    'nvim-treesitter/nvim-treesitter-angular',
     'JoosepAlviste/nvim-ts-context-commentstring',
     'nvim-treesitter/playground',
     'mrjones2014/nvim-ts-rainbow',
