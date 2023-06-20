@@ -12,10 +12,6 @@ local T = {
     'TSUpdateSync',
   },
   dependencies = {
-    {
-      'elgiano/nvim-treesitter-angular',
-      branch = 'topic/jsx-fix'
-    },
     'JoosepAlviste/nvim-ts-context-commentstring',
     'nvim-treesitter/playground',
     'mrjones2014/nvim-ts-rainbow',
