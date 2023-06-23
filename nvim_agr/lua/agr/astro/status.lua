@@ -893,6 +893,19 @@ end
 -- @usage local heirline_component = status.component.mode { mode_text = true }
 function status.component.mode(opts)
   opts = utils.default_tbl(opts, {
+    init = function (self)
+      self.mode = vim.fn.mode(1) -- :h mode()
+
+      -- execute this only once, this is required if you want the ViMode
+      -- component to be updated on operator pending mode
+      if not self.once then
+        vim.api.nvim_create_autocmd('ModeChanged', {
+          pattern = '*:*o',
+          command = 'redrawstatus'
+        })
+        self.once = true
+      end
+    end,
     mode_text = false,
     paste = false,
     spell = false,
