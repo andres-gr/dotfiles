@@ -61,11 +61,11 @@ M.setup = function ()
       typescript.setup {
         server = vim.tbl_deep_extend('force', default_opts, {
           autostart = true,
-          -- init_options = {
-          --   tsserver = {
-          --     path = '/Users/andres/Library/pnpm/global/5/.pnpm/typescript@4.9.5/node_modules/typescript/lib',
-          --   },
-          -- },
+          init_options = {
+            tsserver = {
+              path = '/Users/andres/Library/pnpm/global/5/.pnpm/typescript@5.1.3/node_modules/typescript/lib',
+            },
+          },
         }),
       }
     end,
