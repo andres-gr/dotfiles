@@ -85,9 +85,9 @@ H.on_attach = function (client, bufnr)
 
   if client.name == 'tsserver' then
     client.server_capabilities.document_formatting = false
-    map('n', '<leader>gf', ':TypescriptRenameFile<CR>', 'LSP TS rename file')
-    map('n', '<leader>go', ':TypescriptOrganizeImports<CR>', 'LSP TS organize imports')
-    map('n', '<leader>gu', ':TypescriptRemoveUnused<CR>', 'LSP TS remove unused vars')
+    map('n', '<leader>gf', '<CMD>TypescriptRenameFile<CR>', 'LSP TS rename file')
+    map('n', '<leader>go', '<CMD>TypescriptOrganizeImports<CR>', 'LSP TS organize imports')
+    map('n', '<leader>gu', '<CMD>TypescriptRemoveUnused<CR>', 'LSP TS remove unused vars')
   end
 
   if client.name == 'graphql' then
