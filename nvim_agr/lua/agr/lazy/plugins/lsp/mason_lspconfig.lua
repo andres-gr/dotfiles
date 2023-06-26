@@ -26,7 +26,7 @@ M.setup = function ()
   local default_opts = {
     capabilities = handlers.capabilities,
     flags = {
-      debounce_text_changes = 200,
+      debounce_text_changes = 250,
     },
     on_attach = handlers.on_attach,
     root_dir = handlers.root_dir,

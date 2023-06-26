@@ -5,7 +5,7 @@ N.setup = function ()
   local handlers = require 'agr.lazy.plugins.lsp.handlers'
 
   null_ls.setup {
-    debounce = 150,
+    debounce = 250,
     on_attach = handlers.on_attach,
     root_dir = handlers.root_dir,
   }
