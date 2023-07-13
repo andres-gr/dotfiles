@@ -1031,7 +1031,7 @@ end
 -- @usage local heirline_component = status.component.treesitter()
 function status.component.treesitter(opts)
   opts = utils.default_tbl(opts, {
-    str = { str = 'TS', icon = { kind = 'ActiveTS' } },
+    str = { str = ' TS', icon = { kind = 'ActiveTS' } },
     surround = {
       separator = 'right',
       color = 'treesitter_bg',
