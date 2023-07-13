@@ -4,16 +4,19 @@ return {
   'Mofiqul/dracula.nvim',
 
   -- Useful lua functions used by lots of plugins
-  'nvim-lua/plenary.nvim',
+  {
+    'nvim-lua/plenary.nvim',
+    lazy = true,
+  },
 
   -- An implementation of the Popup API from vim in Neovim
   'nvim-lua/popup.nvim',
 
   -- Icons
-  'kyazdani42/nvim-web-devicons',
-
-  -- Component library
-  'MunifTanjim/nui.nvim',
+  {
+    'nvim-tree/nvim-web-devicons',
+    lazy = true,
+  },
 
   -- Autoclose tags
   'windwp/nvim-ts-autotag',
@@ -59,6 +62,23 @@ return {
   {
     'chaoren/vim-wordmotion',
     event = 'VeryLazy',
+  },
+
+   -- Session management
+  {
+    'folke/persistence.nvim',
+    event = 'BufReadPre',
+    opts = {
+      options = {
+        'buffers',
+        'curdir',
+        'tabpages',
+        'winsize',
+        'help',
+        'globals',
+        'skiprtp',
+      },
+    },
   },
 }
 
