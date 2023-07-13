@@ -27,15 +27,15 @@ A.config = function ()
 
   -- Dash buttons group
   dash.section.buttons.val = {
-    btn('o', '   Recently used files', ':Telescope oldfiles<CR>'),
-    btn('f', '   Search files', ':Telescope find_files<CR>'),
-    btn('F', '   Search all files', ':lua require("telescope.builtin").find_files({ no_ignore = true })<CR>'),
-    btn('w', '   Search words', ':Telescope live_grep<CR>'),
+    btn('o', '󰈞   Recently used files', ':Telescope oldfiles<CR>'),
+    btn('f', '󰱼   Search files', ':Telescope find_files<CR>'),
+    btn('F', '󰡦   Search all files', ':lua require("telescope.builtin").find_files({ no_ignore = true })<CR>'),
+    btn('w', '󱎸   Search words', ':Telescope live_grep<CR>'),
     btn('g', '   Search git status files', ':Telescope git_status<CR>'),
     btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
     btn('s', '   Show Lazy plugins', ':Lazy<CR>'), -- Show lazy plugin manager
-    btn('c', 'ﮮ   Check plugins', ':Lazy check<CR>'), -- Check lazy plugins update
-    btn('q', '   Quit Neovim', ':qa!<CR>'),
+    btn('c', '󰚰   Check plugins', ':Lazy check<CR>'), -- Check lazy plugins update
+    btn('q', '󰗼   Quit Neovim', ':qa!<CR>'),
   }
 
   dash.section.buttons.opts = {
@@ -48,7 +48,7 @@ A.config = function ()
     local version = vim.version()
     local nvim_version_info = '  Neovim v' .. version.major .. '.' .. version.minor .. '.' .. version.patch
 
-    return ' ' .. total_plugins .. ' plugins' .. nvim_version_info
+    return '' .. total_plugins .. ' plugins' .. nvim_version_info
   end
 
   dash.section.footer.val = footer()

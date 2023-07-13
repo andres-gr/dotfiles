@@ -104,12 +104,22 @@ dracula.setup({
 
     -- Heirline
     StatusLine = { fg = colors.fg, bg = colors.menu },
+
+    -- Rainbow Delimiters
+    RainbowDelimiterBlue = { fg = colors.bright_blue },
+    RainbowDelimiterCyan = { fg = colors.orange },
+    RainbowDelimiterGreen = { fg = colors.green },
+    RainbowDelimiterOrange = { fg = colors.cyan },
+    RainbowDelimiterRed = { fg = colors.pink },
+    RainbowDelimiterViolet = { fg = colors.purple },
+    RainbowDelimiterYellow = { fg = colors.yellow },
   },
   transparent_bg = true,
 })
 
 local colorscheme = 'dracula'
 
+---@diagnostic disable-next-line: param-type-mismatch
 local color_status_ok, _ = pcall(vim.cmd, 'colorscheme ' .. colorscheme)
 if not color_status_ok then
   vim.notify('colorscheme ' .. colorscheme .. ' not found!')

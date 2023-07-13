@@ -1,26 +1,18 @@
 local T = {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
-  cmd = {
-    'TSDisableAll',
-    'TSEnableAll',
-    'TSInstall',
-    'TSInstallInfo',
-    'TSInstallSync',
-    'TSUninstall',
-    'TSUpdate',
-    'TSUpdateSync',
-  },
+  cmd = { 'TSUpdateSync' },
   dependencies = {
     'JoosepAlviste/nvim-ts-context-commentstring',
     'nvim-treesitter/playground',
-    'mrjones2014/nvim-ts-rainbow',
+    'hiphish/rainbow-delimiters.nvim',
     'windwp/nvim-ts-autotag',
   },
   event = {
     'BufNewFile',
-    'BufRead',
+    'BufReadPost',
   },
+  version = '*',
 }
 
 T.config = function ()
@@ -47,15 +39,8 @@ T.config = function ()
       'typescript',
       'vim',
     },
-    highlight = {
-      additional_vim_regex_highlighting = false,
-      disable = { 'css' },
-      enable = true,
-    },
-    indent = {
-      disable = { 'css' },
-      enable = true,
-    },
+    highlight = { enable = true },
+    indent = { enable = true },
     incremental_selection = { enable = true },
     playground = {
       enable = true,
@@ -74,11 +59,18 @@ T.config = function ()
       persist_queries = false, -- Whether the query persists across vim sessions
       updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
     },
-    rainbow = {
-      disable = { 'html' },
-      enable = true,
-      extended_mode = false,
-      max_file_lines = nil,
+  }
+
+  local rainbow = require('rainbow-delimiters')
+
+  vim.g.rainbow_delimiters = {
+    query = {
+      [''] = 'rainbow-delimiters',
+      lua = 'rainbow-blocks',
+    },
+    strategy = {
+      [''] = rainbow.strategy['global'],
+      html = rainbow.strategy['local'],
     },
   }
 end

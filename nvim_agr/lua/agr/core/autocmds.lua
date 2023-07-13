@@ -145,11 +145,38 @@ cmd('TextYankPost', {
   pattern = '*',
 })
 
-cmd({ 'BufRead', 'BufNewFile' }, {
-  callback = function () vim.diagnostic.disable(0) end,
-  desc = 'Diable LSP on node_modules',
+-- cmd({ 'BufRead', 'BufNewFile' }, {
+--   callback = function () vim.diagnostic.disable(0) end,
+--   desc = 'Diable LSP on node_modules',
+--   group = general,
+--   pattern = '*/node_modules/*',
+-- })
+
+cmd('WinLeave', {
+	callback = function ()
+		if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'i' then
+			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'i', false)
+		end
+	end,
   group = general,
-  pattern = '*/node_modules/*',
+})
+
+cmd('BufReadPost', {
+  callback = function ()
+    -- go to last loc when opening a buffer
+    local exclude = { 'gitcommit' }
+    local buf = vim.api.nvim_get_current_buf()
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
+      return
+    end
+
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(buf)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+  group = general,
 })
 
 local agr = augroup('agr_highlights', { clear = true })
@@ -159,12 +186,4 @@ cmd({ 'VimEnter', 'ColorScheme' }, {
   end,
   desc = 'Load highlights',
   group = agr,
-})
-
-cmd('WinLeave', {
-	callback = function ()
-		if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'i' then
-			vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'i', false)
-		end
-	end,
 })
