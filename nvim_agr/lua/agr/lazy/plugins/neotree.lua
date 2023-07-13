@@ -3,7 +3,10 @@ local N = {
   branch = 'v2.x',
   cmd = 'Neotree',
   dependencies = {
-    'MunifTanjim/nui.nvim',
+    {
+      'MunifTanjim/nui.nvim',
+      lazy = true,
+    },
   },
   init = function () vim.g.neo_tree_remove_legacy_commands = true end,
 }

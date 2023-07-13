@@ -1,6 +1,7 @@
 local L = {
   'neovim/nvim-lspconfig',
   branch = 'master',
+  cmd = 'Mason',
   dependencies = {
     'hrsh7th/cmp-nvim-lsp',
     'williamboman/mason.nvim',
@@ -14,7 +15,10 @@ local L = {
       event = 'LspAttach',
     },
   },
-  event = 'VeryLazy',
+  event = {
+    'BufNewFile',
+    'BufReadPre',
+  },
 }
 
 L.config = function ()

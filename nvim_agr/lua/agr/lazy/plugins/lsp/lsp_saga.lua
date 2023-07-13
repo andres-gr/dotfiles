@@ -10,7 +10,7 @@ S.setup = function ()
       edit = '<CR>',
     },
     lightbulb = {
-      cache_code_action = false,
+      cache_code_action = true,
       enable = true,
       enable_in_insert = false,
       update_time = 250,
@@ -19,7 +19,7 @@ S.setup = function ()
     preview = {
       lines_below = 5,
     },
-    request_timeout = 6000,
+    request_timeout = 2500,
     -- Keybinds for navigation in saga window
     scroll_preview = {
       scroll_down = '<C-j>',

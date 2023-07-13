@@ -84,15 +84,17 @@ H.on_attach = function (client, bufnr)
   local function buf_set_option (...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   if client.name == 'tsserver' then
-    client.server_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = nil
     map('n', '<leader>gf', '<CMD>TypescriptRenameFile<CR>', 'LSP TS rename file')
     map('n', '<leader>go', '<CMD>TypescriptOrganizeImports<CR>', 'LSP TS organize imports')
     map('n', '<leader>gu', '<CMD>TypescriptRemoveUnused<CR>', 'LSP TS remove unused vars')
   end
 
   if client.name == 'graphql' then
-    client.server_capabilities.hoverProvider = false
+    client.server_capabilities.hoverProvider = nil
   end
+
+  client.server_capabilities.semanticTokensProvider = nil
 
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
