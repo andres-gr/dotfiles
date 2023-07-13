@@ -57,14 +57,14 @@ G.config = function ()
         hl = 'GitSignsDelete',
         linehl = 'GitSignsDeleteLn',
         numhl = 'GitSignsDeleteNr',
-        text = '契',
+        text = '',
         -- text = '▎',
       },
       topdelete = {
         hl = 'GitSignsDelete',
         linehl = 'GitSignsDeleteLn',
         numhl = 'GitSignsDeleteNr',
-        text = '契',
+        text = '',
       },
     },
     status_formatter = nil, -- Use default

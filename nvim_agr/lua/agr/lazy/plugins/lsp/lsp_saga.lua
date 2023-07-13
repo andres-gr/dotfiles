@@ -7,7 +7,9 @@ S.setup = function ()
 
   saga.setup {
     definition = {
-      edit = '<CR>',
+      keys = {
+        edit = '<CR>',
+      },
     },
     lightbulb = {
       cache_code_action = true,

@@ -11,7 +11,7 @@ local L = {
     'jose-elias-alvarez/typescript.nvim',
     'onsails/lspkind.nvim',
     {
-      'glepnir/lspsaga.nvim',
+      'nvimdev/lspsaga.nvim',
       event = 'LspAttach',
     },
   },

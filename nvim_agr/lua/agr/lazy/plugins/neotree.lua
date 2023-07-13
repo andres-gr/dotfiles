@@ -71,7 +71,7 @@ N.config = function ()
       },
       icon = {
         folder_closed = '',
-        folder_empty = 'ﰊ',
+        folder_empty = '󰉖',
         folder_open = '',
         -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
         -- then these will never be used.
@@ -93,12 +93,12 @@ N.config = function ()
           added     = '✚', -- or '✚', but this is redundant info if you use git_status_colors on the name
           deleted   = '✖', -- this can only be used in the git_status source
           modified  = '', -- or '', but this is redundant info if you use git_status_colors on the name
-          renamed   = '', -- this can only be used in the git_status source
+          renamed   = '', -- this can only be used in the git_status source
           -- Status type
           conflict  = '',
           ignored   = '',
           staged    = '',
-          unstaged  = '',
+          unstaged  = '󰆢',
           untracked = '',
         },
       },
