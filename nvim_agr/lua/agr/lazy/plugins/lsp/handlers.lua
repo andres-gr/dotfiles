@@ -125,6 +125,7 @@ H.on_attach = function (client, bufnr)
   map('n', ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>', 'LSP next diagnostic')
   map('n', 'gq', '<CMD>lua vim.diagnostic.setloclist()<CR>', 'LSP diagnostic set loclist')
   map('n', '\\f', '<CMD>lua vim.lsp.buf.format { async = true }<CR>', 'LSP format')
+  map('n', '<leader>lsr', ':LspRestart<CR>', 'LSP restart server')
 
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format { async = true }' ]]
 

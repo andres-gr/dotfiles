@@ -46,9 +46,9 @@ A.config = function ()
   local function footer()
     local total_plugins = require 'lazy'.stats().count
     local version = vim.version()
-    local nvim_version_info = '  Neovim v' .. version.major .. '.' .. version.minor .. '.' .. version.patch
+    local nvim_version_info = ' Neovim v' .. version.major .. '.' .. version.minor .. '.' .. version.patch
 
-    return '' .. total_plugins .. ' plugins' .. nvim_version_info
+    return ' ' .. total_plugins .. ' plugins on ' .. nvim_version_info
   end
 
   dash.section.footer.val = footer()
