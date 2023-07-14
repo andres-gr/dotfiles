@@ -12,7 +12,7 @@ local T = {
     'BufNewFile',
     'BufReadPost',
   },
-  version = '*',
+  version = false,
 }
 
 T.config = function ()
