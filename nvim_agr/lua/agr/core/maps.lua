@@ -255,6 +255,3 @@ map('n', '\\z', '<CMD>ZenMode<CR>', desc_opts('Toggle Zen Mode'))
 map('n', '<leader><leader>qs', function () require('persistance').load() end, desc_opts('Restore session'))
 map('n', '<leader><leader>ql', function () require('persistance').load { last = true } end, desc_opts('Restore last session'))
 map('n', '<leader><leader>qd', function () require('persistance').stop() end, desc_opts('Don\'t save current session'))
-
--- Icon picker
-map('i', '<C-i>', '<CMD>IconPickerInsert<CR>', desc_opts('Icon picker'))

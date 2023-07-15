@@ -19,8 +19,9 @@ M.config = function ()
   local luasnip = require 'luasnip'
   local lspkind = require 'lspkind'
 
-  luasnip.config.set_config {
-    delete_check_events = 'InsertLeave',
+  luasnip.setup {
+    delete_check_events = 'TextChanged',
+    history = true,
     region_check_events = 'InsertEnter',
   }
 
@@ -174,6 +175,7 @@ M.config = function ()
       },
     },
     completion = {
+      completeopt = 'manu,manuone,noinster',
       keyword_length = 1,
     },
     confirm_opts = {
@@ -246,8 +248,6 @@ M.config = function ()
       ['<Tab>'] = cmp.mapping(function (fallback)
         if cmp.visible() then
           cmp.confirm { select = true }
-        elseif luasnip.expand_or_locally_jumpable() then
-          luasnip.expand_or_jump()
         elseif jumpable(1) then
           luasnip.jump(1)
         elseif has_words_before() then
