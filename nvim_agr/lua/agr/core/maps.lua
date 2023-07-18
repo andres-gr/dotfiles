@@ -252,6 +252,6 @@ map('n', '<leader>fRc', function () require 'spectre'.open_file_search() end, de
 map('n', '\\z', '<CMD>ZenMode<CR>', desc_opts('Toggle Zen Mode'))
 
 -- Session management
-map('n', '<leader><leader>qs', function () require('persistance').load() end, desc_opts('Restore session'))
-map('n', '<leader><leader>ql', function () require('persistance').load { last = true } end, desc_opts('Restore last session'))
-map('n', '<leader><leader>qd', function () require('persistance').stop() end, desc_opts('Don\'t save current session'))
+map('n', '<leader><leader>qs', function () require('persistence').load() end, desc_opts('Restore session'))
+map('n', '<leader><leader>ql', function () require('persistence').load { last = true } end, desc_opts('Restore last session'))
+map('n', '<leader><leader>qd', function () require('persistence').stop() end, desc_opts('Don\'t save current session'))
