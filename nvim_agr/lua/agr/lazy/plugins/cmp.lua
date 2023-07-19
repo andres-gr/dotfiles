@@ -22,7 +22,6 @@ M.config = function ()
   luasnip.setup {
     delete_check_events = 'TextChanged',
     history = true,
-    region_check_events = 'InsertEnter',
   }
 
   require 'luasnip/loaders/from_vscode'.lazy_load {
