@@ -10,6 +10,7 @@ alias lg="lazygit"
 alias ls="colorls --dark"
 alias l="ls -la"
 alias n="nvim"
+alias py=python3
 alias tm="tmux"
 alias v="nvim"
 alias vi="/usr/bin/vim"
