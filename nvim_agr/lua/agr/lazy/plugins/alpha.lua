@@ -1,6 +1,7 @@
 local A = {
   'goolord/alpha-nvim',
   cmd = 'Alpha',
+  commit = '7a6b948',
 }
 
 A.config = function ()

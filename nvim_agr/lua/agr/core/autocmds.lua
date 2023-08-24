@@ -125,7 +125,7 @@ cmd('UIEnter', {
           end
         end
       end
-      if not should_skip then vim.cmd [[ :Alpha ]] end
+      if not should_skip then vim.cmd [[ Alpha ]] end
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
