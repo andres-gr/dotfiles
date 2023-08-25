@@ -11,13 +11,19 @@ N.setup = function ()
     root_dir = handlers.root_dir,
     sources = {
       null_ls.builtins.code_actions.eslint_d.with {
-        extra_filetypes = { 'svelte' }
+        extra_filetypes = { 'svelte' },
       },
       null_ls.builtins.diagnostics.eslint_d.with {
-        extra_filetypes = { 'svelte' }
+        extra_filetypes = {
+          'mdx',
+          'svelte',
+        },
       },
       null_ls.builtins.formatting.prettierd.with {
-        extra_filetypes = { 'svelte' }
+        extra_filetypes = {
+          'mdx',
+          'svelte',
+        },
       },
       {
         filetypes = { 'python' },

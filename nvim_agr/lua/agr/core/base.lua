@@ -88,3 +88,7 @@ vim.cmd [[ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwai
 -- Better motion disable default maps
 vim.g.wordmotion_nomap = 1
 
+-- Add mdx filetype
+vim.filetype.add {
+  extension = { mdx = 'mdx' },
+}
