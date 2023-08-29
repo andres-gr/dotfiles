@@ -62,8 +62,7 @@ T.config = function ()
   }
 
   -- Add mdx highlight
-  local ft_parser = require 'nvim-treesitter.parsers'.filetype_to_parsername
-  ft_parser.mdx = 'markdown'
+  vim.treesitter.language.register('markdown', 'mdx')
 
   local rainbow = require('rainbow-delimiters')
 
