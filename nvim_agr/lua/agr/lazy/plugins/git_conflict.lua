@@ -18,6 +18,28 @@ G.config = function ()
       current = 'DiffAdd',
     }
   }
+
+  local map = vim.keymap.set
+  local opts = {
+    remap = false,
+    silent = true,
+  }
+  local desc_opts = function (desc)
+    local result = { desc = desc }
+
+    for key, val in pairs(opts) do
+      result[key] = val
+    end
+
+    return result
+  end
+
+  map('n', '<leader>gco', '<Plug>(git-conflict-ours)', desc_opts('Git conflict choose ours'))
+  map('n', '<leader>gct', '<Plug>(git-conflict-theirs)', desc_opts('Git conflict choose theirs'))
+  map('n', '<leader>gcb', '<Plug>(git-conflict-both)', desc_opts('Git conflict choose both'))
+  map('n', '<leader>gcn', '<Plug>(git-conflict-none)', desc_opts('Git conflict choose none'))
+  map('n', '[x', '<Plug>(git-conflict-prev-conflict)', desc_opts('Git prev conflict'))
+  map('n', ']x', '<Plug>(git-conflict-next-conflict)', desc_opts('Git next conflict'))
 end
 
 return G

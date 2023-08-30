@@ -79,6 +79,34 @@ G.config = function ()
     },
   }
 
+  local map = vim.keymap.set
+  local opts = {
+    remap = false,
+    silent = true,
+  }
+  local desc_opts = function (desc)
+    local result = { desc = desc }
+
+    for key, val in pairs(opts) do
+      result[key] = val
+    end
+
+    return result
+  end
+
+  local blame_line = '<CMD>lua require "agr.core.utils".fix_float_ui("Gitsigns blame_line")<CR>'
+  local preview_hunk = '<CMD>lua require "agr.core.utils".fix_float_ui("Gitsigns preview_hunk")<CR>'
+
+  map('n', '<leader>gk', '<CMD>Gitsigns prev_hunk<CR>zz', desc_opts('Git prev hunk'))
+  map('n', '<leader>gj', '<CMD>Gitsigns next_hunk<CR>zz', desc_opts('Git next hunk'))
+  map('n', '<leader>gl', blame_line, desc_opts('Git blame line'))
+  map('n', '<leader>gp', preview_hunk, desc_opts('Git preview hunk'))
+  map('n', '<leader>ghr', '<CMD>Gitsigns reset_hunk<CR>', desc_opts('Git reset hunk'))
+  map('n', '<leader>gbr', '<CMD>Gitsigns reset_buffer<CR>', desc_opts('Git reset buffer'))
+  map('n', '<leader>ghs', '<CMD>Gitsigns stage_hunk<CR>', desc_opts('Git stage hunk'))
+  map('n', '<leader>ghu', '<CMD>Gitsigns undo_stage_hunk<CR>', desc_opts('Git unstage hunk'))
+  map('n', '<leader>Gd', '<CMD>Gitsigns diffthis<CR>', desc_opts('Git view diff'))
+
   local scrollbar = require 'scrollbar.handlers.gitsigns'
 
   scrollbar.setup()

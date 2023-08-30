@@ -30,9 +30,9 @@ end
 local neotree = augroup('neotree_start', { clear = true })
 cmd('BufEnter', {
   callback = function ()
-    if utils.has_plugin 'neo-tree' then
-      local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
-      if stats and stats.type == 'directory' then
+    local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(0))
+    if stats and stats.type == 'directory' then
+      if utils.has_plugin 'neo-tree' then
         require 'neo-tree.setup.netrw'.hijack()
       end
     end
