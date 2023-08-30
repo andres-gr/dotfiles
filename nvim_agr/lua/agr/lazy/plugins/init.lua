@@ -1,7 +1,10 @@
 -- Install your plugins here
 return {
   -- Dracula theme
-  'Mofiqul/dracula.nvim',
+  {
+    'Mofiqul/dracula.nvim',
+    priority = 1000,
+  },
 
   -- Useful lua functions used by lots of plugins
   {
