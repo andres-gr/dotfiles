@@ -109,7 +109,7 @@ H.on_attach = function (client, bufnr)
   map('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', 'LSP declaration')
   map('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', 'LSP definition')
   map('n', 'K', '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
-  map('n', 'gh',  '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
+  map('n', 'gh', '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
   map('n', 'gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', 'LSP implementation')
   map('n', '<leader>k', '<CMD>lua vim.lsp.buf.signature_help()<CR>', 'LSP signature help')
   -- map('n', '<leader>wa', '<CMD>lua vim.lsp.buf.add_workspace_folder()<CR>', 'LSP add workspace folder')
@@ -133,30 +133,30 @@ H.on_attach = function (client, bufnr)
 end
 
 local common_capabilities = function ()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+
   local cmp_status_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
   if cmp_status_ok then
     -- Add additional capabilities supported by nvim-cmp
     -- See: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
-    return cmp_nvim_lsp.default_capabilities()
+    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
   end
 
-  local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-  capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-  capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
-  capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-  capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-  capabilities.textDocument.completion.completionItem.preselectSupport = true
-  capabilities.textDocument.completion.completionItem.resolveSupport = {
-    properties = {
-      'documentation',
-      'detail',
-      'additionalTextEdits',
-    },
-  }
-  capabilities.textDocument.completion.completionItem.snippetSupport = true
-  capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
+  -- capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
+  -- capabilities.textDocument.completion.completionItem.deprecatedSupport = true
+  -- capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
+  -- capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
+  -- capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
+  -- capabilities.textDocument.completion.completionItem.preselectSupport = true
+  -- capabilities.textDocument.completion.completionItem.resolveSupport = {
+  --   properties = {
+  --     'documentation',
+  --     'detail',
+  --     'additionalTextEdits',
+  --   },
+  -- }
+  -- capabilities.textDocument.completion.completionItem.snippetSupport = true
+  -- capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
 
   return capabilities
 end
