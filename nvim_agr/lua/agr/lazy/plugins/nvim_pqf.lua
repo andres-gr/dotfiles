@@ -1,7 +1,6 @@
 local P = {
   'yorickpeterse/nvim-pqf',
   event = 'UIEnter',
-  url = 'https://gitlab.com/yorickpeterse/nvim-pqf',
 }
 
 P.config = function ()

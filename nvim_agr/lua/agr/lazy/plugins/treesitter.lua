@@ -3,10 +3,10 @@ local T = {
   build = ':TSUpdate',
   cmd = { 'TSUpdateSync' },
   dependencies = {
-    'JoosepAlviste/nvim-ts-context-commentstring',
-    'nvim-treesitter/playground',
+    'JoosepAlviste/nvim-ts-context-commentstring', -- Context based comments
     'hiphish/rainbow-delimiters.nvim',
-    'windwp/nvim-ts-autotag',
+    'windwp/nvim-ts-autotag', -- Autoclose tags
+    'nvim-treesitter/playground', -- TS playground
   },
   event = {
     'BufNewFile',

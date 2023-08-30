@@ -21,25 +21,22 @@ return {
     lazy = true,
   },
 
-  -- Autoclose tags
-  'windwp/nvim-ts-autotag',
-
-  -- Context based comments   
-  'JoosepAlviste/nvim-ts-context-commentstring',
-
-  -- TS playground
-  'nvim-treesitter/playground',
-
   -- Git commands
   {
     'tpope/vim-fugitive',
-    event = 'VeryLazy',
+    lazy = true,
   },
 
   -- Git time lapse
   {
     'junkblocker/git-time-lapse',
-    event = 'VeryLazy',
+    lazy = true,
+  },
+
+  -- Git Diff views
+  {
+    'sindrets/diffview.nvim',
+    lazy = true,
   },
 
   -- Better buffer close
@@ -49,13 +46,13 @@ return {
       'Bdelete',
       'Bwipeout',
     },
-    event = 'VeryLazy',
+    lazy = true,
   },
 
   -- Better handle repeat actions
   {
     'tpope/vim-repeat',
-    event = 'VeryLazy',
+    lazy = true,
   },
 
   -- Get extra JSON schemas
@@ -64,7 +61,7 @@ return {
   -- Camelcase motion
   {
     'chaoren/vim-wordmotion',
-    event = 'VeryLazy',
+    lazy = true,
   },
 
    -- Session management
