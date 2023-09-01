@@ -1,6 +1,6 @@
 local P = {
   'yorickpeterse/nvim-pqf',
-  event = 'BufWinEnter',
+  event = 'BufReadPre',
 }
 
 P.config = function ()
