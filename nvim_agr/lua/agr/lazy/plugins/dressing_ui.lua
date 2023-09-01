@@ -1,6 +1,6 @@
 local D = {
   'stevearc/dressing.nvim',
-  event = 'VeryLazy',
+  event = 'BufWinEnter',
 }
 
 D.config = function ()

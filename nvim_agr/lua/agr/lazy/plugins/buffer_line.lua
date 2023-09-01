@@ -1,6 +1,6 @@
 local B = {
   'akinsho/bufferline.nvim',
-  event = 'VeryLazy',
+  event = 'BufWinEnter',
   version = '3.*',
 }
 

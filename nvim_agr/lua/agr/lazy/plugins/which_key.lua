@@ -1,6 +1,6 @@
 local W = {
   'folke/which-key.nvim',
-  event = 'VeryLazy',
+  event = 'BufWinEnter',
 }
 
 W.config = function ()
