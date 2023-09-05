@@ -9,6 +9,7 @@ H.config = function ()
   local utils = require 'agr.core.utils'
   local status = require 'agr.astro.status'
   local vimode = require 'agr.lazy.plugins.heir_line.vimode'.setup()
+  local diagnostics = require 'agr.lazy.plugins.heir_line.diagnostics'.setup()
 
   local setup_colors = function ()
     local Normal = utils.get_hlgroup('Normal', { fg = C.fg, bg = C.bg })
@@ -121,7 +122,8 @@ H.config = function ()
         utils.has_plugin 'bufferline.nvim' and { filetype = {}, filename = false, file_modified = false } or nil
       ),
       status.component.git_diff(),
-      status.component.diagnostics(),
+      -- status.component.diagnostics(),
+      diagnostics,
       status.component.fill(),
       status.component.cmd_info(),
       status.component.fill(),
