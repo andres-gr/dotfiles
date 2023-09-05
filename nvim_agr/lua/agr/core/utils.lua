@@ -141,9 +141,30 @@ end
 
 local contains = function (t, key) return t[key] ~= nil end
 
+
+local diagnostics_signs = {
+  {
+    name = 'DiagnosticSignError',
+    text = ''
+  },
+  {
+    name = 'DiagnosticSignWarn',
+    text = ''
+  },
+  {
+    name = 'DiagnosticSignHint',
+    text = ''
+  },
+  {
+    name = 'DiagnosticSignInfo',
+    text = ''
+  },
+}
+
 U.close_buf = close_buf
 U.contains = contains
 U.default_tbl = default_tbl
+U.diagnostics_signs = diagnostics_signs
 U.dump = dump
 U.fix_float_ui = fix_float_ui
 U.get_hlgroup = get_hlgroup

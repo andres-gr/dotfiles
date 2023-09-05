@@ -92,3 +92,10 @@ vim.g.wordmotion_nomap = 1
 vim.filetype.add {
   extension = { mdx = 'mdx' },
 }
+
+-- Setup LSP Diagnostics signs
+local signs = require 'agr.core.utils'.diagnostics_signs
+
+for _, sign in ipairs(signs) do
+  vim.fn.sign_define(sign.name, { texthl = sign.name, text = sign.text, numhl = '' })
+end
