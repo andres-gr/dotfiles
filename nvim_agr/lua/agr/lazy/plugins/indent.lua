@@ -1,15 +1,11 @@
 local I = {
   'Darazaki/indent-o-matic',
   event = {
-    'BufReadPre',
     'BufNewFile',
+    'BufReadPre',
   },
 }
 
-I.config = function ()
-  local indent = require 'indent-o-matic'
-
-  indent.setup {}
-end
+I.config = true
 
 return I

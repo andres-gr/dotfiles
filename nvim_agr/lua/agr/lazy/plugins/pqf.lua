@@ -3,10 +3,6 @@ local P = {
   event = 'BufReadPre',
 }
 
-P.config = function ()
-  local pqf = require('pqf')
-
-  pqf.setup()
-end
+P.config = true
 
 return P

@@ -1,8 +1,8 @@
 local I = {
   'RRethy/vim-illuminate',
   event = {
-    'BufReadPost',
     'BufNewFile',
+    'BufReadPost',
   },
 }
 

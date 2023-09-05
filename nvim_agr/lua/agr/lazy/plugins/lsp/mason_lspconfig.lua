@@ -54,22 +54,6 @@ M.setup = function ()
 
       lspconfig[server_name].setup(opts)
     end,
-
-    ['tsserver'] = function ()
-      local typescript = require 'typescript'
-
-      typescript.setup {
-        server = default_opts,
-        -- server = vim.tbl_deep_extend('force', default_opts, {
-        --   -- autostart = true,
-        --   init_options = {
-        --     tsserver = {
-        --       path = '/Users/andres/Library/pnpm/global/5/.pnpm/typescript@5.1.6/node_modules/typescript/lib',
-        --     },
-        --   },
-        -- }),
-      }
-    end,
   }
 end
 

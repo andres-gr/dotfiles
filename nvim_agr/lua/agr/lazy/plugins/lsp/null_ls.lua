@@ -11,9 +11,23 @@ N.setup = function ()
     root_dir = handlers.root_dir,
     sources = {
       null_ls.builtins.code_actions.eslint_d.with {
+        condition = function (utils)
+          return utils.root_has_file {
+            '.eslintrc',
+            '.eslintrc.cjs',
+            '.eslintrc.js',
+          }
+        end,
         extra_filetypes = { 'svelte' },
       },
       null_ls.builtins.diagnostics.eslint_d.with {
+        condition = function (utils)
+          return utils.root_has_file {
+            '.eslintrc',
+            '.eslintrc.cjs',
+            '.eslintrc.js',
+          }
+        end,
         extra_filetypes = {
           'mdx',
           'svelte',

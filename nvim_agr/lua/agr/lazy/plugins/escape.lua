@@ -3,10 +3,6 @@ local E = {
   event = 'InsertCharPre',
 }
 
-E.config = function ()
-  local escape = require 'better_escape'
-
-  escape.setup()
-end
+E.config = true
 
 return E

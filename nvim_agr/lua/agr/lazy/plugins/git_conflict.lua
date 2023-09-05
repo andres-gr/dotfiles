@@ -1,8 +1,8 @@
 local G = {
   'akinsho/git-conflict.nvim',
   event = {
-    'BufReadPre',
     'BufNewFile',
+    'BufReadPre',
   },
 }
 

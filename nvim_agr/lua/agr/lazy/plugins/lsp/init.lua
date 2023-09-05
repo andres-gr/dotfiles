@@ -8,7 +8,6 @@ local L = {
     'williamboman/mason-lspconfig.nvim',
     'jose-elias-alvarez/null-ls.nvim',
     'jayp0521/mason-null-ls.nvim',
-    'jose-elias-alvarez/typescript.nvim',
     'onsails/lspkind.nvim',
     {
       'nvimdev/lspsaga.nvim',

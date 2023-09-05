@@ -1,10 +1,9 @@
 local S = {
-  'kylechui/nvim-surround',
+  'windwp/nvim-spectre',
   event = {
     'BufNewFile',
-    'BufReadPost',
+    'BufReadPre',
   },
-  version = '*',
 }
 
 S.config = true

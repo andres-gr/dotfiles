@@ -1,7 +1,6 @@
 local T = {
   'nvim-treesitter/nvim-treesitter',
   build = ':TSUpdate',
-  cmd = { 'TSUpdateSync' },
   dependencies = {
     'JoosepAlviste/nvim-ts-context-commentstring', -- Context based comments
     'hiphish/rainbow-delimiters.nvim',
@@ -10,7 +9,7 @@ local T = {
   },
   event = {
     'BufNewFile',
-    'BufReadPost',
+    'BufReadPre',
   },
   version = false,
 }
