@@ -60,6 +60,13 @@ fi
 # local bin files path
 export PATH="$HOME/.local/bin:$PATH"
 
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# bun completions
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
+
 # set misc variables
 FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=green'
 FAST_HIGHLIGHT_STYLES[precommand]='fg=green'
