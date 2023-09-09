@@ -2,6 +2,7 @@
 
 # alias top="vtop --theme=parallax"
 
+alias b="bun"
 alias co="code ."
 alias cup="cd .."
 alias grep="grep --color=auto"
