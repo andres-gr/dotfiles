@@ -45,6 +45,7 @@ M.setup = function ()
       local opts = default_opts
 
       if utils.contains(config_servers, server_name) then
+        ---@diagnostic disable-next-line: undefined-field
         local server_opts = utils.has_plugin(server_settings_path .. server_name).setup()
 
         if server_opts then
@@ -52,7 +53,35 @@ M.setup = function ()
         end
       end
 
+      if server_name == 'tailwindcss' then return end
+
       lspconfig[server_name].setup(opts)
+    end,
+
+    ['tailwindcss'] = function ()
+      lspconfig.tailwindcss.setup(vim.tbl_deep_extend('force', default_opts, {
+        -- filetypes = {
+        --   'html',
+        --   'svelte',
+        --   'typescript',
+        --   'typescript.tsx',
+        --   'typescriptreact',
+        -- },
+        root_dir = lspconfig.util.root_pattern 'tailwind.config.js',
+        settings = {
+          tailwindCSS = {
+            experimental = {
+              classRegex = {
+                "tw`([^`]*)",
+				        'tw="([^"]*)',
+				        'tw={"([^"}]*)',
+				        "tw\\.\\w+`([^`]*)",
+				        "tw\\(.*?\\)`([^`]*)",
+              },
+            },
+          },
+        },
+      }))
     end,
   }
 end
