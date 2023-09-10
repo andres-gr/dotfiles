@@ -22,11 +22,9 @@ local L = {
 
 L.config = function ()
   local mas = require 'agr.lazy.plugins.lsp.mason_init'
-  local nls = require 'agr.lazy.plugins.lsp.null_ls'
   local saga = require 'agr.lazy.plugins.lsp.lsp_saga'
 
   mas.setup()
-  nls.setup()
   saga.setup()
 end
 
