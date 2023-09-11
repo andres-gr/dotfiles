@@ -79,19 +79,10 @@ G.config = function ()
     },
   }
 
-  local map = vim.keymap.set
-  local opts = {
-    remap = false,
-    silent = true,
-  }
+  local keymap = require 'agr.core.utils'.keymap
+  local map = keymap.map
   local desc_opts = function (desc)
-    local result = { desc = desc }
-
-    for key, val in pairs(opts) do
-      result[key] = val
-    end
-
-    return result
+    return keymap:desc_opts(desc)
   end
 
   local blame_line = '<CMD>lua require "agr.core.utils".fix_float_ui("Gitsigns blame_line")<CR>'

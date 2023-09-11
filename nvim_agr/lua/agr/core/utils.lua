@@ -161,6 +161,29 @@ local diagnostics_signs = {
   },
 }
 
+local keymap = {
+  opts = {
+    remap = false,
+    silent = true,
+  },
+  map = vim.keymap.set,
+}
+
+function keymap:desc_opts(desc, bufnr)
+  local result = { desc = desc }
+
+  if bufnr ~= nil then
+    result.buffer = bufnr
+  end
+
+  for key, val in pairs(self.opts) do
+    result[key] = val
+  end
+
+  return result
+end
+
+
 U.close_buf = close_buf
 U.contains = contains
 U.default_tbl = default_tbl
@@ -171,6 +194,7 @@ U.get_hlgroup = get_hlgroup
 U.has_plugin = has_plugin
 U.key_down = key_down
 U.lualine_mode = lualine_mode
+U.keymap = keymap
 U.nav_buf = nav_buf
 U.null_ls_providers = null_ls_providers
 U.null_ls_register = null_ls_register

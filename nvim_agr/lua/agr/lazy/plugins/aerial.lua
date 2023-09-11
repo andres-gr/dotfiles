@@ -28,12 +28,18 @@ A.config = function ()
       min_width = 28,
     },
     on_attach = function (bufnr)
+      local keymap = require 'agr.core.utils'.keymap
+      local map = keymap.map
+      local desc_opts = function (desc)
+        return keymap:desc_opts(desc, bufnr)
+      end
+
       -- Jump forwards/backwards with '[y' and ']y'
-      vim.keymap.set('n', '[y', '<cmd>AerialPrev<cr>', { buffer = bufnr, desc = 'Previous Aerial' })
-      vim.keymap.set('n', ']y', '<cmd>AerialNext<cr>', { buffer = bufnr, desc = 'Next Aerial' })
+      map('n', '[y', '<CMD>AerialPrev<CR>', desc_opts('Previous Aerial'))
+      map('n', ']y', '<CMD>AerialNext<CR>', desc_opts('Next Aerial'))
       -- Jump up the tree with '[Y' or ']Y'
-      vim.keymap.set('n', '[Y', '<cmd>AerialPrevUp<cr>', { buffer = bufnr, desc = 'Previous and Up in Aerial' })
-      vim.keymap.set('n', ']Y', '<cmd>AerialNextUp<cr>', { buffer = bufnr, desc = 'Next and Up in Aerial' })
+      map('n', '[Y', '<CMD>AerialPrevUp<CR>', desc_opts('Previous and Up in Aerial'))
+      map('n', ']Y', '<CMD>AerialNextUp<CR>', desc_opts('Next and Up in Aerial'))
     end,
     show_guides = true,
   }

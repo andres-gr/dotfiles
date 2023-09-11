@@ -136,13 +136,15 @@ N.config = function ()
       },
       follow_current_file = { enabled = true }, -- This will find and focus the file in the active buffer every
       -- time the current file is changed while the tree is open.
-      group_empty_dirs = false, -- when true, empty folders will be grouped together
+      group_empty_dirs = true, -- when true, empty folders will be grouped together
       -- hijack_netrw_behavior = 'open_default', -- netrw disabled, opening a directory opens neo-tree
       -- in whatever position is specified in window.position
       hijack_netrw_behavior = 'open_current', -- netrw disabled, opening a directory opens neo-tree
       -- 'open_current',  -- netrw disabled, opening a directory opens within the
       -- window like netrw would, regardless of window.position
       -- 'disabled',    -- netrw left alone, neo-tree does not handle opening dirs
+      scan_mode = 'deep', -- "shallow": Don't scan into directories to detect possible empty directory a priori
+      -- "deep": Scan into directories to detect empty or grouped empty directories a priori.
       use_libuv_file_watcher = true, -- This will use the OS level file watchers to detect changes
       -- instead of relying on nvim autocmd events.
       visible = true, -- when true, they will just be displayed differently than normal items

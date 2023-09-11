@@ -1,24 +1,16 @@
-local map = vim.keymap.set
-local opts = {
-  remap = false,
-  silent = true,
-}
+local keymap = require 'agr.core.utils'.keymap
+
+local map = keymap.map
+local opts = keymap.opts
+local desc_opts = function (desc)
+  return keymap:desc_opts(desc)
+end
 local term_opts = { silent = true }
 local all = {
   '',
   '!',
   't',
 }
-
-local desc_opts = function (desc)
-  local result = { desc = desc }
-
-  for key, val in pairs(opts) do
-    result[key] = val
-  end
-
-  return result
-end
 
 -- Unmap space and Q
 map('', 'Q', '<Nop>', opts)
@@ -84,12 +76,12 @@ map({ 'n', 'v' }, '<leader>R', '"_R', desc_opts('Black hole Replace'))
 map('v', 'p', '"_dP', desc_opts('Paste without replace in visual'))
 
 -- Center navigation
-map('n', 'N', [[<Cmd>execute('normal! ' . v:count1 . 'N')<CR><Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center search backwards'))
-map('n', 'n', [[<Cmd>execute('normal! ' . v:count1 . 'n')<CR><Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center search forwards'))
-map('n', '#', [[#<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center prev cursor word'))
-map('n', '*', [[*<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center next cursor word'))
-map('n', 'g#', [[g#<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center prev cursor word'))
-map('n', 'g*', [[g*<Cmd>lua require('hlslens').start()<CR>zz]], desc_opts('Center next cursor word'))
+map('n', 'N', [[<CMD>execute('normal! ' . v:count1 . 'N')<CR><CMD>lua require('hlslens').start()<CR>zz]], desc_opts('Center search backwards'))
+map('n', 'n', [[<CMD>execute('normal! ' . v:count1 . 'n')<CR><CMD>lua require('hlslens').start()<CR>zz]], desc_opts('Center search forwards'))
+map('n', '#', [[#<CMD>lua require('hlslens').start()<CR>zz]], desc_opts('Center prev cursor word'))
+map('n', '*', [[*<CMD>lua require('hlslens').start()<CR>zz]], desc_opts('Center next cursor word'))
+map('n', 'g#', [[g#<CMD>lua require('hlslens').start()<CR>zz]], desc_opts('Center prev cursor word'))
+map('n', 'g*', [[g*<CMD>lua require('hlslens').start()<CR>zz]], desc_opts('Center next cursor word'))
 map('n', '<C-u>', '<C-u>zz', desc_opts('Center half page up'))
 map('n', '<C-d>', '<C-d>zz', desc_opts('Center half page down'))
 

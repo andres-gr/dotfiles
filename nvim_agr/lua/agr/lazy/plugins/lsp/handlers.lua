@@ -39,25 +39,14 @@ H.setup = function ()
 end
 
 H.on_attach = function (client, bufnr)
+  local keymap = require 'agr.core.utils'.keymap
+  local set = keymap.map
   local desc_opts = function (desc)
-    local result = {
-      buffer = bufnr,
-      desc = desc,
-    }
-    local opts = {
-      remap = false,
-      silent = true,
-    }
-
-    for key, val in pairs(opts) do
-      result[key] = val
-    end
-
-    return result
+    return keymap:desc_opts(desc, bufnr)
   end
 
   local map = function (m, lhs, rhs, desc)
-    vim.keymap.set(m, lhs, rhs, desc_opts(desc))
+    set(m, lhs, rhs, desc_opts(desc))
   end
 
   local function buf_set_option (...) vim.api.nvim_buf_set_option(bufnr, ...) end
