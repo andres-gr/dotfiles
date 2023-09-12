@@ -183,6 +183,13 @@ function keymap:desc_opts(desc, bufnr)
   return result
 end
 
+--- Check if a buffer is valid
+---@param bufnr number? The buffer to check, default to current buffer
+---@return boolean # Whether the buffer is valid or not
+local is_valid = function (bufnr)
+  if not bufnr then bufnr = 0 end
+  return vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted
+end
 
 U.close_buf = close_buf
 U.contains = contains
@@ -192,9 +199,10 @@ U.dump = dump
 U.fix_float_ui = fix_float_ui
 U.get_hlgroup = get_hlgroup
 U.has_plugin = has_plugin
+U.is_valid = is_valid
 U.key_down = key_down
-U.lualine_mode = lualine_mode
 U.keymap = keymap
+U.lualine_mode = lualine_mode
 U.nav_buf = nav_buf
 U.null_ls_providers = null_ls_providers
 U.null_ls_register = null_ls_register
