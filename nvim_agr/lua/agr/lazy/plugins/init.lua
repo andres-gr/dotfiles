@@ -127,4 +127,11 @@ return {
       },
     },
   },
+
+  -- Undo history
+  {
+    'mbbill/undotree',
+    cmd = 'UndotreeToggle',
+    lazy = true,
+  },
 }
