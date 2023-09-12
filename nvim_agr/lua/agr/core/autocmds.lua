@@ -5,7 +5,6 @@ local cmd = vim.api.nvim_create_autocmd
 local prev_height = vim.opt.cmdheight
 local prev_showtabline = vim.opt.showtabline
 local prev_status = vim.opt.laststatus
-local prev_winbar = vim.opt_local.winbar
 
 local is_empty_buf = function (buf)
   local fallback_name = vim.api.nvim_buf_get_name(buf)
@@ -50,7 +49,6 @@ cmd('FileType', {
       vim.opt.cmdheight = 0
       vim.opt.laststatus = 0
       vim.opt.showtabline = 0
-      vim.opt_local.winbar = nil
 
       vim.cmd [[ setlocal nofoldenable ]]
 
@@ -61,7 +59,6 @@ cmd('FileType', {
           vim.opt.cmdheight = prev_height
           vim.opt.laststatus = prev_status
           vim.opt.showtabline = prev_showtabline
-          vim.opt_local.winbar = prev_winbar
 
           pcall(del_empty_bufs)
         end,
