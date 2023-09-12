@@ -171,3 +171,8 @@ map('n', '<leader><leader>qd', function () require('persistence').stop() end, de
 
 -- Undo history
 map('n', '<leader>u', '<CMD>UndotreeToggle<CR>', desc_opts('Toggle undo history'))
+
+-- Color picker
+map('n', '<leader><leader>co', '<CMD>CccPick<CR>', desc_opts('Replace color'))
+map('n', '<leader><leader>cv', '<CMD>CccConvert<CR>', desc_opts('Convert color'))
+map('n', '<leader><leader>cc', '<CMD>CccHighlighterToggle<CR>', desc_opts('Convert color'))
