@@ -142,6 +142,45 @@ cmd('TextYankPost', {
   pattern = '*',
 })
 
+cmd('FileType', {
+  callback = function (event)
+    local type = vim.api.nvim_buf_get_option(event.buf, 'filetype')
+
+    if type == 'qf' then
+      vim.keymap.set('n', 'k', '<CMD>cprev<CR>zz<CMD>copen<CR>', {
+        buffer = event.buf,
+        desc = 'Prev in qflist',
+        remap = false,
+        silent = true,
+      })
+
+      vim.keymap.set('n', 'j', '<CMD>cnext<CR>zz<CMD>copen<CR>', {
+        buffer = event.buf,
+        desc = 'Next in qflist',
+        remap = false,
+        silent = true,
+      })
+
+      vim.keymap.set('n', 'h', '<CMD>lprev<CR>zz', {
+        buffer = event.buf,
+        desc = 'Prev in location list',
+        remap = false,
+        silent = true,
+      })
+
+      vim.keymap.set('n', 'l', '<CMD>lnext<CR>zz', {
+        buffer = event.buf,
+        desc = 'Next in location list',
+        remap = false,
+        silent = true,
+      })
+    end
+  end,
+  desc = 'Add qf buffer maps',
+  group = general,
+  pattern = 'qf',
+})
+
 -- cmd({ 'BufRead', 'BufNewFile' }, {
 --   callback = function () vim.diagnostic.disable(0) end,
 --   desc = 'Diable LSP on node_modules',
