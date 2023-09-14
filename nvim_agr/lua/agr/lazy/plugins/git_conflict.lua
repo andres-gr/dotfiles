@@ -32,8 +32,8 @@ G.config = function ()
   map('n', '<leader>gct', '<CMD>GitConflictChooseTheirs<CR>', desc_opts('Git conflict choose theirs'))
   map('n', '<leader>gcb', '<CMD>GitConflictChooseBoth<CR>', desc_opts('Git conflict choose both'))
   map('n', '<leader>gcn', '<CMD>GitConflictChooseNone<CR>', desc_opts('Git conflict choose none'))
-  map('n', '[x', '<CMD>GitConflictNextConflict<CR>', desc_opts('Git prev conflict'))
-  map('n', ']x', '<CMD>GitConflictPrevConflict<CR>', desc_opts('Git next conflict'))
+  map('n', '[x', '<CMD>GitConflictPrevConflict<CR>', desc_opts('Git prev conflict'))
+  map('n', ']x', '<CMD>GitConflictNextConflict<CR>', desc_opts('Git next conflict'))
   map('n', '<leader>gcq', '<CMD>GitConflictListQf<CR>', desc_opts('Git conflict to qflist'))
 end
 

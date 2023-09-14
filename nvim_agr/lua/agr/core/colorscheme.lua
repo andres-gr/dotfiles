@@ -115,8 +115,8 @@ dracula.setup({
     RainbowDelimiterYellow = { fg = colors.yellow },
 
     -- Git conflict
-    GitConflictDiffCurrent = { fg = colors.bg, bg = colors.bright_blue, bold = true },
-    GitConflictDiffIncoming = { fg = colors.bg, bg = colors.bright_magenta, bold = true },
+    GitConflictDiffCurrent = { fg = colors.bg, bg = colors.purple, bold = true },
+    GitConflictDiffIncoming = { fg = colors.bg, bg = colors.red, bold = true },
 
     -- Flash
     FlashBackdrop = { fg = colors.comment },
