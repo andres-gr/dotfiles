@@ -102,8 +102,8 @@ map('n', '<M-k>', ":m-2<CR>==", desc_opts('Move line up'))
 map('n', '<M-j>', ":m+1<CR>==", desc_opts('Move line down'))
 
 -- Sort lines
-map('v', '<leader>o', '<CMD>sort i<CR>', desc_opts('Sort lines'))
-map('v', '<leader>O', '<CMD>sort<CR>', desc_opts('Sort lines case sensitive'))
+map('v', '<leader>o', ':sort i<CR>', desc_opts('Sort lines'))
+map('v', '<leader>O', ':sort<CR>', desc_opts('Sort lines case sensitive'))
 
 -- Better terminal navigation
 map('t', '<C-h>', '<C-\\><C-N><C-w>h', term_opts)
@@ -138,8 +138,6 @@ map('n', '<leader>li', '<CMD>LspInfo<CR>', desc_opts('LSP info'))
 map('n', '<leader>lS', '<CMD>AerialToggle<CR>', desc_opts('Symbols outline'))
 
 -- Better motion
-map('n', '<leader>s', '<Plug>(leap-forward)', desc_opts('Leap forward'))
-map('n', '<leader>S', '<Plug>(leap-backward)', desc_opts('Leap bacward'))
 map('n', '<leader>w', '<Plug>WordMotion_w', desc_opts('Wordmotion w'))
 map('', '<leader>iw', '<Plug>WordMotion_iw', desc_opts('Wordmotion iw'))
 map('', '<leader><leader>aw', '<Plug>WordMotion_aw', desc_opts('Wordmotion aw'))
