@@ -33,28 +33,28 @@ map('n', '<C-k>', '<C-w>k', desc_opts('Move to upper window'))
 map('n', '<C-l>', '<C-w>l', desc_opts('Move to right window'))
 
 -- Resize with arrows
-map('n', '<C-Up>', ':resize -2<CR>', desc_opts('Resize window up'))
-map('n', '<C-Down>', ':resize +2<CR>', desc_opts('Resize window down'))
-map('n', '<C-Left>', ':vertical resize -2<CR>', desc_opts('Resize window left'))
-map('n', '<C-Right>', ':vertical resize +2<CR>', desc_opts('Resize window right'))
+map('n', '<C-Up>', '<CMD>resize -2<CR>', desc_opts('Resize window up'))
+map('n', '<C-Down>', '<CMD>resize +2<CR>', desc_opts('Resize window down'))
+map('n', '<C-Left>', '<CMD>vertical resize -2<CR>', desc_opts('Resize window left'))
+map('n', '<C-Right>', '<CMD>vertical resize +2<CR>', desc_opts('Resize window right'))
 
 -- Navigate buffers
-map('n', '<M-l>', ':BufferLineCycleNext<CR>', desc_opts('Go to next buffer'))
-map('n', '<M-h>', ':BufferLineCyclePrev<CR>', desc_opts('Go to previous buffer'))
-map('n', '<leader>>', ':BufferLineMoveNext<CR>', desc_opts('Move buffer right'))
-map('n', '<leader><', ':BufferLineMovePrev<CR>', desc_opts('Move buffer left'))
+map('n', '<M-l>', '<CMD>BufferLineCycleNext<CR>', desc_opts('Go to next buffer'))
+map('n', '<M-h>', '<CMD>BufferLineCyclePrev<CR>', desc_opts('Go to previous buffer'))
+map('n', '<leader>>', '<CMD>BufferLineMoveNext<CR>', desc_opts('Move buffer right'))
+map('n', '<leader><', '<CMD>BufferLineMovePrev<CR>', desc_opts('Move buffer left'))
 
 -- File actions
-map('n', '\\c', ':Bdelete<CR>', desc_opts('Close current buffer'))
-map('n', '\\C', ':Bdelete!<CR>', desc_opts('Close w/force current buffer'))
-map('n', '\\w', ':w!<CR>', desc_opts('Save current file'))
-map('n', '\\q', ':q<CR>', desc_opts('Quit'))
-map('n', '\\Q', ':q!<CR>', desc_opts('Quit w/force'))
-map('n', '<leader>q', ':q<CR>', desc_opts('Quit'))
-map('n', '<leader>Q', ':q!<CR>', desc_opts('Quit w/force'))
-map('n', '<leader>z', ':Bdelete<CR>', desc_opts('Close current buffer'))
-map('n', '<leader>Z', ':Bdelete!<CR>', desc_opts('Close w/force current buffer'))
-map('n', '\\t', ':windo bd<CR>', desc_opts('Quit window tab'))
+map('n', '\\c', '<CMD>Bdelete<CR>', desc_opts('Close current buffer'))
+map('n', '\\C', '<CMD>Bdelete!<CR>', desc_opts('Close w/force current buffer'))
+map('n', '\\w', '<CMD>w!<CR>', desc_opts('Save current file'))
+map('n', '\\q', '<CMD>q<CR>', desc_opts('Quit'))
+map('n', '\\Q', '<CMD>q!<CR>', desc_opts('Quit w/force'))
+map('n', '<leader>q', '<CMD>q<CR>', desc_opts('Quit'))
+map('n', '<leader>Q', '<CMD>q!<CR>', desc_opts('Quit w/force'))
+map('n', '<leader>z', '<CMD>Bdelete<CR>', desc_opts('Close current buffer'))
+map('n', '<leader>Z', '<CMD>Bdelete!<CR>', desc_opts('Close w/force current buffer'))
+map('n', '\\t', '<CMD>windo bd<CR>', desc_opts('Quit window tab'))
 
 -- Netrw file tree
 -- map('n', '<leader>e', ':Lex 30<cr>', desc_opts('Toggle Netrw file tree'))
@@ -92,8 +92,8 @@ map('n', '<', 'v<', desc_opts('Indent left'))
 map('n', '>', 'v>', desc_opts('Indent right'))
 
 -- Cancel search highlight
-map('n', '<leader>n', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search highlight'))
-map('n', '<ESC>', ':nohlsearch<Bar>:echo<CR>', desc_opts('Clear search highlight'))
+map('n', '<leader>n', '<CMD>nohlsearch<Bar>:echo<CR>', desc_opts('Clear search highlight'))
+map('n', '<ESC>', '<CMD>nohlsearch<Bar>:echo<CR>', desc_opts('Clear search highlight'))
 
 -- Move lines
 map('x', '<M-k>', ":m '<-2<CR>gv-gv", desc_opts('Move lines up'))
@@ -102,8 +102,8 @@ map('n', '<M-k>', ":m-2<CR>==", desc_opts('Move line up'))
 map('n', '<M-j>', ":m+1<CR>==", desc_opts('Move line down'))
 
 -- Sort lines
-map('v', '<leader>o', ':sort i<CR>', desc_opts('Sort lines'))
-map('v', '<leader>O', ':sort<CR>', desc_opts('Sort lines case sensitive'))
+map('v', '<leader>o', '<CMD>sort i<CR>', desc_opts('Sort lines'))
+map('v', '<leader>O', '<CMD>sort<CR>', desc_opts('Sort lines case sensitive'))
 
 -- Better terminal navigation
 map('t', '<C-h>', '<C-\\><C-N><C-w>h', term_opts)
@@ -112,30 +112,30 @@ map('t', '<C-k>', '<C-\\><C-N><C-w>k', term_opts)
 map('t', '<C-l>', '<C-\\><C-N><C-w>l', term_opts)
 
 -- File tree
-map('n', '<leader>v', ':Neotree toggle<CR>', desc_opts('Open file tree explorer'))
-map('n', '<leader>o', ':Neotree focus<CR>', desc_opts('Focus file tree explorer'))
+map('n', '<leader>v', '<CMD>Neotree toggle<CR>', desc_opts('Open file tree explorer'))
+map('n', '<leader>o', '<CMD>Neotree focus<CR>', desc_opts('Focus file tree explorer'))
 
 -- Lazy
-map('n', '<leader>pS', ':Lazy sync<CR>', desc_opts('Lazy sync'))
-map('n', '<leader>ps', ':Lazy<CR>', desc_opts('Lazy status'))
-map('n', '<leader>pU', ':Lazy update<CR>', desc_opts('Lazy update'))
-map('n', '<leader>pc', ':Lazy check<CR>', desc_opts('Lazy check for updates'))
+map('n', '<leader>pS', '<CMD>Lazy sync<CR>', desc_opts('Lazy sync'))
+map('n', '<leader>ps', '<CMD>Lazy<CR>', desc_opts('Lazy status'))
+map('n', '<leader>pU', '<CMD>Lazy update<CR>', desc_opts('Lazy update'))
+map('n', '<leader>pc', '<CMD>Lazy check<CR>', desc_opts('Lazy check for updates'))
 
 -- Git fugitive
-map('n', '<leader>Gl', ':0Gllog<CR>', desc_opts('Git show file history'))
+map('n', '<leader>Gl', '<CMD>0Gllog<CR>', desc_opts('Git show file history'))
 
 -- Git time lapse
-map('n', '<leader>Gt', ':GitTimeLapse<CR>', desc_opts('Git show file time lapse'))
+map('n', '<leader>Gt', '<CMD>GitTimeLapse<CR>', desc_opts('Git show file time lapse'))
 
 -- Dash
-map('n', '<leader>a', ':Alpha<CR>', desc_opts('Show dashboard'))
+map('n', '<leader>a', '<CMD>Alpha<CR>', desc_opts('Show dashboard'))
 
 -- LSP Installer
-map('n', '<leader>pi', ':Mason<CR>', desc_opts('Mason installer'))
-map('n', '<leader>li', ':LspInfo<CR>', desc_opts('LSP info'))
+map('n', '<leader>pi', '<CMD>Mason<CR>', desc_opts('Mason installer'))
+map('n', '<leader>li', '<CMD>LspInfo<CR>', desc_opts('LSP info'))
 
 -- Symbols outline
-map('n', '<leader>lS', ':AerialToggle<CR>', desc_opts('Symbols outline'))
+map('n', '<leader>lS', '<CMD>AerialToggle<CR>', desc_opts('Symbols outline'))
 
 -- Better motion
 map('n', '<leader>s', '<Plug>(leap-forward)', desc_opts('Leap forward'))
