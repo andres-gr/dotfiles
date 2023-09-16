@@ -22,9 +22,10 @@ typeset -U fpath
 export XDG_CONFIG_HOME="$HOME/.config"
 export DOTFILES="$HOME/devel/dotfiles"
 export ZSH_FILES="$DOTFILES/zsh"
+export WEZTERM_CONFIG_FILE="$DOTFILES/wezterm"
 
 # The following lines were added by compinstall
-zstyle :compinstall filename '$HOME/.zshrc'
+zstyle :compinstall filename "$HOME/.zshrc"
 
 autoload -Uz compinit
 compinit
@@ -37,7 +38,7 @@ source $ZSH_FILES/plugins.zsh
 source $ZSH_FILES/alias.zsh
 
 # keybinds
-# source $ZSH_FILES/keybinds.zsh
+source $ZSH_FILES/keybinds.zsh
 
 # funtions
 source $ZSH_FILES/functions.zsh
@@ -68,9 +69,9 @@ export PATH="$BUN_INSTALL/bin:$PATH"
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
 # set misc variables
-FAST_HIGHLIGHT_STYLES[suffix-alias]='fg=green'
-FAST_HIGHLIGHT_STYLES[precommand]='fg=green'
-FAST_HIGHLIGHT_STYLES[path-to-dir]='fg=cyan'
+FAST_HIGHLIGHT_STYLES[suffix-alias]="fg=green"
+FAST_HIGHLIGHT_STYLES[precommand]="fg=green"
+FAST_HIGHLIGHT_STYLES[path-to-dir]="fg=cyan"
 
 # init fnm
 eval "$(fnm env --use-on-cd)"
