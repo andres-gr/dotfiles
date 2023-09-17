@@ -22,7 +22,6 @@ typeset -U fpath
 export XDG_CONFIG_HOME="$HOME/.config"
 export DOTFILES="$HOME/devel/dotfiles"
 export ZSH_FILES="$DOTFILES/zsh"
-export WEZTERM_CONFIG_FILE="$DOTFILES/wezterm"
 
 # The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/.zshrc"
