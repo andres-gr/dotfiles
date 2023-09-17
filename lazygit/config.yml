@@ -1,29 +1,29 @@
 gui:
-  nerdFontsVersion: "3"
+  nerdFontsVersion: '3'
   theme:
     activeBorderColor:
-      - "#8AFF80" # green
+      - '#8AFF80' # green
       - bold
     inactiveBorderColor:
-      - "#FFFFFF" # bright white
+      - '#FFFFFF' # bright white
     searchingActiveBorderColor:
-      - "#80FFEA" # cyan
+      - '#80FFEA' # cyan
       - bold
     optionsTextColor:
-      - "#9580FF" # purple
+      - '#9580FF' # purple
     selectedLineBgColor:
       - '#454158' # selection
       - reverse
     selectedRangeBgColor:
       - reverse
     cherryPickedCommitBgColor:
-      - "#80FFEA" # cyan
+      - '#80FFEA' # cyan
     cherryPickedCommitFgColor:
-      - "#9580FF" # purple
+      - '#9580FF' # purple
     unstagedChangesColor:
-      - "#FF9580" # red
+      - '#FF9580' # red
     defaultFgColor:
-      - "#F8F8F2" # white
+      - '#F8F8F2' # white
       # - default
 os:
   edit: 'nvim'
