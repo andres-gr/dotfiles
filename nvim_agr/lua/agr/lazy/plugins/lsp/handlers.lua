@@ -28,7 +28,7 @@ H.setup = function ()
       active = signs,
     },
     underline = true,
-    update_in_insert = true,
+    update_in_insert = false,
     virtual_text = true,
   }
 
