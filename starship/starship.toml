@@ -6,9 +6,14 @@ continuation_prompt = ""
 
 palette = "dracula"
 
+format = """
+[╭](bright_blue)$all$line_break\
+[╰](bright_blue)$character
+"""
+
 right_format = """
 ${custom.git-time-since-change} \
-${custom.git-get-host} \
+${custom.git-get-host}
 """
 
 scan_timeout = 200
@@ -31,8 +36,8 @@ bright_white = "#FFFFFF"
 bright_yellow = "#FFFFB3"
 
 [character]
-error_symbol = "[💥 ](red)"
-success_symbol = "[🚀 ](green)"
+error_symbol = "[💥](red)"
+success_symbol = "[🚀](green)"
 
 [custom.git-time-since-change]
 command = "git_time_since_change"
