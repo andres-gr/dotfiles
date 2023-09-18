@@ -103,6 +103,7 @@ N.config = function ()
         },
       },
     },
+    default_source = 'filesystem',
     enable_diagnostics = true,
     enable_git_status = true,
     event_handlers = {
@@ -123,7 +124,7 @@ N.config = function ()
           --'*/src/*/tsconfig.json',
         },
         hide_dotfiles = false,
-        hide_gitignored = false,
+        hide_gitignored = true,
         hide_hidden = false, -- only works on Windows for hidden files/directories
         never_show = { -- remains hidden even if visible is toggled to true, this overrides always_show
           --'.DS_Store',
@@ -133,6 +134,7 @@ N.config = function ()
         never_show_by_pattern = { -- uses glob style patterns
           --'.null-ls_*',
         },
+        visible = true, -- when true, they will just be displayed differently than normal items
       },
       follow_current_file = { enabled = true }, -- This will find and focus the file in the active buffer every
       -- time the current file is changed while the tree is open.
@@ -180,15 +182,21 @@ N.config = function ()
     popup_border_style = 'rounded',
     sort_case_insensitive = false, -- used when sorting files and directories in the tree
     sort_function = nil, -- use a custom function for sorting files and directories in the tree
+    sources = {
+      'filesystem',
+      'buffers',
+      -- 'diagnostics',
+      'git_status',
+    },
     source_selector = {
       content_layout = 'center',
       sources = {
-        buffers = '  Buffers ',
-        diagnostics = ' 裂Diagnostics ',
-        filesystem = '  Files ',
-        git_status = '  Git ',
+        { source = 'filesystem' },
+        { source = 'buffers' },
+        -- { source = 'diagnostics' },
+        { source = 'git_status' },
       },
-      -- winbar = true,
+      winbar = true,
     },
     window = {
       mapping_options = {

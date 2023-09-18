@@ -81,6 +81,8 @@ dracula.setup({
     NeoTreeIndentMarker = { fg = colors.comment },
     NeoTreeNormal = { bg = colors.none },
     NeoTreeNormalNC = { bg = colors.none },
+    NeoTreeTabInactive = { fg = colors.comment, bg = colors.bg },
+    NeoTreeTabSeparatorInactive = { fg = colors.bg, bg = colors.bg },
 
     -- Bufferline
     BufferLineFill = { bg = colors.none },
