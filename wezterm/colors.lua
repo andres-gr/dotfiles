@@ -40,7 +40,7 @@ local colors = {
   brights = {
     dracula.gray,
     dracula.bright_red,
-    dracula.bright_cyan,
+    dracula.bright_green,
     dracula.bright_yellow,
     dracula.bright_blue,
     dracula.bright_magenta,
