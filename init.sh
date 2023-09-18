@@ -53,6 +53,14 @@ $(ln -sf $PWD/starship/starship.toml $config_dir)
 
 echo "created starship config symlink in .config"
 
+if [ -d $config_dir/wezterm ]; then
+  rm -rf $config_dir/wezterm
+fi
+
+$(ln -sf $PWD/wezterm $config_dir/wezterm)
+
+echo "created wezterm config symlink in .config/wezterm"
+
 # move helper scripts into local bin
 
 local_bin=$HOME/.local/bin
