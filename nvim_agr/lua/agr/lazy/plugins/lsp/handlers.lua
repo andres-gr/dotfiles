@@ -34,6 +34,9 @@ H.setup = function ()
 
   vim.diagnostic.config(config)
 
+  local lsp_windows = require 'lspconfig.ui.windows'
+  lsp_windows.default_options.border = 'single'
+
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
   vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 end
@@ -53,9 +56,6 @@ H.on_attach = function (client, bufnr)
 
   if client.name == 'tsserver' then
     client.server_capabilities.document_formatting = nil
-    -- map('n', '<leader>gf', '<CMD>TypescriptRenameFile<CR>', 'LSP TS rename file')
-    -- map('n', '<leader>go', '<CMD>TypescriptOrganizeImports<CR>', 'LSP TS organize imports')
-    -- map('n', '<leader>gu', '<CMD>TypescriptRemoveUnused<CR>', 'LSP TS remove unused vars')
   end
 
   if client.name == 'graphql' then
@@ -67,10 +67,6 @@ H.on_attach = function (client, bufnr)
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  -- local hover_doc = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga hover_doc")<CR>'
-  -- local cursor_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_cursor_diagnostics")<CR>'
-  -- local line_diagnostics = '<CMD>lua require "agr.core.utils".fix_float_ui("Lspsaga show_line_diagnostics")<CR>'
-
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   map('n', 'gf', '<CMD>Lspsaga lsp_finder<CR>', 'LSP definition, references')
@@ -80,9 +76,6 @@ H.on_attach = function (client, bufnr)
   map('n', 'gh', '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
   map('n', 'gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', 'LSP implementation')
   map('n', '<leader>k', '<CMD>lua vim.lsp.buf.signature_help()<CR>', 'LSP signature help')
-  -- map('n', '<leader>wa', '<CMD>lua vim.lsp.buf.add_workspace_folder()<CR>', 'LSP add workspace folder')
-  -- map('n', '<leader>wr', '<CMD>lua vim.lsp.buf.remove_workspace_folder()<CR>', 'LSP remove workspace folder')
-  -- map('n', '<leader>wl', '<CMD>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', 'LSP list workspace folders')
   map('n', '<leader>gd', '<CMD>lua vim.lsp.buf.type_definition()<CR>', 'LSP type definition')
   map('n', '<leader>gr', '<CMD>Lspsaga rename<CR>', 'LSP rename')
   map('n', '<leader>.', '<CMD>Lspsaga code_action<CR>', 'LSP code actions')
@@ -96,8 +89,6 @@ H.on_attach = function (client, bufnr)
   map('n', '<leader>lsr', '<CMD>LspRestart<CR>', 'LSP restart server')
 
   vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format { async = true }' ]]
-
-  -- lsp_highlight_document(client)
 end
 
 local common_capabilities = function ()
@@ -109,22 +100,6 @@ local common_capabilities = function ()
     -- See: https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
     capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
   end
-
-  -- capabilities.textDocument.completion.completionItem.commitCharactersSupport = true
-  -- capabilities.textDocument.completion.completionItem.deprecatedSupport = true
-  -- capabilities.textDocument.completion.completionItem.documentationFormat = { 'markdown', 'plaintext' }
-  -- capabilities.textDocument.completion.completionItem.insertReplaceSupport = true
-  -- capabilities.textDocument.completion.completionItem.labelDetailsSupport = true
-  -- capabilities.textDocument.completion.completionItem.preselectSupport = true
-  -- capabilities.textDocument.completion.completionItem.resolveSupport = {
-  --   properties = {
-  --     'documentation',
-  --     'detail',
-  --     'additionalTextEdits',
-  --   },
-  -- }
-  -- capabilities.textDocument.completion.completionItem.snippetSupport = true
-  -- capabilities.textDocument.completion.completionItem.tagSupport = { valueSet = { 1 } }
 
   return capabilities
 end

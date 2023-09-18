@@ -60,13 +60,6 @@ M.setup = function ()
 
     ['tailwindcss'] = function ()
       lspconfig.tailwindcss.setup(vim.tbl_deep_extend('force', default_opts, {
-        -- filetypes = {
-        --   'html',
-        --   'svelte',
-        --   'typescript',
-        --   'typescript.tsx',
-        --   'typescriptreact',
-        -- },
         root_dir = lspconfig.util.root_pattern 'tailwind.config.js',
         settings = {
           tailwindCSS = {

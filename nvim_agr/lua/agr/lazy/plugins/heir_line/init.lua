@@ -124,7 +124,6 @@ H.config = function ()
       ),
       status.component.git_diff(),
       diagnostics,
-      status.component.fill(),
       status.component.cmd_info(),
       status.component.fill(),
       status.component.lsp(),
@@ -188,23 +187,6 @@ H.config = function ()
     group = augroup,
     pattern = 'AGRColorScheme',
   })
-
-  -- vim.api.nvim_create_autocmd('User', {
-  --   callback = function ()
-  --     if
-  --       vim.opt.diff:get()
-  --       or status.condition.buffer_matches(require('heirline').winbar.disabled or {
-  --         buftype = { 'terminal', 'prompt', 'nofile', 'help', 'quickfix' },
-  --         filetype = { 'NvimTree', 'neo%-tree', 'dashboard', 'Outline', 'aerial' },
-  --       }) -- TODO v3: remove the default fallback here
-  --     then
-  --       vim.opt_local.winbar = nil
-  --     end
-  --   end,
-  --   desc = 'Disable winbar for some filetypes',
-  --   group = augroup,
-  --   pattern = 'HeirlineInitWinbar',
-  -- })
 end
 
 return H
