@@ -879,6 +879,7 @@ function status.component.cmd_info(opts)
         return status.condition.is_hlsearch() or status.condition.is_macro_recording()
       end,
     },
+    ---@diagnostic disable-next-line: undefined-field
     condition = function () return vim.opt.cmdheight:get() == 0 end,
     hl = status.hl.get_attributes 'cmd_info',
   })

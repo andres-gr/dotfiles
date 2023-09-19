@@ -5,6 +5,7 @@ M.setup = function ()
   local lspconfig = require 'lspconfig'
   local handlers = require 'agr.lazy.plugins.lsp.handlers'
   local utils = require 'agr.core.utils'
+  local root = lspconfig.util.root_pattern
 
   mason_lspconfig.setup {
     automatic_installation = true,
@@ -53,28 +54,32 @@ M.setup = function ()
         end
       end
 
-      if server_name == 'tailwindcss' then return end
+      if server_name == 'tsserver' then
+        opts = vim.tbl_deep_extend('force', default_opts, {
+          root_dir = root('tsconfig.json', 'jsconfig.json'),
+        })
+      end
 
-      lspconfig[server_name].setup(opts)
-    end,
-
-    ['tailwindcss'] = function ()
-      lspconfig.tailwindcss.setup(vim.tbl_deep_extend('force', default_opts, {
-        root_dir = lspconfig.util.root_pattern 'tailwind.config.js',
-        settings = {
-          tailwindCSS = {
-            experimental = {
-              classRegex = {
-                "tw`([^`]*)",
-				        'tw="([^"]*)',
-				        'tw={"([^"}]*)',
-				        "tw\\.\\w+`([^`]*)",
-				        "tw\\(.*?\\)`([^`]*)",
+      if server_name == 'tailwindcss' then
+        opts = vim.tbl_deep_extend('force', default_opts, {
+          root_dir = root 'tailwind.config.js',
+          settings = {
+            tailwindCSS = {
+              experimental = {
+                classRegex = {
+                  "tw`([^`]*)",
+				          'tw="([^"]*)',
+				          'tw={"([^"}]*)',
+				          "tw\\.\\w+`([^`]*)",
+				          "tw\\(.*?\\)`([^`]*)",
+                },
               },
             },
           },
-        },
-      }))
+        })
+      end
+
+      lspconfig[server_name].setup(opts)
     end,
   }
 end
