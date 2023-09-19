@@ -51,8 +51,8 @@ N.config = function ()
     views = {
       cmdline_popup = {
         position = {
-          col = vim.o.columns * 0.4 - 2,
-          row = vim.o.lines * 0.32,
+          col = '50%',
+          row = '35%',
         },
         size = {
           height = 'auto',
@@ -65,8 +65,8 @@ N.config = function ()
           style = 'rounded',
         },
         position = {
-          col = vim.o.columns * 0.4 - 3,
-          row = vim.o.lines * 0.32 + 3,
+          col = '50%',
+          row = '44%',
         },
         relative = 'editor',
         size = {
