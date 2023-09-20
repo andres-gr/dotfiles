@@ -61,6 +61,22 @@ $(ln -sf $PWD/wezterm $config_dir/wezterm)
 
 echo "created wezterm config symlink in .config/wezterm"
 
+if [ -d $config_dir/yabai ]; then
+  rm -rf $config_dir/yabai
+fi
+
+$(ln -sf $PWD/yabai $config_dir/yabai)
+
+echo "created yabai config symlink in .config/yabai"
+
+if [ -d $config_dir/skhd ]; then
+  rm -rf $config_dir/skhd
+fi
+
+$(ln -sf $PWD/skhd $config_dir/skhd)
+
+echo "created skhd config symlink in .config/skhd"
+
 # move helper scripts into local bin
 
 local_bin=$HOME/.local/bin
