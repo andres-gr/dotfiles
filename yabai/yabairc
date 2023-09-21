@@ -18,8 +18,16 @@ yabai -m config left_padding 10
 yabai -m config right_padding 10
 yabai -m config window_gap 8
 
-# center mouse on window with focus
-yabai -m config mouse_follows_focus on
+# window borders
+yabai -m config window_border on
+yabai -m config window_border_blur on
+yabai -m config window_border_width 4
+yabai -m config window_border_radius 8
+yabai -m config active_window_border_color 0xE6FF80BF
+yabai -m config normal_window_border_color 0xE68AFF80
+
+# focus should follow mouse
+yabai -m config focus_follows_mouse autoraise
 
 # modifier for clicking and dragging with mouse
 yabai -m config mouse_modifier alt
