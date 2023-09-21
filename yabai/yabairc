@@ -5,14 +5,17 @@ sudo yabai --load-sa
 # default layout (can be bsp, stack or float)
 yabai -m config layout bsp
 
+# add padding to the top and bottom of all spaces regardless of the display it belongs to
+yabai -m config external_bar all:36:0
+
 # New window spawns to the right if vertical split, or bottom if horizontal split
 yabai -m config window_placement second_child
 
 # padding set to 8px
-yabai -m config top_padding 8
-yabai -m config bottom_padding 8
-yabai -m config left_padding 8
-yabai -m config right_padding 8
+yabai -m config top_padding 10
+yabai -m config bottom_padding 10
+yabai -m config left_padding 10
+yabai -m config right_padding 10
 yabai -m config window_gap 8
 
 # center mouse on window with focus
@@ -32,3 +35,5 @@ yabai -m mouse_drop_action swap
 yabai -m rule --add app="^Alfred Preferences$" manage=off
 yabai -m rule --add app="^Calculator$" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^The Unarchiver$" manage=off
+yabai -m rule --add app="^Übersicht$" manage=off
