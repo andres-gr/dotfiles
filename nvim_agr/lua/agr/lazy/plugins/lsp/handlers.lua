@@ -69,7 +69,7 @@ H.on_attach = function (client, bufnr)
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  map('n', 'gf', '<CMD>Lspsaga lsp_finder<CR>', 'LSP definition, references')
+  map('n', 'gf', '<CMD>Lspsaga finder<CR>', 'LSP definition, references')
   map('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', 'LSP declaration')
   map('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', 'LSP definition')
   map('n', 'K', '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')

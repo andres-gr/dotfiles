@@ -11,6 +11,11 @@ S.setup = function ()
         edit = '<CR>',
       },
     },
+    finder = {
+      keys = {
+        close = 'Q',
+      },
+    },
     lightbulb = {
       cache_code_action = true,
       enable = true,
