@@ -12,6 +12,7 @@ S.setup = function ()
       },
     },
     finder = {
+      default = 'def+ref+imp',
       keys = {
         close = 'Q',
       },
