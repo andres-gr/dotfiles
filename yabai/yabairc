@@ -42,6 +42,7 @@ yabai -m mouse_drop_action swap
 # Disable service on specific apps
 yabai -m rule --add app="^Alfred Preferences$" manage=off
 yabai -m rule --add app="^Calculator$" manage=off
+yabai -m rule --add app="^IINA$" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
 yabai -m rule --add app="^The Unarchiver$" manage=off
 yabai -m rule --add app="^Übersicht$" manage=off
