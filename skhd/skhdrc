@@ -26,10 +26,6 @@ shift + alt - y : yabai -m window --toggle float --grid 4:4:1:1:2:2;
 # maximize a window
 ctrl + alt - return : yabai -m window --toggle zoom-fullscreen;
 
-# balance out tree of windows (resize to occupy same area)
-# '=' -> 0x18
-shift + alt - 0x18 : yabai -m space --balancme;
-
 # swap windows
 shift + alt - j : yabai -m window --swap south;
 shift + alt - k : yabai -m window --swap north;
@@ -41,6 +37,16 @@ cmd + alt - j : yabai -m window --warp south;
 cmd + alt - k : yabai -m window --warp north;
 cmd + alt - h : yabai -m window --warp west;
 cmd + alt - l : yabai -m window --warp east;
+
+# resize window
+ctrl + cmd - j : yabai -m window --resize bottom:0:20; yabai -m window --resize top:0:20;
+ctrl + cmd - k : yabai -m window --resize top:0:-20; yabai -m window --resize bottom:0:-20;
+ctrl + cmd - h : yabai -m window --resize left:-20:0; yabai -m window --resize right:-20:0;
+ctrl + cmd - l : yabai -m window --resize right:20:0; yabai -m window --resize left:20:0;
+
+# balance out tree of windows (resize to occupy same area)
+# '=' -> 0x18
+ctrl + cmd - 0x18 : yabai -m space --balance;
 
 # move window to display left and right
 # '<' -> left 0x2B, '>' -> right 0x2F
