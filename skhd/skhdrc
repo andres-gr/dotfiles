@@ -23,6 +23,9 @@ shift + alt - 0x1B : yabai -m space --mirror x-axis;
 # toggle window float
 shift + alt - y : yabai -m window --toggle float --grid 4:4:1:1:2:2;
 
+# toggle window float
+shift + alt - i : yabai -m window --toggle split
+
 # maximize a window
 ctrl + alt - return : yabai -m window --toggle zoom-fullscreen;
 

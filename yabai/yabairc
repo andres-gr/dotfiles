@@ -29,6 +29,9 @@ yabai -m config normal_window_border_color 0xE68AFF80
 # focus should follow mouse
 yabai -m config focus_follows_mouse autoraise
 
+# mouse follow window focus
+yabai -m config mouse_follows_focus on
+
 # modifier for clicking and dragging with mouse
 yabai -m config mouse_modifier alt
 # set modifier + left-click drag to move window
