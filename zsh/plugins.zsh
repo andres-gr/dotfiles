@@ -13,9 +13,6 @@ source $PLUGINS_DIR/git/git.plugin.zsh
 export ZSH_TMUX_AUTOSTART=true
 source $PLUGINS_DIR/ohmyzsh/plugins/tmux/tmux.plugin.zsh
 
-# z lua plugin
-source $PLUGINS_DIR/z.lua/z.lua.plugin.zsh
-
 # fast syntax highlight plugin
 source $PLUGINS_DIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
@@ -49,3 +46,5 @@ source $PLUGINS_DIR/omz-plugin-pnpm/pnpm.plugin.zsh
 # eval cache plugin
 source $PLUGINS_DIR/evalcache/evalcache.plugin.zsh
 
+# z lua plugin
+_evalcache lua $HOME/devel/plugins/z.lua/z.lua --init zsh
