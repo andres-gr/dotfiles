@@ -27,10 +27,10 @@ map('', '<Space>', '<Nop>', opts)
 --   command_mode = 'c',
 
 -- Better window navigation
-map('n', '<C-h>', '<C-w>h', desc_opts('Move to left window'))
-map('n', '<C-j>', '<C-w>j', desc_opts('Move to lower window'))
-map('n', '<C-k>', '<C-w>k', desc_opts('Move to upper window'))
-map('n', '<C-l>', '<C-w>l', desc_opts('Move to right window'))
+-- map('n', '<C-h>', '<C-w>h', desc_opts('Move to left window'))
+-- map('n', '<C-j>', '<C-w>j', desc_opts('Move to lower window'))
+-- map('n', '<C-k>', '<C-w>k', desc_opts('Move to upper window'))
+-- map('n', '<C-l>', '<C-w>l', desc_opts('Move to right window'))
 
 -- Resize with arrows
 map('n', '<C-Up>', '<CMD>resize -2<CR>', desc_opts('Resize window up'))
