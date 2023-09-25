@@ -48,6 +48,7 @@ yabai -m rule --add app="^Calculator$" manage=off
 yabai -m rule --add app="^ExpressVPN$" manage=off
 yabai -m rule --add app="^IINA$" manage=off
 yabai -m rule --add app="^Quicktime$" manage=off
+yabai -m rule --add app="^SpaceLauncher$" manage=off
 yabai -m rule --add app="^System Preferences$" manage=off
 yabai -m rule --add app="^The Unarchiver$" manage=off
 yabai -m rule --add app="^Übersicht$" manage=off

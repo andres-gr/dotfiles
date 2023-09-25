@@ -5,9 +5,8 @@ ctrl + alt - h : yabai -m window --focus west;
 ctrl + alt - l : yabai -m window --focus east;
 
 # change focus between external displays (left and right)
-# '<' -> left 0x2B, '>' -> right 0x2F
-ctrl + alt - 0x2B : yabai -m display --focus west;
-ctrl + alt - 0x2F : yabai -m display --focus east;
+ctrl + alt - i : yabai -m display --focus west;
+ctrl + alt - o : yabai -m display --focus east;
 
 # rotate layout clockwise
 shift + alt - u : yabai -m space --rotate 270;
@@ -23,8 +22,8 @@ shift + alt - 0x1B : yabai -m space --mirror x-axis;
 # toggle window float
 shift + alt - y : yabai -m window --toggle float --grid 4:4:1:1:2:2;
 
-# toggle window float
-shift + alt - i : yabai -m window --toggle split
+# toggle window split
+shift + alt - m : yabai -m window --toggle split
 
 # maximize a window
 ctrl + alt - return : yabai -m window --toggle zoom-fullscreen;
@@ -52,9 +51,8 @@ ctrl + cmd - l : yabai -m window --resize right:20:0; yabai -m window --resize l
 ctrl + cmd - 0x18 : yabai -m space --balance;
 
 # move window to display left and right
-# '<' -> left 0x2B, '>' -> right 0x2F
-shift + alt - 0x2B : yabai -m window --display west; yabai -m display --focus west;
-shift + alt - 0x2F : yabai -m window --display east; yabai -m display --focus east;
+shift + alt - i : yabai -m window --display west; yabai -m display --focus west;
+shift + alt - o : yabai -m window --display east; yabai -m display --focus east;
 
 # focus prev or next space
 ctrl + alt - p : ~/.config/skhd/yabai_space_cycle_prev.sh;
@@ -64,7 +62,7 @@ ctrl + alt - n : ~/.config/skhd/yabai_space_cycle_next.sh;
 shift + alt - p : ~/.config/skhd/yabai_space_move_prev.sh;
 shift + alt - n : ~/.config/skhd/yabai_space_move_next.sh;
 
-# move window to space #
+# focus space #
 ctrl + alt - 1 : yabai -m space --focus 1;
 ctrl + alt - 2 : yabai -m space --focus 2;
 ctrl + alt - 3 : yabai -m space --focus 3;
@@ -90,6 +88,6 @@ ctrl + alt - q : yabai --stop-service;
 ctrl + alt - s : yabai --start-service;
 ctrl + alt - r : yabai --restart-service;
 
-# restart skhd
+# restart/reload skhd
 ctrl + alt - d : skhd --restart-service;
 ctrl + alt - f : skhd --reload;
