@@ -13,6 +13,9 @@ COLOR_RED="#FF9580"
 COLOR_YELLOW="#FFFF80"
 COLOR_WHITE="#F8F8F2"
 
+# neofetch on init
+if [ -x "$(command -v neofetch)" ]; then neofetch; fi
+
 export LC_ALL=en_US.UTF-8
 export LANG=en_US.UTF-8
 
