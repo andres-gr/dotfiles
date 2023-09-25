@@ -179,9 +179,13 @@ M.config = function ()
     },
     window = {
       ---@diagnostic disable-next-line: undefined-field
-      completion = cmp.config.window.bordered(),
+      completion = cmp.config.window.bordered {
+        winhighlight = 'FloatBorder:CmpNormalCompletionBorder,CursorLine:Visual',
+      },
       ---@diagnostic disable-next-line: undefined-field
-      documentation = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered {
+        winhighlight = 'FloatBorder:CmpNormalDocumentationBorder,CursorLine:Visual',
+      },
     },
   }
 end

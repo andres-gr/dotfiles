@@ -19,6 +19,7 @@ dracula.setup({
     -- Alpha dash
     AlphaButtonShortcut = { fg = colors.bright_magenta, bold = true },
     AlphaButtonText = { fg = colors.bright_cyan },
+    AlphaFooter = { fg = colors.bright_green, italic = true },
 
     -- Vim illuminate
     IlluminatedWordRead = { bg = colors.gutter_fg },
@@ -27,7 +28,10 @@ dracula.setup({
 
     -- CMP
     Pmenu = { fg = colors.fg, bg = colors.none },
-    PmenuSel = { bg = colors.selection },
+    PmenuSel = { bg = colors.selection, bold = true },
+
+    CmpNormalCompletionBorder = { fg = colors.bright_green },
+    CmpNormalDocumentationBorder = { fg = colors.bright_cyan },
 
     CmpItemAbbrDeprecated = { fg = colors.purple, bg = colors.none , strikethrough = true },
     CmpItemAbbrMatch = { fg = colors.cyan, bg = colors.none , bold = true },
