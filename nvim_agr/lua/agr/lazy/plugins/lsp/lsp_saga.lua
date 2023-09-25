@@ -34,6 +34,7 @@ S.setup = function ()
       scroll_up = '<C-k>',
     },
     ui = {
+      code_action = '', -- '󰌵', '', '', ''
       colors = {
         black = colors.bg,
         blue = colors.bright_blue,
