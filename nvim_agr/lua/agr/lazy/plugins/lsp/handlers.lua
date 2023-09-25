@@ -29,7 +29,9 @@ H.setup = function ()
     },
     underline = true,
     update_in_insert = false,
-    virtual_text = true,
+    virtual_text = {
+      prefix = '■', -- Could be '●', '▎', 'x', '■', '', '', '■', '◆', '◪'
+    },
   }
 
   vim.diagnostic.config(config)

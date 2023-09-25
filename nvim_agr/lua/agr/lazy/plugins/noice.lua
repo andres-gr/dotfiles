@@ -35,12 +35,9 @@ N.config = function ()
       },
       -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
       override = {
+        ['cmp.entry.get_documentation'] = true,
         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
         ['vim.lsp.util.stylize_markdown'] = true,
-        ['cmp.entry.get_documentation'] = true,
-      },
-      progress = {
-        enabled = false,
       },
       signature = {
         enabled = false,
@@ -60,6 +57,11 @@ N.config = function ()
         size = {
           height = 'auto',
           width = 60,
+        },
+      },
+      mini = {
+        win_options = {
+          winblend = 0,
         },
       },
       popupmenu = {

@@ -41,8 +41,8 @@ o.number = true -- Show numberline
 o.numberwidth = 4 -- Set number column width {default 4}
 o.path:append { '**' } -- Finding files - Search down into subfolders
 o.preserveindent = true -- Preserve indent structure as much as possible
-o.pumblend = 5
-o.pumheight = 10 -- Height of the pop up menu
+o.pumblend = 0
+o.pumheight = 16 -- Height of the pop up menu
 o.relativenumber = true -- Show relative numberline
 o.scrolloff = 8 -- Number of lines to keep above and below the cursor
 o.shell = 'zsh'

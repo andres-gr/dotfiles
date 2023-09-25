@@ -70,7 +70,7 @@ M.config = function ()
       },
     },
     completion = {
-      completeopt = 'manu,manuone,noinster',
+      completeopt = 'menu,menuone,noinsert', -- 'menu,menuone,noinsert,noselect',
       keyword_length = 1,
     },
     confirm_opts = {
