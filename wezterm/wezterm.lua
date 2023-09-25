@@ -12,6 +12,9 @@ W.colors = colors
 -- Set font options
 W.font = wezterm.font_with_fallback {
   {
+    family = 'MonoLisa Nerd Font',
+  },
+  {
     family = 'LigaOperatorMono Nerd Font',
     weight = 'DemiLight',
   },
@@ -20,8 +23,8 @@ W.font = wezterm.font_with_fallback {
     weight = 'DemiLight',
   },
 }
-W.font_size = 14.0
--- W.cell_width = 1.0
+W.font_size = 13.5
+W.cell_width = 1.1
 -- W.line_height = 1.0
 
 -- Window options
