@@ -56,13 +56,18 @@ M.setup = function ()
 
       if server_name == 'tsserver' then
         opts = vim.tbl_deep_extend('force', default_opts, {
-          root_dir = root('tsconfig.json', 'jsconfig.json'),
+          root_dir = function (...)
+            return root('tsconfig.json', 'jsconfig.json')(...)
+          end,
+          single_file_support = false,
         })
       end
 
       if server_name == 'tailwindcss' then
         opts = vim.tbl_deep_extend('force', default_opts, {
-          root_dir = root 'tailwind.config.js',
+          root_dir = function (...)
+            return root 'tailwind.config.js'(...)
+          end,
           settings = {
             tailwindCSS = {
               experimental = {
