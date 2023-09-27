@@ -8,6 +8,10 @@ ctrl + alt - l : yabai -m window --focus east;
 ctrl + alt - i : yabai -m display --focus west;
 ctrl + alt - o : yabai -m display --focus east;
 
+# change focus between external displays prev or next
+cmd + alt - i : yabai -m display --focus prev;
+cmd + alt - o : yabai -m display --focus next;
+
 # rotate layout clockwise
 shift + alt - u : yabai -m space --rotate 270;
 
