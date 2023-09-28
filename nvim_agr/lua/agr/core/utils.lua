@@ -191,6 +191,16 @@ local is_valid = function (bufnr)
   return vim.api.nvim_buf_is_valid(bufnr) and vim.bo[bufnr].buflisted
 end
 
+local rainbow_highlights = {
+  'RainbowDelimiterRed',
+  'RainbowDelimiterYellow',
+  'RainbowDelimiterBlue',
+  'RainbowDelimiterOrange',
+  'RainbowDelimiterGreen',
+  'RainbowDelimiterViolet',
+  'RainbowDelimiterCyan',
+}
+
 U.close_buf = close_buf
 U.contains = contains
 U.default_tbl = default_tbl
@@ -208,5 +218,6 @@ U.null_ls_providers = null_ls_providers
 U.null_ls_register = null_ls_register
 U.null_ls_sources = null_ls_sources
 U.pad_string = pad_string
+U.rainbow_highlights = rainbow_highlights
 
 return U

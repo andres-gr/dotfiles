@@ -63,9 +63,11 @@ T.config = function ()
   -- Add mdx highlight
   vim.treesitter.language.register('markdown', 'mdx')
 
-  local rainbow = require('rainbow-delimiters')
+  local rainbow = require 'rainbow-delimiters'
+  local utils = require 'agr.core.utils'
 
   vim.g.rainbow_delimiters = {
+    highlight = utils.rainbow_highlights,
     query = {
       [''] = 'rainbow-delimiters',
       lua = 'rainbow-blocks',
