@@ -27,6 +27,7 @@ W.font = wezterm.font_with_fallback {
 W.font_size = 13.5
 -- W.cell_width = 1.0
 -- W.line_height = 1.0
+W.underline_position = -2
 
 -- Window options
 W.enable_tab_bar = false
