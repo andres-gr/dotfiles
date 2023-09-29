@@ -70,7 +70,11 @@ T.config = function ()
     highlight = utils.rainbow_highlights,
     query = {
       [''] = 'rainbow-delimiters',
+      javascript = 'rainbow-parens',
+      jsx = 'rainbow-parens',
       lua = 'rainbow-blocks',
+      tsx = 'rainbow-parens',
+      typescript = 'rainbow-parens',
     },
     strategy = {
       [''] = rainbow.strategy['global'],
