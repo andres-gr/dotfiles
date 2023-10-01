@@ -139,17 +139,4 @@ return {
     end,
     lazy = true,
   },
-
-  -- Color picker
-  {
-    'uga-rosa/ccc.nvim',
-    cmd = {
-      'CccConvert',
-      'CccHighlighterDisable',
-      'CccHighlighterEnable',
-      'CccHighlighterToggle',
-      'CccPick',
-    },
-    lazy = true,
-  }
 }

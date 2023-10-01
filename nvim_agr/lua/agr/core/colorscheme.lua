@@ -103,10 +103,10 @@ dracula.setup({
     diffFile = { fg = colors.comment },
 
     -- LSP
-    DiagnosticVirtualTextError = { fg = colors.bright_red },
-    DiagnosticVirtualTextHint = { fg = colors.bright_cyan },
-    DiagnosticVirtualTextInfo = { fg = colors.bright_cyan },
-    DiagnosticVirtualTextWarn = { fg = colors.bright_yellow },
+    DiagnosticVirtualTextError = { fg = colors.bright_red, bg = colors.bright_red_bg },
+    DiagnosticVirtualTextHint = { fg = colors.bright_cyan, bg = colors.bright_cyan_bg },
+    DiagnosticVirtualTextInfo = { fg = colors.bright_cyan, bg = colors.bright_cyan_bg },
+    DiagnosticVirtualTextWarn = { fg = colors.bright_yellow, bg = colors.bright_yellow_bg },
 
     -- Saga
     SagaLightBulb = { fg = colors.bright_yellow },

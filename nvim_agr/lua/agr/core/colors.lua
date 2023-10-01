@@ -24,6 +24,9 @@ local dracula_colors = {
   gutter_fg = '#4B5263',
   nontext = '#3B4048',
   none = 'NONE',
+  bright_cyan_bg = '#00241e',
+  bright_red_bg = '#240600',
+  bright_yellow_bg = '#242400',
 }
 
 local default_colors = {
