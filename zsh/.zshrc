@@ -67,6 +67,9 @@ export PATH="$HOME/.local/bin:$PATH"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
+# fzf rg
+export PATH="$DOTFILES/zsh/bin:$PATH"
+
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
 
@@ -80,4 +83,3 @@ eval "$(fnm env --use-on-cd)"
 
 # eval "$(starship init zsh)"
 _evalcache starship init zsh
-

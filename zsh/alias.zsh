@@ -21,4 +21,3 @@ alias weather="curl v2.wttr.in"
 
 # git aliases
 alias gpsup="git_current_branch | git push --set-upstream origin"
-
