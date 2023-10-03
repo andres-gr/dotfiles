@@ -41,7 +41,7 @@ ftmk() {
   session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux kill-session -t "$session" || echo "No session found to delete."
 }
 
-# fuzzy grep via rg and open in vim with line number
+# fuzzy grep via rg and open in nvim with line number
 fgr() {
   local file
   local line
@@ -49,8 +49,19 @@ fgr() {
   read -r file line <<<"$(rg --no-heading --line-number $@ | fzf -0 -1 | awk -F: '{print $1, $2}')"
 
   if [[ -n $file ]]; then
-    vim $file +$line
+    nvim $file +$line
   fi
+}
+
+# fuzzy find directory
+fcd() {
+  cd $(fd -t d -H\
+    -E .git\
+    -E node_modules\
+    -E .cache\
+    -E .npm\
+    -E .local\
+  | fzf)
 }
 
 # Project man shortcuts
@@ -73,6 +84,7 @@ is_inside_git() {
   [[ $(command git rev-parse --is-inside-work-tree 2>/dev/null) == true ]]
 }
 
+# go up n directories
 c() {
   re='^[0-9]+$'
   count=1
