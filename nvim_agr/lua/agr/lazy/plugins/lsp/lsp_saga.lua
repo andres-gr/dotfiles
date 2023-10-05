@@ -18,16 +18,10 @@ S.setup = function ()
       },
     },
     lightbulb = {
-      cache_code_action = true,
-      enable = true,
+      debounce = 500,
       enable_in_insert = false,
-      update_time = 250,
       virtual_text = false,
     },
-    preview = {
-      lines_below = 5,
-    },
-    request_timeout = 2500,
     -- Keybinds for navigation in saga window
     scroll_preview = {
       scroll_down = '<C-j>',
