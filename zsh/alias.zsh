@@ -3,6 +3,7 @@
 # alias top="vtop --theme=parallax"
 
 alias b="bun"
+alias bdump="brew bundle dump -f"
 alias co="code ."
 alias cup="cd .."
 alias grep="grep --color=auto"

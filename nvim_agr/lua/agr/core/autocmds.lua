@@ -181,13 +181,6 @@ cmd('FileType', {
   pattern = 'qf',
 })
 
--- cmd({ 'BufRead', 'BufNewFile' }, {
---   callback = function () vim.diagnostic.disable(0) end,
---   desc = 'Diable LSP on node_modules',
---   group = general,
---   pattern = '*/node_modules/*',
--- })
-
 cmd('WinLeave', {
 	callback = function ()
 		if vim.bo.ft == 'TelescopePrompt' and vim.fn.mode() == 'i' then
@@ -214,7 +207,6 @@ cmd('BufReadPost', {
   end,
   group = general,
 })
-
 
 cmd('QuitPre', {
   callback = function()
@@ -248,7 +240,8 @@ cmd('QuitPre', {
     --     vim.api.nvim_win_close(w, true)
     --   end
     -- end
-  end
+  end,
+  group = general,
 })
 
 local agr = augroup('agr_highlights', { clear = true })

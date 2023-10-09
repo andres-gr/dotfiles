@@ -12,9 +12,8 @@ G.config = function ()
   gitsigns.setup {
     attach_to_untracked = true,
     current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
-    current_line_blame_formatter_opts = {
-      relative_time = false,
-    },
+    current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
+    current_line_blame_formatter_nc = 'No commit yet',
     current_line_blame_opts = {
       delay = 1000,
       ignore_whitespace = false,
