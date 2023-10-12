@@ -64,7 +64,7 @@ H.on_attach = function (client, bufnr)
     client.server_capabilities.hoverProvider = nil
   end
 
-  client.server_capabilities.semanticTokensProvider = nil
+  -- client.server_capabilities.semanticTokensProvider = nil
 
   -- Enable completion triggered by <c-x><c-o>
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
