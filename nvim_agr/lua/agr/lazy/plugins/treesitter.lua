@@ -40,7 +40,15 @@ T.config = function ()
     },
     highlight = { enable = true },
     indent = { enable = true },
-    incremental_selection = { enable = true },
+    incremental_selection = {
+      enable = true,
+      keymaps = {
+        init_selection = '<C-space>',
+        node_decremental = '<BS>',
+        node_incremental = '<C-space>',
+        scope_incremental = false,
+      },
+    },
     playground = {
       enable = true,
       keybindings = {
