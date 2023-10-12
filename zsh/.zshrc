@@ -63,12 +63,12 @@ fi
 # local bin files path
 export PATH="$HOME/.local/bin:$PATH"
 
+# fzf rg
+export PATH="$DOTFILES/zsh/bin:$PATH"
+
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
-
-# fzf rg
-export PATH="$DOTFILES/zsh/bin:$PATH"
 
 # bun completions
 [ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
