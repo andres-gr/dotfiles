@@ -95,3 +95,6 @@ ctrl + alt - r : yabai --restart-service;
 # restart/reload skhd
 ctrl + alt - d : skhd --restart-service;
 ctrl + alt - f : skhd --reload;
+
+# open intel pwr
+shift + cmd - i : open -a "Intel Power Gadget"
