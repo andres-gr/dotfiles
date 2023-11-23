@@ -209,9 +209,24 @@ N.config = function ()
         --   'toggle_node',
         --   nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
         -- },
-        ['<2-LeftMouse>'] = 'open',
-        ['<cr>'] = 'open',
-        ['o'] = 'open',
+        ['<2-LeftMouse>'] = {
+          'open',
+          config = {
+            expand_nested_files = true,
+          },
+        },
+        ['<cr>'] = {
+          'open',
+          config = {
+            expand_nested_files = true,
+          },
+        },
+        ['o'] = {
+          'open',
+          config = {
+            expand_nested_files = true,
+          },
+        },
         ['<esc>'] = 'revert_preview',
         ['<M-o>'] = 'revert_preview',
         ['P'] = { 'toggle_preview', config = { use_float = true } },

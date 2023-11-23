@@ -21,10 +21,6 @@ T.config = function ()
     auto_install = { 'true' },
     autopairs = { enable = true },
     autotag = { enable = true },
-    context_commentstring = {
-      enable = true,
-      enable_autocmd = false,
-    },
     ensure_installed = {
       'bash',
       'css',
@@ -88,6 +84,14 @@ T.config = function ()
       [''] = rainbow.strategy['global'],
       html = rainbow.strategy['local'],
     },
+  }
+
+  vim.g.skip_ts_context_commentstring_module = true
+
+  local commentstring = require 'ts_context_commentstring'
+
+  commentstring.setup {
+    enable_autocmd = true,
   }
 end
 
