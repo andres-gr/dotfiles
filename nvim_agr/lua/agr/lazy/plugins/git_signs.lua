@@ -35,34 +35,19 @@ G.config = function ()
     signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
     signs = {
       add = {
-        hl = 'GitSignsAdd',
-        linehl = 'GitSignsAddLn',
-        numhl = 'GitSignsAddNr',
         text = '▎',
       },
       change = {
-        hl = 'GitSignsChange',
-        linehl = 'GitSignsChangeLn',
-        numhl = 'GitSignsChangeNr',
         text = '▎',
       },
       changedelete = {
-        hl = 'GitSignsChange',
-        linehl = 'GitSignsChangeLn',
-        numhl = 'GitSignsChangeNr',
         text = '▎',
       },
       delete = {
-        hl = 'GitSignsDelete',
-        linehl = 'GitSignsDeleteLn',
-        numhl = 'GitSignsDeleteNr',
         text = '',
         -- text = '▎',
       },
       topdelete = {
-        hl = 'GitSignsDelete',
-        linehl = 'GitSignsDeleteLn',
-        numhl = 'GitSignsDeleteNr',
         text = '',
       },
     },
