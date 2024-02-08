@@ -1,6 +1,9 @@
 local T = {
   'nvim-telescope/telescope.nvim',
   cmd = 'Telescope',
+  dependencies = {
+    'danielvolchek/tailiscope.nvim',
+  },
 }
 
 T.config = function ()

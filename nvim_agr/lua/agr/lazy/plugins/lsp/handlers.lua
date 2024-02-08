@@ -64,6 +64,11 @@ H.on_attach = function (client, bufnr)
     client.server_capabilities.hoverProvider = nil
   end
 
+  if client.name == 'tailwindcss' then
+    require('telescope').load_extension('tailiscope')
+    map('n', '<leader>ft', '<CMD>Telescope tailiscope<CR>', 'Search tailwindcss')
+  end
+
   -- client.server_capabilities.semanticTokensProvider = nil
 
   -- Enable completion triggered by <c-x><c-o>
