@@ -145,7 +145,10 @@ M.config = function ()
       ['<CR>'] = cmp.mapping.confirm { select = true },
       ['<Tab>'] = cmp.mapping(function (fallback)
         if cmp.visible() then
-          cmp.confirm { select = true }
+          cmp.confirm {
+            behavior = cmp.ConfirmBehavior.Insert,
+            select = true,
+          }
         elseif luasnip.jumpable(1) then
           luasnip.jump(1)
         else
