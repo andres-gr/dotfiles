@@ -149,6 +149,8 @@ M.config = function ()
             behavior = cmp.ConfirmBehavior.Insert,
             select = true,
           }
+        elseif require 'copilot.suggestion'.is_visible() then
+          require 'copilot.suggestion'.accept()
         elseif luasnip.jumpable(1) then
           luasnip.jump(1)
         else
