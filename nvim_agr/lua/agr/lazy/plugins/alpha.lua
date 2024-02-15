@@ -33,6 +33,7 @@ A.config = function ()
     btn('F', '󰡦   Search all files', ':lua require("telescope.builtin").find_files({ no_ignore = true })<CR>'),
     btn('w', '󱎸   Search words', ':Telescope live_grep<CR>'),
     btn('g', '   Search git status files', ':Telescope git_status<CR>'),
+    btn('v', '󰙅   Open file tree', ':Neotree toggle<CR>'),
     btn('n', '   New file', ':ene <BAR> startinsert <CR>'),
     btn('s', '   Show Lazy plugins', ':Lazy<CR>'), -- Show lazy plugin manager
     btn('c', '󰚰   Check plugins', ':Lazy check<CR>'), -- Check lazy plugins update
