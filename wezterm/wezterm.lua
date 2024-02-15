@@ -61,6 +61,9 @@ W.keys = {
   },
 }
 
+-- Set UI render options
+W.front_end = 'Software'
+
 -- Maximize screen on startup
 -- local mux = wezterm.mux
 -- wezterm.on('gui-startup', function (cmd)
