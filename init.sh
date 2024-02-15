@@ -3,7 +3,6 @@
 # setup configs in HOME and .config
 
 to_home=(
-  ".gitconfig"
   "tmux/.tmux.conf"
   "zsh/.zshrc"
 )
@@ -15,12 +14,25 @@ done
 
 echo "created dotfiles symlinks in HOME"
 
+# copy .gitconfig to home
+if [ -f $HOME/.gitconfig ]; then
+  mv $HOME/.gitconfig $HOME/.gitconfig.bak
+fi
+
+cp -rf $PWD/.gitconfig $HOME
+
 config_dir=$HOME/.config
 
 if [ ! -d $config_dir ]; then
   $(mkdir $config_dir)
 
   echo "created .config dir in HOME"
+fi
+
+if command -v tmux &> /dev/null; then
+  if [ ! -d $HOME/.tmux/plugins/tpm ]; then
+    $(git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm")
+  fi
 fi
 
 if [ ! -d $config_dir/lazygit ]; then
