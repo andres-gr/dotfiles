@@ -1,1 +1,367 @@
-/Users/andres/Library/Application Support/Code/User/snippets/typescript.json
+{
+  "Alert": {
+    "prefix": "al",
+    "body": "alert('${1:message}')$0",
+    "description": "JS Alert"
+  },
+  "Console log": {
+    "prefix": "cl",
+    "body": "console.log(${1:message})$0",
+    "description": "JS Console Log"
+  },
+  "Console dir": {
+    "prefix": "cld",
+    "body": "console.dir(${1:item})$0",
+    "description": "JS Console Dir"
+  },
+  "Console dir with depth": {
+    "prefix": "cldd",
+    "body": "console.dir(${1:item}, { depth: null })$0",
+    "description": "JS Console Dir with depth null"
+  },
+  "Console log server": {
+    "prefix": "cls",
+    "body": "console.log(''.padEnd(80))\nconsole.log(''.padEnd(80, '=-='))\nconsole.log(''.padEnd(80, '=-='))\nconsole.log(''.padEnd(80))\n${1}\nconsole.log(''.padEnd(80))\nconsole.log(''.padEnd(80, '=-='))\nconsole.log(''.padEnd(80, '=-='))\nconsole.log(''.padEnd(80))",
+    "description": "JS Console Dir with depth null"
+  },
+  "Console table": {
+    "prefix": "clt",
+    "body": "console.table(${1:array_object})$0",
+    "description": "JS Console Table"
+  },
+  "Let": {
+    "prefix": "let",
+    "body": "let ${1:name} = ${2:value}$0",
+    "description": "Declare variable"
+  },
+  "Let destructure": {
+    "prefix": "dlet",
+    "body": "let { $2 } = ${1:object}$0",
+    "description": "Destructure variable from object"
+  },
+  "Const": {
+    "prefix": "const",
+    "body": "const ${1:name} = ${2:value}",
+    "description": "Declare constant"
+  },
+  "Const destructure": {
+    "prefix": "dconst",
+    "body": "const { $2 } = ${1:object}$0",
+    "description": "Desctucture constant from object"
+  },
+  "Const multi line destructure": {
+    "prefix": "mdconst",
+    "body": "const {\n\t$2\n} = ${1:object}$0",
+    "description": "Desctucture constant from object in multi line"
+  },
+  "Let multi line destructure": {
+    "prefix": "mdlet",
+    "body": "let {\n\t$2\n} = ${1:object}$0",
+    "description": "Desctucture variable from object in multi line"
+  },
+  "if ternary": {
+    "prefix": "ift",
+    "body": "${1:condition} ? $2 : $3",
+    "description": "JS ternary if"
+  },
+  "Event prevent default": {
+    "prefix": "epre",
+    "body": "e.preventDefault()",
+    "description": "JS event prevent default"
+  },
+  "Function": {
+    "prefix": "func",
+    "body": "function ${1:funcName} ($2) {\n\t$3\n}$0",
+    "description": "JS named function"
+  },
+  "Anon Function": {
+    "prefix": "afunc",
+    "body": "function ($1) {\n\t$2\n}$0",
+    "description": "JS anonymous function"
+  },
+  "Arrow function": {
+    "prefix": "arfunc",
+    "body": "$1 => {\n\t$2\n}$0",
+    "description": "ES6 arrow function"
+  },
+  "Short Arrow function": {
+    "prefix": "sharfunc",
+    "body": "$1 => { $2 }$0",
+    "description": "ES6 short arrow function"
+  },
+  "Return Arrow function": {
+    "prefix": "rarfunc",
+    "body": "$1 => $2",
+    "description": "ES6 return arrow function"
+  },
+  "New method": {
+    "prefix": "nmethod",
+    "body": "${1:methodName} ($2) {\n\t$3\n}$0",
+    "description": "Object new method"
+  },
+  "Get Element By Id": {
+    "prefix": "gi",
+    "body": "${1:document}.getElementById('${2:id}')$0",
+    "description": "JS get element by ID"
+  },
+  "Query Selector": {
+    "prefix": "qs",
+    "body": "${1:document}.querySelector('${2:selector}')$0",
+    "description": "JS query selector"
+  },
+  "Query Selector All": {
+    "prefix": "qsa",
+    "body": "${1:document}.querySelectorAll('${2:selector}')$0",
+    "description": "JS query selector all"
+  },
+  "JQuery Selector": {
+    "prefix": "jqsel",
+    "body": "$('${1:selector}').$0",
+    "description": "jQuery selector"
+  },
+  "Add Event listener": {
+    "prefix": "aevent",
+    "body": "${1:element}.addEventListener('${2:event}', ${3:function})$0",
+    "description": "JS add event listener"
+  },
+  "Remove Event listener": {
+    "prefix": "revent",
+    "body": "${1:element}.removeEventListener('${2:event}', ${3:function})$0",
+    "description": "JS remove event listener"
+  },
+  "Import": {
+    "prefix": "imp",
+    "body": "import { $2 } from '${1:location}'$0",
+    "description": "ES6 import"
+  },
+  "Multi line Import": {
+    "prefix": "mimp",
+    "body": "import {\n\t$2\n} from '${1:location}'$0",
+    "description": "ES6 multi line import"
+  },
+  "Import Default": {
+    "prefix": "dimp",
+    "body": "import ${2:stuff} from '${1:location}'$0",
+    "description": "ES6 import default"
+  },
+  "Just import": {
+    "prefix": "jimp",
+    "body": "import ${2:m from }'${1:location}'$0",
+    "description": "ES6 just import"
+  },
+  "Export Constant": {
+    "prefix": "exp",
+    "body": "export const ${1:constant} = ${2:value}$0",
+    "description": "ES6 export constant"
+  },
+  "Export Default": {
+    "prefix": "dexp",
+    "body": "export default $1",
+    "description": "ES6 export default"
+  },
+  "For": {
+    "prefix": "for",
+    "body": "for (let i = 0, max = ${1:array}.length; i < max; i++) {\n\t$2\n}$0",
+    "description": "JS for loop"
+  },
+  "For in": {
+    "prefix": "forin",
+    "body": "for (let ${1:key} in ${2:object}) {\n\t$3\n}$0",
+    "description": "JS for in iterator"
+  },
+  "For of": {
+    "prefix": "forof",
+    "body": "for (let ${1:i} of ${2:array}) {\n\t$3\n}$0",
+    "description": "JS for of iterator"
+  },
+  "Event current attribute": {
+    "prefix": "currentattr",
+    "body": "e.currentTarget.getAttribute('${1:attr}')$0",
+    "description": "JS get attribute from event current target"
+  },
+  "React element call": {
+    "prefix": "relement",
+    "body": "<${1:Name} />$0",
+    "description": "React call element"
+  },
+  "React element call with props": {
+    "prefix": "relementprops",
+    "body": "<${1:Name}\n\t$2\n/>$0",
+    "description": "React call element with props"
+  },
+  "JS Require": {
+    "prefix": "jreq",
+    "body": "const ${1:module} = require('${2:pathModule}')$0",
+    "description": "JS require module"
+  },
+  "JSX braces": {
+    "prefix": "jb",
+    "body": "{ $1 }$0",
+    "description": "JSX braces"
+  },
+  "React constructor": {
+    "prefix": "rconstruct",
+    "body": "constructor (props) {\n\tsuper(props)\n\t$1\n}$0",
+    "description": "React class component constructor"
+  },
+  "Dumb component": {
+    "prefix": "dcompo",
+    "body": "const ${1:Name} = ${2:props} => ($3)",
+    "description": "React dumb component"
+  },
+  "Render method": {
+    "prefix": "rrender",
+    "body": "render () {\n\treturn ($1)\n}",
+    "description": "React class component render method"
+  },
+  "DOM render": {
+    "prefix": "rdomrender",
+    "body": "ReactDOM.render(\n\t$1\n)",
+    "description": "React DOM render"
+  },
+  "React import": {
+    "prefix": "rimport",
+    "body": "import React from 'react'",
+    "description": "React import react statement"
+  },
+  "PropTypes import": {
+    "prefix": "proimport",
+    "body": "import PropTypes from 'prop-types'",
+    "description": "React import prop types statement"
+  },
+  "React Component import": {
+    "prefix": "rcimport",
+    "body": "import React, { Component } from 'react'",
+    "description": "React import react and component statement"
+  },
+  "React PureComponent import": {
+    "prefix": "rpimport",
+    "body": "import React, { PureComponent } from 'react'",
+    "description": "React import react and pure component statement"
+  },
+  "React component class": {
+    "prefix": "rclass",
+    "body": "class ${1:componentName} extends Component {\n\t$2\n}$0",
+    "description": "React declare class component"
+  },
+  "React pure component class": {
+    "prefix": "pclass",
+    "body": "class ${1:componentName} extends PureComponent {\n\t$2\n}$0",
+    "description": "React declare class pure component"
+  },
+  "React component if else": {
+    "prefix": "rife",
+    "body": "{ ${1:condition}\n\t? $2\n\t: $3\n}$0",
+    "description": "React if else in render"
+  },
+  "Return helper": {
+    "prefix": "rhelp",
+    "body": "${1:helper}: $2 => $3",
+    "description": "ES6 return helper"
+  },
+  "Arrow method": {
+    "prefix": "amethod",
+    "body": "${1:method} = $2 => {\n\t$3\n}$0",
+    "description": "ES6 return method"
+  },
+  "Return method": {
+    "prefix": "rmethod",
+    "body": "${1:method} = $2 => $3",
+    "description": "ES6 return method"
+  },
+  "ESLint line disable": {
+    "prefix": "lintdisable",
+    "body": "// eslint-disable-line",
+    "description": "Linter Disable ESLint for current line"
+  },
+  "ESLint next line disable": {
+    "prefix": "nlintdisable",
+    "body": "// eslint-disable-next-line",
+    "description": "Linter Disable ESLint for the next line"
+  },
+  "ESLint line disable meteor imports": {
+    "prefix": "lintimportsdisable",
+    "body": "// eslint-disable-line import/no-extraneous-dependencies, import/no-unresolved, import/extensions",
+    "description": "Linter Disable ESLint for current line meteor imports"
+  },
+  "ESLint declare meteor imports": {
+    "prefix": "mdeclareimports",
+    "body": "/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */\n$1\n/* eslint-enable */",
+    "description": "Linter declare Meteor imports"
+  },
+  "ESLint dev imports": {
+    "prefix": "devdependencies",
+    "body": "/* eslint-disable import/no-extraneous-dependencies */\n$1\n/* eslint-enable */",
+    "description": "Linter declare dev imports"
+  },
+  "Import Extended Stylesheet": {
+    "prefix": "esimp",
+    "body": "import EStyleSheet from 'react-native-extended-stylesheet'$0",
+    "description": "React Native Extended StyleSheet import"
+  },
+  "React Native StyleSheet Create": {
+    "prefix": "rnstylesheet",
+    "body": "StyleSheet.create({\n\t$1\n})$0",
+    "description": "React Native StyleSheet create"
+  },
+  "React Native Extended StyleSheet Create": {
+    "prefix": "rnestylesheet",
+    "body": "EStyleSheet.create({\n\t$1\n})$0",
+    "description": "React Native Extended StyleSheet create"
+  },
+  "React Native Extended StyleSheet Build": {
+    "prefix": "rnbestylesheet",
+    "body": "EStyleSheet.build({\n\t$1\n})$0",
+    "description": "React Native Extended StyleSheet Build"
+  },
+  "React imported component": {
+    "prefix": "importedcomponent",
+    "body": "const ${1:AsyncComponent} = importedComponent(\n\t() => import(/* webpackChunkName: '${2:ChunkName}' */ '${3:ComponentLocation}'),\n\t{ LoadingComponent: Loading }\n)$0",
+    "description": "React imported component"
+  },
+  "Try catch": {
+    "prefix": "trc",
+    "body": "try {\n\t$1\n} catch (${2:e}) {\n\t$3\n}$0",
+    "description": "Try catch fix"
+  },
+  "Resolver with helmet": {
+    "prefix": "rhelmet",
+    "body": "${1:resolver}: errorHelmet(async ($2) => $0)",
+    "description": "Prisma resolver error helmet"
+  },
+  "Prisma resolver": {
+    "prefix": "presolver",
+    "body": "${1:resolver}: async ($2) => $0",
+    "description": "Prisma standard resolver"
+  },
+  "React Native styles file": {
+    "prefix": "rnstylesfile",
+    "body": "import EStyleSheet from 'react-native-extended-stylesheet'\n\nconst styles = EStyleSheet.create({\n\t$1\n})\n\nexport default styles\n",
+    "description": "React native Extended Styles file"
+  },
+  "ESLint disable file": {
+    "prefix": "lintfile",
+    "body": "/* eslint-disable $1 */$0",
+    "description": "ESLint Disable file"
+  },
+  "Async body function": {
+    "prefix": "abfunc",
+    "body": "async function body () {\n\t$1\n}\nbody()$0",
+    "description": "Async body function"
+  },
+  "Export from": {
+    "prefix": "expf",
+    "body": "export { ${2:default} } from '$1'$0",
+    "description": "Export from another file"
+  },
+  "SvelteKit Page Server Load": {
+    "prefix": "s-page-server-load",
+    "body": "import type { PageServerLoad } from './$$types'\n\nconst load: PageServerLoad = ({ $1 }) => {\n\t$2\n}\n\nexport { load }$0",
+    "description": "SvelteKit page server load"
+  },
+  "SvelteKit Request Handler": {
+    "prefix": "s-request-handler",
+    "body": "import type { RequestHandler } from './$$types'\n\nconst ${1:REQ}: RequestHandler = ({ $2 }) => {\n\t$3\n}\n\nexport { ${1:REQ} }$0",
+    "description": "SvelteKit page server load"
+  }
+}

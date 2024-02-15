@@ -78,8 +78,14 @@ FAST_HIGHLIGHT_STYLES[suffix-alias]="fg=green"
 FAST_HIGHLIGHT_STYLES[precommand]="fg=green"
 FAST_HIGHLIGHT_STYLES[path-to-dir]="fg=cyan"
 
+# set bat theme
+export BAT_THEME="Dracula"
+
 # init fnm
 eval "$(fnm env --use-on-cd)"
 
 # eval "$(starship init zsh)"
 _evalcache starship init zsh
+
+# init z search
+_evalcache zoxide init zsh
