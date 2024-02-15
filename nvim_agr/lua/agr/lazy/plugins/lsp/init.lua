@@ -6,7 +6,7 @@ local L = {
     'hrsh7th/cmp-nvim-lsp',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'jose-elias-alvarez/null-ls.nvim',
+    'nvimtools/none-ls.nvim',
     'jayp0521/mason-null-ls.nvim',
     'onsails/lspkind.nvim',
     {
