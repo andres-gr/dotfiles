@@ -11,9 +11,9 @@ Z.config = function ()
       gitsigns = { enabled = true },
     },
     window = {
-      backdrop = 1,
-      height = 0.8,
-      width = 0.65,
+      backdrop = 0.9,
+      height = 0.95,
+      width = 0.7,
     },
   }
 end
