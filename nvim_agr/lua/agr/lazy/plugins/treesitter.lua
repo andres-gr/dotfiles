@@ -4,8 +4,8 @@ local T = {
   dependencies = {
     'JoosepAlviste/nvim-ts-context-commentstring', -- Context based comments
     'hiphish/rainbow-delimiters.nvim',
-    'windwp/nvim-ts-autotag', -- Autoclose tags
-    'nvim-treesitter/playground', -- TS playground
+    'windwp/nvim-ts-autotag',                      -- Autoclose tags
+    'nvim-treesitter/playground',                  -- TS playground
   },
   event = {
     'BufNewFile',
@@ -20,7 +20,29 @@ T.config = function ()
   treesitter.setup {
     auto_install = { 'true' },
     autopairs = { enable = true },
-    autotag = { enable = true },
+    autotag = {
+      enable = true,
+      enable_close = true,
+      enable_close_on_slash = true,
+      enable_rename = true,
+      filetypes = {
+        'astro',
+        'glimmer',
+        'handlebars',
+        'hbs',
+        'html',
+        'javascript',
+        'javascriptreact',
+        'markdown',
+        'php',
+        'svelte',
+        'tsx',
+        'typescript',
+        'typescriptreact',
+        'vue',
+        'xml',
+      },
+    },
     ensure_installed = {
       'bash',
       'css',
@@ -60,7 +82,7 @@ T.config = function ()
         update = 'R',
       },
       persist_queries = false, -- Whether the query persists across vim sessions
-      updatetime = 25, -- Debounced time for highlighting nodes in the playground from source code
+      updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
     },
   }
 
