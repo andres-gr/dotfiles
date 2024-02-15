@@ -12,14 +12,11 @@ gui:
     optionsTextColor:
       - '#9580FF' # purple
     selectedLineBgColor:
-      - '#454158' # selection
-      - reverse
-    selectedRangeBgColor:
-      - reverse
+      - '#7970A9' # comment
     cherryPickedCommitBgColor:
       - '#80FFEA' # cyan
     cherryPickedCommitFgColor:
-      - '#9580FF' # purple
+      - '#FF80BF' # pink
     unstagedChangesColor:
       - '#FF9580' # red
     defaultFgColor:
