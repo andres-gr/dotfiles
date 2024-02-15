@@ -1,1 +1,20 @@
-/Users/andres/Library/Application Support/Code/User/snippets/graphql.json
+{
+    "Node fields": {
+        "prefix": "nfields",
+        "body": [
+            "id: ID! @unique",
+            "createdAt: DateTime!",
+            "updatedAt: DateTime!"
+        ],
+        "description": "Default fields for Node interface"
+    },
+    "File with fragments boiler": {
+        "prefix": "ffrag",
+        "body": [
+            "#import \"../../generated/app.fragments.graphql\"",
+            "",
+            "${1:request}"
+        ],
+        "description": "File with fragments boilerplate"
+    }
+}

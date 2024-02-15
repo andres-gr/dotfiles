@@ -1,6 +1,6 @@
 [user]
-	name = Andres Garcia
-	email = andres.gar@gmail.com
+	name =
+	email =
 [alias]
   a = !git add . && git status
   aa = !git add . && git add -u . && git status
