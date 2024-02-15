@@ -1,16 +1,20 @@
 # Aliases
 
-# alias top="vtop --theme=parallax"
-
 alias b="bun"
 alias bdump="brew bundle dump -f"
 alias co="code ."
-alias cup="cd .."
 alias grep="grep --color=auto"
+alias l="eza -lha --icons=auto --sort=name --group-directories-first"
+alias lt="l -T"
+alias lt1="l -T -L 1"
+alias lt2="l -T -L 2"
+alias lt3="l -T -L 3"
 alias lc="lolcat"
+alias ld="eza -lhD --icons=auto"
 alias lg="lazygit"
-alias ls="colorls --dark"
-alias l="ls -la"
+alias ll="eza -lh --icons=auto"
+alias ls="eza -1 --icons=auto"
+alias mkd="mkdir -p"
 alias n="nvim"
 alias py=python3
 alias tm="tmux"

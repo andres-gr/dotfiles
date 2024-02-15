@@ -837,6 +837,25 @@ function status.component.nav(opts)
   )
 end
 
+--- A function to build AI section 
+-- @param opts options for configuring code suggestions count
+-- @return The Heirline component table
+-- @usage local heirline_component = status.component.ai()
+function status.component.ai(opts)
+  opts = utils.default_tbl(opts, {
+    padding = { left = 1 },
+    provider = function ()
+      local ok, result = pcall(vim.api.nvim_call_function, 'codeium#GetStatusString', {})
+
+      if ok == false or result == ' ON' then return nil end
+
+      return '  ' .. result
+    end
+  })
+
+  return status.component.builder(status.utils.setup_providers(opts, { 'code_suggestions' }))
+end
+
 --- A function to build a set of children components for a macro recording section
 -- @param opts options for configuring macro recording and the overall padding
 -- @return The Heirline component table
