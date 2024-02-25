@@ -73,7 +73,9 @@ map({ 'n', 'v' }, '<leader>D', '"_D', desc_opts('Black hole Delete'))
 map({ 'n', 'v' }, '<leader>C', '"_C', desc_opts('Black hole Change'))
 map({ 'n', 'v' }, '<leader>X', '"_X', desc_opts('Black hole Remove'))
 map({ 'n', 'v' }, '<leader>R', '"_R', desc_opts('Black hole Replace'))
-map('v', 'p', '"_dP', desc_opts('Paste without replace in visual'))
+-- map('v', 'p', '"_dP', desc_opts('Paste without replace in visual'))
+map('x', 'p', 'P', desc_opts('Paste without replace in visual'))
+map('x', 'P', 'p', desc_opts('Regular paste with replace in visual'))
 
 -- Center navigation
 map('n', 'N', [[<CMD>execute('normal! ' . v:count1 . 'N')<CR><CMD>lua require('hlslens').start()<CR>zz]], desc_opts('Center search backwards'))
