@@ -69,6 +69,10 @@ H.on_attach = function (client, bufnr)
     map('n', '<leader>ft', '<CMD>Telescope tailiscope<CR>', 'Search tailwindcss')
   end
 
+  if client.name == 'eslint' then
+    map('n', '\\e', '<CMD>EslintFixAll<CR>', 'LSP fix all eslint')
+  end
+
   -- client.server_capabilities.semanticTokensProvider = nil
 
   -- Enable completion triggered by <c-x><c-o>
@@ -95,7 +99,7 @@ H.on_attach = function (client, bufnr)
   map('n', '[d', '<CMD>Lspsaga diagnostic_jump_prev<CR>', 'LSP prev diagnostic')
   map('n', ']d', '<CMD>Lspsaga diagnostic_jump_next<CR>', 'LSP next diagnostic')
   map('n', 'gq', '<CMD>lua vim.diagnostic.setloclist()<CR>', 'LSP diagnostic set loclist')
-  map('n', '\\f', '<CMD>Format<CR>', 'LSP format')
+  map('n', '\\f', '<CMD>Format<CR>', 'LSP format buffer')
   map('n', '<leader>lsr', '<CMD>LspRestart<CR>', 'LSP restart server')
 end
 
