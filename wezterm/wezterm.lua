@@ -17,15 +17,14 @@ W.font = wezterm.font_with_fallback {
   -- },
   {
     family = 'LigaOperatorMono Nerd Font',
-    weight = 300,
+    weight = 325,
   },
   {
     family = 'FiraCode Nerd Font',
     weight = 'DemiLight',
   },
 }
-
-W.font_size = 14.0
+W.font_size = 11.0
 -- W.cell_width = 1.0
 -- W.line_height = 1.0
 W.underline_position = -2
@@ -63,6 +62,10 @@ W.keys = {
 }
 
 -- Set UI render options
+-- W.front_end = 'Software'
+local gpus = wezterm.gui.enumerate_gpus()
+
+W.webgpu_preferred_adapter = gpus[1]
 W.front_end = 'WebGpu'
 
 -- Maximize screen on startup
