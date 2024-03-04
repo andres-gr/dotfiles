@@ -33,8 +33,8 @@ shift + alt - m : yabai -m window --toggle split
 ctrl + alt - return : yabai -m window --toggle zoom-fullscreen;
 
 # close a window
-# '.' -> 0x29
-ctrl + alt - 0x29 : yabai -m window --close;
+# '.' -> 0x2F
+ctrl + alt - 0x2F : yabai -m window --close;
 
 # swap windows
 shift + alt - j : yabai -m window --swap south;
