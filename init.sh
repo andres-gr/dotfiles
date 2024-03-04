@@ -23,6 +23,12 @@ if [ ! -d $config_dir ]; then
   echo "created .config dir in HOME"
 fi
 
+if command -v tmux &> /dev/null; then
+  if [ ! -d $HOME/.tmux/plugins/tpm ]; then
+    $(git clone "https://github.com/tmux-plugins/tpm" "$HOME/.tmux/plugins/tpm")
+  fi
+fi
+
 if [ ! -d $config_dir/lazygit ]; then
   $(mkdir $config_dir/lazygit)
 
