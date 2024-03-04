@@ -25,3 +25,4 @@ gui:
 os:
   edit: 'nvim'
   open: 'nvim {{filename}}'
+  openLink: 'xdg-open'

@@ -73,21 +73,21 @@ $(ln -sf $PWD/wezterm $config_dir/wezterm)
 
 echo "created wezterm config symlink in .config/wezterm"
 
-if [ -d $config_dir/yabai ]; then
-  rm -rf $config_dir/yabai
-fi
+# if [ -d $config_dir/yabai ]; then
+  # rm -rf $config_dir/yabai
+# fi
 
-$(ln -sf $PWD/yabai $config_dir/yabai)
+# $(ln -sf $PWD/yabai $config_dir/yabai)
 
-echo "created yabai config symlink in .config/yabai"
+# echo "created yabai config symlink in .config/yabai"
 
-if [ -d $config_dir/skhd ]; then
-  rm -rf $config_dir/skhd
-fi
+# if [ -d $config_dir/skhd ]; then
+  # rm -rf $config_dir/skhd
+# fi
 
-$(ln -sf $PWD/skhd $config_dir/skhd)
+# $(ln -sf $PWD/skhd $config_dir/skhd)
 
-echo "created skhd config symlink in .config/skhd"
+# echo "created skhd config symlink in .config/skhd"
 
 # move helper scripts into local bin
 
@@ -141,7 +141,6 @@ plugins_dir_names=(
   "git"
   "ohmyzsh"
   "omz-plugin-pnpm"
-  "z.lua"
   "zsh-autosuggestions"
   "zsh-completions"
   "zsh-history-substring-search"
@@ -153,7 +152,6 @@ plugins_repos=(
   "https://github.com/davidde"
   "https://github.com/ohmyzsh"
   "https://github.com/ntnyq"
-  "https://github.com/skywind3000"
   "https://github.com/zsh-users"
   "https://github.com/zsh-users"
   "https://github.com/zsh-users"

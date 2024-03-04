@@ -46,19 +46,19 @@ source $ZSH_FILES/keybinds.zsh
 source $ZSH_FILES/functions.zsh
 
 # pnpm
-export PNPM_HOME="$HOME/Library/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+# export PNPM_HOME="$HOME/Library/pnpm"
+# export PATH="$PNPM_HOME:$PATH"
 
 # brew curl
-export PATH="/usr/local/opt/curl/bin:$PATH"
-export LDFLAGS="-L/usr/local/opt/curl/lib"
-export CPPFLAGS="-I/usr/local/opt/curl/include"
+# export PATH="/usr/local/opt/curl/bin:$PATH"
+# export LDFLAGS="-L/usr/local/opt/curl/lib"
+# export CPPFLAGS="-I/usr/local/opt/curl/include"
 
 # Ruby init
-if [ -d "/usr/local/opt/ruby/bin" ]; then
-  export PATH=/usr/local/opt/ruby/bin:$PATH
-  export PATH=`gem environment gemdir`/bin:$PATH
-fi
+# if [ -d "/usr/local/opt/ruby/bin" ]; then
+#   export PATH=/usr/local/opt/ruby/bin:$PATH
+#   export PATH=`gem environment gemdir`/bin:$PATH
+# fi
 
 # local bin files path
 export PATH="$HOME/.local/bin:$PATH"
@@ -83,6 +83,9 @@ export BAT_THEME="Dracula"
 
 # init fnm
 eval "$(fnm env --use-on-cd)"
+
+# init zoxide
+_evalcache zoxide init zsh
 
 # eval "$(starship init zsh)"
 _evalcache starship init zsh

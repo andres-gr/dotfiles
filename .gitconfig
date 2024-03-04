@@ -30,3 +30,5 @@
 	cmd = nvim -f -c \"Gdiffsplit!\" \"$MERGED\"
 [mergetool]
 	prompt = false
+[credential]
+	helper = store
