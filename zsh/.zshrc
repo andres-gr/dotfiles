@@ -33,6 +33,9 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
+# history
+source $ZSH_FILES/history.zsh
+
 # plugins
 source $ZSH_FILES/plugins.zsh
 
