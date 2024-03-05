@@ -45,6 +45,3 @@ source $PLUGINS_DIR/omz-plugin-pnpm/pnpm.plugin.zsh
 
 # eval cache plugin
 source $PLUGINS_DIR/evalcache/evalcache.plugin.zsh
-
-# z lua plugin
-_evalcache lua $HOME/devel/plugins/z.lua/z.lua --init zsh

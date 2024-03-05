@@ -83,3 +83,6 @@ eval "$(fnm env --use-on-cd)"
 
 # eval "$(starship init zsh)"
 _evalcache starship init zsh
+
+# init z search
+_evalcache zoxide init zsh
