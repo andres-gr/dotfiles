@@ -32,14 +32,14 @@ W.underline_position = -2
 -- Window options
 W.enable_tab_bar = false
 W.hide_tab_bar_if_only_one_tab = true
-W.macos_window_background_blur = 10
-W.window_background_opacity = 0.9
+-- W.macos_window_background_blur = 10
+-- W.window_background_opacity = 0.8
 W.window_decorations = 'RESIZE'
 W.window_padding = {
-  bottom = 0,
-  left = 1,
-  right = 1,
-  top = 0,
+  bottom = 16,
+  left = 16,
+  right = 16,
+  top = 16,
 }
 -- local gradient = require 'gradient'
 -- W.window_background_gradient = gradient
