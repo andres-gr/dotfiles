@@ -87,9 +87,6 @@ export BAT_THEME="Dracula"
 # init fnm
 eval "$(fnm env --use-on-cd)"
 
-# init zoxide
-_evalcache zoxide init zsh
-
 # eval "$(starship init zsh)"
 _evalcache starship init zsh
 
