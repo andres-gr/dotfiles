@@ -23,6 +23,7 @@ alias vi="/usr/bin/vim"
 alias vim="nvim"
 alias vo="nvim ."
 alias weather="curl v2.wttr.in"
+alias y="yay"
 
 # git aliases
 alias gpsup="git_current_branch | git push --set-upstream origin"
