@@ -17,13 +17,14 @@ W.font = wezterm.font_with_fallback {
   -- },
   {
     family = 'LigaOperatorMono Nerd Font',
-    weight = 'DemiLight',
+    weight = 300,
   },
   {
     family = 'FiraCode Nerd Font',
     weight = 'DemiLight',
   },
 }
+
 W.font_size = 14.0
 -- W.cell_width = 1.0
 -- W.line_height = 1.0
@@ -62,7 +63,7 @@ W.keys = {
 }
 
 -- Set UI render options
-W.front_end = 'Software'
+W.front_end = 'WebGpu'
 
 -- Maximize screen on startup
 -- local mux = wezterm.mux
