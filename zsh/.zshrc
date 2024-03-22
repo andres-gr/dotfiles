@@ -33,6 +33,9 @@ autoload -Uz compinit
 compinit
 # End of lines added by compinstall
 
+# ssh keys
+source $ZSH_FILES/keychain.sh
+
 # history
 source $ZSH_FILES/history.zsh
 
