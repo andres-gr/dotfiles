@@ -18,10 +18,10 @@ W.font = wezterm.font_with_fallback {
   --   family = 'MonoLisa Nerd Font',
   --   weight = 500,
   -- },
-  -- {
-  --   family = 'LigaOperatorMono Nerd Font',
-  --   weight = 325,
-  -- },
+  {
+    family = 'LigaOperatorMono Nerd Font',
+    weight = 325,
+  },
   {
     family = 'FiraCode Nerd Font',
     weight = 'DemiLight',
