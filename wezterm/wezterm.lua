@@ -5,6 +5,9 @@ local W = {}
 -- Use config builder object if possible
 if wezterm.config_builder then W = wezterm.config_builder() end
 
+-- temp fix for window not showing with wayland
+W.enable_wayland = false
+
 -- Set dracula colors
 local colors = require 'colors'
 W.colors = colors
@@ -15,10 +18,10 @@ W.font = wezterm.font_with_fallback {
   --   family = 'MonoLisa Nerd Font',
   --   weight = 500,
   -- },
-  {
-    family = 'LigaOperatorMono Nerd Font',
-    weight = 325,
-  },
+  -- {
+  --   family = 'LigaOperatorMono Nerd Font',
+  --   weight = 325,
+  -- },
   {
     family = 'FiraCode Nerd Font',
     weight = 'DemiLight',
@@ -33,7 +36,7 @@ W.underline_position = -2
 W.enable_tab_bar = false
 W.hide_tab_bar_if_only_one_tab = true
 -- W.macos_window_background_blur = 10
--- W.window_background_opacity = 0.8
+W.window_background_opacity = 0.85
 W.window_decorations = 'RESIZE'
 W.window_padding = {
   bottom = 16,
