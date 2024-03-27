@@ -24,6 +24,12 @@ alias vim="nvim"
 alias vo="nvim ."
 alias weather="curl v2.wttr.in"
 alias y="yay"
+alias yaur="yay -Qem"
+alias ybase="yay -Qen"
+alias yc="yay -Sc"
+alias yi="yay -Sy --needed"
+alias yr="yay -Rns"
+alias yu="yay -Syu"
 
 # git aliases
 alias gpsup="git_current_branch | git push --set-upstream origin"
