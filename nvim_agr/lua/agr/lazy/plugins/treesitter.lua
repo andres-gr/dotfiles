@@ -20,6 +20,29 @@ T.config = function ()
   treesitter.setup {
     auto_install = { 'true' },
     autopairs = { enable = true },
+    autotag = {
+      enable = true,
+      enable_close = true,
+      enable_close_on_slash = true,
+      enable_rename = true,
+      filetypes = {
+        'astro',
+        'glimmer',
+        'handlebars',
+        'hbs',
+        'html',
+        'javascript',
+        'javascriptreact',
+        'markdown',
+        'php',
+        'svelte',
+        'tsx',
+        'typescript',
+        'typescriptreact',
+        'vue',
+        'xml',
+      },
+    },
     ensure_installed = {
       'bash',
       'css',
@@ -91,32 +114,6 @@ T.config = function ()
 
   commentstring.setup {
     enable_autocmd = true,
-  }
-
-  local autotags = require 'nvim-ts-autotag'
-
-  autotags.setup {
-    enable = true,
-    enable_close = true,
-    enable_close_on_slash = true,
-    enable_rename = true,
-    filetypes = {
-      'astro',
-      'glimmer',
-      'handlebars',
-      'hbs',
-      'html',
-      'javascript',
-      'javascriptreact',
-      'markdown',
-      'php',
-      'svelte',
-      'tsx',
-      'typescript',
-      'typescriptreact',
-      'vue',
-      'xml',
-    },
   }
 end
 
