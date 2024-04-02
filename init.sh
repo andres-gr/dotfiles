@@ -3,7 +3,6 @@
 # setup configs in HOME and .config
 
 to_home=(
-  ".gitconfig"
   "tmux/.tmux.conf"
   "zsh/.zshrc"
 )
@@ -14,6 +13,13 @@ do
 done
 
 echo "created dotfiles symlinks in HOME"
+
+# copy .gitconfig to home
+if [ -f $HOME/.gitconfig ]; then
+  mv $HOME/.gitconfig $HOME/.gitconfig.bak
+fi
+
+cp -rf $PWD/.gitconfig $HOME
 
 config_dir=$HOME/.config
 
