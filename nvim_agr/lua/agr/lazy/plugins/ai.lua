@@ -1,35 +1,35 @@
 local A = {
-  'zbirenbaum/copilot.lua',
-  build = ':Copilot auth',
-  cmd = 'Copilot',
+  'Exafunction/codeium.vim',
+  build = ':Codeium Auth',
+  cmd = 'Codeium',
   event = 'InsertEnter',
 }
 
 A.config = function()
-  local copilot = require 'copilot'
+  -- vim.g.codeium_tab_fallback = '<Tab>'
 
-  copilot.setup {
-    panel = {
-      auto_refresh = true,
-      enabled = true,
-    },
-    suggestion = {
-      accept = false, -- disable builtin keymaps
-      auto_trigger = true,
-      enabled = true,
-    },
-  }
+  local keymap = require 'agr.core.utils'.keymap
+  local map = keymap.map
+  local desc_opts = function (desc)
+    return {
+      expr = true,
+      desc = desc,
+      silent = true,
+    }
+  end
+
+  map('i', '<Tab>', function () return vim.fn['codeium#Accept']() end, desc_opts('Codeium accept suggestion'))
 
   local utils = require 'agr.core.utils'
   local cmp = utils.has_plugin 'cmp'
 
   if cmp then
     cmp.event:on('menu_opened', function()
-      vim.b.copilot_suggestion_hidden = true
+      vim.cmd [[ Codeium DisableBuffer ]]
     end)
 
     cmp.event:on('menu_closed', function()
-      vim.b.copilot_suggestion_hidden = false
+      vim.cmd [[ Codeium EnableBuffer ]]
     end)
   end
 end
