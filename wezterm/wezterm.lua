@@ -5,9 +5,6 @@ local W = {}
 -- Use config builder object if possible
 if wezterm.config_builder then W = wezterm.config_builder() end
 
--- temp fix for window not showing with wayland
-W.enable_wayland = false
-
 -- Set dracula colors
 local colors = require 'colors'
 W.colors = colors
@@ -37,7 +34,7 @@ W.enable_tab_bar = false
 W.hide_tab_bar_if_only_one_tab = true
 -- W.macos_window_background_blur = 10
 -- W.window_background_opacity = 0.85
-W.window_decorations = 'RESIZE'
+W.window_decorations = 'NONE'
 W.window_padding = {
   bottom = 16,
   left = 16,
