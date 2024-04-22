@@ -838,9 +838,9 @@ function status.component.ai(opts)
   opts = utils.default_tbl(opts, {
     padding = { left = 1 },
     provider = function ()
-      local result = vim.api.nvim_call_function('codeium#GetStatusString', {})
+      local ok, result = pcall(vim.api.nvim_call_function, 'codeium#GetStatusString', {})
 
-      if result == ' ON' then return nil end
+      if ok == false or result == ' ON' then return nil end
 
       return '  ' .. result
     end
