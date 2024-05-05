@@ -1,5 +1,7 @@
 # zmodload zsh/zprof
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 setopt nobeep
 
 #Dracula theme colors
@@ -62,6 +64,8 @@ export PATH="$PNPM_HOME:$PATH"
 
 # Spicetify
 export PATH=$PATH:/Users/andres/.spicetify
+# brew opt
+export PATH="/opt/homebrew/bin:$PATH"
 
 # brew curl
 export PATH="/usr/local/opt/curl/bin:$PATH"

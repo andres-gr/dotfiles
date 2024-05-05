@@ -15,10 +15,10 @@ W.font = wezterm.font_with_fallback {
   --   family = 'MonoLisa Nerd Font',
   --   weight = 500,
   -- },
-  {
-    family = 'LigaOperatorMono Nerd Font',
-    weight = 300,
-  },
+  -- {
+  --   family = 'LigaOperatorMono Nerd Font',
+  --   weight = 'DemiLight',
+  -- },
   {
     family = 'FiraCode Nerd Font',
     weight = 'DemiLight',
@@ -64,13 +64,14 @@ W.keys = {
 
 -- Set UI render options
 W.front_end = 'WebGpu'
+-- W.front_end = 'Software'
 
 -- Maximize screen on startup
--- local mux = wezterm.mux
--- wezterm.on('gui-startup', function (cmd)
---   local _, _, window = mux.spawn_window(cmd or {})
---   window:gui_window():maximize()
--- end)
+local mux = wezterm.mux
+wezterm.on('gui-startup', function (cmd)
+  local _, _, window = mux.spawn_window(cmd or {})
+  window:gui_window():maximize()
+end)
 
 W.max_fps = 120
 
