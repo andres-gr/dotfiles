@@ -75,4 +75,8 @@ W.front_end = 'WebGpu'
 --   window:gui_window():maximize()
 -- end)
 
+
+-- temp fix for window not showing with wayland
+W.enable_wayland = false
+
 return W
