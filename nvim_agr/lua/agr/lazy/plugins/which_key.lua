@@ -15,23 +15,14 @@ W.config = function ()
   end
 
   which_key.setup {
-    active = true,
     disable = {
-      filetypes = {
+      ft = {
         'TelescopePrompt',
       },
     },
-    hidden = {
-      '<CR>',
-      '<Cmd>',
-      '<cmd>',
-      '<silent>',
-      '^ ',
-      '^:',
-      'call',
-      'lua',
-    }, -- hide mapping boilerplate
-    ignore_missing = false, -- enable this to hide mappings for which you didn't specify a label
+    filter = function ()
+      return true
+    end, -- enable this to hide mappings for which you didn't specify a label
     layout = {
       align = 'center', -- align columns left, center or right
       height = {
@@ -44,34 +35,23 @@ W.config = function ()
         min = 20,
       }, -- min and max width of the columns
     },
-    on_config_done = nil,
     plugins = {
       presets = {
         operators = false,
       },
-      spelling = {
-        enabled = true,
-      },
     },
-    popup_mappings = {
+    keys = {
       scroll_down = '<C-d>', -- binding to scroll down inside the popup
       scroll_up = '<C-u>', -- binding to scroll up inside the popup
     },
     show_help = true, -- show help message on the command line when the popup is visible
-    triggers = 'auto', -- automatically setup triggers
-    triggers_blacklist = {
-      -- list of mode / prefixes that should never be hooked by WhichKey
-      -- this is mostly relevant for key maps that start with a native binding
-      -- most people should not need to change this
-      i = { 'j', 'k' },
-      v = { 'j', 'k' },
-    },
-    window = {
+    win = {
       border = 'rounded',
-      margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
+      no_overlap = true,
       padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
-      position = 'bottom', -- bottom, top
-      winblend = 0,
+      wo = {
+        winblend = 0,
+      },
     },
   }
 end

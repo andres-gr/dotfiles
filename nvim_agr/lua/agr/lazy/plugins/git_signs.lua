@@ -1,24 +1,20 @@
 local G = {
   'lewis6991/gitsigns.nvim',
-  event = {
-    'BufNewFile',
-    'BufReadPre',
-  },
+  event = 'BufWinEnter',
 }
 
 G.config = function ()
   local gitsigns = require 'gitsigns'
 
   gitsigns.setup {
-    attach_to_untracked = true,
     current_line_blame = false, -- Toggle with `:Gitsigns toggle_current_line_blame`
     current_line_blame_formatter = '<author>, <author_time:%R> - <summary>',
-    current_line_blame_formatter_nc = 'No commit yet',
     current_line_blame_opts = {
       delay = 1000,
       ignore_whitespace = false,
       virt_text = true,
       virt_text_pos = 'eol', -- 'eol' | 'overlay' | 'right_align'
+      virt_text_priority = 100,
     },
     linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
     max_file_length = 40000,
@@ -34,22 +30,12 @@ G.config = function ()
     sign_priority = 6,
     signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
     signs = {
-      add = {
-        text = '▎',
-      },
-      change = {
-        text = '▎',
-      },
-      changedelete = {
-        text = '▎',
-      },
-      delete = {
-        text = '',
-        -- text = '▎',
-      },
-      topdelete = {
-        text = '',
-      },
+      add = { text = '▎' },
+      change = { text = '▎' },
+      changedelete = { text = '▎' },
+      delete = { text = '' },
+      topdelete = { text = '' },
+      untracked = { text = '┆' },
     },
     status_formatter = nil, -- Use default
     update_debounce = 100,
@@ -58,9 +44,6 @@ G.config = function ()
       interval = 1000,
     },
     word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
-    yadm = {
-      enable = false,
-    },
   }
 
   local keymap = require 'agr.core.utils'.keymap
