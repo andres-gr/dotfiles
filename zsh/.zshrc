@@ -49,6 +49,9 @@ source $ZSH_FILES/functions.zsh
 export PNPM_HOME="$HOME/Library/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 
+# Spicetify
+export PATH=$PATH:/Users/andres/.spicetify
+
 # brew curl
 export PATH="/usr/local/opt/curl/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/curl/lib"
