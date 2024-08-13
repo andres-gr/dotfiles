@@ -57,6 +57,9 @@ export PATH="/usr/local/opt/curl/bin:$PATH"
 export LDFLAGS="-L/usr/local/opt/curl/lib"
 export CPPFLAGS="-I/usr/local/opt/curl/include"
 
+# brew sbin
+export PATH="/usr/local/sbin:$PATH"
+
 # Ruby init
 if [ -d "/usr/local/opt/ruby/bin" ]; then
   export PATH=/usr/local/opt/ruby/bin:$PATH
