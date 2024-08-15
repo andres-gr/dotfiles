@@ -15,6 +15,7 @@ W.config = function ()
   end
 
   which_key.setup {
+    delay = 400,
     disable = {
       ft = {
         'TelescopePrompt',
@@ -23,6 +24,10 @@ W.config = function ()
     filter = function ()
       return true
     end, -- enable this to hide mappings for which you didn't specify a label
+    keys = {
+      scroll_down = '<C-d>', -- binding to scroll down inside the popup
+      scroll_up = '<C-u>', -- binding to scroll up inside the popup
+    },
     layout = {
       align = 'center', -- align columns left, center or right
       height = {
@@ -40,10 +45,7 @@ W.config = function ()
         operators = false,
       },
     },
-    keys = {
-      scroll_down = '<C-d>', -- binding to scroll down inside the popup
-      scroll_up = '<C-u>', -- binding to scroll up inside the popup
-    },
+    preset = 'modern',
     show_help = true, -- show help message on the command line when the popup is visible
     win = {
       border = 'rounded',
