@@ -90,6 +90,14 @@ M.setup = function ()
         })
       end
 
+      if server_name == 'graphql' then
+        opts = vim.tbl_deep_extend('force', default_opts, {
+          root_dir = function (...)
+            return root ('.graphqlrc*', '.graphql.config.*', 'graphql.config.*')(...)
+          end,
+        })
+      end
+
       lspconfig[server_name].setup(opts)
     end,
   }
