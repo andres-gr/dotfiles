@@ -52,6 +52,7 @@ T.config = function ()
       'lua',
       'markdown',
       'markdown_inline',
+      'styled',
       'tsx',
       'typescript',
       'vim',
