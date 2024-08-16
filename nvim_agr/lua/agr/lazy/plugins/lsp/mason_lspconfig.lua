@@ -55,12 +55,13 @@ M.setup = function ()
       end
 
       if server_name == 'tsserver' then
-        opts = vim.tbl_deep_extend('force', default_opts, {
-          root_dir = function (...)
-            return root('tsconfig.json', 'jsconfig.json')(...)
-          end,
-          single_file_support = false,
-        })
+        return
+        -- opts = vim.tbl_deep_extend('force', default_opts, {
+        --   root_dir = function (...)
+        --     return root('tsconfig.json', 'jsconfig.json')(...)
+        --   end,
+        --   single_file_support = false,
+        -- })
       end
 
       if server_name == 'tailwindcss' then
@@ -101,6 +102,21 @@ M.setup = function ()
       lspconfig[server_name].setup(opts)
     end,
   }
+
+  local tools = require 'typescript-tools'
+
+  tools.setup(vim.tbl_deep_extend('force', default_opts, {
+    root_dir = function (...)
+      return root('tsconfig.json', 'jsconfig.json')(...)
+    end,
+    single_file_support = false,
+    settings = {
+      tsserver_plugins = {
+        '@styled/typescript-styled-plugin',
+        'typescript-styled-plugin', -- before v4.9
+      },
+    },
+  }))
 end
 
 return M

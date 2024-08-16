@@ -13,6 +13,7 @@ local L = {
       'nvimdev/lspsaga.nvim',
       event = 'LspAttach',
     },
+    'pmizio/typescript-tools.nvim',
   },
   event = {
     'BufNewFile',

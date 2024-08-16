@@ -56,7 +56,7 @@ H.on_attach = function (client, bufnr)
 
   local function buf_set_option (...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  if client.name == 'tsserver' then
+  if client.name == 'tsserver' or client.name == 'typescript-tools' then
     client.server_capabilities.document_formatting = nil
   end
 
