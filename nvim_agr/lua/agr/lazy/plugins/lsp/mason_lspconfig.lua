@@ -111,6 +111,7 @@ M.setup = function ()
     end,
     single_file_support = false,
     settings = {
+      tsserver_path = os.getenv 'HOME' .. '/.bun/install/global/node_modules/typescript/lib/tsserver.js',
       tsserver_plugins = {
         '@styled/typescript-styled-plugin',
         'typescript-styled-plugin', -- before v4.9
