@@ -358,10 +358,18 @@ end
 -- @see status.utils.stylize
 function status.provider.scrollbar(opts)
   local sbar = { '▁', '▂', '▃', '▄', '▅', '▆', '▇', '█' }
+
   return function ()
     local curr_line = vim.api.nvim_win_get_cursor(0)[1]
-    local lines = vim.api.nvim_buf_line_count(0)
-    local i = math.floor((curr_line - 1) / lines * #sbar) + 1
+		local lines = vim.api.nvim_buf_line_count(0)
+    local i
+
+    if lines > 0 then
+      i = math.floor((curr_line - 1) / lines * #sbar) + 1
+    else
+      i = #sbar
+    end
+
     return status.utils.stylize(string.rep(sbar[i], 2), opts)
   end
 end
@@ -552,23 +560,8 @@ end
 -- @see status.utils.stylize
 function status.provider.lsp_progress(opts)
   return function ()
-    local Lsp = vim.lsp.util.get_progress_messages()[1]
-    return status.utils.stylize(
-      Lsp
-          and string.format(
-            ' %%<%s %s %s (%s%%%%) ',
-            get_icon('LSP' .. ((Lsp.percentage or 0) >= 70 and { 'Loaded', 'Loaded', 'Loaded' } or {
-              'Loading1',
-              'Loading2',
-              'Loading3',
-            })[math.floor(vim.loop.hrtime() / 12e7) % 3 + 1]),
-            Lsp.title or '',
-            Lsp.message or '',
-            Lsp.percentage or 0
-          )
-        or '',
-      opts
-    )
+    local Lsp = vim.lsp.status()
+    return status.utils.stylize(Lsp, opts)
   end
 end
 

@@ -1,5 +1,8 @@
 local H = {
   'rebelot/heirline.nvim',
+  dependencies = {
+    'Zeioth/heirline-components.nvim',
+  },
   event = 'BufEnter',
 }
 
@@ -11,6 +14,7 @@ H.config = function ()
   local status = require 'agr.astro.status'
   local vimode = require 'agr.lazy.plugins.heir_line.vimode'.setup()
   local diagnostics = require 'agr.lazy.plugins.heir_line.diagnostics'.setup()
+  local components = require 'heirline-components.all'
 
   local setup_colors = function ()
     local Normal = utils.get_hlgroup('Normal', { fg = C.fg, bg = C.bg })
@@ -110,10 +114,6 @@ H.config = function ()
     return colors
   end
 
-  local heir_colors = setup_colors()
-
-  heirline.load_colors(heir_colors)
-
   local statusline = {
     {
       hl = { fg = 'fg', bg = 'bg' },
@@ -126,9 +126,11 @@ H.config = function ()
       diagnostics,
       status.component.cmd_info(),
       status.component.fill(),
-      status.component.lsp(),
+      -- status.component.lsp(),
+      components.component.lsp(),
       status.component.treesitter(),
-      status.component.nav(),
+      -- status.component.nav(),
+      components.component.nav(),
       status.component.mode { surround = { separator = 'right' } },
     },
   }
@@ -171,6 +173,12 @@ H.config = function ()
       }, args.buf)
     end,
   }
+
+  components.init.subscribe_to_events()
+
+  local heir_colors = components.hl.get_colors() or setup_colors()
+
+  heirline.load_colors(heir_colors)
 
   heirline.setup {
     opts = opts,
