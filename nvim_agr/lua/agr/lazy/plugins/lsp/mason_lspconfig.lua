@@ -12,6 +12,7 @@ M.setup = function ()
     ensure_installed = {
       'bashls',
       'cssls',
+      'eslint',
       'graphql',
       'html',
       'jsonls',
@@ -39,6 +40,7 @@ M.setup = function ()
   }
 
   local server_settings_path = 'agr.lazy.plugins.lsp.server_settings.'
+  local home_dir = os.getenv 'HOME'
 
   mason_lspconfig.setup_handlers {
     -- default handler
@@ -111,7 +113,7 @@ M.setup = function ()
     end,
     single_file_support = false,
     settings = {
-      tsserver_path = os.getenv 'HOME' .. '/.bun/install/global/node_modules/typescript/lib/tsserver.js',
+      tsserver_path = home_dir .. '/.bun/install/global/node_modules/typescript/lib/tsserver.js',
       tsserver_plugins = {
         '@styled/typescript-styled-plugin',
         'typescript-styled-plugin', -- before v4.9
