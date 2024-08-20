@@ -1,7 +1,7 @@
 local B = {
   'akinsho/bufferline.nvim',
   event = 'VeryLazy',
-  version = '3.*',
+  version = '*',
 }
 
 B.config = function ()
