@@ -104,13 +104,13 @@ T.config = function ()
     'x'
   }
 
-  map(modes, ';', ts_repeat.repeat_last_move, keymap:desc_opts('Repeat last TS move'))
-  map(modes, ',', ts_repeat.repeat_last_move_opposite, keymap:desc_opts('Repeat last TS move opposite'))
+  map(modes, ';', ts_repeat.repeat_last_move, { desc = 'Repeat last TS move' })
+  map(modes, ',', ts_repeat.repeat_last_move_opposite, { desc = 'Repeat last TS move opposite' })
 
-  map(modes, 'f', ts_repeat.builtin_f, keymap:desc_opts('Move to next TS char'))
-  map(modes, 'F', ts_repeat.builtin_F, keymap:desc_opts('Move to prev TS char'))
-  map(modes, 't', ts_repeat.builtin_t, keymap:desc_opts('Move before next TS char'))
-  map(modes, 'T', ts_repeat.builtin_T, keymap:desc_opts('Move before prev TS char'))
+  map(modes, 'f', ts_repeat.builtin_f_expr, { expr = true, desc = 'Move to next TS char' })
+  map(modes, 'F', ts_repeat.builtin_F_expr, { expr = true, desc = 'Move to prev TS char' })
+  map(modes, 't', ts_repeat.builtin_t_expr, { expr = true, desc = 'Move before next TS char' })
+  map(modes, 'T', ts_repeat.builtin_T_expr, { expr = true, desc = 'Move before prev TS char' })
 end
 
 return T
