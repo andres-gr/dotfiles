@@ -37,10 +37,10 @@ W.macos_window_background_blur = 10
 W.window_background_opacity = 0.9
 W.window_decorations = 'RESIZE'
 W.window_padding = {
-  bottom = 0,
-  left = 1,
-  right = 1,
-  top = 0,
+  bottom = 2,
+  left = 8,
+  right = 8,
+  top = 2,
 }
 -- local gradient = require 'gradient'
 -- W.window_background_gradient = gradient
