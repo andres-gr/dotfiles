@@ -45,6 +45,8 @@ M.setup = function ()
   mason_lspconfig.setup_handlers {
     -- default handler
     function (server_name)
+      if server_name == 'tsserver' then return end
+
       local opts = default_opts
 
       if utils.contains(config_servers, server_name) then
@@ -54,16 +56,6 @@ M.setup = function ()
         if server_opts then
           opts = vim.tbl_deep_extend('force', default_opts, server_opts)
         end
-      end
-
-      if server_name == 'tsserver' then
-        return
-        -- opts = vim.tbl_deep_extend('force', default_opts, {
-        --   root_dir = function (...)
-        --     return root('tsconfig.json', 'jsconfig.json')(...)
-        --   end,
-        --   single_file_support = false,
-        -- })
       end
 
       if server_name == 'tailwindcss' then
