@@ -114,15 +114,6 @@ dracula.setup({
     -- Heirline
     StatusLine = { fg = colors.fg, bg = colors.menu },
 
-    -- Rainbow Delimiters
-    -- RainbowDelimiterBlue = { fg = colors.bright_blue },
-    -- RainbowDelimiterCyan = { fg = colors.orange },
-    -- RainbowDelimiterGreen = { fg = colors.green },
-    -- RainbowDelimiterOrange = { fg = colors.cyan },
-    -- RainbowDelimiterRed = { fg = colors.pink },
-    -- RainbowDelimiterViolet = { fg = colors.purple },
-    -- RainbowDelimiterYellow = { fg = colors.yellow },
-
     -- Git conflict
     GitConflictDiffCurrent = { fg = colors.bg, bg = colors.purple, bold = true },
     GitConflictDiffIncoming = { fg = colors.bg, bg = colors.red, bold = true },
@@ -132,6 +123,10 @@ dracula.setup({
     FlashCurrent = { fg = colors.bright_cyan },
     FlashLabel = { fg = colors.pink, bold = true },
     FlashMatch = { fg = colors.bright_green },
+
+    -- Winbar
+    WinBar = { fg = colors.fg, bg = colors.none },
+    WinBarNC = { fg = colors.fg, bg = colors.none },
   },
   transparent_bg = true,
 })
