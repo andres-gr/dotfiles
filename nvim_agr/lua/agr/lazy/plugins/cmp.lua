@@ -17,12 +17,6 @@ local M = {
   event = 'InsertEnter',
 }
 
--- local function check_codeium ()
---   local status = vim.fn['codeium#GetStatusString']()
---
---   return status ~= ' ON' or status ~= '0'
--- end
-
 M.config = function ()
   local cmp = require 'cmp'
   local types = require 'cmp.types'
@@ -156,8 +150,6 @@ M.config = function ()
             behavior = cmp.ConfirmBehavior.Insert,
             select = true,
           }
-        -- elseif check_codeium() then
-        --   vim.fn['codeium#Accept']()
         elseif luasnip.jumpable(1) then
           luasnip.jump(1)
         else
