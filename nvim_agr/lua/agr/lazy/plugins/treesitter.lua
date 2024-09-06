@@ -39,9 +39,9 @@ T.config = function ()
     incremental_selection = {
       enable = true,
       keymaps = {
-        init_selection = '<C-space>',
+        init_selection = '<C-I>',
         node_decremental = '<BS>',
-        node_incremental = '<C-space>',
+        node_incremental = '<C-I>',
         scope_incremental = false,
       },
     },
