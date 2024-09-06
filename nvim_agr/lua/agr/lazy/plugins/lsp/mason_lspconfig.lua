@@ -45,7 +45,7 @@ M.setup = function ()
   mason_lspconfig.setup_handlers {
     -- default handler
     function (server_name)
-      if server_name == 'tsserver' then return end
+      if server_name == 'tsserver' or server_name == 'ts_ls' then return end
 
       local opts = default_opts
 
