@@ -17,6 +17,7 @@ A.config = function ()
   end
 
   map('i', '<Tab>', function () return vim.fn['codeium#Accept']() end, desc_opts('Codeium accept suggestion'))
+  map('i', '<C-[>', function () return vim.fn['codeium#Accept']() end, desc_opts('Codeium accept suggestion'))
   map('n', '<M-g>', function () return vim.fn['codeium#Chat']() end, desc_opts('Codeium chat'))
 
   local utils = require 'agr.core.utils'
