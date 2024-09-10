@@ -4,6 +4,7 @@ local T = {
   dependencies = {
     'danielvolchek/tailiscope.nvim',
   },
+  event = 'VeryLazy',
 }
 
 T.config = function ()
