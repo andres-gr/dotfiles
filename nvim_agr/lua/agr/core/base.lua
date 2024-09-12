@@ -22,7 +22,7 @@ o.backup = false
 o.backupskip = { '/tmp/*', '/private/tmp/*' }
 o.breakindent = true
 o.clipboard = 'unnamedplus' -- Connection to the system clipboard
-o.cmdheight = 1
+o.cmdheight = 0
 o.completeopt = { 'menu', 'menuone', 'noselect' } -- Options for insert mode completion
 o.conceallevel = 0 -- so that `` is visible in markdown files
 o.copyindent = true -- Copy the previous indentation on autoindenting
@@ -48,7 +48,7 @@ o.scrolloff = 8 -- Number of lines to keep above and below the cursor
 o.shell = 'zsh'
 o.shiftwidth = 2 -- Number of space inserted for indentation
 o.shortmess:append 'c' -- forget about swap file
-o.showcmd = true
+o.showcmd = false
 o.showmode = false -- Disable showing modes in command line
 o.showtabline = 2 -- show tabline always
 o.sidescrolloff = 8 -- Number of columns to keep at the sides of the cursor

@@ -20,6 +20,20 @@ local lazy_opts = {
     version = '*',
   },
   install = { colorscheme = { 'dracula' } },
+  performance = {
+    rtp = {
+      disabled_plugins = {
+        'gzip',
+        'matchit',
+        'matchparen',
+        'netrwPlugin',
+        'tarPlugin',
+        'tohtml',
+        'tutor',
+        'zipPlugin',
+      },
+    },
+  },
 }
 
 require 'lazy'.setup('agr.lazy.plugins', lazy_opts)
