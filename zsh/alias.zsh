@@ -3,6 +3,8 @@
 alias b="bun"
 alias bdump="brew bundle dump -f"
 alias co="code ."
+alias fu="fnm use"
+alias fud="fnm use default"
 alias grep="grep --color=auto"
 alias l="eza -lha --icons=auto --sort=name --group-directories-first"
 alias lt="l -T"
