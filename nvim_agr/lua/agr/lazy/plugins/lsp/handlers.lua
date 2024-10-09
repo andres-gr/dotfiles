@@ -37,7 +37,13 @@ H.setup = function ()
   vim.diagnostic.config(config)
 
   local lsp_windows = require 'lspconfig.ui.windows'
-  lsp_windows.default_options.border = 'single'
+  local _window_opts = lsp_windows.default_options
+
+  lsp_windows.default_options = function (opts)
+    local options = _window_opts(opts)
+    options.border = 'single'
+    return options
+  end
 
   vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
   vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
