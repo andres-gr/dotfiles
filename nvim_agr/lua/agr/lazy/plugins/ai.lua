@@ -2,7 +2,7 @@ local A = {
   'Exafunction/codeium.vim',
   build = ':Codeium Auth',
   cmd = 'Codeium',
-  commit = '937667b',
+  commit = '5644ac5a0e098ca0cf5deed1c909c3fa5e9901f3',
   event = 'InsertEnter',
 }
 
