@@ -1,6 +1,5 @@
 local L = {
   'neovim/nvim-lspconfig',
-  branch = 'master',
   cmd = 'Mason',
   dependencies = {
     'hrsh7th/cmp-nvim-lsp',
@@ -19,6 +18,7 @@ local L = {
     'BufNewFile',
     'BufReadPre',
   },
+  version = '*'
 }
 
 L.config = function ()

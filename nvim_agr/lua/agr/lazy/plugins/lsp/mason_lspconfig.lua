@@ -93,6 +93,18 @@ M.setup = function ()
         })
       end
 
+      if server_name == 'cssls' then
+        opts = vim.tbl_deep_extend('force', default_opts, {
+          settings = {
+            css = {
+              lint = {
+                unknownAtRules = 'ignore',
+              },
+            },
+          },
+        })
+      end
+
       lspconfig[server_name].setup(opts)
     end,
   }
