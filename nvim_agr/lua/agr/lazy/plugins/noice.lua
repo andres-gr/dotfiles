@@ -47,6 +47,15 @@ N.config = function ()
       long_message_to_split = true,
       lsp_doc_border = true,
     },
+    routes = {
+      {
+        filter = {
+          event = 'notify',
+          find = 'No information available',
+        },
+        opts = { skip = true },
+      },
+    },
     throttle = 1000 / 120,
     views = {
       cmdline_popup = {

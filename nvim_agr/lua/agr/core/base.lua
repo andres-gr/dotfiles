@@ -83,7 +83,7 @@ a.nvim_create_autocmd('InsertLeave', {
 })
 
 -- Blinking cursor
-vim.cmd [[ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175 ]]
+pcall(vim.cmd, [[ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175 ]])
 
 -- Better motion disable default maps
 vim.g.wordmotion_nomap = 1

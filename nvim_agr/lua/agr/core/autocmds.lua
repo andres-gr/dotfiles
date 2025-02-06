@@ -50,7 +50,7 @@ cmd('FileType', {
       vim.opt.laststatus = 0
       vim.opt.showtabline = 0
 
-      vim.cmd [[ setlocal nofoldenable ]]
+      pcall(vim.cmd, [[ setlocal nofoldenable ]])
 
       pcall(del_empty_bufs)
 
@@ -96,8 +96,8 @@ cmd('User', {
       local fallback_on_empty = is_empty_buf(event.buf)
 
       if fallback_on_empty then
-        vim.cmd [[ Neotree close ]]
-        vim.cmd [[ Alpha ]]
+        pcall(vim.cmd, [[ Neotree close ]])
+        pcall(vim.cmd, [[ Alpha ]])
       end
     end
   end,
@@ -122,7 +122,7 @@ cmd('UIEnter', {
           end
         end
       end
-      if not should_skip then vim.cmd [[ Alpha ]] end
+      if not should_skip then pcall(vim.cmd, [[ Alpha ]]) end
     end
   end,
   desc = 'Start Alpha when vim is opened with no arguments',
@@ -247,7 +247,7 @@ cmd('QuitPre', {
 local agr = augroup('agr_highlights', { clear = true })
 cmd({ 'VimEnter', 'ColorScheme' }, {
   callback = function ()
-    vim.cmd [[ doautocmd User AGRColorScheme ]]
+    pcall(vim.cmd, [[ doautocmd User AGRColorScheme ]])
   end,
   desc = 'Load highlights',
   group = agr,
