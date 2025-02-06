@@ -115,8 +115,8 @@ dracula.setup({
     StatusLine = { fg = colors.fg, bg = colors.menu },
 
     -- Git conflict
-    GitConflictDiffCurrent = { fg = colors.bg, bg = colors.purple, bold = true },
-    GitConflictDiffIncoming = { fg = colors.bg, bg = colors.red, bold = true },
+    GitConflictDiffCurrent = { bg = colors.bright_yellow_bg, bold = true },
+    GitConflictDiffIncoming = { bg = colors.bright_cyan_bg, bold = true },
 
     -- Flash
     FlashBackdrop = { fg = colors.comment },

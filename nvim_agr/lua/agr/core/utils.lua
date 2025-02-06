@@ -105,7 +105,7 @@ end
 ---Call lua fn and fix float window UI
 ---@param cmd string
 local fix_float_ui = function (cmd)
-  vim.cmd(cmd)
+  pcall(vim.cmd, cmd)
   vim.defer_fn(function ()
     local key = vim.api.nvim_replace_termcodes(':echon <CR>', true, false, true)
     vim.api.nvim_feedkeys(key, 'n', false)
@@ -118,7 +118,7 @@ local nav_buf = function (n)
   local current = vim.api.nvim_get_current_buf()
   for i, v in ipairs(vim.t.bufs) do
     if current == v then
-      vim.cmd.b(vim.t.bufs[(i + n - 1) % #vim.t.bufs + 1])
+      pcall(vim.cmd.b, vim.t.bufs[(i + n - 1) % #vim.t.bufs + 1])
       break
     end
   end
@@ -135,7 +135,7 @@ local close_buf = function (bufnr, force)
   if has_plugin 'bufdelete.nvim' then
     require('bufdelete').bufdelete(bufnr, force)
   else
-    vim.cmd((force and 'bd!' or 'confirm bd') .. bufnr)
+    pcall(vim.cmd, (force and 'bd!' or 'confirm bd') .. bufnr)
   end
 end
 
