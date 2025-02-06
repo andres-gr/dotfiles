@@ -25,6 +25,12 @@ typeset -U fpath
 export XDG_CONFIG_HOME="$HOME/.config"
 export DOTFILES="$HOME/devel/dotfiles"
 export ZSH_FILES="$DOTFILES/zsh"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home"
+export ESLINT_USE_FLAT_CONFIG=false
+
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 # The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/.zshrc"
