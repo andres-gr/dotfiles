@@ -45,7 +45,11 @@ H.setup = function ()
     return options
   end
 
-  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(function (_, result, ctx, cfg)
+    if result then
+      vim.lsp.handlers.hover(_, result, ctx, cfg)
+    end
+  end, { border = 'rounded' })
   vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 end
 
@@ -85,15 +89,15 @@ H.on_attach = function (client, bufnr)
   buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Format lsp command
-  vim.cmd [[ command! Format execute 'lua vim.lsp.buf.format { async = true }' ]]
+  pcall(vim.cmd, [[ command! Format execute 'lua vim.lsp.buf.format { async = true }' ]])
 
   -- Mappings.
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   map('n', 'gf', '<CMD>Lspsaga finder<CR>', 'LSP definition, references')
   map('n', 'gD', '<CMD>lua vim.lsp.buf.declaration()<CR>', 'LSP declaration')
   map('n', 'gd', '<CMD>Lspsaga peek_definition<CR>', 'LSP definition')
-  map('n', 'K', '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
-  map('n', 'gh', '<CMD>Lspsaga hover_doc<CR>', 'LSP hover')
+  map('n', 'K', '<CMD>Lspsaga hover_doc ++silent<CR>', 'LSP hover')
+  map('n', 'gh', '<CMD>Lspsaga hover_doc ++silent<CR>', 'LSP hover')
   map('n', 'gi', '<CMD>lua vim.lsp.buf.implementation()<CR>', 'LSP implementation')
   map('n', '<leader>k', '<CMD>lua vim.lsp.buf.signature_help()<CR>', 'LSP signature help')
   map('n', '<leader>gd', '<CMD>lua vim.lsp.buf.type_definition()<CR>', 'LSP type definition')

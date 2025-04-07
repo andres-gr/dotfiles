@@ -1059,7 +1059,7 @@ function status.component.lsp(opts)
     on_click = {
       name = 'heirline_lsp',
       callback = function ()
-        vim.defer_fn(function () vim.cmd.LspInfo() end, 100)
+        vim.defer_fn(function () pcall(vim.cmd.LspInfo) end, 100)
       end,
     },
   })
