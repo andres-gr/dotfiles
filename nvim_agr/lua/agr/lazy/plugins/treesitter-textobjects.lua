@@ -15,7 +15,7 @@ T.config = function ()
   treesitter.setup {
     textobjects = {
       move = {
-        enable = true,
+        enable = false,
         goto_next_start = {
           [']f'] = { query = '@call.outer', desc = 'Next function call start' },
           [']m'] = { query = '@function.outer', desc = 'Next method/function def start' },
@@ -52,7 +52,7 @@ T.config = function ()
         set_jumps = true,
       },
       select = {
-        enable = true,
+        enable = false,
         -- Automatically jump forward to textobj, similar to targets.vim
         lookahead = true,
         keymaps = {
@@ -82,7 +82,7 @@ T.config = function ()
         },
       },
       swap = {
-        enable = true,
+        enable = false,
         swap_next = {
           ['<leader>tan'] = '@parameter.inner', -- swap parameters/argument with next
           ['<leader>tfn'] = '@function.outer', -- swap function with next

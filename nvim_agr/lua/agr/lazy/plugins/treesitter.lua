@@ -45,6 +45,7 @@ T.config = function ()
         scope_incremental = false,
       },
     },
+    matchup = { enable = true },
     playground = {
       enable = true,
       keybindings = {
