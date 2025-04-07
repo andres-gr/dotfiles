@@ -27,12 +27,12 @@ A.config = function ()
   if cmp then
     cmp.event:on('menu_opened', function ()
       vim.b.codeium_render = false
-      vim.cmd [[ Codeium DisableBuffer ]]
+      pcall(vim.cmd, [[ Codeium DisableBuffer ]])
     end)
 
     cmp.event:on('menu_closed', function ()
       vim.b.codeium_render = true
-      vim.cmd [[ Codeium EnableBuffer ]]
+      pcall(vim.cmd, [[ Codeium EnableBuffer ]])
     end)
   end
 end
