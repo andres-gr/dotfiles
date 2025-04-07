@@ -17,7 +17,7 @@ M.setup = function ()
       'html',
       'jsonls',
       'lua_ls',
-      'ts_ls',
+      -- 'ts_ls',
       'vimls',
       'yamlls',
     },
@@ -37,6 +37,21 @@ M.setup = function ()
   local config_servers = {
     ['jsonls'] = true,
     ['lua_ls'] = true,
+  }
+
+  local eslint_dirs = {
+    '.eslintrc',
+    '.eslintrc.js',
+    '.eslintrc.cjs',
+    '.eslintrc.yaml',
+    '.eslintrc.yml',
+    '.eslintrc.json',
+    'eslint.config.js',
+    'eslint.config.mjs',
+    'eslint.config.cjs',
+    'eslint.config.ts',
+    'eslint.config.mts',
+    'eslint.config.cts',
   }
 
   local server_settings_path = 'agr.lazy.plugins.lsp.server_settings.'
@@ -105,6 +120,14 @@ M.setup = function ()
         })
       end
 
+      if server_name == 'eslint' then
+        opts = vim.tbl_deep_extend('force', default_opts, {
+          root_dir = function (...)
+            return root(unpack(eslint_dirs))(...)
+          end,
+        })
+      end
+
       lspconfig[server_name].setup(opts)
     end,
   }
@@ -117,7 +140,7 @@ M.setup = function ()
     end,
     single_file_support = false,
     settings = {
-      tsserver_path = home_dir .. '/.bun/install/global/node_modules/typescript/lib/tsserver.js',
+      -- tsserver_path = home_dir .. '/.bun/install/global/node_modules/typescript/lib/tsserver.js',
       tsserver_plugins = {
         '@styled/typescript-styled-plugin',
         'typescript-styled-plugin', -- before v4.9
