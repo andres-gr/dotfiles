@@ -13,6 +13,12 @@ N.config = function ()
     buffers = {
       setNames = true,
     },
+    integration = {
+      NeoTree = {
+        enabled = true,
+        position = 'left',
+      },
+    },
     width = 150,
   }
 
@@ -22,7 +28,7 @@ N.config = function ()
     return keymap:desc_opts(desc)
   end
 
-  map('n', '\\n', '<CMD>NoNeckPain<CR>', desc_opts('Toggle No Neck Pain'))
+  map('n', '\\n', '<CMD>Neotree close<CR><CMD>NoNeckPain<CR>', desc_opts('Toggle No Neck Pain'))
 end
 
 return N
