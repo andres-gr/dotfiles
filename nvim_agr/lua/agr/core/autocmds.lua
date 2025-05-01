@@ -132,7 +132,7 @@ cmd('UIEnter', {
 local general = augroup('_general_settings', { clear = true })
 cmd('TextYankPost', {
   callback = function ()
-    require 'vim.highlight'.on_yank {
+    vim.highlight.on_yank {
       higroup = 'Search',
       timeout = 200,
     }
