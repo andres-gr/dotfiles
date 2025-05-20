@@ -25,3 +25,5 @@ gui:
 os:
   edit: 'nvim'
   open: 'nvim {{filename}}'
+git:
+  autoForwardBranches: none
