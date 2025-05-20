@@ -3,8 +3,14 @@ local L = {
   cmd = 'Mason',
   dependencies = {
     'hrsh7th/cmp-nvim-lsp',
-    'williamboman/mason.nvim',
-    'williamboman/mason-lspconfig.nvim',
+    {
+      'mason-org/mason.nvim',
+      version = '1.11.0',
+    },
+    {
+      'mason-org/mason-lspconfig.nvim',
+      version = '1.32.0',
+    },
     'nvimtools/none-ls.nvim',
     'jayp0521/mason-null-ls.nvim',
     'onsails/lspkind.nvim',

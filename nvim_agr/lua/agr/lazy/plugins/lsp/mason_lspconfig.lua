@@ -8,6 +8,7 @@ M.setup = function ()
   local root = lspconfig.util.root_pattern
 
   mason_lspconfig.setup {
+    -- automatic_enable = true,
     automatic_installation = true,
     ensure_installed = {
       'bashls',
@@ -55,7 +56,6 @@ M.setup = function ()
   }
 
   local server_settings_path = 'agr.lazy.plugins.lsp.server_settings.'
-  local home_dir = os.getenv 'HOME'
 
   mason_lspconfig.setup_handlers {
     -- default handler
@@ -131,6 +131,68 @@ M.setup = function ()
       lspconfig[server_name].setup(opts)
     end,
   }
+
+  --[[ for _, server_name in ipairs(config_servers) do
+    ---@diagnostic disable-next-line: undefined-field
+    local server_opts = utils.has_plugin(server_settings_path .. server_name).setup()
+    local opts = default_opts
+
+    if server_opts then
+      opts = vim.tbl_deep_extend('force', default_opts, server_opts)
+    end
+
+    vim.lsp.config(server_name, opts)
+  end
+
+  vim.lsp.config('tailwindcss', vim.tbl_deep_extend('force', default_opts, {
+    root_dir = function (...)
+      return root 'tailwind.config.js'(...)
+    end,
+    settings = {
+      tailwindCSS = {
+        experimental = {
+          classRegex = {
+            "tw`([^`]*)",
+				    'tw="([^"]*)',
+				    'tw={"([^"}]*)',
+				    "tw\\.\\w+`([^`]*)",
+				    "tw\\(.*?\\)`([^`]*)",
+				    '\\/\\*\\ tw\\ \\*\\/"([^"]*)',
+				    '\\/\\*\\ tw\\ \\*\\/\\ "([^"]*)',
+				    '\\/\\*\\ tw\\ \\*\\/\'([^\']*)',
+				    '\\/\\*\\ tw\\ \\*\\/\\ \'([^\']*)',
+				    '\\/\\*\\ tw\\ \\*\\/`([^`]*)',
+				    '\\/\\*\\ tw\\ \\*\\/\\ `([^`]*)',
+          },
+        },
+      },
+    },
+  }))
+
+  vim.lsp.config('graphql', vim.tbl_deep_extend('force', default_opts, {
+    root_dir = function (...)
+      return root ('.graphqlrc*', '.graphql.config.*', 'graphql.config.*')(...)
+    end,
+  }))
+
+  vim.lsp.config('cssls', vim.tbl_deep_extend('force', default_opts, {
+    settings = {
+      css = {
+        lint = {
+          unknownAtRules = 'ignore',
+        },
+      },
+    },
+  }))
+
+  vim.lsp.config('eslint', vim.tbl_deep_extend('force', default_opts, {
+    root_dir = function (...)
+      return root(unpack(eslint_dirs))(...)
+    end,
+  })
+)
+
+  vim.lsp.config('*', default_opts) ]]
 
   local tools = require 'typescript-tools'
 
