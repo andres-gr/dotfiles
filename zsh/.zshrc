@@ -35,6 +35,8 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 # The following lines were added by compinstall
 zstyle :compinstall filename "$HOME/.zshrc"
 
+fpath=(/usr/local/share/zsh/site-functions $fpath)
+
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
