@@ -72,4 +72,6 @@ W.front_end = 'WebGpu'
 --   window:gui_window():maximize()
 -- end)
 
+W.max_fps = 120
+
 return W
