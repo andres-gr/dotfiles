@@ -1,0 +1,55 @@
+"$schema" = 'https://starship.rs/config-schema.json'
+
+command_timeout = 1500
+
+continuation_prompt = ""
+
+palette = "dracula"
+
+format = """
+[╭](bright_blue)$all$line_break\
+[╰](bright_blue)$character
+"""
+
+right_format = """
+${custom.git-time-since-change} \
+${custom.git-get-host}
+"""
+
+scan_timeout = 200
+
+[palettes.dracula]
+# cyan = "#80FFEA"
+# green = "#8AFF80"
+# orange = "#FFCA80"
+pink = "#FF80BF"
+# purple = "#9580FF"
+# red = "#FF9580"
+white = "#F8F8F2"
+# yellow = "#FFFF80"
+bright_blue = "#BFB3FF"
+bright_cyan = "#B3FFF2"
+bright_green = "#B9FFB3"
+bright_magenta = "#FFB3D9"
+bright_red = "#FFBFB3"
+bright_white = "#FFFFFF"
+bright_yellow = "#FFFFB3"
+
+[character]
+error_symbol = "[💥](red)"
+success_symbol = "[🚀](green)"
+
+[custom.git-time-since-change]
+command = "git_time_since_change"
+description = "Show time since last commit to current branch"
+format = "[$output]($style)"
+style = "bright_cyan"
+when = "git_check_if_inside"
+
+[custom.git-get-host]
+command = "git_get_host"
+description = "Show current git host icon"
+format = "from [$output]($style)"
+style = "bright_magenta"
+when = "git_check_if_inside"
+

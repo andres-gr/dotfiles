@@ -1,0 +1,66 @@
+{
+  "name": "agr-vscode-snippets",
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": "css",
+        "path": "./snips/css.json"
+      },
+      {
+        "language": "dart",
+        "path": "./snips/.json"
+      },
+      {
+        "language": "graphql",
+        "path": "./snips/graphql.json"
+      },
+      {
+        "language": "handlebars",
+        "path": "./snips/handlebars.json"
+      },
+      {
+        "language": "html",
+        "path": "./snips/html.json"
+      },
+      {
+        "language": "javascript",
+        "path": "./snips/javascript.json"
+      },
+      {
+        "language": "javascriptreact",
+        "path": "./snips/javascriptreact.json"
+      },
+      {
+        "language": "json",
+        "path": "./snips/json.json"
+      },
+      {
+        "language": "jsx",
+        "path": "./snips/jsx.json"
+      },
+      {
+        "language": "less",
+        "path": "./snips/less.json"
+      },
+      {
+        "language": "scss",
+        "path": "./snips/scss.json"
+      },
+      {
+        "language": "svelte",
+        "path": "./snips/svelte.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./snips/typescript.json"
+      },
+      {
+        "language": "typescriptreact",
+        "path": "./snips/typescriptreact.json"
+      }
+    ]
+  }
+}

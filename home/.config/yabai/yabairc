@@ -1,0 +1,54 @@
+# scripting-addition
+yabai -m signal --add event=dock_did_restart action="sudo yabai --load-sa"
+sudo yabai --load-sa
+
+# default layout (can be bsp, stack or float)
+yabai -m config layout bsp
+
+# add padding to the top and bottom of all spaces regardless of the display it belongs to
+yabai -m config external_bar all:32:0
+
+# New window spawns to the right if vertical split, or bottom if horizontal split
+yabai -m config window_placement second_child
+
+# padding set to 8px
+yabai -m config top_padding 10
+yabai -m config bottom_padding 10
+yabai -m config left_padding 10
+yabai -m config right_padding 10
+yabai -m config window_gap 8
+
+# set focus follows mouse mode (default: off, options: off, autoraise, autofocus)
+yabai -m config focus_follows_mouse autofocus
+
+# mouse follow window focus
+yabai -m config mouse_follows_focus on
+
+# modifier for clicking and dragging with mouse
+yabai -m config mouse_modifier alt
+# set modifier + left-click drag to move window
+yabai -m config mouse_action1 move
+# set modifier + right-click drag to resize window
+yabai -m config mouse_action2 resize
+
+# when window is dropped in center of another window, swap them (on edges it will split it)
+yabai -m mouse_drop_action swap
+
+# set window shadow only for float
+yabai -m config window_shadow float
+
+# Disable service on specific apps
+yabai -m rule --add app="^Alfred Preferences$" manage=off
+yabai -m rule --add app="^Calculator$" manage=off
+yabai -m rule --add app="^ExpressVPN$" manage=off
+yabai -m rule --add app="^IINA$" manage=off
+yabai -m rule --add app="^Quicktime$" manage=off
+yabai -m rule --add app="^SpaceLauncher$" manage=off
+yabai -m rule --add app="^System Preferences$" manage=off
+yabai -m rule --add app="^The Unarchiver$" manage=off
+yabai -m rule --add app="^Zoom$" manage=off
+yabai -m rule --add app="^Übersicht$" manage=off
+yabai -m rule --add app="^Microsoft Teams$" title="^Meeting compact view$" manage=off
+
+# new jankyborders
+borders active_color=0xE6FF80BF inactive_color=0xE68AFF80 width=5.0 &

@@ -1,0 +1,576 @@
+{
+  "Alert": {
+    "prefix": "al",
+    "body": "alert('${1:message}')$0",
+    "description": "JS Alert"
+  },
+  "Console log": {
+    "prefix": "cl",
+    "body": "console.log(${1:message})$0",
+    "description": "JS Console Log"
+  },
+  "Console dir": {
+    "prefix": "cld",
+    "body": "console.dir(${1:item})$0",
+    "description": "JS Console Dir"
+  },
+  "Console dir with depth": {
+    "prefix": "cldd",
+    "body": "console.dir(${1:item}, { depth: null })$0",
+    "description": "JS Console Dir with depth null"
+  },
+  "Console table": {
+    "prefix": "clt",
+    "body": "console.table(${1:array_object})$0",
+    "description": "JS Console Table"
+  },
+  "Let": {
+    "prefix": "let",
+    "body": "let ${1:name} = ${2:value}$3",
+    "description": "Declare variable"
+  },
+  "Let destructure": {
+    "prefix": "dlet",
+    "body": "let { $1 } = ${2:object}",
+    "description": "Destructure variable from object"
+  },
+  "Const": {
+    "prefix": "const",
+    "body": "const ${1:name} = ${2:value}",
+    "description": "Declare constant"
+  },
+  "Const destructure": {
+    "prefix": "dconst",
+    "body": "const { $1 } = ${2:object}",
+    "description": "Desctucture constant from object"
+  },
+  "if ternary": {
+    "prefix": "ift",
+    "body": "${1:condition} ? $2 : $3",
+    "description": "JS ternary if"
+  },
+  "Event prevent default": {
+    "prefix": "epre",
+    "body": "e.preventDefault()",
+    "description": "JS event prevent default"
+  },
+  "Function": {
+    "prefix": "func",
+    "body": "function ${1:funcName} ($2) {\n    $3\n}$0",
+    "description": "JS named function"
+  },
+  "Anon Function": {
+    "prefix": "afunc",
+    "body": "function ($1) {\n    $2\n}$0",
+    "description": "JS anonymous function"
+  },
+  "Arrow function": {
+    "prefix": "arfunc",
+    "body": "$1 => {\n    $2\n}$0",
+    "description": "ES6 arrow function"
+  },
+  "Short Arrow function": {
+    "prefix": "sharfunc",
+    "body": "$1 => { $2 }$0",
+    "description": "ES6 short arrow function"
+  },
+  "Return Arrow function": {
+    "prefix": "rarfunc",
+    "body": "$1 => $2",
+    "description": "ES6 return arrow function"
+  },
+  "Meteor.isClient": {
+    "prefix": "isClient",
+    "body": "if (Meteor.isClient) {\n\t$1\n}$0",
+    "description": "Meteor is client"
+  },
+  "Meteor.isServer": {
+    "prefix": "isServer",
+    "body": "if (Meteor.isServer) {\n\t$1\n}$0",
+    "description": "Meteor is server"
+  },
+  "Meteor.isCordova": {
+    "prefix": "isCordova",
+    "body": "if (Meteor.isCordova) {\n\t$1\n}$0",
+    "description": "Meteor is cordova"
+  },
+  "Meteor sleep": {
+    "prefix": "msleep",
+    "body": "Meteor._sleepForMs(${1:ms})$0",
+    "description": "Meteor sleep for ms"
+  },
+  "Session set": {
+    "prefix": "sset",
+    "body": "Session.set('${1:name}', ${3:value})$0",
+    "description": "Meteor session set"
+  },
+  "Session get": {
+    "prefix": "sget",
+    "body": "Session.get('${1:name}')$0",
+    "description": "Meteor session get"
+  },
+  "Template helpers": {
+    "prefix": "helpers",
+    "body": "Template.${1:name}.helpers({\n    ${2:helpFunc} ($2) {\n        const instance = Template.instance()\n        $3\n    }$0\n})",
+    "description": "Meteor template helpers"
+  },
+  "Template created": {
+    "prefix": "oncreated",
+    "body": "Template.${1:name}.onCreated(function created${1:name} () {\n    const instance = this\n    $0\n})",
+    "description": "Meteor template on created"
+  },
+  "Template rendered": {
+    "prefix": "onrendered",
+    "body": "Template.${1:name}.onRendered(function rendered${1:name} () {\n    const instance = this\n    $0\n})",
+    "description": "Meteor template on rendered"
+  },
+  "Template destroyed": {
+    "prefix": "ondestroyed",
+    "body": "Template.${1:name}.onDestroyed(function destroyed${1:name} () {\n    const instance = this\n    $0\n})",
+    "description": "Meteor template on destroyed"
+  },
+  "New helper": {
+    "prefix": "nhelper",
+    "body": "${1:helpFunc} ($2) {\n    const instance = Template.instance()\n    $3\n}$0",
+    "description": "Meteor new template helper"
+  },
+  "New method": {
+    "prefix": "nmethod",
+    "body": "${1:methodName} ($2) {\n    $3\n}$0",
+    "description": "Meteor new method"
+  },
+  "Template events": {
+    "prefix": "events",
+    "body": "Template.${1:name}.events({\n    '${2:eventSelector}' (e, instance) {\n        e.preventDefault()\n        $3\n    }$0\n})",
+    "description": "Meteor template events"
+  },
+  "New event": {
+    "prefix": "nevent",
+    "body": "'${1:eventSelector}' (e, instance) {\n    e.preventDefault()\n    $2\n}$0",
+    "description": "Meteor new template event"
+  },
+  "Template autorun": {
+    "prefix": "iautorun",
+    "body": "instance.autorun(${1:computation} => {\n    $2\n})$0",
+    "description": "Meteor template instance autorun"
+  },
+  "Generic autorun": {
+    "prefix": "gautorun",
+    "body": "${1:this}.autorun(${2:computation} => {\n    $3\n})$0",
+    "description": "Meteor generic autorun"
+  },
+  "String function": {
+    "prefix": "sfunc",
+    "body": "'${1:name}' ($2) {\n    $3\n}$0",
+    "description": "JS string function"
+  },
+  "Collection find": {
+    "prefix": "find",
+    "body": "${1:Collections}.find($2)$0",
+    "description": "Meteor collection find"
+  },
+  "Collection find one": {
+    "prefix": "findone",
+    "body": "${1:Collections}.findOne($2)$0",
+    "description": "Meteor collection find one"
+  },
+  "Collection fetch": {
+    "prefix": "fetch",
+    "body": "${1:Collections}.find($2).fetch()$0",
+    "description": "Meteor collection find fetch"
+  },
+  "Collection insert": {
+    "prefix": "insert",
+    "body": "${1:Collections}.insert($2)$0",
+    "description": "Meteor collection insert"
+  },
+  "Collection update": {
+    "prefix": "update",
+    "body": "${1:Collections}.update($2, $3)$0",
+    "description": "Meteor collection update"
+  },
+  "Collection remove": {
+    "prefix": "remove",
+    "body": "${1:Collections}.remove($2)$0",
+    "description": "Meteor collection remove"
+  },
+  "Meteor subscribe": {
+    "prefix": "msubscribe",
+    "body": "Meteor.subscribe('${1:name}', $2)$0",
+    "description": "Meteor publication subscribe"
+  },
+  "Template subscribe": {
+    "prefix": "isubscribe",
+    "body": "instance.subscribe('${1:name}', $2)$0",
+    "description": "Meteor template instance publication subscribe"
+  },
+  "Meteor publish": {
+    "prefix": "publish",
+    "body": "Meteor.publish('${1:name}', function ${1:name}Publish ($2) {\n    $3\n})$0",
+    "description": "Meteor publication"
+  },
+  "Meteor methods": {
+    "prefix": "methods",
+    "body": "Meteor.methods({\n    ${1:methodName} ($2) {\n        $3\n    }\n})$0",
+    "description": "Meteor methods"
+  },
+  "Meteor check": {
+    "prefix": "chk",
+    "body": "check(${1:var}, ${2:Type})$0",
+    "description": "Meteor check"
+  },
+  "Meteor call simple": {
+    "prefix": "call",
+    "body": "Meteor.call('${1:method}', $2)$0",
+    "description": "Meteor call method"
+  },
+  "Meteor call": {
+    "prefix": "mcall",
+    "body": "Meteor.call('${1:method}', $2, (error, result) => {\n    if (error) {\n        console.log(error)\n        Materialize.toast(error.reason || error.error, 3500, 'toast-negative')\n    }\n    if (result) {\n        $3\n    }\n})$0",
+    "description": "Meteor call method with callback"
+  },
+  "Meteor apply": {
+    "prefix": "mapply",
+    "body": "Meteor.apply('${1:method}', [${2:args}], { wait: ${3:true} }, (error, result) => {\n    if (error) {\n        console.log(error)\n        Materialize.toast(error.reason || error.error, 3500, 'toast-negative')\n    }\n    if (result) {\n        $4\n    }\n})$0",
+    "description": "Meteor apply method with callback"
+  },
+  "Async Meteor call": {
+    "prefix": "acall",
+    "body": "async function ${1:funcName} () {\n    let result = await callMethod ('${2:methodName}', $3)\n    if (!result.reason) {\n        $4\n    } else {\n        $5\n    }\n}$0",
+    "description": "Meteor async method call"
+  },
+  "FlowRouter go": {
+    "prefix": "frgo",
+    "body": "FlowRouter.go('${1:routeName}')$0",
+    "description": "Meteor FlowRouter go"
+  },
+  "FlowRouter getParam": {
+    "prefix": "fget",
+    "body": "FlowRouter.getParam('${1:param}')$0",
+    "description": "Meteor FlowRouter get param"
+  },
+  "FlowRouter map": {
+    "prefix": "fmap",
+    "body": "FlowRouter._routesMap['${1:routeName}']$0",
+    "description": "Meteor FlowRouter routes map"
+  },
+  "Meteor error": {
+    "prefix": "merror",
+    "body": "throw new Meteor.Error($1)$0",
+    "description": "Meteor throw new error"
+  },
+  "Get Element By Id": {
+    "prefix": "gi",
+    "body": "${1:document}.getElementById('${2:id}')$0",
+    "description": "JS get element by ID"
+  },
+  "Query Selector": {
+    "prefix": "qs",
+    "body": "${1:document}.querySelector('${2:selector}')$0",
+    "description": "JS query selector"
+  },
+  "Query Selector All": {
+    "prefix": "qsa",
+    "body": "${1:document}.querySelectorAll('${2:selector}')$0",
+    "description": "JS query selector all"
+  },
+  "JQuery Selector": {
+    "prefix": "jqsel",
+    "body": "$('${1:selector}').$0",
+    "description": "jQuery selector"
+  },
+  "Add Event listener": {
+    "prefix": "aevent",
+    "body": "${1:element}.addEventListener('${2:event}', ${3:function})$0",
+    "description": "JS add event listener"
+  },
+  "Remove Event listener": {
+    "prefix": "revent",
+    "body": "${1:element}.removeEventListener('${2:event}', ${3:function})$0",
+    "description": "JS remove event listener"
+  },
+  "Import": {
+    "prefix": "imp",
+    "body": "import { $2 } from '${1:location}'$0",
+    "description": "ES6 import"
+  },
+  "Import Default": {
+    "prefix": "dimp",
+    "body": "import ${2:stuff} from '${1:location}'$0",
+    "description": "ES6 import default"
+  },
+  "Just import": {
+    "prefix": "jimp",
+    "body": "import ${2:m from }'${1:location}'$0",
+    "description": "ES6 just import"
+  },
+  "New Mongo Collection": {
+    "prefix": "nmcollection",
+    "body": "Collections.${1:collection} = new Mongo.Collection('${1:collection}')$0",
+    "description": "Meteor new Mongo collection"
+  },
+  "Export Constant": {
+    "prefix": "exp",
+    "body": "export const ${1:constant} = ${2:value}$0",
+    "description": "ES6 export constant"
+  },
+  "Export Default": {
+    "prefix": "dexp",
+    "body": "export default $1",
+    "description": "ES6 export default"
+  },
+  "Toast": {
+    "prefix": "toast",
+    "body": "Materialize.toast('${1:message}', ${2:time}, '${3:color}')$0",
+    "description": "Materialize toast"
+  },
+  "Reactive var": {
+    "prefix": "rvar",
+    "body": "${1:name} = new ReactiveVar(${2:value})$0",
+    "description": "Meteor new reactive var"
+  },
+  "Reactive dict": {
+    "prefix": "rdict",
+    "body": "${1:name} = new ReactiveDict()$0",
+    "description": "Meteor new reactive dictionary"
+  },
+  "Reactive field": {
+    "prefix": "rfield",
+    "body": "${1:name} = new ReactiveField(${2:value})$0",
+    "description": "Meteor new reactive field"
+  },
+  "Var set": {
+    "prefix": "vset",
+    "body": "instance.${1:var}.set(${2:value})$0",
+    "description": "Meteor set reactive var"
+  },
+  "Var get": {
+    "prefix": "vget",
+    "body": "instance.${1:var}.get()$0",
+    "description": "Meteor get reactive var"
+  },
+  "Dict set": {
+    "prefix": "dset",
+    "body": "instance.${1:dict}.set('${2:name}', ${3:value})$0",
+    "description": "Meteor set reactive dictionary"
+  },
+  "Dict get": {
+    "prefix": "dget",
+    "body": "instance.${1:dict}.get('${2:name}')$0",
+    "description": "Meteor get reactive dictionary"
+  },
+  "Field set": {
+    "prefix": "fset",
+    "body": "instance.${1:field}(${2:value})$0",
+    "description": "Meteor set reactive field"
+  },
+  "Field get": {
+    "prefix": "fget",
+    "body": "instance.${1:field}()$0",
+    "description": "Meteor get reactive dictionary"
+  },
+  "For": {
+    "prefix": "for",
+    "body": "for (let i = 0, max = ${1:array}.length; i < max; i++) {\n    $2\n}$0",
+    "description": "JS for loop"
+  },
+  "For in": {
+    "prefix": "forin",
+    "body": "for (let ${1:key} in ${2:object}) {\n    $3\n}$0",
+    "description": "JS for in iterator"
+  },
+  "For of": {
+    "prefix": "forof",
+    "body": "for (let ${1:i} of ${2:array}) {\n    $3\n}$0",
+    "description": "JS for of iterator"
+  },
+  "Register helper": {
+    "prefix": "registerh",
+    "body": "Template.registerHelper('${1:name}', $2)$0",
+    "description": "Meteor register global helper"
+  },
+  "Meteor defer": {
+    "prefix": "mdefer",
+    "body": "Meteor.defer(() => {\n    $1\n})$0",
+    "description": "Meteor defer to next tick"
+  },
+  "Tabular Table": {
+    "prefix": "tabular",
+    "body": "TabularTables.${1:name} = new Tabular.Table({\n    name        : '${1:name}',\n    collection  : Collections.${2:collection},\n    responsive  : true,\n    autoWidth   : false,\n    columns     : [$3],\n    extraFields : [$4],\n    joins       : [$5],\n    selector (uId) {\n        return {$6}\n    }\n})",
+    "description": "Meteor new Tabular "
+  },
+  "Render in Tabular": {
+    "prefix": "trender",
+    "body": "render (val, type, doc) {\n    return $1\n}$0",
+    "description": "Meteor render field in tabular table"
+  },
+  "Template in Tabular": {
+    "prefix": "tmplate",
+    "body": "tmpl: Meteor.isClient && Template.${1:template},\ntmplContext (self) {\n    return {\n        self,\n        data: {\n            $2\n        }\n    }\n}$0",
+    "description": "Meteor template in tabular table"
+  },
+  "Instance find": {
+    "prefix": "ifind",
+    "body": "instance.find('${1:selector}')$0",
+    "description": "Meteor template instance find element"
+  },
+  "Instance findAll": {
+    "prefix": "ifindall",
+    "body": "instance.findAll('${1:selector}')$0",
+    "description": "Meteor template instance find all elements"
+  },
+  "Instance jQuery": {
+    "prefix": "ijquery",
+    "body": "instance.$('${1:selector}').$0",
+    "description": "Meteor template instance jquery selector"
+  },
+  "Blaze get view instance": {
+    "prefix": "getview",
+    "body": "Blaze.getView(document.querySelector('${1:selector}')).templateInstance()$0",
+    "description": "Meteor get view from Blaze"
+  },
+  "Event current attribute": {
+    "prefix": "currentattr",
+    "body": "e.currentTarget.getAttribute('${1:attr}')$0",
+    "description": "JS get attribute from event current target"
+  },
+  "React element call": {
+    "prefix": "relement",
+    "body": "<${1:Name} />$0",
+    "description": "React call element"
+  },
+  "React element call with props": {
+    "prefix": "relementprops",
+    "body": "<${1:Name}\n    $2\n/>$0",
+    "description": "React call element with props"
+  },
+  "JS Require": {
+    "prefix": "jreq",
+    "body": "const ${1:module} = require('${2:pathModule}')$0",
+    "description": "JS require module"
+  },
+  "JSX braces": {
+    "prefix": "jb",
+    "body": "{ $1 }$0",
+    "description": "JSX braces"
+  },
+  "React constructor": {
+    "prefix": "rconstruct",
+    "body": "constructor (props) {\n    super(props)\n    $1\n}$0",
+    "description": "React class component constructor"
+  },
+  "Dumb component": {
+    "prefix": "dcompo",
+    "body": "const ${1:Name} = ${2:props} => ($3)",
+    "description": "React dumb component"
+  },
+  "Render method": {
+    "prefix": "rrender",
+    "body": "render () {\n    return ($1)\n}",
+    "description": "React class component render method"
+  },
+  "DOM render": {
+    "prefix": "rdomrender",
+    "body": "ReactDOM.render(\n    $1\n)",
+    "description": "React DOM render"
+  },
+  "React import": {
+    "prefix": "rimport",
+    "body": "import React from 'react'",
+    "description": "React import react statement"
+  },
+  "PropTypes import": {
+    "prefix": "proimport",
+    "body": "import PropTypes from 'prop-types'",
+    "description": "React import prop types statement"
+  },
+  "React Component import": {
+    "prefix": "rcimport",
+    "body": "import React, { Component } from 'react'",
+    "description": "React import react and component statement"
+  },
+  "React PureComponent import": {
+    "prefix": "rpimport",
+    "body": "import React, { PureComponent } from 'react'",
+    "description": "React import react and pure component statement"
+  },
+  "React component class": {
+    "prefix": "rclass",
+    "body": "class ${1:componentName} extends Component {\n    $2\n}$0",
+    "description": "React declare class component"
+  },
+  "React pure component class": {
+    "prefix": "pclass",
+    "body": "class ${1:componentName} extends PureComponent {\n    $2\n}$0",
+    "description": "React declare class pure component"
+  },
+  "React component if else": {
+    "prefix": "rife",
+    "body": "{ ${1:condition}\n    ? $2\n    : $3\n}$0",
+    "description": "React if else in render"
+  },
+  "Return helper": {
+    "prefix": "rhelp",
+    "body": "${1:helper}: $2 => $3",
+    "description": "ES6 return helper"
+  },
+  "Arrow method": {
+    "prefix": "amethod",
+    "body": "${1:method} = $2 => {\n    $3\n}$0",
+    "description": "ES6 return method"
+  },
+  "Return method": {
+    "prefix": "rmethod",
+    "body": "${1:method} = $2 => $3",
+    "description": "ES6 return method"
+  },
+  "ESLint line disable": {
+    "prefix": "lintdisable",
+    "body": "// eslint-disable-line",
+    "description": "Linter Disable ESLint for current line"
+  },
+  "ESLint next line disable": {
+    "prefix": "nlintdisable",
+    "body": "// eslint-disable-next-line",
+    "description": "Linter Disable ESLint for the next line"
+  },
+  "ESLint line disable meteor imports": {
+    "prefix": "lintimportsdisable",
+    "body": "// eslint-disable-line import/no-extraneous-dependencies, import/no-unresolved, import/extensions",
+    "description": "Linter Disable ESLint for current line meteor imports"
+  },
+  "ESLint declare meteor imports": {
+    "prefix": "mdeclareimports",
+    "body": "/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */\n$1\n/* eslint-enable */",
+    "description": "Linter declare Meteor imports"
+  },
+  "ESLint dev imports": {
+    "prefix": "devdependencies",
+    "body": "/* eslint-disable import/no-extraneous-dependencies */\n$1\n/* eslint-enable */",
+    "description": "Linter declare dev imports"
+  },
+  "React Native StyleSheet Create": {
+    "prefix": "rnstylesheet",
+    "body": "StyleSheet.create({\n    $1\n})$0",
+    "description": "React Native StyleSheet"
+  },
+  "React Native Extended StyleSheet Create": {
+    "prefix": "rnestylesheet",
+    "body": "EStyleSheet.create({\n    $1\n})$0",
+    "description": "React Native Extended StyleSheet"
+  },
+  "React Native Extended StyleSheet Build": {
+    "prefix": "rnbestylesheet",
+    "body": "EStyleSheet.build({\n    $1\n})$0",
+    "description": "React Native Extended StyleSheet Build"
+  },
+  "React imported component": {
+    "prefix": "importedcomponent",
+    "body": "const ${1:AsyncComponent} = importedComponent(\n    () => import(/* webpackChunkName: '${2:ChunkName}' */ '${3:ComponentLocation}'),\n    { LoadingComponent: Loading }\n)$0"
+  },
+  "Try catch": {
+    "prefix": "trc",
+    "body": "try {\n    $1\n} catch (${2:e}) {\n    $3\n}$0",
+    "description": "Try catch fix"
+  }
+}

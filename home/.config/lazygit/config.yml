@@ -1,0 +1,29 @@
+gui:
+  nerdFontsVersion: '3'
+  theme:
+    activeBorderColor:
+      - '#8AFF80' # green
+      - bold
+    inactiveBorderColor:
+      - '#FFFFFF' # bright white
+    searchingActiveBorderColor:
+      - '#80FFEA' # cyan
+      - bold
+    optionsTextColor:
+      - '#9580FF' # purple
+    selectedLineBgColor:
+      - '#7970A9' # comment
+    cherryPickedCommitBgColor:
+      - '#80FFEA' # cyan
+    cherryPickedCommitFgColor:
+      - '#FF80BF' # pink
+    unstagedChangesColor:
+      - '#FF9580' # red
+    defaultFgColor:
+      - '#F8F8F2' # white
+      # - default
+os:
+  edit: 'nvim'
+  open: 'nvim {{filename}}'
+git:
+  autoForwardBranches: none

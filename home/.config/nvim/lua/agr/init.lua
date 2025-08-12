@@ -1,0 +1,5 @@
+require 'agr.core.base'
+require 'agr.lazy'
+require 'agr.core.maps'
+require 'agr.core.autocmds'
+require 'agr.core.colorscheme'
