@@ -242,7 +242,7 @@ T.config = function ()
   map('n', '<leader>fk', builtins.keymaps, desc_opts('Search keymaps'))
   map('n', '<leader>fn', builtins.commands, desc_opts('Search commands'))
   map('n', '<leader>fg', builtins.git_status, desc_opts('Search git status'))
-  map('n', '<leader>lg', builtins.lsp_workspace_symbols, desc_opts('Search workspace symbols'))
+  -- map('n', '<leader>lg', builtins.lsp_workspace_symbols, desc_opts('Search workspace symbols'))
   map('n', '<leader>lr', builtins.lsp_references, desc_opts('Search references'))
   map('n', '<leader>ld', builtins.diagnostics, desc_opts('Search diagnostics'))
 
