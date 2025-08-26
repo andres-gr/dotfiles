@@ -831,7 +831,7 @@ function status.component.nav(opts)
   )
 end
 
---- A function to build AI section 
+--- A function to build AI section
 -- @param opts options for configuring code suggestions count
 -- @return The Heirline component table
 -- @usage local heirline_component = status.component.ai()
