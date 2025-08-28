@@ -22,8 +22,5 @@ gui:
     defaultFgColor:
       - '#F8F8F2' # white
       # - default
-os:
-  edit: 'nvim'
-  open: 'nvim {{filename}}'
 git:
   autoForwardBranches: none

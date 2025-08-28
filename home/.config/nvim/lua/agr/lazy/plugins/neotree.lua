@@ -229,7 +229,13 @@ N.config = function ()
         },
         ['<esc>'] = 'revert_preview',
         ['<M-o>'] = 'revert_preview',
-        ['P'] = { 'toggle_preview', config = { use_float = true } },
+        ['P'] = {
+          'toggle_preview',
+          config = {
+            use_float = true,
+            use_snacks_image = true,
+          },
+        },
         ['S'] = 'open_split',
         ['s'] = 'open_vsplit',
         -- ['S'] = 'split_with_window_picker',
