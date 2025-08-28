@@ -1,9 +1,9 @@
 local A = {
-  'Exafunction/codeium.vim',
+  'Exafunction/windsurf.vim',
   build = ':Codeium Auth',
   cmd = 'Codeium',
   commit = '5644ac5a0e098ca0cf5deed1c909c3fa5e9901f3',
-  event = 'InsertEnter',
+  event = 'BufEnter',
 }
 
 A.config = function ()
