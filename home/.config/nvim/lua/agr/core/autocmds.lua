@@ -252,3 +252,12 @@ cmd({ 'VimEnter', 'ColorScheme' }, {
   desc = 'Load highlights',
   group = agr,
 })
+
+cmd('FileType', {
+  callback = function ()
+    vim.keymap.set('i', 'jk', '<NOP>', { buffer = true })
+    vim.keymap.set('i', 'jj', '<NOP>', { buffer = true })
+  end,
+  group = general,
+  pattern = 'lazygit',
+})
