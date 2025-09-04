@@ -255,8 +255,8 @@ cmd({ 'VimEnter', 'ColorScheme' }, {
 
 cmd('FileType', {
   callback = function ()
-    vim.keymap.set('i', 'jk', '<NOP>', { buffer = true })
-    vim.keymap.set('i', 'jj', '<NOP>', { buffer = true })
+    vim.keymap.set({ 'n', 'i', 't' }, 'jk', '<NOP>', { buffer = true })
+    vim.keymap.set({ 'n', 'i', 't' }, 'jj', '<NOP>', { buffer = true })
   end,
   group = general,
   pattern = 'lazygit',
