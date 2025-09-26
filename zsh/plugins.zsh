@@ -9,9 +9,11 @@ autoload -U compaudit compinit zrecompile
 # git plugin
 source $PLUGINS_DIR/git/git.plugin.zsh
 
-# tmux plugin settings
-export ZSH_TMUX_AUTOSTART=true
-source $PLUGINS_DIR/ohmyzsh/plugins/tmux/tmux.plugin.zsh
+if [[ -z "$VSCODE_INJECTION" && -z "$TERM_PROGRAM" ]]; then
+  # tmux plugin settings
+  export ZSH_TMUX_AUTOSTART=true
+  source $PLUGINS_DIR/ohmyzsh/plugins/tmux/tmux.plugin.zsh
+fi
 
 # fast syntax highlight plugin
 source $PLUGINS_DIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
