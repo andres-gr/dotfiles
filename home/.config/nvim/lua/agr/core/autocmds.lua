@@ -253,11 +253,13 @@ cmd({ 'VimEnter', 'ColorScheme' }, {
   group = agr,
 })
 
-cmd('FileType', {
-  callback = function ()
-    vim.keymap.set({ 'n', 'i', 't' }, 'jk', '<NOP>', { buffer = true })
-    vim.keymap.set({ 'n', 'i', 't' }, 'jj', '<NOP>', { buffer = true })
+cmd('TermOpen', {
+  callback = function (event)
+    local buf = event.buf
+
+    pcall(vim.keymap.del, 't', 'jk', { buffer = buf })
+    pcall(vim.keymap.del, 't', 'jj', { buffer = buf })
   end,
   group = general,
-  pattern = 'lazygit',
+  pattern = '*lazygit*',
 })
