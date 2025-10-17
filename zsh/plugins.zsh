@@ -9,7 +9,7 @@ autoload -U compaudit compinit zrecompile
 # git plugin
 source $PLUGINS_DIR/git/git.plugin.zsh
 
-if [[ -z "$VSCODE_INJECTION" ]]; then
+if [[ -z "$TMUX" && -z "$VSCODE_CWD" && -z "$CURSOR_AGENT" ]]; then
   # tmux plugin settings
   export ZSH_TMUX_AUTOSTART=true
   source $PLUGINS_DIR/ohmyzsh/plugins/tmux/tmux.plugin.zsh
