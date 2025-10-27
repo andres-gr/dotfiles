@@ -263,3 +263,9 @@ cmd('TermOpen', {
   group = general,
   pattern = '*lazygit*',
 })
+
+cmd('BufReadPost', {
+  callback = function() vim.treesitter.start() end,
+  group = general,
+  pattern = '*',
+})

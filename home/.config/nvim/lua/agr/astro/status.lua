@@ -722,9 +722,9 @@ end
 function status.condition.treesitter_available(bufnr)
   if not package.loaded['nvim-treesitter'] then return false end
   if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
-  local buf_lang = vim.treesitter.get_parser(bufnr or 0):lang()
-  if not buf_lang then return false end
-  return vim.treesitter.language.get_lang(buf_lang)
+
+  local ok, buf_parser = pcall(vim.treesitter.get_parser, bufnr)
+  return ok and buf_parser ~= nil
 end
 
 --- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding

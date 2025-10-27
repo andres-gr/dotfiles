@@ -30,7 +30,10 @@ T.config = function ()
       'typescript',
       'vim',
     },
-    highlight = { enable = true },
+    highlight = {
+      enable = true,
+      additional_vim_regex_highlighting = false,
+    },
     indent = { enable = true },
     incremental_selection = {
       enable = true,
@@ -83,6 +86,10 @@ T.config = function ()
       enable_rename = true,
     },
   }
+
+  vim.cmd.syntax 'off'
+
+  vim.treesitter.language.register('bash', { 'sh', 'zsh', 'zshrc' })
 end
 
 return T

@@ -125,6 +125,21 @@ T.config = function ()
           ['?'] = actions.which_key,
         },
       },
+      preview = {
+        treesitter = true,
+        mime_hook = function(filepath)
+          local is_image = function(filename)
+            local image_extensions = { 'png', 'jpg', 'jpeg', 'gif', 'webp' }
+            local split_path = vim.split(filename:lower(), '.', { plain = true })
+            local extension = split_path[#split_path]
+            return vim.tbl_contains(image_extensions, extension)
+          end
+          if is_image(filepath) then
+            return false
+          end
+          return true
+        end,
+      },
     },
     pickers = {
       aerial = {
