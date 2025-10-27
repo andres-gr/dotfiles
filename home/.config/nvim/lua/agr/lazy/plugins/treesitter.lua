@@ -1,21 +1,17 @@
 local T = {
   'nvim-treesitter/nvim-treesitter',
+  branch = 'main',
   build = ':TSUpdate',
   dependencies = {
     'JoosepAlviste/nvim-ts-context-commentstring', -- Context based comments
     'hiphish/rainbow-delimiters.nvim',
     'windwp/nvim-ts-autotag',                      -- Autoclose tags
-    'nvim-treesitter/playground',                  -- TS playground
   },
-  event = {
-    'BufNewFile',
-    'BufReadPre',
-  },
-  version = false,
+  lazy = false,
 }
 
 T.config = function ()
-  local treesitter = require 'nvim-treesitter.configs'
+  local treesitter = require 'nvim-treesitter'
 
   treesitter.setup {
     auto_install = { 'true' },
@@ -46,23 +42,6 @@ T.config = function ()
       },
     },
     matchup = { enable = true },
-    playground = {
-      enable = true,
-      keybindings = {
-        focus_language = 'f',
-        goto_node = '<CR>',
-        show_help = '?',
-        toggle_anonymous_nodes = 'a',
-        toggle_hl_groups = 'i',
-        toggle_injected_languages = 't',
-        toggle_language_display = 'I',
-        toggle_query_editor = 'o',
-        unfocus_language = 'F',
-        update = 'R',
-      },
-      persist_queries = false, -- Whether the query persists across vim sessions
-      updatetime = 25,         -- Debounced time for highlighting nodes in the playground from source code
-    },
   }
 
   -- Add mdx highlight

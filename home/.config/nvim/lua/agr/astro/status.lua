@@ -574,7 +574,7 @@ function status.provider.lsp_client_names(opts)
   opts = utils.default_tbl(opts, { expand_null_ls = true, truncate = 0.25 })
   return function (self)
     local buf_client_names = {}
-    for _, client in pairs(vim.lsp.get_active_clients { bufnr = self and self.bufnr or 0 }) do
+    for _, client in pairs(vim.lsp.get_clients { bufnr = self and self.bufnr or 0 }) do
       if client.name == 'null-ls' and opts.expand_null_ls then
         local null_ls_sources = {}
         for _, type in ipairs { 'FORMATTING', 'DIAGNOSTICS' } do
@@ -712,7 +712,7 @@ function status.condition.aerial_available() return package.loaded['aerial'] end
 -- @usage local heirline_component = { provider = 'Example Provider', condition = status.condition.lsp_attached }
 function status.condition.lsp_attached(bufnr)
   if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
-  return next(vim.lsp.get_active_clients { bufnr = bufnr or 0 }) ~= nil
+  return next(vim.lsp.get_clients { bufnr = bufnr or 0 }) ~= nil
 end
 
 --- A condition function if treesitter is in use
@@ -722,8 +722,9 @@ end
 function status.condition.treesitter_available(bufnr)
   if not package.loaded['nvim-treesitter'] then return false end
   if type(bufnr) == 'table' then bufnr = bufnr.bufnr end
-  local parsers = require 'nvim-treesitter.parsers'
-  return parsers.has_parser(parsers.get_buf_lang(bufnr or vim.api.nvim_get_current_buf()))
+  local buf_lang = vim.treesitter.get_parser(bufnr or 0):lang()
+  if not buf_lang then return false end
+  return vim.treesitter.language.get_lang(buf_lang)
 end
 
 --- A utility function to stylize a string with an icon from lspkind, separators, and left/right padding

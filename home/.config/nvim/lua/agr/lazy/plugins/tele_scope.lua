@@ -5,6 +5,7 @@ local T = {
     'danielvolchek/tailiscope.nvim',
   },
   event = 'VeryLazy',
+  version = false,
 }
 
 T.config = function ()
