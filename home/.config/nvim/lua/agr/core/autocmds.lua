@@ -253,7 +253,7 @@ cmd({ 'VimEnter', 'ColorScheme' }, {
   group = agr,
 })
 
-cmd('TermOpen', {
+cmd('FileType', {
   callback = function (event)
     local buf = event.buf
 
@@ -264,8 +264,10 @@ cmd('TermOpen', {
   pattern = '*lazygit*',
 })
 
-cmd('BufReadPost', {
-  callback = function() vim.treesitter.start() end,
+cmd('FileType', {
+  callback = function()
+    pcall(vim.treesitter.start)
+  end,
   group = general,
   pattern = '*',
 })
