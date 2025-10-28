@@ -3,6 +3,7 @@ local T = {
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
   },
+  lazy = true,
 }
 
 T.config = function ()

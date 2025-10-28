@@ -1,14 +1,14 @@
 local M = {
-  'echasnovski/mini.ai',
-  event = {
-    'BufNewFile',
-    'BufReadPost',
-  },
-  version = '*',
+	"nvim-mini/mini.ai",
+	event = {
+		"BufNewFile",
+		"BufReadPost",
+	},
+	version = "*",
 }
 
-M.config = function ()
-  require 'mini.ai'.setup()
+M.config = function()
+	require("mini.ai").setup()
 end
 
 return M

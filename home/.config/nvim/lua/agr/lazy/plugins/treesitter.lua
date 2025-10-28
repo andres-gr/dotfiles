@@ -14,7 +14,7 @@ T.config = function ()
   local treesitter = require 'nvim-treesitter'
 
   treesitter.setup {
-    auto_install = { 'true' },
+    auto_install = 'true',
     autopairs = { enable = true },
     ensure_installed = {
       'bash',
