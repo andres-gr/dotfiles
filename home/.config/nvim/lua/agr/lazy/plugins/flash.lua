@@ -37,6 +37,19 @@ F.config = function ()
       },
     }
   end, desc_opts('Flash backward'))
+
+  map({ 'n', 'o', 'x' }, '<C-S>', function ()
+    flash.treesitter {
+      actions = {
+        ['<C-S>'] = 'next',
+        ['<BS>'] = 'prev',
+      },
+      label = {
+        after = false,
+        before = false,
+      },
+    }
+  end, desc_opts('Treesitter flash incremental selection'))
 end
 
 return F

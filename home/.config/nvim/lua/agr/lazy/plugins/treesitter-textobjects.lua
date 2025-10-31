@@ -1,9 +1,10 @@
 local T = {
   'nvim-treesitter/nvim-treesitter-textobjects',
+  branch = 'main',
   dependencies = {
     'nvim-treesitter/nvim-treesitter',
   },
-  lazy = true,
+  lazy = false,
 }
 
 T.config = function ()
@@ -90,7 +91,7 @@ T.config = function ()
     },
   }
 
-  local ts_repeat = require 'nvim-treesitter.textobjects.repeatable_move'
+  local ts_repeat = require 'nvim-treesitter-textobjects.repeatable_move'
   local keymap = require 'agr.core.utils'.keymap
   local map = keymap.map
   local modes = {
@@ -99,8 +100,8 @@ T.config = function ()
     'x'
   }
 
-  map(modes, ';', ts_repeat.repeat_last_move, { desc = 'Repeat last TS move' })
-  map(modes, ',', ts_repeat.repeat_last_move_opposite, { desc = 'Repeat last TS move opposite' })
+  map(modes, ';', ts_repeat.repeat_last_move_next, { desc = 'Repeat last TS move next' })
+  map(modes, ',', ts_repeat.repeat_last_move_previous, { desc = 'Repeat last TS move prev' })
 
   map(modes, 'f', ts_repeat.builtin_f_expr, { expr = true, desc = 'Move to next TS char' })
   map(modes, 'F', ts_repeat.builtin_F_expr, { expr = true, desc = 'Move to prev TS char' })
