@@ -88,8 +88,6 @@ T.config = function ()
   }
 
   vim.cmd.syntax 'off'
-
-  vim.treesitter.language.register('bash', { 'sh', 'zsh', 'zshrc' })
 end
 
 return T
