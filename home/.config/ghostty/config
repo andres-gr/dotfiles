@@ -6,8 +6,8 @@ font-style = Regular
 font-style-bold = Medium
 font-style-italic = Regular
 font-style-bold-italic = Medium
-
 font-size = 14
+
 adjust-cell-width = 1
 # adjust-underline-position = 1
 
@@ -44,6 +44,15 @@ window-padding-balance = true
 cursor-color = cell-foreground
 cursor-style = block
 cursor-style-blink = true
-# shell-integration-features = no-cursor
 
 ### Cursor end ###
+
+### Misc ###
+
+# shell-integration-features = no-cursor
+quit-after-last-window-closed = true
+quit-after-last-window-closed-delay = 1s
+
+config-file = shaders-config
+
+### Misc end ###

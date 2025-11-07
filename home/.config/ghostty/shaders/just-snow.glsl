@@ -1,0 +1,1 @@
+/Users/andres/devel/ghostty-shaders/just-snow.glsl

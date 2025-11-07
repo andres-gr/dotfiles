@@ -1,0 +1,1 @@
+/Users/andres/devel/ghostty-shaders/retro-terminal.glsl

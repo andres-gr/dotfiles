@@ -1,0 +1,1 @@
+/Users/andres/devel/ghostty-shader-playground/public/shaders/cursor_border_1.glsl

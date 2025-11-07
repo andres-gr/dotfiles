@@ -1,0 +1,1 @@
+/Users/andres/devel/ghostty-shader-playground/public/shaders/manga_slash.glsl

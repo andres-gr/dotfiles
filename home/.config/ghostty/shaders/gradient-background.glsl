@@ -1,0 +1,1 @@
+/Users/andres/devel/ghostty-shaders/gradient-background.glsl

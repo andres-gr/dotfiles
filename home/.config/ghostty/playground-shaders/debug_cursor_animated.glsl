@@ -1,0 +1,1 @@
+/Users/andres/devel/ghostty-shader-playground/public/shaders/debug_cursor_animated.glsl

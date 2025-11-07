@@ -1,0 +1,60 @@
+#------ Playground Shaders ------#
+
+# custom-shader = playground-shaders/WIP.glsl
+# custom-shader = playground-shaders/blaze_sparks.glsl
+# custom-shader = playground-shaders/cursor_blaze.glsl
+# custom-shader = playground-shaders/cursor_blaze_no_trail.glsl
+# custom-shader = playground-shaders/cursor_blaze_tapered.glsl
+custom-shader = playground-shaders/cursor_border_1.glsl
+# custom-shader = playground-shaders/cursor_frozen.glsl
+# custom-shader = playground-shaders/cursor_smear.glsl
+# custom-shader = playground-shaders/cursor_smear_fade.glsl
+# custom-shader = playground-shaders/cursor_smear_gradient.glsl
+custom-shader = playground-shaders/cursor_smear_rainbow.glsl
+# custom-shader = playground-shaders/debug_cursor_animated.glsl
+# custom-shader = playground-shaders/debug_cursor_static.glsl
+# custom-shader = playground-shaders/manga_slash.glsl
+# custom-shader = playground-shaders/party_sparks.glsl
+# custom-shader = playground-shaders/shake.glsl
+# custom-shader = playground-shaders/sparks.glsl
+# custom-shader = playground-shaders/test.glsl
+
+#------ Playground Shaders end ------#
+
+
+# ------Shaders ------#
+
+# custom-shader = shaders/animated-gradient-shader.glsl
+# custom-shader = shaders/bettercrt.glsl
+# custom-shader = shaders/bloom.glsl
+# custom-shader = shaders/cineShader-Lava.glsl
+# custom-shader = shaders/crt.glsl
+# custom-shader = shaders/cubes.glsl
+# custom-shader = shaders/cursor_blaze.glsl
+# custom-shader = shaders/dither.glsl
+# custom-shader = shaders/drunkard.glsl
+# custom-shader = shaders/fireworks-rockets.glsl
+# custom-shader = shaders/fireworks.glsl
+# custom-shader = shaders/galaxy.glsl
+# custom-shader = shaders/gears-and-belts.glsl
+# custom-shader = shaders/glitchy.glsl
+# custom-shader = shaders/glow-rgbsplit-twitchy.glsl
+# custom-shader = shaders/gradient-background.glsl
+# custom-shader = shaders/in-game-crt.glsl
+# custom-shader = shaders/inside-the-matrix.glsl
+# custom-shader = shaders/just-snow.glsl
+# custom-shader = shaders/matrix-hallway.glsl
+# custom-shader = shaders/mnoise.glsl
+# custom-shader = shaders/negative.glsl
+# custom-shader = shaders/retro-terminal.glsl
+# custom-shader = shaders/sin-interference.glsl
+# custom-shader = shaders/smoke-and-ghost.glsl
+# custom-shader = shaders/sparks-from-fire.glsl
+# custom-shader = shaders/spotlight.glsl
+# custom-shader = shaders/starfield-colors.glsl
+# custom-shader = shaders/starfield.glsl
+# custom-shader = shaders/tft.glsl
+# custom-shader = shaders/underwater.glsl
+# custom-shader = shaders/water.glsl
+
+#------ Shaders end ------#

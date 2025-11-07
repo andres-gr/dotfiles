@@ -1,0 +1,1 @@
+/Users/andres/devel/ghostty-shaders/cursor_blaze.glsl
