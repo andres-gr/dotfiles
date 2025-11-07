@@ -2,6 +2,7 @@ local D = {
   bg = '#22212C',
   fg = '#F8F8F2',
   selection = '#454158',
+  selection_alt = 'rgba(75, 82, 99, 0.5)',
   comment = '#7970A9',
   red = '#FF9580',
   orange = '#FFCA80',

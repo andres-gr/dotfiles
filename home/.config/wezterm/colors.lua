@@ -19,7 +19,7 @@ local colors = {
   -- the foreground color of selected text
   selection_fg = dracula.none,
   -- the background color of selected text
-  selection_bg = 'rgba(75, 82, 99, 0.5)',
+  selection_bg = dracula.selection_alt,
 
   -- The color of the scrollbar 'thumb'; the portion that represents the current viewport
   scrollbar_thumb = dracula.gutter_fg,
