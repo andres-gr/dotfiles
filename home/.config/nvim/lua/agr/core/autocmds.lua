@@ -257,11 +257,13 @@ cmd('FileType', {
   callback = function (event)
     local buf = event.buf
 
+    pcall(vim.keymap.del, 'i', 'jk', { buffer = buf })
+    pcall(vim.keymap.del, 'i', 'jj', { buffer = buf })
     pcall(vim.keymap.del, 't', 'jk', { buffer = buf })
     pcall(vim.keymap.del, 't', 'jj', { buffer = buf })
   end,
   group = general,
-  pattern = '*lazygit*',
+  pattern = 'snacks_*',
 })
 
 cmd('FileType', {
