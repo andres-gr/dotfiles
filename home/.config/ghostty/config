@@ -53,6 +53,8 @@ cursor-style-blink = true
 quit-after-last-window-closed = true
 quit-after-last-window-closed-delay = 1s
 
+mouse-hide-while-typing = true
+
 config-file = shaders-config
 
 ### Misc end ###
