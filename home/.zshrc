@@ -98,6 +98,9 @@ FAST_HIGHLIGHT_STYLES[path-to-dir]="fg=cyan"
 # set bat theme
 export BAT_THEME="Dracula"
 
+# init gemini key
+source $HOME/gemini_key.sh
+
 # init starship prompt
 _evalcache starship init zsh
 
