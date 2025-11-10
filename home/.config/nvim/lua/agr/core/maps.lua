@@ -130,7 +130,7 @@ map('n', '<leader>Gl', '<CMD>0Gllog<CR>', desc_opts('Git show file history'))
 map('n', '<leader>Gt', '<CMD>GitTimeLapse<CR>', desc_opts('Git show file time lapse'))
 
 -- Dash
-map('n', '<leader>a', '<CMD>Alpha<CR>', desc_opts('Show dashboard'))
+map('n', '<leader>A', '<CMD>Alpha<CR>', desc_opts('Show dashboard'))
 
 -- LSP Installer
 map('n', '<leader>pi', '<CMD>Mason<CR>', desc_opts('Mason installer'))

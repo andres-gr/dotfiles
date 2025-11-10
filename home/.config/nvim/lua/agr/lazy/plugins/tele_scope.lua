@@ -223,14 +223,12 @@ T.config = function ()
 
   local builtins = require 'telescope.builtin'
   map('n', '<leader>fw', builtins.live_grep, desc_opts('Search words'))
-  map('n', '<leader>fW', function () builtins.live_grep({
-    additional_args = function (args)
-      return vim.list_extend(args, {
-        '--hidden',
-        '--no-ignore',
-      })
-    end,
-  }) end, desc_opts('Search words in all files'))
+  map('n', '<leader>fW', function () builtins.live_grep {
+    additional_args = {
+      '--hidden',
+      '--no-ignore',
+    },
+  } end, desc_opts('Search words in all files'))
   map('n', '<leader>ff', builtins.find_files, desc_opts('Search files'))
   map('n', '<leader>fF', function () builtins.find_files { no_ignore = true } end, desc_opts('Search all files'))
   map('n', '<leader>fb', builtins.buffers, desc_opts('Search buffers'))
