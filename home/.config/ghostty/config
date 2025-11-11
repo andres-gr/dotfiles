@@ -55,6 +55,8 @@ quit-after-last-window-closed-delay = 1s
 
 mouse-hide-while-typing = true
 
+macos-icon = custom
+
 config-file = shaders-config
 
 ### Misc end ###
