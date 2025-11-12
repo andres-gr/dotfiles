@@ -98,6 +98,7 @@ dracula.setup({
     -- Telescope
     TelescopePromptCounter = { fg = colors.comment },
     TelescopeResultsDiffUntracked = { fg = colors.comment },
+    TelescopeSelection = { bg = colors.selection },
 
     -- Diff
     diffFile = { fg = colors.comment },
