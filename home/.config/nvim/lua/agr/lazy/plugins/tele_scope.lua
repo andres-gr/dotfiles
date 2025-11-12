@@ -12,9 +12,39 @@ T.config = function ()
   local telescope = require 'telescope'
   local utils = require 'agr.core.utils'
   local actions = require 'telescope.actions'
+  local state = require 'telescope.actions.state'
   local project = utils.has_plugin 'project_nvim.project'
 
   local cwd = project ~= nil and project.get_project_root() or nil
+
+  local move_num = 15
+
+  local move_up = function (prompt_buf)
+    local picker = state.get_current_picker(prompt_buf)
+    local current_index = picker:get_selection_row()
+
+    if current_index - move_num < 0 then
+      actions.move_to_top(prompt_buf)
+    else
+      for _ = 1, move_num do
+        actions.move_selection_previous(prompt_buf)
+      end
+    end
+  end
+
+  local move_down = function (prompt_buf)
+    local picker = state.get_current_picker(prompt_buf)
+    local max_results = picker.manager:num_results()
+    local current_index = picker:get_selection_row()
+
+    if current_index + move_num > max_results then
+      actions.move_to_bottom(prompt_buf)
+    else
+      for _ = 1, move_num do
+        actions.move_selection_next(prompt_buf)
+      end
+    end
+  end
 
   telescope.setup {
     extensions = {
@@ -78,6 +108,9 @@ T.config = function ()
           ['<C-u>'] = actions.preview_scrolling_up,
           ['<C-d>'] = actions.preview_scrolling_down,
 
+          ['<c-b>'] = move_up,
+          ['<c-f>'] = move_down,
+
           ['<PageUp>'] = actions.results_scrolling_up,
           ['<PageDown>'] = actions.results_scrolling_down,
 
@@ -111,7 +144,7 @@ T.config = function ()
 
           ['<Down>'] = actions.move_selection_next,
           ['<Up>'] = actions.move_selection_previous,
-          ['gg'] = actions.move_to_top,
+          ['g'] = actions.move_to_top,
           ['G'] = actions.move_to_bottom,
 
           ['<C-u>'] = actions.preview_scrolling_up,
@@ -119,8 +152,10 @@ T.config = function ()
 
           ['<PageUp>'] = actions.results_scrolling_up,
           ['<PageDown>'] = actions.results_scrolling_down,
-          ['<C-b>'] = actions.results_scrolling_up,
-          ['<C-f>'] = actions.results_scrolling_down,
+
+          ['<c-b>'] = move_up,
+          ['<c-f>'] = move_down,
+
           ['<C-h>'] = actions.which_key,
           ['?'] = actions.which_key,
         },
