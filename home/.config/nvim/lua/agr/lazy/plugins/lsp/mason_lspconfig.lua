@@ -32,7 +32,7 @@ M.setup = function ()
       debounce_text_changes = 250,
     },
     on_attach = handlers.on_attach,
-    root_dir = handlers.root_dir,
+    -- root_dir = handlers.root_dir,
   }
 
   local config_servers = {
@@ -197,9 +197,9 @@ M.setup = function ()
   local tools = require 'typescript-tools'
 
   tools.setup(vim.tbl_deep_extend('force', default_opts, {
-    root_dir = function (...)
-      return root('tsconfig.json', 'jsconfig.json')(...)
-    end,
+    -- root_dir = function (...)
+    --   return root('tsconfig.json', 'jsconfig.json')(...)
+    -- end,
     single_file_support = false,
     settings = {
       -- tsserver_path = home_dir .. '/.bun/install/global/node_modules/typescript/lib/tsserver.js',
