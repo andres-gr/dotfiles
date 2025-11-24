@@ -47,3 +47,6 @@ source $PLUGINS_DIR/omz-plugin-pnpm/pnpm.plugin.zsh
 
 # eval cache plugin
 source $PLUGINS_DIR/evalcache/evalcache.plugin.zsh
+
+# Set up fzf key bindings and fuzzy completion
+source <(fzf --zsh)
