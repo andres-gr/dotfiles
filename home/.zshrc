@@ -98,11 +98,11 @@ FAST_HIGHLIGHT_STYLES[path-to-dir]="fg=cyan"
 # set bat theme
 export BAT_THEME="Dracula"
 
-# init fnm
-eval "$(fnm env --use-on-cd)"
-
-# eval "$(starship init zsh)"
+# init starship prompt
 _evalcache starship init zsh
+
+# init fnm
+_evalcache fnm env --use-on-cd
 
 # init z search
 _evalcache zoxide init zsh
