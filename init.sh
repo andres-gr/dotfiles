@@ -4,6 +4,11 @@
 if command -v stow &> /dev/null; then
   stow -v home -t $HOME
   echo "stowed dotfiles"
+
+  if [[ uname -s == "Darwin" ]]; then
+    stow -v home_macos -t $HOME
+    echo "stowed macos specific dotfiles"
+  fi
 else
   echo "stow not installed"
 fi
