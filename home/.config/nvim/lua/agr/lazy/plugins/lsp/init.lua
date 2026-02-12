@@ -24,7 +24,7 @@ local L = {
     'BufNewFile',
     'BufReadPre',
   },
-  version = '*'
+  version = '2.5.0'
 }
 
 L.config = function ()
