@@ -14,13 +14,14 @@ M.setup = function ()
       'bashls',
       'cssls',
       'eslint',
+      'gopls',
       'graphql',
       'html',
       'jsonls',
       'lua_ls',
-      -- 'ts_ls',
       'vimls',
       'yamlls',
+      -- 'ts_ls',
     },
   }
 
@@ -36,6 +37,7 @@ M.setup = function ()
   }
 
   local config_servers = {
+    ['gopls'] = true,
     ['jsonls'] = true,
     ['lua_ls'] = true,
   }

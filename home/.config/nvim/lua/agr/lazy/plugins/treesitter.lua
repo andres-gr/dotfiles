@@ -19,6 +19,7 @@ T.config = function ()
     ensure_installed = {
       'bash',
       'css',
+      'go',
       'html',
       'javascript',
       'json',
