@@ -89,6 +89,31 @@ T.config = function ()
   }
 
   vim.cmd.syntax 'off'
+
+  -- Fix for vim-matchup + Go Tree-sitter on Neovim 0.11+
+  -- This replaces the broken 'if_statement' query with a compatible version
+  local go_matchup_query = [[
+  (function_declaration "func" @open.func) @scope.func
+  (method_declaration "func" @open.func) @scope.func
+  (func_literal "func" @open.func) @scope.func
+  (return_statement "return" @mid.func.1)
+
+  ; Corrected if_statement (removing problematic nesting)
+  (if_statement "if" @open.if) @scope.if
+  (if_statement "else" @mid.if.1 (if_statement "if" @mid.if.1)?)
+
+  (expression_switch_statement
+    "switch" @open.switch
+    (expression_case "case" @mid.switch.1)
+    (default_case "default" @mid.switch.2)) @scope.switch
+
+  (block "{" @open.block "}" @close.block) @scope.block
+  (argument_list "(" @open.call ")" @close.call) @scope.call
+  ]]
+
+  -- Inject the query directly into the treesitter engine for Go
+  -- This takes precedence over the file on disk
+  vim.treesitter.query.set("go", "matchup", go_matchup_query)
 end
 
 return T
