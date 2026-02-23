@@ -30,7 +30,7 @@ N.setup = function ()
       -- Go linting
       null_ls.builtins.diagnostics.golangci_lint.with({
         -- Only run on save to avoid performance issues
-        method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
+        -- method = null_ls.methods.DIAGNOSTICS_ON_SAVE,
         -- Timeout for golangci-lint
         timeout = 10000,
       }),
