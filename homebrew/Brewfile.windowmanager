@@ -1,0 +1,6 @@
+tap "felixkratz/formulae"
+tap "koekeishiya/formulae"
+
+brew "felixkratz/formulae/borders"
+brew "koekeishiya/formulae/yabai"
+brew "koekeishiya/formulae/skhd"

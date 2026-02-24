@@ -1,0 +1,30 @@
+# zsh/.config/zsh/.zsh_plugins.txt
+# One plugin per line (Antidote accepts "owner/repo" lines).
+#
+# After you confirm this list, generate a static bundle:
+#   antidote bundle < .zsh_plugins.txt > .zsh_plugins.zsh
+#
+# Core / your existing plugins
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
+zsh-users/zsh-history-substring-search
+mroth/evalcache
+
+# Preferred/high-quality highlighting (HyDE-style)
+zsh-users/zsh-syntax-highlighting
+
+# fzf integration helpers
+Aloxaf/fzf-tab
+
+# Convenience / UX
+seebi/zsh-256color
+djui/alias-tips
+hlissner/zsh-autopair
+
+# Optional quality-of-life plugins you had or HyDE commonly uses
+jimeh/git-aware-prompt
+# junegunn/fzf  # some people keep local fzf installer entry for completeness, Antidote can manage wrappers
+zsh-users/zsh-interactive-cd
+# zoxide/zoxide
+
+# (Add / remove as you wish)

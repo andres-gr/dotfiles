@@ -1,0 +1,14 @@
+tap "supabase/tap"
+
+# Backend / local infra
+brew "supabase/tap/supabase"
+brew "mysql-client"
+
+# Java runtime
+cask "zulu@17"
+
+# iOS / mobile tooling
+brew "ios-deploy"
+
+# File watching (large monorepos, React Native, etc.)
+brew "watchman"
