@@ -13,34 +13,47 @@ local N = {
 
 N.config = function ()
   local neo_tree = require 'neo-tree'
-  local neo_utils = require 'neo-tree.utils'
-  local fs = require 'neo-tree.sources.filesystem'
-  local utils = require 'agr.core.utils'
-
-  local toggle_dir = function (state, node)
-    fs.toggle_directory(state, node, nil, false, false)
-    return true
-  end
 
   -- toggle a node open or descend to it's first child
-  local dive = function (state)
+  local dive
+
+  dive = function (state)
     local tree = state.tree
     local node = tree:get_node()
 
-    if not neo_utils.is_expandable(node) then return end
+    if not node then return end
 
-    if not node:is_expanded() then
-      toggle_dir(state, node)
-
-      vim.fn.feedkeys(utils.key_down)
+    -- If it's a file → open it
+    if node.type == 'file' then
+      require('neo-tree.sources.filesystem.commands').open(state)
+      return
     end
+
+    -- Expand if not expanded
+    if not node:is_expanded() then
+      require('neo-tree.sources.filesystem').toggle_directory(state, node)
+    end
+
+    -- After expanding, check children
+    local children = node:get_child_ids()
+    if not children or #children ~= 1 then return end
+
+    local child = tree:get_node(children[1])
+    if not child or child.type ~= "directory" then return end
+
+    require("neo-tree.ui.renderer").focus_node(state, child:get_id())
+
+    -- Continue diving
+    vim.schedule(function()
+      dive(state)
+    end)
   end
 
   neo_tree.setup {
     buffers = {
       follow_current_file = { enabled = true }, -- This will find and focus the file in the active buffer every
       -- time the current file is changed while the tree is open.
-      group_empty_dirs = true, -- when true, empty folders will be grouped together
+      group_empty_dirs = false, -- when true, empty folders will be grouped together
       show_unloaded = true,
       window = {
         mappings = {
@@ -138,7 +151,7 @@ N.config = function ()
       },
       follow_current_file = { enabled = true }, -- This will find and focus the file in the active buffer every
       -- time the current file is changed while the tree is open.
-      group_empty_dirs = true, -- when true, empty folders will be grouped together
+      group_empty_dirs = false, -- when true, empty folders will be grouped together
       -- hijack_netrw_behavior = 'open_default', -- netrw disabled, opening a directory opens neo-tree
       -- in whatever position is specified in window.position
       hijack_netrw_behavior = 'open_current', -- netrw disabled, opening a directory opens neo-tree
