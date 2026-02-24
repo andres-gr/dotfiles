@@ -1,4 +1,5 @@
 # 50-os.zsh — minimal OS detection & brew prefix handling
+
 case "$(uname -s)" in
   Darwin*)
     if command -v brew >/dev/null 2>&1; then

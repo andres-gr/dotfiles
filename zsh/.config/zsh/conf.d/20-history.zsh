@@ -1,4 +1,5 @@
 # 20-history.zsh — history tuning
+
 HISTSIZE=100000
 SAVEHIST=100000
 

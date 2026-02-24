@@ -1,4 +1,5 @@
 # 70-aliases.zsh — tool-aware aliases (migrated from zsh/alias.zsh)
+
 # Prefer modern tools if present
 if command -v eza >/dev/null 2>&1; then
   alias l='eza -lha --icons=auto --sort=name --group-directories-first'
@@ -36,4 +37,4 @@ alias mkd="mkdir -p"
 alias weather="curl v2.wttr.in"
 
 # git helper preserved
-command -v bun >/dev/null 2>&1 && alias gpsup='git_current_branch | git push --set-upstream origin'
+command -v git_current_branch >/dev/null 2>&1 && alias gpsup='git_current_branch | git push --set-upstream origin'
