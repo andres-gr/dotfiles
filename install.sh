@@ -6,16 +6,27 @@ IFS=$'\n\t'
 # Globals
 #######################################
 
+ORIGINAL_ARGS=("$@")
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OS=""
 DRY_RUN=false
 UNINSTALL=false
-PROFILE=""
-BREW_SELECTION=""
-ARCH_SELECTION=""
-STOW_SELECTION=""
+INTERACTIVE=false
 INSTALL_GITCONFIG=false
 RUN_POST_INSTALL=false
+
+TASKS=()
+
+#######################################
+# Central Package Definitions
+#######################################
+
+BASE_STOW_PKGS=(bat eza ghostty lazygit local nvim starship tmux zsh)
+MACOS_STOW_PKGS=(macos)
+ARCH_STOW_PKGS=(arch-linux)
+
+BREW_FILES=(Brewfile.taps Brewfile.core Brewfile.casks Brewfile.vscode Brewfile.work Brewfile.windowmanager)
+ARCH_PKG_FILES=(core.txt aur.txt)
 
 #######################################
 # Logging
@@ -41,67 +52,45 @@ detect_os() {
   case "$(uname -s)" in
     Darwin) OS="macos" ;;
     Linux)
-      if grep -qi arch /etc/os-release 2>/dev/null; then
-        OS="arch"
-      else
-        err "Unsupported Linux distro"
-        exit 1
-      fi
+      grep -qi arch /etc/os-release && OS="arch" || {
+        err "Unsupported Linux distro"; exit 1;
+      }
       ;;
     *) err "Unsupported OS"; exit 1 ;;
   esac
-
   log "Detected OS: $OS"
 }
 
 #######################################
-# Argument Parsing
+# Stow Logic
 #######################################
 
-parse_args() {
-  while [[ $# -gt 0 ]]; do
-    case "$1" in
-      --dry-run) DRY_RUN=true ;;
-      --uninstall) UNINSTALL=true ;;
-      --profile) PROFILE="$2"; shift ;;
-      --brew) BREW_SELECTION="$2"; shift ;;
-      --arch-pkgs) ARCH_SELECTION="$2"; shift ;;
-      --stow) STOW_SELECTION="$2"; shift ;;
-      --gitconfig) INSTALL_GITCONFIG=true ;;
-      --post-install) RUN_POST_INSTALL=true ;;
-      --help)
-        echo "Usage: ./install.sh [options]"
-        exit 0
-        ;;
-      *) err "Unknown option: $1"; exit 1 ;;
-    esac
-    shift
+stow_packages() {
+  for pkg in "$@"; do
+    log "Stowing $pkg"
+    run "stow -d \"$DOTFILES_DIR\" -t \"$HOME\" \"$pkg\""
   done
 }
 
-#######################################
-# Stow
-#######################################
+unstow_all() {
+  local all_pkgs=(
+    "${BASE_STOW_PKGS[@]}"
+    "${MACOS_STOW_PKGS[@]}"
+    "${ARCH_STOW_PKGS[@]}"
+  )
 
-stow_package() {
-  local pkg="$1"
-  log "Stowing $pkg"
-  run "stow -d \"$DOTFILES_DIR\" -t \"$HOME\" \"$pkg\""
-}
-
-unstow_package() {
-  local pkg="$1"
-  log "Unstowing $pkg"
-  run "stow -D -d \"$DOTFILES_DIR\" -t \"$HOME\" \"$pkg\""
+  for pkg in "${all_pkgs[@]}"; do
+    run "stow -D -d \"$DOTFILES_DIR\" -t \"$HOME\" \"$pkg\"" || true
+  done
 }
 
 #######################################
 # Brew
 #######################################
 
-brew_install_file() {
+brew_install() {
   local file="$1"
-  log "Installing Brewfile: $file"
+  log "Installing $file"
   run "brew bundle --file=\"$DOTFILES_DIR/homebrew/$file\""
 }
 
@@ -109,17 +98,17 @@ brew_install_file() {
 # Arch
 #######################################
 
-arch_install_list() {
+arch_install() {
   local file="$1"
-  log "Installing Arch packages from: $file"
+  log "Installing Arch packages from $file"
   run "yay -S --needed --noconfirm $(cat \"$DOTFILES_DIR/arch-pkgs/$file\")"
 }
 
 #######################################
-# Gitconfig Handling
+# Gitconfig
 #######################################
 
-install_gitconfig() {
+install_gitconfig_task() {
   local src="$DOTFILES_DIR/.gitconfig"
   local dest="$HOME/.gitconfig"
 
@@ -128,7 +117,6 @@ install_gitconfig() {
     run "cp \"$dest\" \"$dest.bak.$(date +%s)\""
   fi
 
-  log "Copying dotfiles .gitconfig"
   run "cp \"$src\" \"$dest\""
 
   if ! $DRY_RUN; then
@@ -141,129 +129,117 @@ install_gitconfig() {
 }
 
 #######################################
-# Profiles
+# Post Install
 #######################################
 
-run_profile() {
+post_install_task() {
+  log "Running post-install tasks"
 
-  case "$PROFILE" in
-    base)
-      local base_packages=(
-        bat
-        eza
-        ghostty
-        lazygit
-        local
-        nvim
-        starship
-        tmux
-        zsh
-      )
-
-      for pkg in "${base_packages[@]}"; do
-        stow_package "$pkg"
-      done
-      ;;
-    macos)
-      [[ "$OS" == "macos" ]] || { err "Not macOS"; exit 1; }
-      stow_package macos
-      ;;
-    arch)
-      [[ "$OS" == "arch" ]] || { err "Not Arch"; exit 1; }
-      stow_package arch-linux
-      ;;
-    "")
-      ;;
-    *)
-      err "Unknown profile: $PROFILE"
-      exit 1
-      ;;
-  esac
-}
-
-#######################################
-# Brew Selection
-#######################################
-
-handle_brew() {
-  [[ "$OS" == "macos" ]] || return
-
-  case "$BREW_SELECTION" in
-    taps) brew_install_file "Brewfile.taps" ;;
-    core) brew_install_file "Brewfile.core" ;;
-    casks) brew_install_file "Brewfile.casks" ;;
-    vscode) brew_install_file "Brewfile.vscode" ;;
-    work) brew_install_file "Brewfile.work" ;;
-    windowmanager) brew_install_file "Brewfile.windowmanager" ;;
-    all)
-      brew_install_file "Brewfile.taps"
-      brew_install_file "Brewfile.core"
-      brew_install_file "Brewfile.casks"
-      brew_install_file "Brewfile.vscode"
-      ;;
-    "")
-      ;;
-    *)
-      err "Invalid brew selection"
-      exit 1
-      ;;
-  esac
-}
-
-#######################################
-# Arch Selection
-#######################################
-
-handle_arch() {
-  [[ "$OS" == "arch" ]] || return
-
-  case "$ARCH_SELECTION" in
-    core) arch_install_list "core.txt" ;;
-    aur) arch_install_list "aur.txt" ;;
-    all)
-      arch_install_list "core.txt"
-      arch_install_list "aur.txt"
-      ;;
-    "")
-      ;;
-    *)
-      err "Invalid arch selection"
-      exit 1
-      ;;
-  esac
-}
-
-#######################################
-# Post Install Tasks
-#######################################
-
-post_install() {
-  log "Running post-install tasks..."
-
-  # Install TPM (tmux plugin manager)
   if command -v tmux &>/dev/null; then
     if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-      log "Installing tmux TPM..."
+      log "Installing TPM"
       run "git clone https://github.com/tmux-plugins/tpm \"$HOME/.tmux/plugins/tpm\""
-    else
-      log "TPM already installed."
     fi
   fi
-
-  # Future hooks:
-  # - nvim plugin sync
-  # - zsh compinit cache warmup
-  # - starship preset setup
 }
 
 #######################################
-# Uninstall
+# Task Registration
 #######################################
 
-run_uninstall() {
-  log "Uninstalling stow packages..."
-  for pkg in bat eza ghostty lazygit local nvim starship tmux zsh macos arch-linux; do
-    unstow_package "$pkg" || true
+register_task() {
+  TASKS+=("$1")
+}
+
+execute_tasks() {
+  for task in "${TASKS[@]}"; do
+    "$task"
+  done
+}
+
+#######################################
+# Interactive Mode
+#######################################
+
+interactive_select() {
+  if command -v fzf &>/dev/null; then
+    printf "%s\n" "$@" | fzf --multi
+  else
+    select opt in "$@"; do
+      echo "$opt"
+      break
+    done
+  fi
+}
+
+interactive_mode() {
+  log "Entering interactive mode"
+
+  # Stow selection
+  local selected
+  selected=$(interactive_select "${BASE_STOW_PKGS[@]}")
+  [[ -n "$selected" ]] && register_task "stow_selected"
+
+  STOW_SELECTED=($selected)
+
+  # Brew
+  if [[ "$OS" == "macos" ]]; then
+    local brew_selected
+    brew_selected=$(interactive_select "${BREW_FILES[@]}")
+    BREW_SELECTED=($brew_selected)
+    [[ -n "$brew_selected" ]] && register_task "brew_selected"
+  fi
+
+  # Arch
+  if [[ "$OS" == "arch" ]]; then
+    local arch_selected
+    arch_selected=$(interactive_select "${ARCH_PKG_FILES[@]}")
+    ARCH_SELECTED=($arch_selected)
+    [[ -n "$arch_selected" ]] && register_task "arch_selected"
+  fi
+
+  read -rp "Install gitconfig? (y/N): " ans
+  [[ "$ans" =~ ^[Yy]$ ]] && register_task "install_gitconfig_task"
+
+  read -rp "Run post-install? (y/N): " ans
+  [[ "$ans" =~ ^[Yy]$ ]] && register_task "post_install_task"
+}
+
+stow_selected() {
+  stow_packages "${STOW_SELECTED[@]}"
+}
+
+brew_selected() {
+  for f in "${BREW_SELECTED[@]}"; do
+    brew_install "$f"
+  done
+}
+
+arch_selected() {
+  for f in "${ARCH_SELECTED[@]}"; do
+    arch_install "$f"
+  done
+}
+
+#######################################
+# Argument Parsing
+#######################################
+
+parse_args() {
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --dry-run) DRY_RUN=true ;;
+      --uninstall) UNINSTALL=true ;;
+      --interactive) INTERACTIVE=true ;;
+      --gitconfig) register_task "install_gitconfig_task" ;;
+      --post-install) register_task "post_install_task" ;;
+      --help)
+        echo "Usage: ./install.sh [--interactive|--dry-run|--uninstall|--gitconfig|--post-install]"
+        exit 0
+        ;;
+      *) err "Unknown option: $1"; exit 1 ;;
+    esac
+    shift
   done
 }
 
@@ -272,27 +248,33 @@ run_uninstall() {
 #######################################
 
 main() {
+  ORIGINAL_ARGS=("$@")
+
   detect_os
   parse_args "$@"
 
   if $UNINSTALL; then
-    run_uninstall
+    unstow_all
     exit 0
   fi
 
-  run_profile
-  handle_brew
-  handle_arch
-
-  if $INSTALL_GITCONFIG; then
-    install_gitconfig
+  if [[ ${ORIGINAL_ARGS[@]} -eq 0 ]]; then
+    INTERACTIVE=true
   fi
 
-  if $RUN_POST_INSTALL; then
-    post_install
+  if $INTERACTIVE; then
+    interactive_mode
+  else
+    # Default behavior: base profile
+    register_task "default_base"
   fi
 
-  log "Done."
+  execute_tasks
+  log "Done"
+}
+
+default_base() {
+  stow_packages "${BASE_STOW_PKGS[@]}"
 }
 
 main "$@"
