@@ -15,4 +15,3 @@ export BAT_THEME="${BAT_THEME:-Dracula}"
 
 # Bun (no heavy logic)
 export BUN_INSTALL="${BUN_INSTALL:-$HOME/.bun}"
-[[ -r "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"

@@ -16,3 +16,6 @@ done
 # Load plugins (separate layer)
 # --------------------------------------------------
 [[ -r "$ZDOTDIR/plugins.zsh" ]] && source "$ZDOTDIR/plugins.zsh"
+
+# bun completions
+[ -s "/Users/andres/.bun/_bun" ] && source "/Users/andres/.bun/_bun"

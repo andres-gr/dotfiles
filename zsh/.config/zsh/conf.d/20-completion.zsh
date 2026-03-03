@@ -33,3 +33,6 @@ zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path "$ZSH_CACHE_DIR"
+
+# Bun completions
+[[ -r "$BUN_INSTALL/_bun" ]] && source "$BUN_INSTALL/_bun"

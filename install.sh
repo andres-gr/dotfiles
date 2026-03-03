@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-ORIGINAL_ARGS=("$@")
 IFS=$'\n\t'
 
 #######################################
@@ -13,10 +12,12 @@ OS=""
 DRY_RUN=false
 UNINSTALL=false
 INTERACTIVE=false
-INSTALL_GITCONFIG=false
-RUN_POST_INSTALL=false
 
 TASKS=()
+
+STOW_SELECTED=()
+BREW_SELECTED=()
+ARCH_SELECTED=()
 
 #######################################
 # Central Package Definitions
@@ -54,7 +55,7 @@ detect_os() {
     Darwin) OS="macos" ;;
     Linux)
       grep -qi arch /etc/os-release && OS="arch" || {
-        err "Unsupported Linux distro"; exit 1;
+        err "Unsupported Linux distro"; exit 1
       }
       ;;
     *) err "Unsupported OS"; exit 1 ;;
@@ -120,10 +121,11 @@ install_gitconfig_task() {
 
   run "cp \"$src\" \"$dest\""
 
-  if ! $DRY_RUN; then
+  if $DRY_RUN; then
+    log "[DRY RUN] Would prompt for git user.name and user.email"
+  else
     read -rp "Enter git user.name: " git_name
     read -rp "Enter git user.email: " git_email
-
     git config --file "$dest" user.name "$git_name"
     git config --file "$dest" user.email "$git_email"
   fi
@@ -140,6 +142,8 @@ post_install_task() {
     if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
       log "Installing TPM"
       run "git clone https://github.com/tmux-plugins/tpm \"$HOME/.tmux/plugins/tpm\""
+    else
+      log "TPM already installed, skipping"
     fi
   fi
 }
@@ -167,62 +171,96 @@ interactive_select() {
     printf "%s\n" "$@" | fzf --multi
     return $?
   else
-	select opt in "$@" "Skip"; do
-	  if [[ "$opt" == "Skip" ]]; then
-	    return 1
-	  fi
-	  [[ -n "$opt" ]] && echo "$opt"
-	  break
-	done
+    select opt in "$@" "Skip"; do
+      if [[ "$opt" == "Skip" ]]; then
+        return 1
+      fi
+      [[ -n "$opt" ]] && echo "$opt"
+      break
+    done
   fi
 }
 
 interactive_mode() {
   log "Entering interactive mode"
 
-  # Stow selection
-  local selected
-	if selected=$(interactive_select "${BASE_STOW_PKGS[@]}"); then
-	  if [[ -n "$selected" ]]; then
-	    STOW_SELECTED=($selected)
-	    register_task "stow_selected"
-	  else
-	    log "Skipping stow step"
-	  fi
-	else
-	  log "Skipped stow step"
-	fi
-
-  # Brew
-  if [[ "$OS" == "macos" ]]; then
-    local brew_selected
-    if brew_selected=$(interactive_select "${BREW_FILES[@]}"); then
-	  if [[ -n "$brew_selected" ]]; then
-	    BREW_SELECTED=($brew_selected)
-	    register_task "brew_selected"
-	  else
-	    log "Skipping brew step"
-	  fi
-	else
-	  log "Skipped brew step"
-	fi
+  if $DRY_RUN; then
+    warn "Dry-run: skipping interactive prompts, registering all tasks as simulation"
+    STOW_SELECTED=("${BASE_STOW_PKGS[@]}")
+    register_task "stow_selected"
+    if [[ "$OS" == "macos" ]]; then
+      STOW_SELECTED+=("${MACOS_STOW_PKGS[@]}")
+      BREW_SELECTED=("${BREW_FILES[@]}")
+      register_task "brew_selected"
+    elif [[ "$OS" == "arch" ]]; then
+      STOW_SELECTED+=("${ARCH_STOW_PKGS[@]}")
+      ARCH_SELECTED=("${ARCH_PKG_FILES[@]}")
+      register_task "arch_selected"
+    fi
+    register_task "install_gitconfig_task"
+    register_task "post_install_task"
+    return
   fi
 
-  # Arch
-  if [[ "$OS" == "arch" ]]; then
-    local arch_selected
-    if arch_selected=$(interactive_select "${ARCH_PKG_FILES[@]}"); then
-	    if [[ -n "$arch_selected" ]]; then
-		    ARCH_SELECTED=($arch_selected)
-		    register_task "arch_selected"
-	    else
-		    log "Skipping arch step"
-	    fi
+  # --------------------------------------------------
+  # Stow: base + OS-specific packages
+  # --------------------------------------------------
+  local all_stow_pkgs=("${BASE_STOW_PKGS[@]}")
+  if [[ "$OS" == "macos" ]]; then
+    all_stow_pkgs+=("${MACOS_STOW_PKGS[@]}")
+  elif [[ "$OS" == "arch" ]]; then
+    all_stow_pkgs+=("${ARCH_STOW_PKGS[@]}")
+  fi
+
+  local selected
+  if selected=$(interactive_select "${all_stow_pkgs[@]}"); then
+    if [[ -n "$selected" ]]; then
+      STOW_SELECTED=($selected)
+      register_task "stow_selected"
     else
-	    log "Skipped arch step"
+      log "Skipping stow step"
+    fi
+  else
+    log "Skipped stow step"
+  fi
+
+  # --------------------------------------------------
+  # OS-specific package install
+  # --------------------------------------------------
+  if [[ "$OS" == "macos" ]]; then
+    log "Select Brewfiles to install (space to select, enter to confirm):"
+    local brew_selected
+    if brew_selected=$(interactive_select "${BREW_FILES[@]}"); then
+      if [[ -n "$brew_selected" ]]; then
+        BREW_SELECTED=($brew_selected)
+        register_task "brew_selected"
+      else
+        log "Skipping brew step"
+      fi
+    else
+      log "Skipped brew step"
     fi
   fi
 
+  if [[ "$OS" == "arch" ]]; then
+    log "Select Arch package files to install:"
+    local arch_selected
+    if arch_selected=$(interactive_select "${ARCH_PKG_FILES[@]}"); then
+      if [[ -n "$arch_selected" ]]; then
+        ARCH_SELECTED=($arch_selected)
+        register_task "arch_selected"
+      else
+        log "Skipping arch packages step"
+      fi
+    else
+      log "Skipped arch packages step"
+    fi
+  fi
+
+  # --------------------------------------------------
+  # Optional tasks
+  # --------------------------------------------------
+  local ans
   read -rp "Install gitconfig? (y/N): " ans
   [[ "$ans" =~ ^[Yy]$ ]] && register_task "install_gitconfig_task"
 
@@ -253,10 +291,10 @@ arch_selected() {
 parse_args() {
   while [[ $# -gt 0 ]]; do
     case "$1" in
-      --dry-run) DRY_RUN=true ;;
-      --uninstall) UNINSTALL=true ;;
-      --interactive) INTERACTIVE=true ;;
-      --gitconfig) register_task "install_gitconfig_task" ;;
+      --dry-run)      DRY_RUN=true ;;
+      --uninstall)    UNINSTALL=true ;;
+      --interactive)  INTERACTIVE=true ;;
+      --gitconfig)    register_task "install_gitconfig_task" ;;
       --post-install) register_task "post_install_task" ;;
       --help)
         echo "Usage: ./install.sh [--interactive|--dry-run|--uninstall|--gitconfig|--post-install]"
@@ -272,8 +310,12 @@ parse_args() {
 # Main
 #######################################
 
+default_base() {
+  stow_packages "${BASE_STOW_PKGS[@]}"
+}
+
 main() {
-  ORIGINAL_ARGS=("$@")
+  local original_args=("$@")
 
   detect_os
   parse_args "$@"
@@ -283,23 +325,19 @@ main() {
     exit 0
   fi
 
-  if [[ ${#ORIGINAL_ARGS[@]} -eq 0 ]]; then
+  # No args (or only --dry-run) → default to interactive
+  if [[ ${#original_args[@]} -eq 0 ]] || [[ ${#original_args[@]} -eq 1 && "$DRY_RUN" == true ]]; then
     INTERACTIVE=true
   fi
 
   if $INTERACTIVE; then
     interactive_mode
   else
-    # Default behavior: base profile
     register_task "default_base"
   fi
 
   execute_tasks
   log "Done"
-}
-
-default_base() {
-  stow_packages "${BASE_STOW_PKGS[@]}"
 }
 
 main "$@"

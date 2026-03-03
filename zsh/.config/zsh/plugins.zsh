@@ -4,6 +4,10 @@
 # Locate Zinit
 # --------------------------------------------------
 
+# Tell Zinit where to put the compdump (must be set before sourcing zinit)
+typeset -gA ZINIT
+ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
+
 if [[ -f "/opt/homebrew/opt/zinit/zinit.zsh" ]]; then
   source "/opt/homebrew/opt/zinit/zinit.zsh"
 elif [[ -f "/usr/local/opt/zinit/zinit.zsh" ]]; then
