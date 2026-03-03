@@ -1,13 +1,18 @@
-# zsh/.zshrc — minimal loader
-# Load configuration modules
-for file in "$ZDOTDIR/conf.d/"*.zsh; do
-  [ -r "$file" ] && source "$file"
+# ~/.config/zsh/.zshrc
+
+# --------------------------------------------------
+# Interactive guard
+# --------------------------------------------------
+[[ $- != *i* ]] && return
+
+# --------------------------------------------------
+# Load modular configuration
+# --------------------------------------------------
+for file in "$ZDOTDIR"/conf.d/*.zsh; do
+  [[ -r "$file" ]] && source "$file"
 done
 
-# Load categorized functions
-for file in "$ZDOTDIR/functions/"*.zsh; do
-  [ -r "$file" ] && source "$file"
-done
-
-# Load plugin manager wrapper (antidote preferred)
-[ -r "$ZDOTDIR/plugins.zsh" ] && source "$ZDOTDIR/plugins.zsh"
+# --------------------------------------------------
+# Load plugins (separate layer)
+# --------------------------------------------------
+[[ -r "$ZDOTDIR/plugins.zsh" ]] && source "$ZDOTDIR/plugins.zsh"

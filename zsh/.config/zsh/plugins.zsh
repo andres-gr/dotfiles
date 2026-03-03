@@ -1,34 +1,75 @@
-# plugins.zsh — Antidote-only loader (no legacy PLUGINS_DIR fallback)
-# - If a static bundle exists (.zsh_plugins.zsh) we source it (fastest).
-# - Otherwise we require Antidote to be installed and load .zsh_plugins.txt.
-#
-# After migrating, remove any old PLUGINS_DIR usage.
+# plugins.zsh — minimal, HyDE-inspired + custom highlighting
 
-ZSH_PLUGINS_FILE="${ZDOTDIR:-$HOME/.config/zsh}/.zsh_plugins.txt"
-ZSH_BUNDLED_PLUGINS="${ZDOTDIR:-$HOME/.config/zsh}/.zsh_plugins.zsh"
+# --------------------------------------------------
+# Locate Zinit
+# --------------------------------------------------
 
-# 1) Fast path: if a prebuilt static bundle exists, source it
-if [ -r "$ZSH_BUNDLED_PLUGINS" ]; then
-  # static bundle created by: antidote bundle < .zsh_plugins.txt > .zsh_plugins.zsh
-  source "$ZSH_BUNDLED_PLUGINS"
-  return 0
+if [[ -f "/opt/homebrew/opt/zinit/zinit.zsh" ]]; then
+  source "/opt/homebrew/opt/zinit/zinit.zsh"
+elif [[ -f "/usr/local/opt/zinit/zinit.zsh" ]]; then
+  source "/usr/local/opt/zinit/zinit.zsh"
+elif [[ -f "/usr/share/zinit/zinit.zsh" ]]; then
+  source "/usr/share/zinit/zinit.zsh"
+else
+  return
 fi
 
-# 2) Antidote dynamic load (required)
-if command -v antidote >/dev/null 2>&1; then
-  if [ -r "$ZSH_PLUGINS_FILE" ]; then
-    # Antidote will clone/load plugins and cache them in its home.
-    # This can be slower on first run; generating static bundle is recommended after testing.
-    antidote load "$ZSH_PLUGINS_FILE"
-    return 0
-  else
-    echo "plugins.zsh: ERROR: plugin list not found: $ZSH_PLUGINS_FILE" >&2
-    return 1
-  fi
-fi
+zinit ice lucid
 
-# If we reach here, Antidote is missing
-echo "plugins.zsh: ERROR: Antidote is required. Install it and re-open the shell." >&2
-echo "  macOS: brew install antidote" >&2
-echo "  Arch:   yay -S antidote" >&2
-return 1
+# ----------------------------------------
+# Autosuggestions (load first)
+# ----------------------------------------
+zinit ice wait"0" silent
+zinit load zsh-users/zsh-autosuggestions
+
+# ----------------------------------------
+# Autoparis (load next)
+# ----------------------------------------
+zinit ice wait"0" silent
+zinit load hlissner/zsh-autopair
+
+# ----------------------------------------
+# Syntax Highlighting (must load last)
+# ----------------------------------------
+zinit ice wait"1" silent
+zinit load zsh-users/zsh-syntax-highlighting
+
+# ----------------------------------------
+# Custom Highlight Styles
+# (applied after plugin loads)
+# ----------------------------------------
+
+# After zsh-syntax-highlighting is loaded
+typeset -gA ZSH_HIGHLIGHT_STYLES
+
+# Aliases
+ZSH_HIGHLIGHT_STYLES[alias]='fg=green'
+ZSH_HIGHLIGHT_STYLES[global-alias]='fg=green'
+ZSH_HIGHLIGHT_STYLES[suffix-alias]='fg=green'
+
+# Builtins / commands
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=green'
+ZSH_HIGHLIGHT_STYLES[command]='fg=cyan,bold'
+ZSH_HIGHLIGHT_STYLES[function]='fg=magenta'
+
+# Paths
+ZSH_HIGHLIGHT_STYLES[autodirectory]='fg=blue'
+ZSH_HIGHLIGHT_STYLES[path]='fg=blue'
+ZSH_HIGHLIGHT_STYLES[path_prefix]='fg=blue'
+
+# Flags
+ZSH_HIGHLIGHT_STYLES[single-hyphen-option]='fg=yellow'
+ZSH_HIGHLIGHT_STYLES[double-hyphen-option]='fg=yellow'
+
+# Fallback command word
+ZSH_HIGHLIGHT_STYLES[arg0]='fg=white'
+
+# Strings
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=green'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=green'
+
+# Comments
+ZSH_HIGHLIGHT_STYLES[comment]='fg=8'
+
+# Errors
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'

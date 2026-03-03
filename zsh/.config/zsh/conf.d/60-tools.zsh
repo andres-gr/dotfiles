@@ -1,16 +1,52 @@
-# 60-tools.zsh — initialize heavy tools via evalcache when available
-# prefer evalcache for caching eval outputs; fallback to direct eval or source
+# 60-tools.zsh
+# Interactive tool initialization (portable, minimal)
 
-if command -v evalcache >/dev/null 2>&1; then
-  command -v starship >/dev/null 2>&1 && evalcache starship init zsh
-  command -v fnm >/dev/null 2>&1 && evalcache fnm env --use-on-cd
-  command -v zoxide >/dev/null 2>&1 && evalcache zoxide init zsh
-  command -v direnv >/dev/null 2>&1 && evalcache direnv hook zsh
-  command -v fzf >/dev/null 2>&1 && evalcache fzf --zsh
-else
-  command -v starship >/dev/null 2>&1 && eval "$(starship init zsh)"
-  command -v fnm >/dev/null 2>&1 && eval "$(fnm env --use-on-cd)"
-  command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
-  command -v direnv >/dev/null 2>&1 && eval "$(direnv hook zsh)"
-  command -v fzf >/dev/null 2>&1 && source <(fzf --zsh)
+# --------------------------------------------------
+# Starship (prompt)
+# --------------------------------------------------
+if (( $+commands[starship] )); then
+  eval "$(starship init zsh)"
+fi
+
+# --------------------------------------------------
+# fnm (Node manager)
+# --------------------------------------------------
+if (( $+commands[fnm] )); then
+  eval "$(fnm env --use-on-cd)"
+fi
+
+# --------------------------------------------------
+# zoxide (smart cd)
+# --------------------------------------------------
+if (( $+commands[zoxide] )); then
+  eval "$(zoxide init zsh)"
+fi
+
+# --------------------------------------------------
+# direnv
+# --------------------------------------------------
+if (( $+commands[direnv] )); then
+  eval "$(direnv hook zsh)"
+fi
+
+# --------------------------------------------------
+# fzf (portable detection)
+# --------------------------------------------------
+if (( $+commands[fzf] )); then
+
+  # Arch Linux location
+  if [[ -r /usr/share/fzf/key-bindings.zsh ]]; then
+    source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh 2>/dev/null
+
+  # Homebrew Apple Silicon
+  elif [[ -r /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
+    source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+    source /opt/homebrew/opt/fzf/shell/completion.zsh 2>/dev/null
+
+  # Homebrew Intel macOS
+  elif [[ -r /usr/local/opt/fzf/shell/key-bindings.zsh ]]; then
+    source /usr/local/opt/fzf/shell/key-bindings.zsh
+    source /usr/local/opt/fzf/shell/completion.zsh 2>/dev/null
+  fi
 fi
