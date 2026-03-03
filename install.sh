@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
+
+ORIGINAL_ARGS=("$@")
 IFS=$'\n\t'
 
 #######################################
 # Globals
 #######################################
 
-ORIGINAL_ARGS=("$@")
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 OS=""
 DRY_RUN=false
@@ -164,11 +165,15 @@ execute_tasks() {
 interactive_select() {
   if command -v fzf &>/dev/null; then
     printf "%s\n" "$@" | fzf --multi
+    return $?
   else
-    select opt in "$@"; do
-      echo "$opt"
-      break
-    done
+	select opt in "$@" "Skip"; do
+	  if [[ "$opt" == "Skip" ]]; then
+	    return 1
+	  fi
+	  [[ -n "$opt" ]] && echo "$opt"
+	  break
+	done
   fi
 }
 
@@ -177,25 +182,45 @@ interactive_mode() {
 
   # Stow selection
   local selected
-  selected=$(interactive_select "${BASE_STOW_PKGS[@]}")
-  [[ -n "$selected" ]] && register_task "stow_selected"
-
-  STOW_SELECTED=($selected)
+	if selected=$(interactive_select "${BASE_STOW_PKGS[@]}"); then
+	  if [[ -n "$selected" ]]; then
+	    STOW_SELECTED=($selected)
+	    register_task "stow_selected"
+	  else
+	    log "Skipping stow step"
+	  fi
+	else
+	  log "Skipped stow step"
+	fi
 
   # Brew
   if [[ "$OS" == "macos" ]]; then
     local brew_selected
-    brew_selected=$(interactive_select "${BREW_FILES[@]}")
-    BREW_SELECTED=($brew_selected)
-    [[ -n "$brew_selected" ]] && register_task "brew_selected"
+    if brew_selected=$(interactive_select "${BREW_FILES[@]}"); then
+	  if [[ -n "$brew_selected" ]]; then
+	    BREW_SELECTED=($brew_selected)
+	    register_task "brew_selected"
+	  else
+	    log "Skipping brew step"
+	  fi
+	else
+	  log "Skipped brew step"
+	fi
   fi
 
   # Arch
   if [[ "$OS" == "arch" ]]; then
     local arch_selected
-    arch_selected=$(interactive_select "${ARCH_PKG_FILES[@]}")
-    ARCH_SELECTED=($arch_selected)
-    [[ -n "$arch_selected" ]] && register_task "arch_selected"
+    if arch_selected=$(interactive_select "${ARCH_PKG_FILES[@]}"); then
+	    if [[ -n "$arch_selected" ]]; then
+		    ARCH_SELECTED=($arch_selected)
+		    register_task "arch_selected"
+	    else
+		    log "Skipping arch step"
+	    fi
+    else
+	    log "Skipped arch step"
+    fi
   fi
 
   read -rp "Install gitconfig? (y/N): " ans
@@ -258,7 +283,7 @@ main() {
     exit 0
   fi
 
-  if [[ ${ORIGINAL_ARGS[@]} -eq 0 ]]; then
+  if [[ ${#ORIGINAL_ARGS[@]} -eq 0 ]]; then
     INTERACTIVE=true
   fi
 
