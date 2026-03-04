@@ -52,4 +52,3 @@ description = "Show current git host icon"
 format = "from [$output]($style)"
 style = "bright_magenta"
 when = "git_check_if_inside"
-
