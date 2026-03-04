@@ -5,6 +5,12 @@
 # Keymap
 # --------------------------------------------------
 bindkey -v   # vim mode
+bindkey -M viins 'jj' vi-cmd-mode # ----------------
+bindkey -M viins 'jk' vi-cmd-mode # Exit vi insert mode
+bindkey -M viins 'kj' vi-cmd-mode # ----------------
+
+bindkey -M visual 'jk' deactivate-region # Exit vi visual mode
+bindkey -M visual 'kj' deactivate-region # ---------
 
 # --------------------------------------------------
 # fzf history (Ctrl + R) — safe binding

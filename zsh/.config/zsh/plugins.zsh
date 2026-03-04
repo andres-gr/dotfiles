@@ -21,7 +21,7 @@ fi
 zinit ice lucid
 
 # Do nothing, but remove zinit's zi alias -- conflicts with z.lua and zoxide
-zinit ice wait"0" atinit"unalias zi zini zpl zplg"
+zinit ice wait"0" atinit"unalias zi zini zpl zplg" silent
 zinit snippet /dev/null
 
 # ----------------------------------------
