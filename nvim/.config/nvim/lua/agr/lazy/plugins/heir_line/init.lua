@@ -125,6 +125,7 @@ H.config = function ()
       status.component.git_diff(),
       diagnostics,
       status.component.cmd_info(),
+      status.component.ai(),
       status.component.fill(),
       lib.component.lsp(),
       status.component.treesitter(),
