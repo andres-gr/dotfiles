@@ -12,3 +12,13 @@ ftm() {
     echo "No sessions found."
   fi
 }
+
+# tm [SESSION_NAME | FUZZY PATTERN] - delete tmux session
+# Running `tm` will let you fuzzy-find a session mame to delete
+# Passing an argument to `ftm` will delete that session if it exists
+ftmk() {
+  if [ $1 ]; then
+    tmux kill-session -t "$1"; return
+  fi
+  session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0) &&  tmux kill-session -t "$session" || echo "No session found to delete."
+}

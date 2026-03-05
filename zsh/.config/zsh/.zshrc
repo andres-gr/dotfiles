@@ -19,3 +19,10 @@ done
 
 # bun completions
 [ -s "/Users/andres/.bun/_bun" ] && source "/Users/andres/.bun/_bun"
+
+# --------------------------------------------------
+# Load zsh functions
+# --------------------------------------------------
+for file in "$ZDOTDIR"/functions/*.zsh; do
+  [[ -r "$file" ]] && source "$file"
+done

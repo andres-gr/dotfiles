@@ -17,3 +17,26 @@ fh() {
 
 # _fuzzy_edit and related helpers from configs (kept in functions; more advanced helpers are kept
 # in the repo under zsh/bin/ and referenced here as needed).
+
+# fuzzy find directory
+fcd() {
+  cd $(fd -t d -H\
+    -E .git\
+    -E node_modules\
+    -E .cache\
+    -E .npm\
+    -E .local\
+  | fzf)
+}
+
+# fuzzy grep via rg and open in nvim with line number
+fgr() {
+  local file
+  local line
+
+  read -r file line <<<"$(rg --no-heading --line-number $@ | fzf -0 -1 | awk -F: '{print $1, $2}')"
+
+  if [[ -n $file ]]; then
+    nvim $file +$line
+  fi
+}
