@@ -624,6 +624,20 @@ post_install_task() {
         log "  To switch preset: edit ~/.config/hypr/hyprlock/theme.conf"
       fi
     fi
+
+    # Patch system.update.sh: replace hardcoded 'kitty' with xdg-terminal-exec
+    # HyDE upstream hardcodes kitty in system.update.sh (checked March 2026).
+    # xdg-terminal-exec is already shipped by HyDE in ~/.local/lib/hyde/ and
+    # respects ~/.config/xdg-terminals.list, making this terminal-agnostic.
+    local sysupdate="$HOME/.local/lib/hyde/system.update.sh"
+    if [[ -f "$sysupdate" ]]; then
+      if grep -q 'kitty --title systemupdate' "$sysupdate"; then
+        sed -i 's|kitty --title systemupdate|xdg-terminal-exec --title=systemupdate|g' "$sysupdate"
+        log "Patched system.update.sh: kitty → xdg-terminal-exec"
+      else
+        log "system.update.sh: kitty reference not found — already patched or upstream changed"
+      fi
+    fi
   fi
 }
 
