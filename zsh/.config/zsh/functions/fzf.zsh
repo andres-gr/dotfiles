@@ -1,7 +1,7 @@
 # functions/fzf.zsh — fzf helpers & defaults (migrated & consolidated)
 
 # default fzf options (used by your fzf helpers)
-export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:--q --height 40% --layout=reverse --border}"
+# export FZF_DEFAULT_OPTS="${FZF_DEFAULT_OPTS:--q --height 40% --layout=reverse --border}"
 
 # your 'fo' function — open file(s) found with fzf
 fo() {
