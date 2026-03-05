@@ -76,6 +76,10 @@ HYDE_OWNED_ZSH=(
   ".config/zsh/.zshenv"                  # HyDE's $ZDOTDIR/.zshenv (sources conf.d)
 )
 
+# HyDE config.toml — seeded once on first install, never overwritten
+HYDE_CONFIG_TOML_SRC="$DOTFILES_DIR/arch-linux/.config/hyde/config.toml"
+HYDE_CONFIG_TOML_DEST="$HOME/.config/hyde/config.toml"
+
 ###############################################################################
 # Logging
 ###############################################################################
@@ -214,6 +218,37 @@ backup_hyde_zsh() {
     run cp -a "$src" "$dest_dir/"
     ok "  saved: $src"
   done
+}
+
+###############################################################################
+# HyDE config.toml seeding
+###############################################################################
+
+# hyde_seed_config
+#   Copies our config.toml into ~/.config/hyde/ ONLY when the file does not
+#   already exist there (mirrors HyDE's own "P = Populate/Preserved" flag).
+#   The user's live config.toml is never clobbered by subsequent installs.
+hyde_seed_config() {
+  ! $HYDE_DETECTED && return
+  [[ "$OS" != "arch" ]] && return
+
+  step "HyDE config.toml"
+
+  if [[ ! -f "$HYDE_CONFIG_TOML_SRC" ]]; then
+    warn "config.toml source not found: $HYDE_CONFIG_TOML_SRC — skipping"
+    return
+  fi
+
+  if [[ -f "$HYDE_CONFIG_TOML_DEST" ]]; then
+    log "config.toml already exists — skipping seed (edit directly to change)"
+    log "  $HYDE_CONFIG_TOML_DEST"
+    return
+  fi
+
+  log "Seeding config.toml → $HYDE_CONFIG_TOML_DEST"
+  run mkdir -p "$(dirname "$HYDE_CONFIG_TOML_DEST")"
+  run cp "$HYDE_CONFIG_TOML_SRC" "$HYDE_CONFIG_TOML_DEST"
+  ok "config.toml seeded"
 }
 
 ###############################################################################
@@ -576,6 +611,19 @@ post_install_task() {
       run "$HYDE_SHELL_BIN" reload 2>/dev/null \
         || warn "hyde-shell reload failed (non-fatal)"
     fi
+
+    # Remind about hyprlock preset if we just stowed arch-linux
+    if $HYDE_DETECTED; then
+      local arch_stowed=false
+      for pkg in "${STOW_SELECTED[@]:-}"; do
+        [[ "$pkg" == "arch-linux" ]] && arch_stowed=true && break
+      done
+      if $arch_stowed; then
+        log "Hyprlock preset 'neo' stowed → ~/.config/hypr/hyprlock/neo.conf"
+        log "  theme.conf already points to it — active on next lock."
+        log "  To switch preset: edit ~/.config/hypr/hyprlock/theme.conf"
+      fi
+    fi
   fi
 }
 
@@ -712,6 +760,7 @@ dry_run_summary() {
       case "$t" in
         install_gitconfig_task) printf "    • install gitconfig\n" ;;
         post_install_task)      printf "    • run post-install (TPM, HyDE reload)\n" ;;
+        hyde_seed_config)       printf "    • seed HyDE config.toml (preserve-if-absent)\n" ;;
       esac
     done
   fi
@@ -849,6 +898,11 @@ interactive_mode() {
 
   read -rp "  Run post-install tasks (TPM, HyDE reload)? (y/N): " ans
   [[ "${ans:-n}" =~ ^[Yy]$ ]] && register_task "post_install_task"
+
+  # HyDE config.toml seed (arch + HyDE only, automatic — no prompt needed)
+  if [[ "$OS" == "arch" ]] && $HYDE_DETECTED; then
+    register_task "hyde_seed_config"
+  fi
 }
 
 ###############################################################################
@@ -950,6 +1004,10 @@ default_base() {
   fi
 
   stow_selected
+
+  if [[ "$OS" == "arch" ]] && $HYDE_DETECTED; then
+    register_task "hyde_seed_config"
+  fi
 }
 
 ###############################################################################
