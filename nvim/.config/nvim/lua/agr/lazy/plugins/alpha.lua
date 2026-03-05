@@ -19,7 +19,7 @@ A.config = function ()
   end
 
   -- Terminal header w/lolcat
-  dash.section.terminal.command = 'cat | lolcat ' .. os.getenv('HOME') .. '/devel/dotfiles/assets/banner.cat'
+  dash.section.terminal.command = 'cat | lolcat ' .. os.getenv('HOME') .. '/.local/assets/banner.cat'
   dash.section.terminal.height = 20
   dash.section.terminal.width = 78
   dash.section.terminal.opts = {
