@@ -142,3 +142,4 @@ if not color_status_ok then
   return
 end
 
+require 'nvim-web-devicons'.refresh()

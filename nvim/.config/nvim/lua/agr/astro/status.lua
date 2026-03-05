@@ -115,11 +115,18 @@ function status.hl.mode_bg() return status.env.modes[vim.fn.mode()][2] end
 function status.hl.filetype_color(self)
   local devicons_avail, devicons = pcall(require, 'nvim-web-devicons')
   if not devicons_avail then return {} end
-  local _, color = devicons.get_icon_color(
-    vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ':t'),
-    nil,
-    { default = true }
-  )
+
+  local filename = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(self and self.bufnr or 0), ':t')
+  local extension = vim.fn.fnamemodify(filename, ':e')
+
+  -- Use pcall here to catch the internal "get_highlight_foreground" crash
+  local status_ok, _, color = pcall(devicons.get_icon_color, filename, extension, { default = true })
+
+  -- If the call failed or color is nil, return a safe default
+  if not status_ok or not color then
+    return { fg = "NONE" }
+  end
+
   return { fg = color }
 end
 
