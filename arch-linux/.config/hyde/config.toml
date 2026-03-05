@@ -1,0 +1,33 @@
+# config.toml — personal HyDE preferences
+# This file is seeded by neo-dots install.sh only when no config.toml exists yet.
+# After first install, edit this file directly — it will not be overwritten.
+#
+# Full schema reference:
+#   ~/.local/share/hyde/schema/config.toml
+#   https://hydeproject.pages.dev/en/configuring/
+
+"$schema" = "https://raw.githubusercontent.com/HyDE-Project/HyDE/refs/heads/master/Configs/.local/share/hyde/schema/config.toml.json"
+
+# ── Wallpaper ──────────────────────────────────────────────────────────────────
+[wallpaper]
+backend = "swww"
+
+[wallpaper.swww]
+framerate = 60
+duration = 1
+transition_next = "grow"
+transition_prev = "outer"
+transition_default = "grow"
+
+# ── Rofi ──────────────────────────────────────────────────────────────────────
+[rofi]
+scale = 10
+
+[rofi.launch]
+scale = 5
+drun_style = "style_3"
+window_style = "style_3"
+
+# ── Wlogout ───────────────────────────────────────────────────────────────────
+[wlogout]
+style = 2

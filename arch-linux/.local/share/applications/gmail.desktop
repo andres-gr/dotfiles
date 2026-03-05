@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Gmail
+GenericName=Gmail Email Client
+Icon=gmail
+Exec=xdg-open https://mail.google.com
+Terminal=false
+Categories=Network;Email;
+MimeType=message/rfc822;x-scheme-handler/mailto;application/x-xpinstall;application/x-extension-ics;text/calendar;text/vcard;text/x-vcard;x-scheme-handler/webcal;x-scheme-handler/webcals;x-scheme-handler/mid;

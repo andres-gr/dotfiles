@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Lock
+Icon=terminal
+Exec=/usr/bin/env bash -c 'pidof hyprlock || hyprlock'
+Terminal=false

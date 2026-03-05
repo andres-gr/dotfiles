@@ -1,0 +1,6 @@
+[Desktop Entry]
+Type=Application
+Name=Sleep
+Icon=terminal
+Exec=/usr/bin/env bash -c '$(loginctl lock-session); sleep 1; systemctl suspend'
+Terminal=false
