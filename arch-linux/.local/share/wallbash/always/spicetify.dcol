@@ -1,0 +1,22 @@
+${cacheDir}/wallbash/spicetify.ini|${WALLBASH_SCRIPTS}/spicetify.sh
+
+[Wallbash]
+text               = <wallbash_txt1>
+subtext            = <wallbash_1xa7>
+extratext          = <wallbash_2xa7>
+main               = <wallbash_pry1>
+sidebar            = <wallbash_pry1>
+player             = <wallbash_pry1>
+sec-player         = <wallbash_1xa3>
+card               = <wallbash_pry1>
+sec-card           = <wallbash_1xa3>
+shadow             = <wallbash_pry2>
+selected-row       = <wallbash_1xa7>
+button             = <wallbash_txt1>
+button-active      = <wallbash_3xa8>
+button-disabled    = <wallbash_1xa5>
+button-knob        = <wallbash_2xa8>
+tab-active         = <wallbash_2xa8>
+notification       = <wallbash_2xa8>
+notification-error = <wallbash_4xa8>
+misc               = <wallbash_3xa8>
