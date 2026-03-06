@@ -34,6 +34,14 @@ browser   = "zen-browser-bin"
 terminal  = "ghostty"
 explorer  = "dolphin"
 
+# ── Weather ──────────────────────────────────────────────────────────────────
+[weather]
+location         = "Monterrey"
+temperature_unit = "c"
+time_format      = "12h"
+show_location    = true
+forecast_days    = 3
+
 # ── Wlogout ───────────────────────────────────────────────────────────────────
 [wlogout]
 style = 2

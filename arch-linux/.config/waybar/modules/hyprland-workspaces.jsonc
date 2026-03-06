@@ -1,0 +1,15 @@
+// hyprland-workspaces.jsonc — user override
+// all-outputs: false keeps each monitor showing only its own workspaces
+// (dual VG27 setup: workspaces 1-5 on right monitor, 6-10 on left monitor).
+// disable-scroll: true prevents accidental workspace switches on scroll.
+// Overrides ~/.local/share/waybar/modules/hyprland-workspaces.jsonc (HyDE upstream default).
+{
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "rotate": "${r_deg}",
+        "all-outputs": false,
+        "active-only": false,
+        "on-click": "activate",
+        "persistent-workspaces": {}
+    }
+}

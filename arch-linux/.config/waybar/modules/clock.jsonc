@@ -1,0 +1,29 @@
+// clock.jsonc — user override
+// Adds day/date to the bar format and uses Dracula palette for calendar highlights.
+// Overrides ~/.local/share/waybar/modules/clock.jsonc (HyDE upstream default).
+{
+    "clock": {
+        "format": "{:%I:%M %p 󰃭 %a %b %d}",
+        "rotate": "${r_deg}",
+        "format-alt": "{:%I:%M %p 󰃭 %A %d·%m·%Y}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "mode": "month",
+            "mode-mon-col": 3,
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months":   "<span color='#f8f8f2'><b>{}</b></span>",
+                "weekdays": "<span color='#f1fa8c'><b>{}</b></span>",
+                "today":    "<span color='#ff92df'><b>{}</b></span>"
+            }
+        },
+        "actions": {
+            "on-click-right":    "mode",
+            "on-click-forward":  "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up":      "shift_up",
+            "on-scroll-down":    "shift_down"
+        }
+    }
+}
