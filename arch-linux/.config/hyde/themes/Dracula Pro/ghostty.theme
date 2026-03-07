@@ -1,4 +1,4 @@
-$HOME/.config/ghostty/themes/Dracula Pro
+$HOME/.config/ghostty/themes/Dracula-Pro
 
 palette = 0=#22212C
 palette = 1=#FF9580
@@ -18,7 +18,7 @@ palette = 14=#99FFEE
 palette = 15=#FFFFFF
 background = #22212C
 foreground = #F8F8F2
-cursor-color = #7970A9
-cursor-text = #F8F8F2
+# cursor-color = #7970A9
+# cursor-text = #F8F8F2
 selection-background = #454158
 selection-foreground = #F8F8F2
