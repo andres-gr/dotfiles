@@ -1,0 +1,52 @@
+$HOME/.config/hypr/themes/theme.conf|> $HOME/.config/hypr/themes/colors.conf
+
+exec = gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle-dracula'
+exec = gsettings set org.gnome.desktop.interface gtk-theme 'Dracula Pro'
+exec = gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+
+exec = hyprctl setcursor Dracula-cursors 25
+exec = gsettings set org.gnome.desktop.interface cursor-theme 'Dracula-cursors'
+exec = gsettings set org.gnome.desktop.interface cursor-size 25
+
+general {
+    gaps_in = 12
+    gaps_out = 18
+    border_size = 2
+    col.active_border = rgb(454158) rgb(9580ff) 90deg
+    col.inactive_border = rgba(454158aa)
+    layout = dwindle
+    resize_on_border = true
+}
+
+group {
+    col.border_active = rgba(80ffeaff) rgba(8aff80ff) 45deg
+    col.border_inactive = rgba(454158cc) rgba(22212ccc) 45deg
+    col.border_locked_active = rgba(80ffeaff) rgba(8aff80ff) 45deg
+    col.border_locked_inactive = rgba(454158cc) rgba(22212ccc) 45deg
+}
+
+decoration {
+    rounding = 10
+
+    blur {
+        enabled = yes
+        size = 6
+        passes = 3
+        new_optimizations = on
+        ignore_opacity = on
+        xray = false
+    }
+
+    shadow {
+        enabled = true
+        scale = 0.97
+        ignore_window = true
+        offset = 1 2
+        range = 60
+        render_power = 3
+        color = rgba(1B1A2366)
+        color_inactive = 0x00000099
+    }
+}
+
+blurls = waybar

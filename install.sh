@@ -625,6 +625,129 @@ post_install_task() {
       fi
     fi
 
+    # Build Dracula Pro GTK theme by patching the standard Dracula GTK theme CSS.
+    # Clones dracula/gtk to a staging area, applies perl literal-string substitution
+    # of every standard Dracula color to its Dracula Pro equivalent, then copies
+    # the result to ~/.themes/Dracula Pro/. The git working tree is reset on each
+    # re-run so the substitutions are always applied cleanly from upstream.
+    # Requires: git, perl (always present on Arch).
+    step "Building Dracula Pro GTK theme"
+    local gtk_src_dir="$HOME/.local/share/neo-dots/dracula-gtk-src"
+    local gtk_stage
+    gtk_stage="$(mktemp -d)"
+    local gtk_dest="$HOME/.themes/Dracula Pro"
+
+    if [[ ! -d "$gtk_src_dir/.git" ]]; then
+      log "Cloning Dracula GTK theme source"
+      run git clone --depth=1 https://github.com/dracula/gtk "$gtk_src_dir"
+    else
+      log "Dracula GTK source already present — resetting to upstream"
+      run git -C "$gtk_src_dir" fetch --depth=1 origin
+      run git -C "$gtk_src_dir" reset --hard origin/HEAD
+    fi
+
+    if ! $DRY_RUN; then
+      # Color substitution map: standard Dracula → Dracula Pro
+      # Uses perl \Q...\E for literal-string replacement — no regex escaping
+      # issues with parens, dots, or spaces in rgba() values. Ordered so
+      # longer/more-specific patterns (rgba, mixed-case) come before shorter
+      # ones that could accidentally match a substring.
+      local -a gtk_subs=(
+        # rgba forms — must come before bare hex to avoid digit collisions
+        "rgba(189, 147, 249, 0.5)|rgba(149, 128, 255, 0.5)"
+        "rgba(25, 26, 34, 0.9)|rgba(27, 26, 35, 0.9)"
+        # backgrounds
+        "#282a36|#22212c"
+        "#282A36|#22212C"
+        "#1e1f29|#1b1a23"
+        "#1E1F29|#1B1A23"
+        "#191a22|#1b1a23"
+        "#191A22|#1B1A23"
+        # selection / current line
+        "#44475a|#454158"
+        "#44475A|#454158"
+        # comment / slider
+        "#6272a4|#7970a9"
+        "#6272A4|#7970A9"
+        "#7b7bbd|#7970a9"
+        "#7B7BBD|#7970A9"
+        # purple
+        "#bd93f9|#9580ff"
+        "#BD93F9|#9580FF"
+        # blue (links/progress) → Pro purple (closest warm accent)
+        "#13b1d5|#9580ff"
+        "#13B1D5|#9580FF"
+        # GTK cyan (#72BFD0) → Pro cyan
+        "#72bfd0|#80ffea"
+        "#72BFD0|#80FFEA"
+        # pink
+        "#ff79c6|#ff80bf"
+        "#FF79C6|#FF80BF"
+        # red
+        "#ff5555|#ff9580"
+        "#FF5555|#FF9580"
+        # orange
+        "#ffb86c|#ffca80"
+        "#FFB86C|#FFCA80"
+        # yellow
+        "#f1fa8c|#ffff80"
+        "#F1FA8C|#FFFF80"
+        # green (both lime variants present in upstream source)
+        "#50fa7b|#8aff80"
+        "#50FA7B|#8AFF80"
+        "#50fa7a|#8aff80"
+        "#50FA7A|#8AFF80"
+        # cyan (standard Dracula #8be9fd)
+        "#8be9fd|#80ffea"
+        "#8BE9FD|#80FFEA"
+      )
+
+      # Build perl substitution script — \Q...\E treats the pattern as a
+      # literal string, so parens, dots, pipes etc. need no manual escaping.
+      local perl_script=""
+      for pair in "${gtk_subs[@]}"; do
+        local from="${pair%%|*}" to="${pair##*|}"
+        perl_script+="s|\Q${from}\E|${to}|g;"
+      done
+
+      log "Applying Dracula Pro color substitutions (perl literal-string)"
+      # Patch all CSS and SCSS files in-place
+      find "$gtk_src_dir" -type f \( -name '*.css' -o -name '*.scss' \) \
+        -not -path '*/.git/*' \
+        -exec perl -p -i -e "$perl_script" {} \;
+
+      # Install: copy patched theme to ~/.themes/Dracula Pro
+      log "Installing to $gtk_dest"
+      mkdir -p "$gtk_dest"
+      # Copy the GTK directories that apps actually use
+      for gtk_dir in gtk-3.0 gtk-4.0 gtk-3.20; do
+        [[ -d "$gtk_src_dir/$gtk_dir" ]] && \
+          cp -r "$gtk_src_dir/$gtk_dir" "$gtk_dest/"
+      done
+      # index.theme is required for GTK to recognise the theme
+      cat > "$gtk_dest/index.theme" <<'THEME_EOF'
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=Dracula Pro
+Comment=Dracula Pro GTK theme — patched from dracula/gtk
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=Dracula Pro
+MetacityTheme=Dracula Pro
+IconTheme=Tela-circle-dracula
+CursorTheme=Dracula-cursors
+ButtonLayout=menu:minimize,maximize,close
+THEME_EOF
+      ok "Dracula Pro GTK theme installed → $gtk_dest"
+
+      # Apply the theme immediately if in a live session
+      if [[ -n "${WAYLAND_DISPLAY:-}${DISPLAY:-}" ]]; then
+        run gsettings set org.gnome.desktop.interface gtk-theme 'Dracula Pro' 2>/dev/null || true
+        log "Applied gtk-theme: Dracula Pro"
+      fi
+    fi
+
     # Patch system.update.sh: replace hardcoded 'kitty' with xdg-terminal-exec
     # HyDE upstream hardcodes kitty in system.update.sh (checked March 2026).
     # xdg-terminal-exec is already shipped by HyDE in ~/.local/lib/hyde/ and
