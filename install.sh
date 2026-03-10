@@ -748,6 +748,142 @@ THEME_EOF
       fi
     fi
 
+    # Configure SDDM: patch theme.conf, fix Input.qml for 1440p, and set the
+    # primary monitor output dynamically by matching the monitor EDID model string.
+    # The EDID 0xFC descriptor block contains the monitor model name as plain ASCII,
+    # allowing us to identify the correct connector without hardcoding (e.g.) DP-1.
+    # This survives the monitor being moved to a different port.
+    local sddm_theme_dir="/usr/share/sddm/themes/Candy"
+    local sddm_conf="/etc/sddm.conf.d/the_hyde_project.conf"
+
+    if [[ -d "$sddm_theme_dir" ]]; then
+      step "Configuring SDDM Candy theme for dual 1440p setup"
+
+      # --- 1. Patch theme.conf ---
+      local theme_conf="${sddm_theme_dir}/theme.conf"
+      if [[ -f "$theme_conf" ]]; then
+        run sudo sed -i 's|^ScreenWidth=.*|ScreenWidth="2560"|'     "$theme_conf"
+        run sudo sed -i 's|^ScreenHeight=.*|ScreenHeight="1440"|'   "$theme_conf"
+        run sudo sed -i 's|^FormPosition=.*|FormPosition="right"|'  "$theme_conf"
+        run sudo sed -i 's|^AccentColor=.*|AccentColor="#9580FF"|'         "$theme_conf"
+        run sudo sed -i 's|^BackgroundColor=.*|BackgroundColor="#22212C"|' "$theme_conf"
+        run sudo sed -i 's|^HeaderText=.*|HeaderText=""|'           "$theme_conf"
+        run sudo sed -i 's|^Font=.*|Font="JetBrains Mono"|'         "$theme_conf"
+        log "SDDM theme.conf patched"
+      else
+        warn "SDDM theme.conf not found at ${theme_conf} — skipping"
+      fi
+
+      # --- 2. Patch Input.qml: fix avatar icon width for 1440p ---
+      # Stock Candy has: width: selectUser.height * 0.8
+      # At 1440p this makes the avatar icon too small; drop the multiplier.
+      local input_qml="${sddm_theme_dir}/Components/Input.qml"
+      if [[ -f "$input_qml" ]]; then
+        if grep -qF 'selectUser.height * 0.8' "$input_qml"; then
+          run sudo sed -i 's/selectUser\.height \* 0\.8/selectUser.height/g' "$input_qml"
+          log "SDDM Input.qml patched: avatar icon width fixed for 1440p"
+        else
+          log "SDDM Input.qml: already patched or upstream changed — skipping"
+        fi
+      else
+        warn "SDDM Input.qml not found at ${input_qml} — skipping"
+      fi
+
+      # --- 3. Install boot-time EDID detection service ---
+      # A systemd oneshot service runs before SDDM on every boot. It walks
+      # /sys/class/drm to find the connector hosting the main monitor by its
+      # EDID 0xFC model name, then rewrites OutputName in the_hyde_project.conf.
+      # Moving the cable to a different DP port is handled automatically on the
+      # next boot — no manual intervention required.
+      local detect_script="/usr/local/bin/sddm-detect-output"
+      local detect_unit="/etc/systemd/system/sddm-detect-output.service"
+
+      log "Installing SDDM output-detection service"
+
+      sudo tee "$detect_script" > /dev/null <<'DETECT_SCRIPT'
+#!/usr/bin/env python3
+# sddm-detect-output: run by systemd before SDDM on every boot.
+# Finds the DRM connector carrying the target monitor (by EDID model name)
+# and writes OutputName into /etc/sddm.conf.d/the_hyde_project.conf.
+import glob, os, re, sys
+
+TARGET_MODEL = "VG27AQ3A"
+SDDM_CONF    = "/etc/sddm.conf.d/the_hyde_project.conf"
+
+def edid_monitor_name(path):
+    try:
+        data = open(path, "rb").read()
+        if len(data) < 128:
+            return None
+        for i in range(4):
+            base = 54 + i * 18
+            block = data[base:base+18]
+            if block[0:3] == b"\x00\x00\x00" and block[3] == 0xFC:
+                return block[5:18].decode("latin-1").rstrip().rstrip("\n")
+    except Exception:
+        pass
+    return None
+
+def find_connector():
+    for edid_path in sorted(glob.glob("/sys/class/drm/card*-*/edid")):
+        if not os.path.getsize(edid_path):
+            continue
+        name = edid_monitor_name(edid_path)
+        if name and TARGET_MODEL in name:
+            connector_dir = os.path.dirname(edid_path)
+            raw = os.path.basename(connector_dir)   # e.g. card1-DP-2
+            return re.sub(r"^card\d+-", "", raw)    # e.g. DP-2
+    return None
+
+def update_conf(connector):
+    if not os.path.exists(SDDM_CONF):
+        print(f"[sddm-detect-output] conf not found: {SDDM_CONF}", file=sys.stderr)
+        sys.exit(1)
+    text = open(SDDM_CONF).read()
+    if "[Wayland]" not in text:
+        text += f"\n[Wayland]\nEnableHiDPI=true\nOutputName={connector}\n"
+    elif re.search(r"^OutputName=", text, re.MULTILINE):
+        text = re.sub(r"^OutputName=.*", f"OutputName={connector}", text, flags=re.MULTILINE)
+    else:
+        text = re.sub(r"(\[Wayland\])", f"\\1\nOutputName={connector}", text)
+    open(SDDM_CONF, "w").write(text)
+    print(f"[sddm-detect-output] OutputName={connector} written to {SDDM_CONF}")
+
+connector = find_connector()
+if connector:
+    update_conf(connector)
+else:
+    print(f"[sddm-detect-output] WARNING: {TARGET_MODEL} not found via EDID — OutputName unchanged",
+          file=sys.stderr)
+    sys.exit(1)
+DETECT_SCRIPT
+
+      run sudo chmod +x "$detect_script"
+
+      sudo tee "$detect_unit" > /dev/null <<'DETECT_UNIT'
+[Unit]
+Description=Detect SDDM primary output from monitor EDID
+After=systemd-udev-settle.service
+Before=sddm.service
+RequiresMountsFor=/etc/sddm.conf.d
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/sddm-detect-output
+RemainAfterExit=no
+
+[Install]
+WantedBy=sddm.service
+DETECT_UNIT
+
+      run sudo systemctl daemon-reload
+      run sudo systemctl enable sddm-detect-output.service
+      ok "SDDM output-detection service installed and enabled"
+
+    else
+      log "SDDM Candy theme not installed yet — skipping (re-run after HyDE install)"
+    fi
+
     # Patch system.update.sh: replace hardcoded 'kitty' with xdg-terminal-exec
     # HyDE upstream hardcodes kitty in system.update.sh (checked March 2026).
     # xdg-terminal-exec is already shipped by HyDE in ~/.local/lib/hyde/ and
