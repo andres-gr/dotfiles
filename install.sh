@@ -64,7 +64,7 @@ BREW_FILES=(
   Brewfile.windowmanager
 )
 
-ARCH_PKG_FILES=(core.txt aur.txt)
+ARCH_PKG_FILES=(core.txt aur.txt work.txt)
 
 # HyDE-owned paths (relative to $HOME) that stow must not silently clobber.
 # We back these up before stow touches anything, then verify they survive.

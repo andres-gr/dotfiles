@@ -1,1 +1,14 @@
+bibata-rainbow-cursor-theme
+cavasik
+grimblast-git
+nwg-dock-hyprland-bin
+pokemon-colorscripts-git
+slack-desktop
+spicetify-cli
+spicetify-marketplace-bin
+spotify
+visual-studio-code-bin
+xwaylandvideobridge-git
 yay-debug
+zen-browser-bin
+zoom
