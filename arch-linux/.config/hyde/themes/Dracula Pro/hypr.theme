@@ -4,9 +4,9 @@ exec = gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle-dracula
 exec = gsettings set org.gnome.desktop.interface gtk-theme 'Dracula Pro'
 exec = gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
 
-exec = hyprctl setcursor Dracula-cursors 25
-exec = gsettings set org.gnome.desktop.interface cursor-theme 'Dracula-cursors'
-exec = gsettings set org.gnome.desktop.interface cursor-size 25
+exec = hyprctl setcursor Bibata-Rainbow-Modern 20
+exec = gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Rainbow-Modern'
+exec = gsettings set org.gnome.desktop.interface cursor-size 20
 
 general {
     gaps_in = 12
