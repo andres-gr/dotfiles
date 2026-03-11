@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Fix Slack screen sharing on Wayland.
+# Slack ships a patched Chromium that has WebRTCPipeWireCapturer disabled at
+# the asar bundle level. This swaps the feature flag string so Chromium
+# re-enables it, restoring screen/window sharing via PipeWire.
+# A .backup of the original asar is kept by sed for easy rollback.
+sudo sed -i'.backup' \
+  -e 's/,"WebRTCPipeWireCapturer"/,"LebRTCPipeWireCapturer"/' \
+  /usr/lib/slack/resources/app.asar
