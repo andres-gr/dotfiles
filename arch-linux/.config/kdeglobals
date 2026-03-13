@@ -1,2 +1,14 @@
+[Colors:View]
+BackgroundNormal=#2A2A3AFF
+
 [General]
 TerminalApplication=ghostty
+
+[Icons]
+Theme=Tela-circle-dracula
+
+[KDE]
+widgetStyle=kvantum
+
+[UiSettings]
+ColorScheme=colors
