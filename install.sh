@@ -66,6 +66,12 @@ BREW_FILES=(
 
 ARCH_PKG_FILES=(core.txt aur.txt work.txt)
 
+# Packages that must be removed before installing ours (conflicts)
+# Format: "our-pkg:conflicting-installed-pkg"
+ARCH_CONFLICTS=(
+  "visual-studio-code-bin:code"
+)
+
 # HyDE-owned paths (relative to $HOME) that stow must not silently clobber.
 # We back these up before stow touches anything, then verify they survive.
 HYDE_OWNED_ZSH=(
@@ -172,9 +178,9 @@ detect_hyde() {
 
   if $HYDE_DETECTED; then
     ok "HyDE install detected"
-    [[ -n "$HYDE_SHELL_BIN" ]] && log "  hyde-shell → $HYDE_SHELL_BIN"
-    [[ -n "$HYDE_CTL_BIN"   ]] && log "  hydectl    → $HYDE_CTL_BIN"
-    [[ -z "$HYDE_SHELL_BIN" ]] && warn "hyde-shell not found in PATH — CLI features may be limited"
+    if [[ -n "$HYDE_SHELL_BIN" ]]; then log "  hyde-shell → $HYDE_SHELL_BIN"; fi
+    if [[ -n "$HYDE_CTL_BIN"   ]]; then log "  hydectl    → $HYDE_CTL_BIN";   fi
+    if [[ -z "$HYDE_SHELL_BIN" ]]; then warn "hyde-shell not found in PATH — CLI features may be limited"; fi
   else
     log "HyDE not detected — plain dotfiles mode"
   fi
@@ -201,6 +207,7 @@ backup_path() {
   local bkp="${target}.bak.${BKP_TS}"
   log "  backup: $target → $bkp"
   run cp -a "$target" "$bkp"
+  run rm -rf "$target"
 }
 
 # backup_hyde_zsh
@@ -272,10 +279,13 @@ stow_pkg() {
            -d "$DOTFILES_DIR" -t "$HOME" "$pkg" 2>&1
     )" || true
 
-    # stow prints: "  * existing target is neither a link nor a directory: .some/path"
+    # stow prints: "  * cannot stow ... over existing target PATH since neither..."
     while IFS= read -r line; do
-      [[ "$line" == *"existing target is"* ]] || continue
-      local rel="${line#*: }"
+      [[ "$line" == *"since neither a link nor a directory"* ]] || continue
+      # extract the path between "existing target " and " since"
+      local rel
+      rel="${line#*existing target }"
+      rel="${rel% since*}"
       backup_path "$HOME/$rel"
     done <<< "$sim_out"
   fi
@@ -544,6 +554,23 @@ arch_install() {
     warn "No packages in $file — skipping"
     return
   fi
+
+  # Remove known conflicting packages before installing
+  for entry in "${ARCH_CONFLICTS[@]:-}"; do
+    local our_pkg="${entry%%:*}"
+    local conflict_pkg="${entry##*:}"
+    # Only act if our package is in this batch and the conflict is installed
+    if printf '%s\n' "${pkgs[@]}" | grep -qx "$our_pkg"; then
+      local installed_name
+      installed_name="$(pacman -Qq "$conflict_pkg" 2>/dev/null || true)"
+      if [[ -n "$installed_name" && "$installed_name" != "$our_pkg" ]]; then
+        log "Removing conflicting package: $conflict_pkg (conflicts with $our_pkg)"
+        run sudo pacman -Rns --noconfirm "$conflict_pkg" || \
+          run yay -Rns --noconfirm "$conflict_pkg" || \
+          warn "Could not remove $conflict_pkg — you may need to remove it manually"
+      fi
+    fi
+  done
 
   log "Installing ${#pkgs[@]} packages from $file"
   run yay -S --needed --noconfirm "${pkgs[@]}"
@@ -996,7 +1023,7 @@ dry_run_summary() {
   fi
 
   # Stow
-  if (( ${#STOW_SELECTED[@]:-0} > 0 )); then
+  if (( ${#STOW_SELECTED[@]} > 0 )); then
     printf "\n  Stow packages:\n"
     for pkg in "${STOW_SELECTED[@]}"; do
       printf "    - %s\n" "$pkg"
@@ -1004,7 +1031,7 @@ dry_run_summary() {
   fi
 
   # Brew
-  if (( ${#BREW_SELECTED[@]:-0} > 0 )); then
+  if (( ${#BREW_SELECTED[@]} > 0 )); then
     printf "\n  Brew bundles:\n"
     for f in "${BREW_SELECTED[@]}"; do
       printf "    - %s\n" "$f"
@@ -1012,7 +1039,7 @@ dry_run_summary() {
   fi
 
   # Arch
-  if (( ${#ARCH_SELECTED[@]:-0} > 0 )); then
+  if (( ${#ARCH_SELECTED[@]} > 0 )); then
     printf "\n  Arch package lists:\n"
     for f in "${ARCH_SELECTED[@]}"; do
       printf "    - %s\n" "$f"
