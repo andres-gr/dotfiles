@@ -374,6 +374,39 @@ THEME_EOF
       log "system.update.sh: kitty reference not found — already patched or upstream changed"
     fi
   fi
+
+  # Install arch-patches systemd services (idempotent)
+  _install_arch_patch_services
+}
+
+# Helper: install arch-patches systemd services
+# Copies service files from dotfiles/arch-patches/systemctl/ to
+# /etc/systemd/system/ and enables them if not already enabled.
+_install_arch_patch_services() {
+  local src_dir="$DOTFILES_DIR/arch-patches/systemctl"
+  [[ -d "$src_dir" ]] || return 0
+
+  local -a services
+  mapfile -t services < <(find "$src_dir" -maxdepth 1 -name '*.service' -printf '%f\n')
+
+  if (( ${#services[@]} == 0 )); then
+    log "arch-patches/systemctl: no service files found — skipping"
+    return 0
+  fi
+
+  step "Installing arch-patches systemd services"
+  for svc in "${services[@]}"; do
+    local dest="/etc/systemd/system/$svc"
+    if systemctl is-enabled "$svc" &>/dev/null; then
+      log "  $svc: already enabled — skipping"
+      continue
+    fi
+    log "  Installing $svc → $dest"
+    run sudo cp "$src_dir/$svc" "$dest"
+    run sudo systemctl daemon-reload
+    run sudo systemctl enable "$svc"
+    ok "  $svc enabled"
+  done
 }
 
 # Helper: install the SDDM EDID output detection systemd service
