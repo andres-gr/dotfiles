@@ -44,3 +44,23 @@ bindkey '^[[1;3D' backward-word
 # Clear screen (Ctrl + O)
 # --------------------------------------------------
 bindkey '^O' clear-screen
+
+# --------------------------------------------------
+# Ctrl+[: accept autosuggestion if showing, else complete
+# --------------------------------------------------
+# Registered via precmd so it runs after zsh-autosuggestions deferred load.
+# $POSTDISPLAY holds the ghost text — non-empty means a suggestion is visible.
+_neo_bind_autosuggest_accept() {
+  _neo_accept_suggestion() {
+    if [[ -n "$POSTDISPLAY" ]]; then
+      zle autosuggest-accept
+    else
+      zle expand-or-complete
+    fi
+  }
+  zle -N _neo_accept_suggestion
+  bindkey '^[' _neo_accept_suggestion
+  # Remove ourselves — only needs to run once
+  precmd_functions=( ${precmd_functions:#_neo_bind_autosuggest_accept} )
+}
+precmd_functions+=(_neo_bind_autosuggest_accept)

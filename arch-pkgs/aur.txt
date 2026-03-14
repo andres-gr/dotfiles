@@ -1,7 +1,7 @@
 bibata-rainbow-cursor-theme
 cavasik
 grimblast-git
-pokemon-colorscripts-git
+pokego-bin
 slack-desktop
 spicetify-cli
 spicetify-marketplace-bin

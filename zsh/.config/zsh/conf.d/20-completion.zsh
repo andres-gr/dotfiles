@@ -1,5 +1,9 @@
 # 20-completion.zsh
 # Completion system (fast + XDG compliant)
+#
+# On HyDE, compinit is owned by HyDE's _load_compinit (terminal.zsh) which
+# runs before .zshrc. We skip it here to avoid double-init overhead.
+# On macOS / non-HyDE, we own compinit ourselves.
 
 # --------------------------------------------------
 # XDG cache location
@@ -11,19 +15,18 @@ mkdir -p "$ZSH_CACHE_DIR"
 # --------------------------------------------------
 # Completion system
 # --------------------------------------------------
-autoload -Uz compinit
-
-# Use cached dump file
-_compdump="$ZSH_CACHE_DIR/.zcompdump"
-
-# Fast init:
-# -C skips security checks after first run
-# -d sets dump location
-if [[ -f "$_compdump" ]]; then
-  compinit -C -d "$_compdump"
-else
-  compinit -d "$_compdump"
+# Skip if HyDE already ran _load_compinit (detected via its conf.d/hyde dir)
+_neo_hyde_zsh="${ZDOTDIR:-$HOME/.config/zsh}/conf.d/hyde"
+if [[ ! -d "$_neo_hyde_zsh" ]]; then
+  autoload -Uz compinit
+  _compdump="$ZSH_CACHE_DIR/.zcompdump"
+  if [[ -f "$_compdump" ]]; then
+    compinit -C -d "$_compdump"
+  else
+    compinit -d "$_compdump"
+  fi
 fi
+unset _neo_hyde_zsh
 
 # --------------------------------------------------
 # Completion styles

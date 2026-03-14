@@ -1,4 +1,7 @@
-# plugins.zsh — minimal, HyDE-inspired + custom highlighting
+# plugins.zsh — minimal, deferred plugins via zinit
+# Guard: set by plugin.zsh on HyDE; checked by .zshrc on macOS/non-HyDE
+# to prevent double-loading.
+typeset -g _NEO_PLUGINS_LOADED=1
 
 # --------------------------------------------------
 # Locate Zinit
@@ -8,38 +11,49 @@
 typeset -gA ZINIT
 ZINIT[ZCOMPDUMP_PATH]="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"
 
-if [[ -f "/opt/homebrew/opt/zinit/zinit.zsh" ]]; then
-  source "/opt/homebrew/opt/zinit/zinit.zsh"
-elif [[ -f "/usr/local/opt/zinit/zinit.zsh" ]]; then
-  source "/usr/local/opt/zinit/zinit.zsh"
-elif [[ -f "/usr/share/zinit/zinit.zsh" ]]; then
-  source "/usr/share/zinit/zinit.zsh"
-else
-  return
-fi
+# Locate zinit — check user install first, then system, then Homebrew
+_zinit_paths=(
+  "${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git/zinit.zsh"  # user install (default)
+  "/usr/share/zinit/zinit.zsh"                                       # system (Arch pkg)
+  "/opt/homebrew/opt/zinit/zinit.zsh"                                # Homebrew Apple Silicon
+  "/usr/local/opt/zinit/zinit.zsh"                                   # Homebrew Intel
+)
+for _zinit_path in "${_zinit_paths[@]}"; do
+  [[ -f "$_zinit_path" ]] && { source "$_zinit_path"; break; }
+done
+unset _zinit_path _zinit_paths
 
-zinit ice lucid
+# Bail if zinit didn't load
+(( $+functions[zinit] )) || return
 
 # Do nothing, but remove zinit's zi alias -- conflicts with z.lua and zoxide
-zinit ice wait"0" atinit"unalias zi zini zpl zplg" silent
+zinit ice wait"0" lucid atinit"unalias zi zini zpl zplg" silent
 zinit snippet /dev/null
 
 # ----------------------------------------
-# Autosuggestions (load first)
+# sudo — double-ESC to prepend sudo to current/previous command
+# Only unique feature from OMZ we want to keep
 # ----------------------------------------
-zinit ice wait"0" silent
+zinit ice wait"0" lucid silent
+zinit snippet OMZ::plugins/sudo/sudo.plugin.zsh
+
+# ----------------------------------------
+# Autosuggestions
+# atinit: start the suggestion engine immediately after load
+# ----------------------------------------
+zinit ice wait"0" lucid silent atload"_zsh_autosuggest_start"
 zinit load zsh-users/zsh-autosuggestions
 
 # ----------------------------------------
-# Autoparis (load next)
+# Autopair
 # ----------------------------------------
-zinit ice wait"0" silent
+zinit ice wait"0" lucid silent
 zinit load hlissner/zsh-autopair
 
 # ----------------------------------------
-# Syntax Highlighting (must load last)
+# Syntax Highlighting — must load after autosuggestions
 # ----------------------------------------
-zinit ice wait"1" silent
+zinit ice wait"0.1" lucid silent
 zinit load zdharma-continuum/fast-syntax-highlighting
 
 # ----------------------------------------
