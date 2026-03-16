@@ -375,8 +375,47 @@ THEME_EOF
     fi
   fi
 
+  # Apply arch-patches dconf profiles (idempotent)
+  _apply_arch_patch_dconf
+
   # Install arch-patches systemd services (idempotent)
   _install_arch_patch_services
+}
+
+# Helper: apply dconf profiles from arch-patches/dconf/
+# Loads each *.dconf file using the filename (minus extension) as the
+# dconf path key to look up in a map. Idempotent — checks a sentinel
+# key before applying so repeated installs don't clobber user changes.
+_apply_arch_patch_dconf() {
+  local src_dir="$DOTFILES_DIR/arch-patches/dconf"
+  [[ -d "$src_dir" ]] || return 0
+
+  # Map: filename stem -> dconf base path
+  declare -A dconf_paths=(
+    [cavasik]="/io/github/TheWisker/Cavasik/"
+  )
+
+  local -a files
+  mapfile -t files < <(find "$src_dir" -maxdepth 1 -name '*.dconf' -printf '%f\n')
+
+  (( ${#files[@]} == 0 )) && return 0
+
+  step "Applying arch-patches dconf profiles"
+  for f in "${files[@]}"; do
+    local stem="${f%.dconf}"
+    local path="${dconf_paths[$stem]:-}"
+    if [[ -z "$path" ]]; then
+      warn "  $f: no dconf path mapping defined — skipping"
+      continue
+    fi
+    if $DRY_RUN; then
+      log "[dry-run] would apply $f → dconf $path"
+      continue
+    fi
+    log "  Applying $f → dconf $path"
+    dconf load "$path" < "$src_dir/$f"
+    ok "  $stem dconf profile applied"
+  done
 }
 
 # Helper: install arch-patches systemd services
