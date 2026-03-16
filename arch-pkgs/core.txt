@@ -12,7 +12,7 @@ chaotic-mirrorlist
 chromium
 cliphist
 dolphin
-dunst
+swaync
 efibootmgr
 eza
 fastfetch
@@ -23,6 +23,7 @@ firefox-developer-edition
 fnm
 fuse2
 fzf
+ghostty
 git
 gptfdisk
 grim
@@ -33,7 +34,6 @@ hyprlock
 hyprpicker
 hyprsunset
 imagemagick
-inkscape
 intel-ucode
 jq
 kde-cli-tools

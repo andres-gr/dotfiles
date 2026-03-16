@@ -9,4 +9,5 @@ spotify
 visual-studio-code-bin
 xwaylandvideobridge
 zen-browser-bin
+zinit
 zoom
