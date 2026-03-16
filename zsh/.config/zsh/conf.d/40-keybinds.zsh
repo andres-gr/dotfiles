@@ -59,7 +59,7 @@ _neo_bind_autosuggest_accept() {
     fi
   }
   zle -N _neo_accept_suggestion
-  bindkey '^[' _neo_accept_suggestion
+  bindkey '^F' _neo_accept_suggestion
   # Remove ourselves — only needs to run once
   precmd_functions=( ${precmd_functions:#_neo_bind_autosuggest_accept} )
 }
