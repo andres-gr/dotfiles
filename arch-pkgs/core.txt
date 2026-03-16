@@ -12,7 +12,6 @@ chaotic-mirrorlist
 chromium
 cliphist
 dolphin
-swaync
 efibootmgr
 eza
 fastfetch
@@ -51,7 +50,9 @@ man-pages
 nano
 network-manager-applet
 networkmanager
+noto-fonts
 noto-fonts-emoji
+noto-fonts-extra
 nwg-displays
 nwg-look
 otf-font-awesome
@@ -84,11 +85,15 @@ sof-firmware
 starship
 stow
 sudo
+swaync
 swww
 tmux
+ttf-dejavu
 ttf-fira-code
 ttf-fira-sans
 ttf-firacode-nerd
+ttf-jetbrains-mono-nerd
+ttf-liberation
 ttf-nerd-fonts-symbols-mono
 udiskie
 unzip
