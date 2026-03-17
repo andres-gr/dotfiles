@@ -28,8 +28,9 @@ fi
 # --------------------------------------------------
 # Dev tools
 # --------------------------------------------------
-(( $+commands[bun] ))      && alias b='bun'
 (( $+commands[brew] ))     && alias bdump='brew bundle dump -f'
+(( $+commands[bun] ))      && alias b='bun'
+(( $+commands[claude] ))   && alias cl='claude'
 (( $+commands[code] ))     && alias co='code .'
 (( $+commands[fnm] ))      && alias fu='fnm use'
 (( $+commands[fnm] ))      && alias fud='fnm use default'
