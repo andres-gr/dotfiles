@@ -30,7 +30,7 @@ window_style = "style_3"
 
 # ── Hyprland app defaults ────────────────────────────────────────────────────
 [hyprland]
-browser   = "zen-browser-bin"
+browser   = "zen-browser"
 terminal  = "ghostty"
 explorer  = "dolphin"
 

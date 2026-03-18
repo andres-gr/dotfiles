@@ -1,0 +1,47 @@
+$HOME/.config/kitty/theme.conf|killall -SIGUSR1 kitty
+
+## Dracula Pro for Kitty
+# Based on the Dracula Pro color palette
+
+# Basic colors
+foreground #F8F8F2
+background #22212C
+cursor #7970A9
+# Selection
+selection_foreground #22212C
+selection_background #454158
+
+# Tab bar
+active_tab_foreground #22212C
+active_tab_background #9580FF
+inactive_tab_foreground #F8F8F2
+inactive_tab_background #454158
+
+# Border
+active_border_color #9580FF
+inactive_border_color #454158
+
+# The 16 colors
+color0 #1F1E29    # black
+color8 #6B65A3    # bright black
+
+color1 #FF9580    # red
+color9 #FFAA99    # bright red
+
+color2 #8AFF80    # green
+color10 #A2FF99   # bright green
+
+color3 #FFFF80    # yellow
+color11 #FFFF99   # bright yellow
+
+color4 #9580FF    # blue
+color12 #AA99FF   # bright blue
+
+color5 #FF80BF    # magenta
+color13 #FF99CC  # bright magenta
+
+color6 #80FFEA    # cyan
+color14 #99FFEE  # bright cyan
+
+color7 #F8F8F2    # white
+color15 #FFFFFF   # bright white

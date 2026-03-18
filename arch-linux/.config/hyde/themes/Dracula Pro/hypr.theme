@@ -1,8 +1,8 @@
 $HOME/.config/hypr/themes/theme.conf|> $HOME/.config/hypr/themes/colors.conf
 
-exec = gsettings set org.gnome.desktop.interface icon-theme 'Tela-circle-dracula'
-exec = gsettings set org.gnome.desktop.interface gtk-theme 'Dracula Pro'
-exec = gsettings set org.gnome.desktop.interface color-scheme 'prefer-dark'
+$GTK_THEME=Dracula Pro
+$ICON_THEME=Tela-circle-dracula
+$COLOR_SCHEME=prefer-dark
 
 exec = hyprctl setcursor Bibata-Rainbow-Modern 20
 exec = gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Rainbow-Modern'
@@ -13,7 +13,7 @@ general {
     gaps_out = 18
     border_size = 2
     col.active_border = rgb(454158) rgb(9580ff) 90deg
-    col.inactive_border = rgba(454158aa)
+    col.inactive_border = rgba(454158cc)
     layout = dwindle
     resize_on_border = true
 }
