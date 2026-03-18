@@ -59,4 +59,7 @@ macos-icon = custom
 
 config-file = shaders-config
 
+### Arch specific overrides ###
+config-file = arch-config
+
 ### Misc end ###

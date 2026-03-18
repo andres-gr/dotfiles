@@ -396,6 +396,38 @@ post_install_task() {
     fi
   fi
 
+  # Ghostty: create arch-config overrides for Arch Linux
+  local ghostty_config_dir="$HOME/.config/ghostty"
+  local arch_config="$ghostty_config_dir/arch-config"
+  if [[ -d "$ghostty_config_dir" ]]; then
+    if $HYDE_DETECTED; then
+      log "Creating Ghostty Arch overrides: $arch_config"
+      run mkdir -p "$ghostty_config_dir"
+      if $DRY_RUN; then
+        log "[dry-run] would write to $arch_config:"
+        log "  background-opacity = 1"
+        log "  background-blur-radius = 0"
+      else
+        printf 'background-opacity = 1\nbackground-blur-radius = 0\n' > "$arch_config"
+        ok "  wrote $arch_config"
+      fi
+    else
+      # For macOS, create an empty file if it doesn't exist
+      run mkdir -p "$ghostty_config_dir"
+      if [[ ! -e "$arch_config" ]]; then
+        if $DRY_RUN; then
+          log "[dry-run] would create empty file at $arch_config:"
+          log "  touch $arch_config"
+        else
+          log "Creating empty Ghostty arch-config for macOS"
+          run touch "$arch_config"
+        fi
+      fi
+    fi
+  else
+    log "Ghostty config directory not found — skipping arch-config"
+  fi
+
   # HyDE-specific post-install steps (in scripts/hyde-patches.sh)
   $HYDE_DETECTED && hyde_post_install
 }
