@@ -10,7 +10,7 @@
 
 # ── Wallpaper ──────────────────────────────────────────────────────────────────
 [wallpaper]
-backend = "swww"
+backend = "hyprpaper"
 
 [wallpaper.swww]
 framerate = 60
