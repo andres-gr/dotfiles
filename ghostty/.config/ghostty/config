@@ -24,7 +24,7 @@ macos-titlebar-style = hidden
 ### Colors ###
 
 background-opacity = 0.9
-background-blur-radius = 10
+background-blur = 10
 
 theme = Dracula-Pro
 

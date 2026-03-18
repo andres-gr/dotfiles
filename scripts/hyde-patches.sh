@@ -331,6 +331,16 @@ THEME_EOF
     fi
   fi
 
+  # Set xdg-terminals.list to prefer ghostty (ensure overwrite)
+  local xdg_term_file="$HOME/.config/xdg-terminals.list"
+  if [[ -f "$xdg_term_file" && ! -L "$xdg_term_file" ]]; then
+    backup_path "$xdg_term_file"
+  fi
+  if ! $DRY_RUN; then
+    echo "com.mitchellh.ghostty.desktop" > "$xdg_term_file"
+    ok "  set default terminal: ghostty"
+  fi
+
   # Configure SDDM Candy theme
   local sddm_theme_dir="/usr/share/sddm/themes/Candy"
   if [[ -d "$sddm_theme_dir" ]]; then

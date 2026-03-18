@@ -1,0 +1,5 @@
+# See https://github.com/Vladimir-csp/xdg-terminal-exec?tab=readme-ov-file#configuration
+com.mitchellh.ghostty.desktop
+kitty.desktop
+Alacritty.desktop
+foot.desktop

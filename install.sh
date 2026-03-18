@@ -406,9 +406,9 @@ post_install_task() {
       if $DRY_RUN; then
         log "[dry-run] would write to $arch_config:"
         log "  background-opacity = 1"
-        log "  background-blur-radius = 0"
+        log "  background-blur = 0"
       else
-        printf 'background-opacity = 1\nbackground-blur-radius = 0\n' > "$arch_config"
+        printf 'background-opacity = 1\nbackground-blur = 0\n' > "$arch_config"
         ok "  wrote $arch_config"
       fi
     else
