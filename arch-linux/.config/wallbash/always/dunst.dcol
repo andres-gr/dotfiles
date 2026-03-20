@@ -1,0 +1,8 @@
+# dunst.dcol — no-op override
+# Placed in ~/.config/wallbash/always/ to shadow the HyDE-owned version in
+# ~/.local/share/wallbash/always/dunst.dcol which calls dunst.sh and tries
+# to restart dunst. Since we use swaync, dunst is not installed and that
+# script fires an error notification on every startup and theme switch.
+# This empty dcol prevents that by taking priority over the HyDE version.
+# Output path is /dev/null so wallbash has a valid target but writes nothing.
+/dev/null

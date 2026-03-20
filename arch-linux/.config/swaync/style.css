@@ -13,18 +13,12 @@
   font-family: "FiraCode Nerd Font", "Fira Code", monospace;
 }
 
-/* ── Notification popup window — constrain height to content ────────────── */
-
-notificationwindow {
-  /* Prevent the GTK layer shell window from stretching full screen height */
-  margin: 0;
-  padding: 0;
-}
-
-.floating-notifications {
-  /* Stack popups tightly — no extra padding expanding the window */
-  padding: 0;
-  margin: 0;
+/* .notification-background has padding but no explicit transparent background
+   in the system CSS — on GTK4 this causes the padding area to render opaque,
+   making the notification window appear to extend full screen height.
+   Override it here, after theme.css import, to force transparency. */
+.floating-notifications .notification-row .notification-background {
+  padding: 4px 8px;
 }
 
 /* ── Notification popups ─────────────────────────────────────────────────── */
@@ -87,18 +81,18 @@ notificationwindow {
 
 .widget-dnd switch {
   border-radius: 20px;
-  background: var(--noti-close-bg, rgba(255,255,255,0.15));
+  background: @sw-noti-bg-hover;
   min-width: 48px;
   min-height: 26px;
 }
 
 .widget-dnd switch:checked {
-  background: var(--bg-selected, rgba(0,128,255,0.8));
+  background: @sw-noti-window-br;
 }
 
 .widget-dnd switch slider {
   border-radius: 20px;
-  background: var(--text-color, white);
+  background: @text-color;
   min-width: 22px;
   min-height: 22px;
   margin: 2px;
@@ -139,6 +133,13 @@ notificationwindow {
 
 .notification-group {
   margin: 2px 0;
+  /* Remove the darker container background that wraps grouped notifications */
+  background: transparent;
+}
+
+/* The outer list container also gets a subtle background from system CSS */
+.control-center .control-center-list {
+  background: transparent;
 }
 
 .notification-group .notification-group-headers .notification-group-header {

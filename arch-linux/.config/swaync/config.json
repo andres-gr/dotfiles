@@ -7,6 +7,7 @@
   "layer": "overlay",
   "control-center-layer": "top",
   "layer-shell": true,
+  "layer-shell-cover-screen": true,
   "cssPriority": "user",
 
   "control-center-margin-top": 8,
@@ -15,11 +16,11 @@
   "control-center-margin-left": 0,
 
   "control-center-width": 480,
-  "control-center-height": 0,
+  "notification-window-height": 240,
   "notification-window-width": 420,
 
   "fit-to-screen": true,
-  "transition-time": 200,
+  "transition-time": 150,
 
   "timeout": 4,
   "timeout-low": 3,
@@ -27,14 +28,14 @@
 
   "notification-2fa-action": true,
   "notification-inline-replies": false,
-  "notification-body-image-height": 80,
-  "notification-body-image-width": 180,
+  "notification-body-image-height": 100,
+  "notification-body-image-width": 200,
   "notification-grouping": true,
   "image-visibility": "when-available",
   "relative-timestamps": true,
   "keyboard-shortcuts": true,
 
-  "hide-on-clear": false,
+  "hide-on-clear": true,
   "hide-on-action": true,
   "text-empty": "No Notifications",
   "script-fail-notify": false,
