@@ -13,6 +13,20 @@
   font-family: "FiraCode Nerd Font", "Fira Code", monospace;
 }
 
+/* ── Notification popup window — constrain height to content ────────────── */
+
+notificationwindow {
+  /* Prevent the GTK layer shell window from stretching full screen height */
+  margin: 0;
+  padding: 0;
+}
+
+.floating-notifications {
+  /* Stack popups tightly — no extra padding expanding the window */
+  padding: 0;
+  margin: 0;
+}
+
 /* ── Notification popups ─────────────────────────────────────────────────── */
 
 .notification-row .notification-background .notification {
