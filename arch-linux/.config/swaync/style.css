@@ -1,0 +1,133 @@
+/* ─────────────────────────────────────────────────────────────────────────────
+   neo-dots swaync style.css
+   Structural overrides only — no hardcoded colors.
+   Colors are fully driven by HyDE wallbash via theme.css (auto-generated).
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Import wallbash-generated colors — written by HyDE on every theme switch */
+@import "theme.css";
+
+/* ── Font ─────────────────────────────────────────────────────────────────── */
+
+* {
+  font-family: "FiraCode Nerd Font", "Fira Code", monospace;
+}
+
+/* ── Notification popups ─────────────────────────────────────────────────── */
+
+.notification-row .notification-background .notification {
+  border-radius: 10px;
+  padding: 4px;
+  margin: 4px 8px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .summary {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .body {
+  font-size: 13px;
+}
+
+.notification-row .notification-background .notification .notification-default-action .notification-content .text-box .time {
+  font-size: 11px;
+}
+
+/* ── Control center ──────────────────────────────────────────────────────── */
+
+.control-center {
+  border-radius: 12px;
+  padding: 4px;
+}
+
+.widget {
+  border-radius: 10px;
+  margin: 6px 8px;
+  padding: 10px 12px;
+}
+
+/* ── Title widget ────────────────────────────────────────────────────────── */
+
+.widget-title > label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.widget-title > button {
+  font-size: 0.85rem;
+  border-radius: 8px;
+  padding: 2px 10px;
+}
+
+/* ── DND widget ──────────────────────────────────────────────────────────── */
+
+.widget-dnd {
+  padding: 8px 12px;
+}
+
+.widget-dnd label {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.widget-dnd switch {
+  border-radius: 20px;
+  background: var(--noti-close-bg, rgba(255,255,255,0.15));
+  min-width: 48px;
+  min-height: 26px;
+}
+
+.widget-dnd switch:checked {
+  background: var(--bg-selected, rgba(0,128,255,0.8));
+}
+
+.widget-dnd switch slider {
+  border-radius: 20px;
+  background: var(--text-color, white);
+  min-width: 22px;
+  min-height: 22px;
+  margin: 2px;
+}
+
+/* ── MPRIS widget ────────────────────────────────────────────────────────── */
+
+.widget-mpris .widget-mpris-player {
+  border-radius: 10px;
+  margin: 6px 0;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-subtitle {
+  font-size: 0.9rem;
+}
+
+/* ── Volume widget ───────────────────────────────────────────────────────── */
+
+.per-app-volume {
+  border-radius: 8px;
+  margin: 6px;
+  padding: 4px 0;
+}
+
+/* ── Notification list ───────────────────────────────────────────────────── */
+
+.control-center .control-center-list {
+  /* Don't expand to fill remaining space — only as tall as notifications */
+  min-height: 0;
+}
+
+/* ── Notification group ──────────────────────────────────────────────────── */
+
+.notification-group {
+  margin: 2px 0;
+}
+
+.notification-group .notification-group-headers .notification-group-header {
+  font-size: 0.9rem;
+  font-weight: 600;
+}

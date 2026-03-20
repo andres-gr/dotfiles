@@ -1,0 +1,83 @@
+{
+  "$schema": "/etc/xdg/swaync/configSchema.json",
+
+  "positionX": "right",
+  "positionY": "top",
+
+  "layer": "overlay",
+  "control-center-layer": "top",
+  "layer-shell": true,
+  "cssPriority": "user",
+
+  "control-center-margin-top": 8,
+  "control-center-margin-bottom": 8,
+  "control-center-margin-right": 8,
+  "control-center-margin-left": 0,
+
+  "control-center-width": 480,
+  "control-center-height": 0,
+  "notification-window-width": 420,
+
+  "fit-to-screen": true,
+  "transition-time": 200,
+
+  "timeout": 4,
+  "timeout-low": 3,
+  "timeout-critical": 0,
+
+  "notification-2fa-action": true,
+  "notification-inline-replies": false,
+  "notification-body-image-height": 80,
+  "notification-body-image-width": 180,
+  "notification-grouping": true,
+  "image-visibility": "when-available",
+  "relative-timestamps": true,
+  "keyboard-shortcuts": true,
+
+  "hide-on-clear": false,
+  "hide-on-action": true,
+  "text-empty": "No Notifications",
+  "script-fail-notify": false,
+
+  "notification-visibility": {
+    "volume-and-mute": {
+      "state": "transient",
+      "app-name": "HyDE Notify"
+    },
+    "media-notify": {
+      "state": "transient",
+      "app-name": "media-notify"
+    }
+  },
+
+  "widgets": [
+    "dnd",
+    "mpris",
+    "volume",
+    "title",
+    "notifications"
+  ],
+
+  "widget-config": {
+    "title": {
+      "text": "Notifications",
+      "clear-all-button": true,
+      "button-text": "Clear All"
+    },
+    "dnd": {
+      "text": "Do Not Disturb"
+    },
+    "mpris": {
+      "blacklist": [],
+      "autohide": true,
+      "show-album-art": "always",
+      "loop-carousel": true
+    },
+    "volume": {
+      "label": "Volume"
+    },
+    "notifications": {
+      "vexpand": false
+    }
+  }
+}
