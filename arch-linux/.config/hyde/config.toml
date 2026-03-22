@@ -40,7 +40,7 @@ location         = "Monterrey"
 temperature_unit = "c"
 time_format      = "12h"
 show_location    = true
-forecast_days    = 3
+forecast_days    = 5
 
 # ── Wlogout ───────────────────────────────────────────────────────────────────
 [wlogout]
