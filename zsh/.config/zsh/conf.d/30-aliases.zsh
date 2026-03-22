@@ -28,15 +28,16 @@ fi
 # --------------------------------------------------
 # Dev tools
 # --------------------------------------------------
-(( $+commands[brew] ))     && alias bdump='brew bundle dump -f'
-(( $+commands[bun] ))      && alias b='bun'
-(( $+commands[claude] ))   && alias cl='claude'
-(( $+commands[code] ))     && alias co='code .'
-(( $+commands[fnm] ))      && alias fu='fnm use'
-(( $+commands[fnm] ))      && alias fud='fnm use default'
-(( $+commands[lazygit] ))  && alias lg='lazygit'
-(( $+commands[lolcat] ))   && alias lc='lolcat'
-(( $+commands[tmux] ))     && alias tm='tmux'
+(( $+commands[brew] ))        && alias bdump='brew bundle dump -f'
+(( $+commands[bun] ))         && alias b='bun'
+(( $+commands[claude] ))      && alias cl='claude'
+(( $+commands[code] ))        && alias co='code .'
+(( $+commands[fnm] ))         && alias fu='fnm use'
+(( $+commands[fnm] ))         && alias fud='fnm use default'
+(( $+commands[lazygit] ))     && alias lg='lazygit'
+(( $+commands[lolcat] ))      && alias lc='lolcat'
+(( $+commands[opencode] ))    && alias op='opencode'
+(( $+commands[tmux] ))        && alias tm='tmux'
 
 # --------------------------------------------------
 # Utilities
