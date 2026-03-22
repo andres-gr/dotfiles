@@ -24,6 +24,7 @@ fuse2
 fzf
 ghostty
 git
+gvfs
 gptfdisk
 grim
 gst-plugin-pipewire

@@ -24,7 +24,7 @@ transition_default = "grow"
 scale = 10
 
 [rofi.launch]
-scale = 5
+scale = 12
 drun_style = "style_3"
 window_style = "style_3"
 

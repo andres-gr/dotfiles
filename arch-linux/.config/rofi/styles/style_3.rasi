@@ -12,28 +12,28 @@ configuration {
     icon-theme:                  "Tela-circle-dracula";
 }
 
-@theme "~/.config/rofi/themes/theme.rasi"
+@theme "~/.config/rofi/theme.rasi"
 
 
 // Main //
 window {
-    height:                      500px;
-    width:                       720px;
+    height:                      30em;
+    width:                       40em;
     transparency:                "real";
     fullscreen:                  false;
     enabled:                     true;
     cursor:                      "default";
-    spacing:                     0px;
-    padding:                     0px;
+    spacing:                     0em;
+    padding:                     0em;
     border:                      2px;
-    border-radius:               25px;
+    border-radius:               1.5em;
     border-color:                @main-br;
     background-color:            transparent;
 }
 mainbox {
     enabled:                     true;
-    spacing:                     0px;
-    padding:                     0px;
+    spacing:                     0em;
+    padding:                     0em;
     orientation:                 vertical;
     children:                    [ "listbox" , "inputbar"];
     background-color:            transparent;
@@ -48,18 +48,19 @@ inputbar {
 
 // Lists //
 listbox {
-    padding:                     5px;
-    spacing:                     5px;
+    padding:                     0.3em;
+    spacing:                     0.3em;
     orientation:                 horizontal;
     children:                    [ "mode-switcher" , "listview" ];
     background-color:            transparent;
-    background-image:            url("~/.config/swww/wall.blur", height);
+    background-image:            url("~/.cache/hyde/wall.blur", height);
 }
 listview {
-    padding:                     20px;
-    spacing:                     5px;
+    padding:                     1.2em;
+    spacing:                     0.3em;
     enabled:                     true;
     columns:                     1;
+    lines:                       7;
     cycle:                       true;
     dynamic:                     true;
     scrollbar:                   false;
@@ -70,21 +71,21 @@ listview {
     cursor:                      "default";
     background-color:            @main-bg;
     text-color:                  @main-fg;
-    border-radius:               25px;
+    border-radius:               1.5em;
 }
 mode-switcher {
     orientation:                 vertical;
-    width:                       100px;
+    width:                       6em;
     enabled:                     true;
-    padding:                     60px 10px 60px 10px;
-    spacing:                     15px;
+    padding:                     3.5em 0.6em 3.5em 0.6em;
+    spacing:                     0.9em;
     background-color:            transparent;
 }
 button {
     cursor:                      pointer;
     vertical-align:              0.50;
     horizontal-align:            0.45;
-    border-radius:               50px;
+    border-radius:               3em;
     background-color:            @main-bg;
     text-color:                  @main-fg;
 }
@@ -97,9 +98,9 @@ button selected {
 // Elements //
 element {
     enabled:                     true;
-    spacing:                     30px;
-    padding:                     10px;
-    border-radius:               20px;
+    spacing:                     1.8em;
+    padding:                     0.6em;
+    border-radius:               1.2em;
     cursor:                      pointer;
     background-color:            transparent;
     text-color:                  @main-fg;
@@ -117,7 +118,7 @@ element active {
     text-color:                  @select-fg;
 }
 element-icon {
-    size:                        50px;
+    size:                        3em;
     cursor:                      inherit;
     background-color:            transparent;
     text-color:                  inherit;
@@ -128,4 +129,19 @@ element-text {
     cursor:                      inherit;
     background-color:            transparent;
     text-color:                  inherit;
+}
+
+
+// Error / textbox //
+error-message {
+    padding:                     1em;
+    border-radius:               1em;
+    background-color:            @main-bg;
+    text-color:                  @main-fg;
+}
+textbox {
+    background-color:            transparent;
+    text-color:                  @main-fg;
+    vertical-align:              0.5;
+    horizontal-align:            0.0;
 }

@@ -1,0 +1,15 @@
+// custom-weather.jsonc — user override
+// Uses HyDE's hyde-shell weather for exec (auto-detects location/units).
+// Adds on-click shortcuts to open wttr.in and wunderground for Monterrey.
+// Overrides ~/.local/share/waybar/modules/custom-weather.jsonc
+{
+    "custom/weather": {
+        "exec": "hyde-shell weather",
+        "return-type": "json",
+        "format": "{0}",
+        "interval": 30,
+        "tooltip": true,
+        "on-click": "xdg-open https://wttr.in/monterrey",
+        "on-click-right": "xdg-open https://www.wunderground.com/weather/mx/monterrey"
+    }
+}
