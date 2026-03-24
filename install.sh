@@ -408,8 +408,9 @@ post_install_task() {
         log "  background-opacity = 1"
         log "  background-blur = 0"
         log "  font-size = 11"
+        log "  keybind = ctrl+enter=unbind"
       else
-        printf 'background-opacity = 1\nbackground-blur = 0\nfont-size = 11' > "$arch_config"
+        printf 'background-opacity = 1\nbackground-blur = 0\nfont-size = 11\nkeybind = ctrl+enter=unbind' > "$arch_config"
         ok "  wrote $arch_config"
       fi
     else
