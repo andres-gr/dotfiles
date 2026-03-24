@@ -273,3 +273,17 @@ cmd('FileType', {
   group = general,
   pattern = '*',
 })
+
+
+-- Create an augroup to prevent duplicate autocmds on reload
+local opencode = augroup("OpenCodeSilence", { clear = true })
+
+cmd('VimEnter', {
+  callback = function ()
+    -- Silence all deprecation warnings for this session
+    vim.deprecate = function () end
+  end,
+  group = opencode,
+  -- Match temporary files created by OpenCode (e.g., /tmp/opencode-XXXXXX)
+  pattern = '/tmp/*.md',
+})
