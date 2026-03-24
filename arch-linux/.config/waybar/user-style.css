@@ -1,4 +1,9 @@
 * {
-  font-family: "FiraCode Nerd Font Propo", "JetBrainsMono Nerd Font", sans-serif;
-  font-size: 13px;
+  font-family: "FiraCode Nerd Font", "JetBrainsMono Nerd Font", sans-serif;
+  font-size: 0.875rem;
+}
+
+/* Rounded corners on the bar window background */
+window#waybar {
+  border-radius: 4rem;
 }
