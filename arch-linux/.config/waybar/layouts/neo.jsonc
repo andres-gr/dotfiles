@@ -3,7 +3,10 @@
     "output": [
         "*"
     ],
-    "height": 10,
+    "height": 32,
+    "margin-left": 16,
+    "margin-right": 16,
+    "margin-top": 8,
     "exclusive": true,
     "passthrough": false,
     "reload_style_on_change": true,
@@ -42,7 +45,7 @@
     "group/pill#center": {
         "orientation": "inherit",
         "modules": [
-            "wlr/taskbar"
+            "hyprland/window"
         ]
     },
     "modules-right": [

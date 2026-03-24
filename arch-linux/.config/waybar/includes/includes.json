@@ -1,5 +1,7 @@
 {
     "include": [
+        "/home/agr/.config/waybar/modules/custom-weather.jsonc",
+        "/home/agr/.config/waybar/modules/hyprland-window.jsonc",
         "/home/agr/.config/waybar/modules/custom-spotify.jsonc",
         "/home/agr/.config/waybar/modules/hyprland-workspaces.jsonc",
         "/home/agr/.config/waybar/modules/wlr-taskbar.jsonc",
