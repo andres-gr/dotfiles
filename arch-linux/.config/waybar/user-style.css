@@ -11,3 +11,8 @@ window#waybar {
 window#waybar.empty #window {
   margin-left: 2px;
 }
+
+/* Tooltip styling for better readability */
+tooltip * {
+  font-size: 13px;
+}
