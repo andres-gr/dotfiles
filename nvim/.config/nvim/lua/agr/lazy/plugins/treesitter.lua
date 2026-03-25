@@ -49,7 +49,18 @@ T.config = function ()
   }
 
   -- Add mdx highlight
+  vim.filetype.add {
+    extension = {
+      mdx = 'mdx',
+    },
+    pattern = {
+      [".*%.conf"] = "hyprlang",
+      [".*/hypr/.*%.conf"] = "hyprlang",
+    },
+  }
+
   vim.treesitter.language.register('markdown', 'mdx')
+  vim.treesitter.language.register('hyprlang', 'conf')
 
   local rainbow = require 'rainbow-delimiters'
   local utils = require 'agr.core.utils'
