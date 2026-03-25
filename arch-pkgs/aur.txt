@@ -1,13 +1,12 @@
-bibata-rainbow-cursor-theme
+# apfs-fuse-git
 cavasik
-grimblast-git
+gpu-viewer
 pokego-bin
 slack-desktop
-spicetify-cli
-spicetify-marketplace-bin
-spotify
-visual-studio-code-bin
+ttf-hack-ligatured
+xdg-terminal-exec
 xwaylandvideobridge
+yay-debug
 zen-browser-bin
 zinit
 zoom

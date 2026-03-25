@@ -11,3 +11,6 @@ inkscape
 
 # API clients
 insomnia-bin
+
+# AI
+claude-desktop-appimage
