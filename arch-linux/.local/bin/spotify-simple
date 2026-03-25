@@ -1,0 +1,88 @@
+#!/usr/bin/env python3
+# spotify-scrolling — Wraps Spotify output with zscroll for marquee effect
+# Outputs JSON for waybar with both text (scrolling) and tooltip (full metadata)
+# Dependencies: playerctl, zscroll
+
+import subprocess
+import json
+import os
+import sys
+
+def get_spotify_metadata():
+    """Get full Spotify metadata for tooltip"""
+    try:
+        result = subprocess.run(
+            ["playerctl", "--player", "spotify", "metadata"],
+            capture_output=True,
+            text=True,
+            timeout=2
+        )
+
+        metadata = {}
+        for line in result.stdout.strip().split('\n'):
+            if 'xesam:' in line or 'mpris:' in line:
+                parts = line.split(None, 1)
+                if len(parts) == 2:
+                    key = parts[0].replace('xesam:', '').replace('mpris:', '')
+                    metadata[key] = parts[1]
+
+        title = metadata.get('title', 'Unknown')
+        artist = metadata.get('artist', 'Unknown')
+        album = metadata.get('album', 'Unknown')
+
+        # Get position and duration
+        pos_result = subprocess.run(
+            ["playerctl", "--player", "spotify", "position"],
+            capture_output=True,
+            text=True,
+            timeout=2
+        )
+        position = pos_result.stdout.strip()
+
+        # Format duration
+        duration = metadata.get('length', '0')
+        try:
+            dur_sec = int(duration) // 1000000
+            mins = dur_sec // 60
+            secs = dur_sec % 60
+            duration_str = f"{mins}:{secs:02d}"
+        except:
+            duration_str = "--:--"
+
+        # Format position
+        try:
+            pos_sec = float(position)
+            pos_mins = int(pos_sec) // 60
+            pos_secs = int(pos_sec) % 60
+            position_str = f"{pos_mins}:{pos_secs:02d}"
+        except:
+            position_str = "0:00"
+
+        tooltip = f"🎵 {title}\n💿 {album}\n👤 {artist}\n⏱️ {position_str} / {duration_str}"
+
+        return title, artist, album, tooltip
+    except Exception as e:
+        return "Spotify", "Unknown", "Unknown", "No track playing"
+
+# Direct execution without zscroll for testing
+# Get current track
+result = subprocess.run(
+    ["playerctl", "--player", "spotify", "metadata", "--format", "{{ artist }} - {{ title }}"],
+    capture_output=True,
+    text=True
+)
+text = "🎵 " + result.stdout.strip()
+
+# Get metadata for tooltip
+title, artist, album, tooltip = get_spotify_metadata()
+
+# Output JSON
+output = {
+    "text": text,
+    "tooltip": tooltip,
+    "class": "custom-spotify",
+    "alt": "spotify"
+}
+
+print(json.dumps(output))
+sys.stdout.flush()

@@ -1,0 +1,180 @@
+#!/usr/bin/env python3
+# spotify-scrolling — Spotify with marquee effect
+# Outputs JSON for waybar with both text (scrolling) and tooltip (full metadata)
+
+import subprocess
+import json
+import sys
+import os
+import time
+import signal
+
+# Unbuffered output
+sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', buffering=1)
+
+def get_track():
+    """Get current track info"""
+    try:
+        result = subprocess.run(
+            ["playerctl", "--player", "spotify", "metadata", "--format", "{{ artist }} - {{ title }}"],
+            capture_output=True,
+            text=True,
+            timeout=2
+        )
+        return result.stdout.strip()
+    except:
+        return "No track"
+
+def get_spotify_metadata():
+    """Get full Spotify metadata for tooltip"""
+    try:
+        result = subprocess.run(
+            ["playerctl", "--player", "spotify", "metadata"],
+            capture_output=True,
+            text=True,
+            timeout=2
+        )
+
+        metadata = {}
+        for line in result.stdout.strip().split('\n'):
+            if 'xesam:' in line or 'mpris:' in line:
+                # Remove 'spotify ' prefix and split
+                line = line.replace('spotify ', '', 1)
+                parts = line.split(None, 1)
+                if len(parts) == 2:
+                    key = parts[0].replace('xesam:', '').replace('mpris:', '')
+                    metadata[key] = parts[1]
+
+        title = str(metadata.get('title', 'Unknown'))
+        artist = str(metadata.get('artist', 'Unknown'))
+        album = str(metadata.get('album', 'Unknown'))
+
+        # Get position and duration
+        pos_result = subprocess.run(
+            ["playerctl", "--player", "spotify", "position"],
+            capture_output=True,
+            text=True,
+            timeout=2
+        )
+        position = pos_result.stdout.strip()
+
+        # Format duration
+        duration = str(metadata.get('length', '0'))
+        try:
+            dur_sec = int(duration) // 1000000
+            mins = dur_sec // 60
+            secs = dur_sec % 60
+            duration_str = f"{mins}:{secs:02d}"
+        except:
+            duration_str = "--:--"
+
+        # Format position
+        try:
+            pos_sec = float(position)
+            pos_mins = int(pos_sec) // 60
+            pos_secs = int(pos_sec) % 60
+            position_str = f"{pos_mins}:{pos_secs:02d}"
+        except:
+            position_str = "0:00"
+
+        # Tooltip with Pango markup (like HyDE)
+        tooltip = f"<span foreground='#FFFFFF'><b>{title}</b></span>\n<span foreground='#AAB4F0'><i>{artist}</i></span>\n<span foreground='#FFFFFF'>{album}</span>\n<span foreground='#FFFFFF'>{position_str} / {duration_str}</span>"
+
+        return title, artist, album, tooltip
+    except Exception as e:
+        return "Spotify", "Unknown", "Unknown", "<span>No track playing</span>"
+
+MAX_LEN = 35
+PADDING = "  "
+
+def marquee_text(text, pos, direction):
+    """Apply marquee effect to text"""
+    if len(text) <= MAX_LEN:
+        return text[:MAX_LEN]
+
+    pos = int(pos)  # Ensure pos is an integer
+
+    if direction == 1:  # moving right to left
+        if pos >= len(text):
+            pos = -MAX_LEN
+        pos += 1
+    else:
+        if pos <= -len(text):
+            pos = 0
+        pos -= 1
+
+    start = max(0, pos)
+    end = min(start + MAX_LEN, len(text))
+    result = text[start:end]
+
+    if len(result) < MAX_LEN:
+        result = result + PADDING
+
+    return result
+
+try:
+    current_track = ""
+    last_track = ""
+    pos_idx = 0  # Integer position index for marquee
+    direction = 1
+    pause_counter = 0
+
+    while True:
+        # Get current track
+        current_track = get_track()
+
+        # If track changed, reset position
+        if current_track != last_track:
+            pos_idx = 0
+            last_track = current_track
+            pause_counter = 0
+
+        # Check if track is playing
+        try:
+            status = subprocess.run(
+                ["playerctl", "--player", "spotify", "status"],
+                capture_output=True,
+                text=True,
+                timeout=2
+            ).stdout.strip()
+            is_playing = status == "Playing"
+        except:
+            is_playing = False
+
+        # Apply marquee
+        if is_playing and len(current_track) > MAX_LEN:
+            if pause_counter < 2:  # Pause at start
+                pause_counter += 1
+                display_text = "🎵 " + current_track[:MAX_LEN]
+            else:
+                display_text = "🎵 " + marquee_text(current_track, pos_idx, direction)
+                pos_idx = pos_idx + 1 if direction == 1 else pos_idx - 1
+                # Wrap around
+                if pos_idx >= len(current_track):
+                    pos_idx = -MAX_LEN
+                if pos_idx <= -len(current_track):
+                    pos_idx = 0
+        else:
+            pos_idx = 0
+            pause_counter = 0
+            display_text = "🎵 " + current_track
+
+        # Get metadata for tooltip
+        title, artist, album, tooltip = get_spotify_metadata()
+
+        # Output JSON
+        output = {
+            "text": display_text,
+            "tooltip": tooltip,
+            "class": "custom-spotify",
+            "alt": "spotify"
+        }
+
+        print(json.dumps(output))
+
+        time.sleep(0.3)
+
+except KeyboardInterrupt:
+    pass
+except Exception as e:
+    print(json.dumps({"text": f"Error", "tooltip": str(e)}), file=sys.stderr)
