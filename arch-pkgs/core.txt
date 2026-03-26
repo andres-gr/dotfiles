@@ -1,163 +1,131 @@
-adobe-source-code-pro-fonts
-ark
-awww
-base
-base-devel
-bat
-bibata-rainbow-cursor-theme
-blueman
-bluez
-bluez-utils
-brightnessctl
-btop
-bun
-c-lolcat
-chaotic-keyring
-chaotic-mirrorlist
-chromium
-cliphist
-cmake
-cpio
-dolphin
-efibootmgr
-eza
-fastfetch
-fd
-ffmpegthumbs
-firefox
-firefox-developer-edition
-fnm
-font-manager
-fuse2
-fzf
-ghostty
-git
-gptfdisk
-grim
-grimblast-git
-gst-plugin-pipewire
-gvfs
-haruna
-hfsprogs
-hypridle
-hyprland
-hyprlock
-hyprpaper
-hyprpicker
-hyprsunset
-imagemagick
-inkscape
-intel-ucode
-iwd
-jq
-just
-kde-cli-tools
-kitty
-kvantum
-kvantum-qt5
-lazygit
-lib32-mesa-utils
-libnotify
-libpulse
-linux
-linux-firmware
-linux-zen
-man-db
-man-pages
-mesa-utils
-mpv
-nano
-network-manager-applet
-networkmanager
-ninja
-nomacs
-noto-fonts
-noto-fonts-cjk
-noto-fonts-emoji
-noto-fonts-extra
-nwg-displays
-nwg-look
-opencode-desktop-bin
-openssh
-otf-font-awesome
-pacman-contrib
-pamixer
-parallel
-pavucontrol
-pipewire
-pipewire-alsa
-pipewire-jack
-pipewire-pulse
-playerctl
-pnpm
-polkit-gnome
-qbittorrent
-qt5-graphicaleffects
-qt5-imageformats
-qt5-quickcontrols
-qt5-quickcontrols2
-qt5-wayland
-qt5ct
-qt6-wayland
-qt6ct
-ripgrep
-rofi
-rsync
-satty
-sddm
-slack-desktop
-slurp
-socat
-sof-firmware
-spicetify-cli
-spicetify-marketplace-bin
-spotify
-starship
-stow
-sudo
-swaync
-swww
-tmux
-tree-sitter-cli
-ttf-dejavu
-ttf-dejavu-nerd
-ttf-fira-code
-ttf-fira-mono
-ttf-fira-sans
-ttf-firacode-nerd
-ttf-hack
-ttf-hack-nerd
-ttf-jetbrains-mono
-ttf-jetbrains-mono-nerd
-ttf-liberation
-ttf-liberation-mono-nerd
-ttf-nerd-fonts-symbols-mono
-ttf-roboto
-ttf-roboto-mono-nerd
-ttf-symbola
-udiskie
-unzip
-usbutils
-uwsm
-vim
-visual-studio-code-bin
-vulkan-radeon
-waybar
-wev
-wget
-wireplumber
-wl-clip-persist
-wlogout
-wpa_supplicant
-xdg-desktop-portal-gtk
-xdg-desktop-portal-hyprland
-xdg-user-dirs
-yay
-yazi
-zapzap
-zip
-zoom
-zoxide
-zram-generator
-zsh
-zsh-completions
+adobe-source-code-pro-fonts  # Adobe's monospace font family, widely used in terminals and editors
+ark                          # KDE archive manager (GUI for zip/tar/etc.)
+base                         # Arch Linux minimal base package group
+base-devel                   # Build toolchain (gcc, make, binutils, etc.) required for AUR
+bat                          # Cat clone with syntax highlighting and git integration
+bibata-rainbow-cursor-theme  # Animated rainbow cursor theme
+btop                         # Terminal resource monitor (CPU, RAM, disk, network)
+bun                          # Fast all-in-one JS runtime, bundler, and package manager
+c-lolcat                     # Colorizes terminal output with a rainbow gradient
+chaotic-keyring              # GPG keyring for the Chaotic-AUR repository
+chaotic-mirrorlist           # Mirror list for the Chaotic-AUR repository
+chromium                     # Open-source base for Google Chrome browser
+cliphist                     # Wayland clipboard history manager
+cmake                        # Cross-platform build system generator
+cpio                         # Archive utility, also needed for initramfs generation
+dolphin                      # KDE file manager
+efibootmgr                   # Tool to manage UEFI boot entries
+eza                          # Modern ls replacement with icons and git status
+fastfetch                    # Fast system info display (neofetch alternative)
+fd                           # Fast and user-friendly find alternative
+ffmpegthumbs                 # FFmpeg-based video thumbnail plugin for KDE/Dolphin
+firefox                      # Mozilla Firefox browser
+firefox-developer-edition    # Firefox with extra dev tools and experimental features
+fnm                          # Fast Node.js version manager
+font-manager                 # GUI app for previewing and managing fonts
+fuse2                        # FUSE v2 library, needed by some AppImages and legacy tools
+fzf                          # General-purpose fuzzy finder for the terminal
+ghostty                      # GPU-accelerated terminal emulator by Mitchell Hashimoto
+git                          # Distributed version control system
+gptfdisk                     # GPT partition table editor (gdisk/sgdisk/cgdisk)
+gst-plugin-pipewire          # GStreamer plugin for PipeWire audio/video routing
+gvfs                         # Virtual filesystem support (enables trash, MTP, SMB in file managers)
+haruna                       # KDE video player built on MPV
+hfsprogs                     # Tools for reading/writing Apple HFS+ filesystems
+imagemagick                  # CLI image manipulation and conversion toolkit
+intel-ucode                  # Intel CPU microcode updates (security and stability patches)
+iwd                          # Intel wireless daemon, lightweight Wi-Fi backend
+jq                           # Lightweight CLI JSON processor
+just                         # Command runner / Makefile alternative (Justfile)
+kde-cli-tools                # KDE command-line utilities (e.g. kioclient, kdialog)
+kitty                        # GPU-accelerated terminal emulator
+kvantum                      # SVG-based Qt theme engine
+kvantum-qt5                  # Qt5 build of the Kvantum theme engine
+lazygit                      # Terminal UI for git
+lib32-mesa-utils             # 32-bit Mesa OpenGL utilities (needed for some 32-bit apps/games)
+libnotify                    # Library for sending desktop notifications
+libpulse                     # PulseAudio client library (needed by apps that target PA)
+man-db                       # Man page database and viewer
+man-pages                    # Linux man pages (syscalls, libc, etc.)
+mesa-utils                   # OpenGL utilities including glxinfo and glxgears
+mpv                          # Lightweight, scriptable media player
+nano                         # Simple terminal text editor
+ninja                        # Small, fast build system (often used with CMake)
+nomacs                       # Lightweight image viewer
+noto-fonts                   # Google Noto font family (Latin, broad coverage)
+noto-fonts-cjk               # Noto fonts for Chinese, Japanese, and Korean scripts
+noto-fonts-emoji             # Noto color emoji font
+noto-fonts-extra             # Additional Noto font variants
+opencode-desktop-bin         # OpenCode AI coding assistant desktop app
+openssh                      # OpenSSH client and server
+otf-font-awesome             # Font Awesome icon font (OTF version)
+pacman-contrib               # Extra pacman scripts (paccache, pacdiff, checkupdates, etc.)
+parallel                     # GNU parallel — run shell commands concurrently
+pipewire                     # Low-latency audio/video routing daemon
+pipewire-alsa                # ALSA compatibility layer for PipeWire
+pipewire-jack                # JACK compatibility layer for PipeWire
+pipewire-pulse               # PulseAudio compatibility layer for PipeWire
+pnpm                         # Fast, disk-efficient Node.js package manager
+polkit-gnome                 # GNOME/GTK polkit authentication agent for privilege escalation prompts
+qbittorrent                  # Open-source Qt BitTorrent client
+qt5-graphicaleffects         # Qt5 module for GPU-accelerated visual effects (QML)
+qt5-imageformats             # Extra image format plugins for Qt5 (webp, tiff, etc.)
+qt5-quickcontrols            # Qt5 QML controls (v1, legacy)
+qt5-quickcontrols2           # Qt5 QML controls (v2, current)
+qt5-wayland                  # Qt5 Wayland platform plugin
+qt5ct                        # Qt5 configuration tool (theme, fonts, icons outside KDE)
+qt6-wayland                  # Qt6 Wayland platform plugin
+qt6ct                        # Qt6 configuration tool
+ripgrep                      # Extremely fast recursive grep tool
+rsync                        # Fast, incremental file transfer and sync tool
+satty                        # Modern Wayland screenshot annotation tool
+slack-desktop                # Slack messaging client
+socat                        # Multipurpose socket relay tool
+sof-firmware                 # Sound Open Firmware for Intel/AMD audio DSPs
+spicetify-cli                # CLI tool to customize the Spotify desktop client
+spicetify-marketplace-bin    # In-app marketplace for Spicetify themes and extensions
+spotify                      # Spotify desktop music streaming client
+starship                     # Fast, cross-shell customizable prompt
+stow                         # Symlink farm manager, used for dotfiles management
+sudo                         # Run commands as another user (typically root)
+swww                         # Smooth animated wallpaper daemon for Wayland
+tmux                         # Terminal multiplexer (sessions, windows, panes)
+tree-sitter-cli              # CLI for the Tree-sitter incremental parsing library
+ttf-dejavu                   # DejaVu font family (wide Unicode coverage)
+ttf-dejavu-nerd              # DejaVu fonts patched with Nerd Font icons
+ttf-fira-code                # Fira Code monospace font with programming ligatures
+ttf-fira-mono                # Fira Mono monospace font
+ttf-fira-sans                # Fira Sans proportional font
+ttf-firacode-nerd            # Fira Code patched with Nerd Font icons
+ttf-hack                     # Hack monospace font designed for source code
+ttf-hack-nerd                # Hack font patched with Nerd Font icons
+ttf-jetbrains-mono           # JetBrains Mono monospace font
+ttf-jetbrains-mono-nerd      # JetBrains Mono patched with Nerd Font icons
+ttf-liberation               # Liberation fonts (metric-compatible with Arial/Times/Courier)
+ttf-liberation-mono-nerd     # Liberation Mono patched with Nerd Font icons
+ttf-nerd-fonts-symbols-mono  # Standalone Nerd Font symbols-only font (monospace)
+ttf-roboto                   # Google Roboto font family
+ttf-roboto-mono-nerd         # Roboto Mono patched with Nerd Font icons
+ttf-symbola                  # Symbola font with broad Unicode symbol coverage
+udiskie                      # Automounter for removable media with system tray support
+unzip                        # ZIP archive extraction utility
+usbutils                     # USB device utilities (lsusb, etc.)
+vim                          # Classic terminal text editor
+visual-studio-code-bin       # Microsoft VS Code editor (proprietary binary build)
+vulkan-radeon                # Vulkan driver for AMD GPUs (RADV)
+wev                          # Wayland event viewer (debug key/mouse events)
+wget                         # CLI HTTP/FTP downloader
+wireplumber                  # PipeWire session/policy manager
+wl-clip-persist              # Keeps Wayland clipboard contents alive after app closes
+wpa_supplicant               # WPA/WPA2 wireless authentication daemon
+xdg-desktop-portal-gtk       # XDG desktop portal backend using GTK (file chooser, etc.)
+xdg-user-dirs                # Manages standard user directories (Downloads, Documents, etc.)
+yay                          # AUR helper built on top of pacman
+yazi                         # Terminal file manager with image preview support
+zapzap                       # WhatsApp desktop client (unofficial wrapper)
+zip                          # ZIP archive creation utility
+zoom                         # Zoom video conferencing client
+zoxide                       # Smart cd replacement that learns your frequently used dirs
+zram-generator               # Systemd unit generator for zram swap devices
+zsh                          # Z shell — feature-rich interactive shell
+zsh-completions              # Additional completion definitions for zsh

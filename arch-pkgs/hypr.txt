@@ -1,0 +1,31 @@
+awww                         # HyDE wallpaper switcher utility
+blueman                      # GTK Bluetooth manager GUI
+bluez                        # Linux Bluetooth protocol stack
+bluez-utils                  # Bluetooth CLI utilities (bluetoothctl, etc.)
+brightnessctl                # CLI tool to control screen/keyboard brightness
+grim                         # Wayland screenshot tool
+grimblast-git                # Wrapper around grim adding selection and annotation helpers
+hypridle                     # Hyprland idle daemon (triggers lock/sleep on inactivity)
+hyprland                     # Tiling Wayland compositor
+hyprlock                     # Hyprland screen locker
+hyprpaper                    # Hyprland wallpaper utility
+hyprpicker                   # Wayland color picker for Hyprland
+hyprsunset                   # Blue light filter / night mode for Hyprland
+linux                        # Vanilla upstream Linux kernel
+linux-firmware               # Firmware blobs for various hardware (Wi-Fi, GPU, etc.)
+linux-zen                    # Linux kernel with latency/desktop-tuned patches
+network-manager-applet       # System tray applet for NetworkManager
+networkmanager               # Network connection manager daemon
+nwg-displays                 # GUI monitor layout tool for wlroots-based compositors
+nwg-look                     # GTK settings editor for wlroots/Wayland environments
+pamixer                      # CLI PulseAudio/PipeWire volume mixer
+pavucontrol                  # PulseAudio/PipeWire GUI volume control
+playerctl                    # MPRIS media player CLI controller (play/pause/next)
+rofi                         # Application launcher and dmenu replacement
+sddm                         # Qt-based display/login manager
+slurp                        # Wayland region/window selection tool (used with grim)
+swaync                       # Notification center and daemon for Sway/Wayland
+uwsm                         # Universal Wayland Session Manager (manages compositor lifecycle)
+waybar                       # Highly customizable Wayland status bar
+wlogout                      # Wayland logout/lock/reboot/shutdown menu
+xdg-desktop-portal-hyprland  # XDG desktop portal backend for Hyprland (screen share, etc.)

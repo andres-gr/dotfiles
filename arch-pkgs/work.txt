@@ -1,16 +1,6 @@
-# Containers
-docker
-docker-desktop
-
-# JS runtimes & package managers
-bun-bin
-yarn-berry
-
-# Design tools
-inkscape
-
-# API clients
-insomnia-bin
-
-# AI
-claude-desktop-appimage
+claude-desktop-appimage      # Claude desktop app distributed as an AppImage
+docker                       # Container engine for building and running OCI containers
+docker-desktop               # Docker GUI app with integrated VM and Kubernetes support
+inkscape                     # Open-source vector graphics editor (SVG-native)
+insomnia-bin                 # REST/GraphQL/gRPC API client with environment and collection support
+yarn-berry                   # Yarn v2+ (Berry) — modern Node.js package manager with PnP support
