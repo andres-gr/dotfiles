@@ -151,7 +151,7 @@ N.config = function ()
       },
       follow_current_file = { enabled = true }, -- This will find and focus the file in the active buffer every
       -- time the current file is changed while the tree is open.
-      group_empty_dirs = true, -- when true, empty folders will be grouped together
+      group_empty_dirs = false, -- when true, empty folders will be grouped together
       -- hijack_netrw_behavior = 'open_default', -- netrw disabled, opening a directory opens neo-tree
       -- in whatever position is specified in window.position
       hijack_netrw_behavior = 'open_current', -- netrw disabled, opening a directory opens neo-tree
