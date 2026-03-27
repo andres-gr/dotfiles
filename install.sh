@@ -473,7 +473,7 @@ stow_selected() {
     [[ "$pkg" == "starship" ]] && starship_selected=true && break
   done
 
-  if $starship_selected; then
+  if $starship_selected && $HYDE_DETECTED; then
     apply_starship_mode
   fi
 

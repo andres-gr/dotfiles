@@ -1,6 +1,19 @@
-claude-desktop-appimage      # Claude desktop app distributed as an AppImage
+# ── Containers ────────────────────────────────────────────────────────────────
 docker                       # Container engine for building and running OCI containers
 docker-desktop               # Docker GUI app with integrated VM and Kubernetes support
-inkscape                     # Open-source vector graphics editor (SVG-native)
-insomnia-bin                 # REST/GraphQL/gRPC API client with environment and collection support
+
+# ── JS runtimes & package managers ───────────────────────────────────────────
 yarn-berry                   # Yarn v2+ (Berry) — modern Node.js package manager with PnP support
+
+# ── Design tools ──────────────────────────────────────────────────────────────
+inkscape                     # Open-source vector graphics editor (SVG-native)
+
+# ── API clients ───────────────────────────────────────────────────────────────
+insomnia-bin                 # REST/GraphQL/gRPC API client with environment and collection support
+
+# ── Comms ─────────────────────────────────────────────────────────────────────
+slack-desktop                # Slack messaging client
+zoom                         # Zoom video conferencing client
+
+# ── AI ────────────────────────────────────────────────────────────────────────
+claude-desktop-appimage      # Claude desktop app distributed as an AppImage

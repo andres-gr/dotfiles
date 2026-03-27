@@ -1,0 +1,158 @@
+# ── Compositor & Session ──────────────────────────────────────────────────────
+niri                         # Scrollable-tiling Wayland compositor
+greetd                       # Minimal, flexible login/session manager daemon
+xwayland-satellite           # Rootless XWayland for compositors that lack native X support
+
+# ── Shell / bar ───────────────────────────────────────────────────────────────
+quickshell-git               # Modular Wayland shell toolkit (QML-based, DMS bar backend)
+
+# ── Theming ───────────────────────────────────────────────────────────────────
+matugen                      # Material You color palette generator from wallpapers
+
+# ── CachyOS distro specifics ─────────────────────────────────────────────────
+cachyos-hooks                # CachyOS pacman hooks (kernel, initramfs automation)
+cachyos-keyring              # GPG keyring for the CachyOS repository
+cachyos-mirrorlist           # Mirror list for the CachyOS repository
+cachyos-plymouth-bootanimation # CachyOS branded Plymouth boot animation
+cachyos-rate-mirrors         # Tool to rank and select the fastest CachyOS mirrors
+cachyos-settings             # CachyOS system defaults and sysctl/udev tuning
+cachyos-v3-mirrorlist        # CachyOS mirror list for x86-64-v3 optimized packages
+cachyos-v4-mirrorlist        # CachyOS mirror list for x86-64-v4 optimized packages
+chwd                         # CachyOS hardware detection tool (auto-installs drivers)
+rebuild-detector             # Detects packages needing rebuild after library updates
+reflector                    # Auto-selects fastest Arch mirrors by speed/age
+
+# ── Kernel ────────────────────────────────────────────────────────────────────
+linux-cachyos                # CachyOS optimized Linux kernel (BORE scheduler, etc.)
+linux-cachyos-headers        # Headers for the linux-cachyos kernel
+linux-cachyos-lts            # CachyOS LTS kernel variant
+linux-cachyos-lts-headers    # Headers for the linux-cachyos-lts kernel
+mkinitcpio                   # Initramfs generation tool for Arch Linux
+plymouth                     # Graphical boot splash screen
+
+# ── Boot & system ─────────────────────────────────────────────────────────────
+accountsservice              # D-Bus service for user account management
+cryptsetup                   # LUKS disk encryption tool
+device-mapper                # Kernel device-mapper userspace tools (LVM, LUKS dependency)
+diffutils                    # File comparison utilities (diff, cmp, patch)
+dmidecode                    # Reads hardware info from BIOS/UEFI (DMI/SMBIOS)
+dmraid                       # Device-mapper RAID activation tool
+efitools                     # Tools for managing UEFI Secure Boot keys
+hwdetect                     # Hardware detection script used during installation
+hwinfo                       # Detailed hardware information tool
+inetutils                    # Basic network utilities (ftp, telnet, hostname, etc.)
+iptables-nft                 # iptables using nftables backend (modern firewall)
+logrotate                    # Log file rotation and compression utility
+lsb-release                  # Provides lsb_release for distro identification
+lvm2                         # Logical Volume Manager 2 utilities
+mdadm                        # Software RAID management tool
+mtools                       # Utilities for accessing FAT filesystems without mounting
+netctl                       # Profile-based network configuration tool
+os-prober                    # Detects other OSes for GRUB multi-boot entries
+perl                         # Perl scripting language runtime
+pkgfile                      # Searches which package owns a file (pkgfile <cmd>)
+plocate                      # Fast file locate database and search tool
+power-profiles-daemon        # D-Bus daemon for switching power profiles (balanced/performance)
+python                       # Python 3 interpreter
+python-defusedxml            # Python library for safe XML parsing (prevents XXE attacks)
+python-packaging             # Python packaging utilities library
+s-nail                       # POSIX mailx implementation for sending email from CLI
+sg3_utils                    # Utilities for SCSI devices
+smartmontools                # S.M.A.R.T. disk health monitoring tools
+speech-dispatcher            # Common interface for text-to-speech (TTS) engines
+sysfsutils                   # Utilities for the sysfs virtual filesystem
+systemd-boot-manager         # Tool for managing systemd-boot entries
+texinfo                      # GNU documentation format and info page tools
+ufw                          # Uncomplicated Firewall — iptables frontend
+ufw-extras                   # Extra UFW application profiles
+upower                       # D-Bus daemon for power/battery info
+usb_modeswitch               # Switches USB dongles from storage to modem mode
+which                        # Locates executables in PATH
+xl2tpd                       # L2TP VPN daemon
+
+# ── Filesystem tools ──────────────────────────────────────────────────────────
+btrfs-progs                  # Btrfs filesystem utilities (mkfs, scrub, snapshot, etc.)
+dosfstools                   # FAT filesystem utilities (mkfs.fat, fsck.fat)
+duf                          # Disk usage viewer with a cleaner output than df
+e2fsprogs                    # ext2/3/4 filesystem utilities (fsck, mkfs, tune2fs)
+exfatprogs                   # exFAT filesystem utilities (mkfs.exfat, fsck.exfat)
+f2fs-tools                   # Flash-Friendly File System utilities
+fsarchiver                   # Filesystem archiver supporting multiple FS types
+hdparm                       # Hard disk tuning and diagnostics utility
+jfsutils                     # JFS filesystem utilities
+lsscsi                       # Lists SCSI/SATA devices
+nilfs-utils                  # NILFS2 continuous snapshot filesystem utilities
+nfs-utils                    # NFS client/server utilities
+pv                           # Pipeline progress monitor (pipe viewer)
+xfsprogs                     # XFS filesystem utilities
+
+# ── Hardware & drivers ────────────────────────────────────────────────────────
+alsa-firmware                # Firmware for ALSA-supported audio hardware
+alsa-plugins                 # Extra ALSA plugins (resampling, format conversion, etc.)
+alsa-utils                   # ALSA CLI utilities (alsamixer, aplay, amixer, etc.)
+broadcom-wl-dkms             # Broadcom Wi-Fi driver (DKMS, for BCM chips)
+cpupower                     # CPU frequency scaling utility
+ethtool                      # Network interface diagnostics and tuning tool
+modemmanager                 # Mobile broadband (LTE/3G) connection manager
+
+# ── GPU & Graphics ────────────────────────────────────────────────────────────
+lib32-mesa                   # 32-bit Mesa OpenGL/Vulkan library (needed for 32-bit apps/games)
+lib32-opencl-mesa            # 32-bit Mesa OpenCL runtime
+lib32-vulkan-radeon          # 32-bit Vulkan driver for AMD GPUs (RADV)
+libdvdcss                    # Library for decrypting encrypted DVDs
+mesa                         # Open-source OpenGL/Vulkan implementation
+opencl-mesa                  # Mesa OpenCL runtime (CLOVER/RustiCL)
+vulkan-headers               # Vulkan API header files
+wayland-protocols            # Wayland extension protocol specifications
+xf86-video-amdgpu            # Xorg DDX driver for AMD GPUs (used as fallback)
+
+# ── Bluetooth (protocol only — DMS bar handles UI) ────────────────────────────
+bluez-hid2hci                # Moves BT HID devices from USB to HCI (laptop BT fix)
+bluez-libs                   # Bluetooth development libraries
+bluez-obex                   # Bluetooth OBEX file transfer support
+
+# ── GStreamer (extended) ──────────────────────────────────────────────────────
+gst-libav                    # GStreamer FFmpeg/libav plugin for broad codec support
+gst-plugin-va                # GStreamer VA-API plugin for GPU-accelerated video decode
+gst-plugins-bad              # GStreamer plugins of varying quality/completeness
+gst-plugins-ugly             # GStreamer plugins with patent or distribution concerns
+
+# ── Networking extras ─────────────────────────────────────────────────────────
+bind                         # DNS utilities including dig and nslookup
+dnsmasq                      # Lightweight DNS/DHCP server
+networkmanager-openvpn       # OpenVPN plugin for NetworkManager
+nss-mdns                     # NSS plugin for mDNS/Bonjour hostname resolution
+
+# ── File manager ──────────────────────────────────────────────────────────────
+nemo                         # Cinnamon file manager (GTK, feature-rich)
+ffmpegthumbnailer            # FFmpeg-based video thumbnail generator
+gnome-keyring                # GNOME keyring daemon for storing credentials/secrets
+libgsf                       # GNOME structured file library (OLE/compound doc support)
+libopenraw                   # Library for decoding camera RAW image files
+poppler-glib                 # GLib bindings for the Poppler PDF rendering library
+
+# ── Portals ───────────────────────────────────────────────────────────────────
+xdg-desktop-portal-gnome     # XDG portal backend for GNOME (file chooser, screen share)
+xdg-utils                    # XDG CLI utilities (xdg-open, xdg-mime, etc.)
+
+# ── Qt6 (niri/quickshell) ────────────────────────────────────────────────────
+qt6-multimedia-ffmpeg        # Qt6 multimedia backend using FFmpeg
+qt6-svg                      # Qt6 SVG rendering module
+
+# ── Misc tools ────────────────────────────────────────────────────────────────
+bash-completion              # Tab completion definitions for bash
+cava                         # Console-based audio visualizer
+cli11                        # C++ CLI argument parsing library
+cpptrace                     # C++ stack trace library
+dgop                         # Desktop/GUI operation helper utility
+glances                      # Cross-platform system monitoring tool (htop alternative)
+go                           # Go programming language toolchain
+hunspell                     # Spell-checking library and CLI
+hunspell-en_us               # English (US) dictionary for Hunspell
+less                         # Terminal pager for scrolling through output
+meld                         # Visual diff and merge tool (GUI)
+micro                        # Modern terminal text editor with familiar keybindings
+nano-syntax-highlighting     # Syntax highlighting definitions for nano
+shelly                       # Shell script helper/runner utility
+unrar                        # RAR archive extraction utility
+vlc-plugins-all              # Full set of VLC media player plugins
