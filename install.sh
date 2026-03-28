@@ -49,6 +49,9 @@ NIRI_DETECTED=false
 # DMS (Dank Material Shell) — populated by detect_de()
 DMS_DETECTED=false
 
+# Hyprland — populated by detect_de()
+HYPRLAND_DETECTED=false
+
 # Starship — resolved by prompt_starship_mode()
 STARSHIP_MODE="dotfiles"   # dotfiles | hyde | env
 
@@ -229,12 +232,20 @@ detect_de() {
   if command -v dms-shell &>/dev/null || command -v dmsctl &>/dev/null; then
     DMS_DETECTED=true
   fi
+
+  # Check for plain Hyprland (NOT HyDE - HyDE takes precedence)
+  # Detect if Hyprland or hyprctl command exists
+  if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
+    HYPRLAND_DETECTED=true
+  fi
   
   # Determine DE_TYPE based on detections
   if $HYDE_DETECTED; then
     DE_TYPE="hyde"
   elif $NIRI_DETECTED; then
     DE_TYPE="niri"
+  elif $HYPRLAND_DETECTED; then
+    DE_TYPE="hyprland"
   else
     DE_TYPE="none"
   fi
@@ -252,6 +263,9 @@ detect_de() {
   fi
   if $DMS_DETECTED; then
     ok "DMS (Dank Material Shell) detected"
+  fi
+  if $HYPRLAND_DETECTED; then
+    ok "Hyprland detected"
   fi
   if [[ "$DE_TYPE" == "none" ]]; then
     log "No specific DE/WM detected — using plain dotfiles mode"
@@ -389,12 +403,40 @@ select_arch_packages() {
     niri)
       arch_pkgs+=("${ARCH_NIRI_PKGS[@]}")
       ;;
+    hyprland)
+      # Plain Hyprland uses the same packages as HyDE
+      arch_pkgs+=("${ARCH_HYDE_PKGS[@]}")
+      ;;
     none)
       # No DE-specific packages - just common
       ;;
   esac
   
   printf '%s\n' "${arch_pkgs[@]}"
+}
+
+# select_arch_pkg_files - Determine which Arch package lists to use based on DE_TYPE
+# Sets: ARCH_PKG_FILES (global array)
+select_arch_pkg_files() {
+  # Default: core.txt, aur.txt, work.txt
+  local -a pkg_files=(core.txt aur.txt work.txt)
+
+  case "$DE_TYPE" in
+    hyde|hyprland)
+      # HyDE or Plain Hyprland: add hypr-core.txt
+      pkg_files+=(hypr-core.txt)
+      ;;
+    niri)
+      # Niri: include both niri-specific and generic packages
+      # User can choose niri-core.txt + niri-aur.txt OR core.txt + aur.txt + work.txt
+      pkg_files+=(niri-core.txt niri-aur.txt)
+      ;;
+    none)
+      # No WM: just default (already set)
+      ;;
+  esac
+
+  ARCH_PKG_FILES=("${pkg_files[@]}")
 }
 
 unstow_all() {
@@ -867,16 +909,45 @@ interactive_mode() {
   fi
 
   # ── Stow packages ─────────────────────────────────────────────────────────
+  # Build the list of available stow packages based on OS and detected WM
   local -a all_stow=("${BASE_STOW_PKGS[@]}")
   [[ "$OS" == "macos" ]] && all_stow+=("${MACOS_STOW_PKGS[@]}")
+
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-    # For Arch, show all arch packages (common + DE-specific)
-    all_stow+=("${ARCH_COMMON_PKGS[@]}" "${ARCH_HYDE_PKGS[@]}" "${ARCH_NIRI_PKGS[@]}")
+    # Always include arch-common for Arch/CachyOS
+    all_stow+=("${ARCH_COMMON_PKGS[@]}")
+
+    # Add WM-specific packages based on detected DE_TYPE
+    case "$DE_TYPE" in
+      hyde)
+        all_stow+=("${ARCH_HYDE_PKGS[@]}")
+        ;;
+      niri)
+        all_stow+=("${ARCH_NIRI_PKGS[@]}")
+        ;;
+      hyprland|none)
+        # Plain Hyprland or no WM - no additional stow packages needed
+        ;;
+    esac
   fi
 
   printf '\n'
+  # Show accurate hint based on detected WM
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-    log "Hint: Select arch-common + your WM package (arch-hyde for Hyprland, arch-niri for Niri)"
+    case "$DE_TYPE" in
+      hyde)
+        log "Hint: Select arch-common + arch-hyde"
+        ;;
+      niri)
+        log "Hint: Select arch-common + arch-niri"
+        ;;
+      hyprland)
+        log "Hint: Select arch-common"
+        ;;
+      none)
+        log "Hint: Select arch-common (no WM detected)"
+        ;;
+    esac
   fi
   local sel
   sel="$(interactive_select --exit "${all_stow[@]}")"
@@ -1065,6 +1136,11 @@ main() {
 
   detect_os
   detect_de
+
+  # Build dynamic ARCH_PKG_FILES based on detected WM
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+    select_arch_pkg_files
+  fi
 
   # Log final detection state
   log "Distro: ${DISTRO_ID:-${OS}}, DE/VM: ${DE_TYPE}"
