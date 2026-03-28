@@ -23,12 +23,12 @@ install_tpm() {
 # Creates platform-specific overrides for Ghostty terminal
 ###############################################################################
 
-install_ghostty_arch_config() {
+install_ghostty_misc_config() {
   local ghostty_config_dir="$HOME/.config/ghostty"
-  local arch_config="$ghostty_config_dir/arch-config"
+  local misc_config="$ghostty_config_dir/misc-config"
 
   if [[ ! -d "$ghostty_config_dir" ]]; then
-    log "Ghostty config directory not found — skipping arch-config"
+    log "Ghostty config directory not found — skipping misc-config"
     return
   fi
 
@@ -39,28 +39,45 @@ install_ghostty_arch_config() {
   fi
 
   if $is_arch; then
-    log "Creating Ghostty Arch overrides: $arch_config"
+    log "Creating Ghostty Arch overrides: $misc_config"
     run mkdir -p "$ghostty_config_dir"
     if $DRY_RUN; then
-      log "[dry-run] would write to $arch_config:"
-      log "  background-opacity = 1"
+      log "[dry-run] would write to $misc_config:"
       log "  background-blur = 0"
+      log "  background-opacity = 1"
       log "  font-size = 11"
+      log "  gtk-single-instance = true"
+      log "  gtk-titlebar = false"
       log "  keybind = ctrl+enter=unbind"
+      log "  keybind = shift+enter=text:\n"
+      log "  shell-integration = detect"
+      log "  shell-integration-features = cursor,sudo,title,no-cursor"
+      log "  window-decoration = false"
     else
-      printf 'background-opacity = 1\nbackground-blur = 0\nfont-size = 11\nkeybind = ctrl+enter=unbind' > "$arch_config"
-      ok "  wrote $arch_config"
+      cat > "$misc_config" <<'EOF'
+background-blur = 0
+background-opacity = 1
+font-size = 11
+gtk-single-instance = true
+gtk-titlebar = false
+keybind = ctrl+enter=unbind
+keybind = shift+enter=text:\n
+shell-integration = detect
+shell-integration-features = cursor,sudo,title,no-cursor
+window-decoration = false
+EOF
+      ok "  wrote $misc_config"
     fi
   else
     # For macOS or other systems, create empty file if it doesn't exist
     run mkdir -p "$ghostty_config_dir"
-    if [[ ! -e "$arch_config" ]]; then
+    if [[ ! -e "$misc_config" ]]; then
       if $DRY_RUN; then
-        log "[dry-run] would create empty file at $arch_config:"
-        log "  touch $arch_config"
+        log "[dry-run] would create empty file at $misc_config:"
+        log "  touch $misc_config"
       else
-        log "Creating empty Ghostty arch-config for macOS"
-        run touch "$arch_config"
+        log "Creating empty Ghostty misc-config for macOS"
+        run touch "$misc_config"
       fi
     fi
   fi
@@ -149,7 +166,7 @@ install_arch_patch_services() {
 
 common_patches() {
   install_tpm
-  install_ghostty_arch_config
+  install_ghostty_misc_config
   apply_arch_patch_dconf
   install_arch_patch_services
 }

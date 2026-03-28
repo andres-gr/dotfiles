@@ -61,9 +61,11 @@ mouse-hide-while-typing = true
 
 macos-icon = custom
 
+app-notifications = no-clipboard-copy
+
 config-file = shaders-config
 
-### Arch specific overrides ###
-config-file = arch-config
+### Misc specific overrides ###
+config-file = misc-config
 
 ### Misc end ###
