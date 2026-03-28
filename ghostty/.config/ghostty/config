@@ -53,6 +53,10 @@ cursor-style-blink = true
 quit-after-last-window-closed = true
 quit-after-last-window-closed-delay = 1s
 
+clipboard-paste-protection = false
+clipboard-read = allow
+clipboard-write = allow
+
 mouse-hide-while-typing = true
 
 macos-icon = custom
