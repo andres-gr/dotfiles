@@ -46,6 +46,9 @@ HYDE_CTL_BIN=""     # full path to hydectl binary
 # Niri — populated by detect_de()
 NIRI_DETECTED=false
 
+# DMS (Dank Material Shell) — populated by detect_de()
+DMS_DETECTED=false
+
 # Starship — resolved by prompt_starship_mode()
 STARSHIP_MODE="dotfiles"   # dotfiles | hyde | env
 
@@ -221,6 +224,11 @@ detect_de() {
   if command -v niri &>/dev/null && [[ -d "$HOME/.config/niri" || -d "/etc/niri" ]]; then
     NIRI_DETECTED=true
   fi
+
+  # Check for DMS (Dank Material Shell) - can run alongside Hyprland or Niri
+  if command -v dms-shell &>/dev/null || command -v dmsctl &>/dev/null; then
+    DMS_DETECTED=true
+  fi
   
   # Determine DE_TYPE based on detections
   if $HYDE_DETECTED; then
@@ -241,6 +249,9 @@ detect_de() {
   fi
   if $NIRI_DETECTED; then
     ok "Niri detected"
+  fi
+  if $DMS_DETECTED; then
+    ok "DMS (Dank Material Shell) detected"
   fi
   if [[ "$DE_TYPE" == "none" ]]; then
     log "No specific DE/WM detected — using plain dotfiles mode"
@@ -527,48 +538,26 @@ install_gitconfig_task() {
 post_install_task() {
   step "Post-install"
 
-  # TPM
-  if command -v tmux &>/dev/null; then
-    if [[ ! -d "$HOME/.tmux/plugins/tpm" ]]; then
-      log "Installing TPM"
-      run git clone https://github.com/tmux-plugins/tpm "$HOME/.tmux/plugins/tpm"
-    else
-      log "TPM already installed"
-    fi
+  # Source and run common patches (generic Arch/Linux)
+  source "$DOTFILES_DIR/scripts/patches/common.sh"
+  common_patches
+
+  # Hyprland patches (also covers HyDE which uses Hyprland)
+  if $HYDE_DETECTED || command -v hyprctl &>/dev/null; then
+    source "$DOTFILES_DIR/scripts/patches/hyprland.sh"
+    hyprland_patches
   fi
 
-  # Ghostty: create arch-config overrides for Arch Linux
-  local ghostty_config_dir="$HOME/.config/ghostty"
-  local arch_config="$ghostty_config_dir/arch-config"
-  if [[ -d "$ghostty_config_dir" ]]; then
-    if $HYDE_DETECTED; then
-      log "Creating Ghostty Arch overrides: $arch_config"
-      run mkdir -p "$ghostty_config_dir"
-      if $DRY_RUN; then
-        log "[dry-run] would write to $arch_config:"
-        log "  background-opacity = 1"
-        log "  background-blur = 0"
-        log "  font-size = 11"
-        log "  keybind = ctrl+enter=unbind"
-      else
-        printf 'background-opacity = 1\nbackground-blur = 0\nfont-size = 11\nkeybind = ctrl+enter=unbind' > "$arch_config"
-        ok "  wrote $arch_config"
-      fi
-    else
-      # For macOS, create an empty file if it doesn't exist
-      run mkdir -p "$ghostty_config_dir"
-      if [[ ! -e "$arch_config" ]]; then
-        if $DRY_RUN; then
-          log "[dry-run] would create empty file at $arch_config:"
-          log "  touch $arch_config"
-        else
-          log "Creating empty Ghostty arch-config for macOS"
-          run touch "$arch_config"
-        fi
-      fi
-    fi
-  else
-    log "Ghostty config directory not found — skipping arch-config"
+  # Niri patches
+  if $NIRI_DETECTED; then
+    source "$DOTFILES_DIR/scripts/patches/niri.sh"
+    niri_patches
+  fi
+
+  # DMS (Dank Material Shell) patches - can run alongside Hyprland or Niri
+  if $DMS_DETECTED; then
+    source "$DOTFILES_DIR/scripts/patches/dms.sh"
+    dms_patches
   fi
 
   # HyDE-specific post-install steps (in scripts/hyde-patches.sh)
