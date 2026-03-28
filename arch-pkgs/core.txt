@@ -1,4 +1,5 @@
 # ── Shell & Terminal ──────────────────────────────────────────────────────────
+7zip                         # 7zip compression program
 bat                          # Cat clone with syntax highlighting and git integration
 btop                         # Terminal resource monitor (CPU, RAM, disk, network)
 c-lolcat                     # Colorizes terminal output with a rainbow gradient
@@ -13,6 +14,7 @@ kitty                        # GPU-accelerated terminal emulator
 lazygit                      # Terminal UI for git
 nano                         # Simple terminal text editor
 parallel                     # GNU parallel — run shell commands concurrently
+resvg                        # SVG rendering library
 ripgrep                      # Extremely fast recursive grep tool
 rsync                        # Fast, incremental file transfer and sync tool
 socat                        # Multipurpose socket relay tool
@@ -48,7 +50,7 @@ sudo                         # Run commands as another user (typically root)
 unzip                        # ZIP archive extraction utility
 usbutils                     # USB device utilities (lsusb, etc.)
 wpa_supplicant               # WPA/WPA2 wireless authentication daemon
-yay                          # AUR helper built on top of pacman
+yay-bin                      # AUR helper built on top of pacman
 zip                          # ZIP archive creation utility
 zram-generator               # Systemd unit generator for zram swap devices
 
@@ -129,8 +131,6 @@ mpv                          # Lightweight, scriptable media player
 nomacs                       # Lightweight image viewer
 opencode-desktop-bin         # OpenCode AI coding assistant desktop app
 qbittorrent                  # Open-source Qt BitTorrent client
-spicetify-cli                # CLI tool to customize the Spotify desktop client
-spicetify-marketplace-bin    # In-app marketplace for Spicetify themes and extensions
 spotify                      # Spotify desktop music streaming client
 visual-studio-code-bin       # Microsoft VS Code editor (proprietary binary build)
 zapzap                       # WhatsApp desktop client (unofficial wrapper)
