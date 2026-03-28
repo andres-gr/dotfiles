@@ -349,7 +349,7 @@ detect_hyde() {
 # backup_path PATH
 #   Copies PATH → PATH.bak.<timestamp> unless PATH is already a stow symlink
 #   pointing back into our dotfiles tree.
-# Note: backup_hyde_zsh lives in scripts/hyde-patches.sh
+# Note: backup_hyde_zsh lives in scripts/patches/hyde.sh
 backup_path() {
   local target="$1"
   [[ -e "$target" || -L "$target" ]] || return 0
@@ -471,7 +471,7 @@ unstow_all() {
 }
 
 ###############################################################################
-# Helpers (used by hyde-patches.sh and install.sh)
+# Helpers (used by scripts/patches/hyde.sh and install.sh)
 ###############################################################################
 
 # _remove_from_stow PKG — removes PKG from STOW_SELECTED in-place
@@ -619,7 +619,7 @@ post_install_task() {
     dms_patches
   fi
 
-  # HyDE-specific post-install steps (in scripts/hyde-patches.sh)
+  # HyDE-specific post-install steps (in scripts/patches/hyde.sh)
   $HYDE_DETECTED && hyde_post_install
 }
 
@@ -667,7 +667,7 @@ stow_selected() {
     apply_starship_mode
   fi
 
-  # Patch HyDE's user.zsh and plugin.zsh (idempotent, in scripts/hyde-patches.sh)
+  # Patch HyDE's user.zsh and plugin.zsh (idempotent, in scripts/patches/hyde.sh)
   if $HYDE_DETECTED; then
     patch_user_zsh
     patch_plugin_zsh
@@ -1191,12 +1191,12 @@ main() {
 
   # Source HyDE-specific patches when HyDE is present
   if $HYDE_DETECTED; then
-    local patches="$DOTFILES_DIR/scripts/hyde-patches.sh"
+    local patches="$DOTFILES_DIR/scripts/patches/hyde.sh"
     if [[ -f "$patches" ]]; then
-      # shellcheck source=scripts/hyde-patches.sh
+      # shellcheck source=scripts/patches/hyde.sh
       source "$patches"
     else
-      warn "scripts/hyde-patches.sh not found — HyDE patches unavailable"
+      warn "scripts/patches/hyde.sh not found — HyDE patches unavailable"
     fi
   fi
 

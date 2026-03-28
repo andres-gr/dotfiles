@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# scripts/hyde-patches.sh — HyDE-specific install patches
+# scripts/patches/hyde.sh — HyDE-specific install patches
 # Sourced by install.sh when HYDE_DETECTED=true.
 # Inherits all globals and helpers from install.sh.
 
@@ -236,12 +236,8 @@ cleanup_hyde_patches() {
 ###############################################################################
 
 hyde_post_install() {
-  # Hyprland reload (only inside active session)
-  if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
-    log "Hyprland session active — reloading config"
-    run hyprctl reload 2>/dev/null || warn "hyprctl reload failed (non-fatal)"
-    command -v pkill &>/dev/null && run pkill -SIGUSR2 waybar 2>/dev/null || true
-  fi
+  # Hyprland reload is now handled by scripts/patches/hyprland.sh
+  # (called from post_install_task in install.sh)
 
   # HyDE theme reload
   if [[ -n "$HYDE_SHELL_BIN" ]]; then
