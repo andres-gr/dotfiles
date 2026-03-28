@@ -26,7 +26,9 @@ IFS=$'\n\t'
 ###############################################################################
 
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-OS=""
+OS=""                  # "macos" | "arch" | "cachyos"
+DISTRO_ID=""           # "arch" | "cachyos" (for Linux)
+DE_TYPE=""             # "hyde" | "niri" | "none"
 DRY_RUN=false
 UNINSTALL=false
 INTERACTIVE=false
@@ -36,10 +38,13 @@ STOW_SELECTED=()
 BREW_SELECTED=()
 ARCH_SELECTED=()
 
-# HyDE — populated by detect_hyde()
+# HyDE — populated by detect_de()
 HYDE_DETECTED=false
 HYDE_SHELL_BIN=""   # full path to hyde-shell binary
 HYDE_CTL_BIN=""     # full path to hydectl binary
+
+# Niri — populated by detect_de()
+NIRI_DETECTED=false
 
 # Starship — resolved by prompt_starship_mode()
 STARSHIP_MODE="dotfiles"   # dotfiles | hyde | env
@@ -53,7 +58,14 @@ BKP_TS="$(date +%Y%m%d_%H%M%S)"
 
 BASE_STOW_PKGS=(bat eza ghostty lazygit local nvim starship tmux zsh)
 MACOS_STOW_PKGS=(macos)
-ARCH_STOW_PKGS=(arch-linux)
+
+# Arch Linux stow packages (selected based on DE_TYPE)
+ARCH_COMMON_PKGS=(arch-common)
+ARCH_HYDE_PKGS=(arch-hyde)
+ARCH_NIRI_PKGS=(arch-niri)
+
+# For backward compatibility - will be dynamically selected in selection logic
+ARCH_STOW_PKGS=()
 
 BREW_FILES=(
   Brewfile.taps
@@ -117,12 +129,37 @@ detect_os() {
   case "$(uname -s)" in
     Darwin)
       OS="macos"
+      DISTRO_ID="macos"
       ;;
     Linux)
-      if grep -qi "arch" /etc/os-release 2>/dev/null; then
-        OS="arch"
+      # Detect specific distro from /etc/os-release
+      if [[ -f /etc/os-release ]]; then
+        # Source os-release to get ID and ID_LIKE
+        # shellcheck disable=SC1091
+        source /etc/os-release
+        DISTRO_ID="$ID"
+        
+        # Check if it's a derivative (CachyOS, EndeavourOS, etc.)
+        case "$ID" in
+          cachyos)
+            OS="cachyos"
+            ;;
+          arch|endeavouros)
+            OS="arch"
+            ;;
+          *)
+            # Check ID_LIKE for Arch-based distros
+            if echo "$ID_LIKE" | grep -qi "arch"; then
+              OS="arch"
+              DISTRO_ID="$ID"  # Keep original ID for package selection
+            else
+              err "Unsupported Linux distro: $ID (only Arch-based distros are supported)"
+              exit 1
+            fi
+            ;;
+        esac
       else
-        err "Unsupported Linux distro (only Arch is supported)"
+        err "Cannot detect distro: /etc/os-release not found"
         exit 1
       fi
       ;;
@@ -131,12 +168,89 @@ detect_os() {
       exit 1
       ;;
   esac
-  log "Detected OS: $OS"
+  log "Detected OS: $OS (distro: ${DISTRO_ID:-unknown})"
 }
 
 ###############################################################################
-# HyDE detection
+# Desktop Environment / Window Manager detection
 ###############################################################################
+
+# detect_de - Detect desktop environment and window manager
+# Sets: DE_TYPE ("hyde" | "niri" | "none"), HYDE_DETECTED, NIRI_DETECTED
+detect_de() {
+  local zdotdir="${ZDOTDIR:-$HOME/.config/zsh}"
+  
+  # Check for HyDE (Hyprland Development Environment)
+  local hyde_zsh_dir="$zdotdir/conf.d/hyde"
+  local hyde_config_dir="$HOME/.config/hyde"
+  
+  # Locate hyde-shell binary
+  local -a hyde_shell_candidates
+  mapfile -t hyde_shell_candidates < <(
+    command -v hyde-shell 2>/dev/null || true
+    printf '%s\n' \
+      "$HOME/.local/bin/hyde-shell" \
+      "/usr/local/bin/hyde-shell"
+  )
+  
+  for c in "${hyde_shell_candidates[@]}"; do
+    [[ -x "$c" ]] && { HYDE_SHELL_BIN="$c"; break; }
+  done
+  
+  # Locate hydectl binary
+  local -a hyde_ctl_candidates
+  mapfile -t hyde_ctl_candidates < <(
+    command -v hydectl 2>/dev/null || true
+    printf '%s\n' \
+      "$HOME/.local/bin/hydectl" \
+      "/usr/local/bin/hydectl"
+  )
+  
+  for c in "${hyde_ctl_candidates[@]}"; do
+    [[ -x "$c" ]] && { HYDE_CTL_BIN="$c"; break; }
+  done
+  
+  # Detect HyDE presence
+  if [[ -d "$hyde_zsh_dir" ]]; then
+    HYDE_DETECTED=true
+  elif [[ -n "$HYDE_SHELL_BIN" && -d "$hyde_config_dir" ]]; then
+    HYDE_DETECTED=true
+  fi
+  
+  # Check for Niri compositor
+  if command -v niri &>/dev/null && [[ -d "$HOME/.config/niri" || -d "/etc/niri" ]]; then
+    NIRI_DETECTED=true
+  fi
+  
+  # Determine DE_TYPE based on detections
+  if $HYDE_DETECTED; then
+    DE_TYPE="hyde"
+  elif $NIRI_DETECTED; then
+    DE_TYPE="niri"
+  else
+    DE_TYPE="none"
+  fi
+  
+  # Log detection results
+  log "Desktop environment: ${DE_TYPE}"
+  if $HYDE_DETECTED; then
+    ok "HyDE detected"
+    [[ -n "$HYDE_SHELL_BIN" ]] && log "  hyde-shell → $HYDE_SHELL_BIN"
+    [[ -n "$HYDE_CTL_BIN"   ]] && log "  hydectl    → $HYDE_CTL_BIN"
+    [[ -z "$HYDE_SHELL_BIN" ]] && warn "hyde-shell not found in PATH — CLI features may be limited"
+  fi
+  if $NIRI_DETECTED; then
+    ok "Niri detected"
+  fi
+  if [[ "$DE_TYPE" == "none" ]]; then
+    log "No specific DE/WM detected — using plain dotfiles mode"
+  fi
+}
+
+# Kept for backward compatibility - wraps detect_de
+detect_hyde() {
+  detect_de
+}
 
 detect_hyde() {
   # Locate hyde-shell — check PATH first, then well-known fallbacks
@@ -253,11 +367,32 @@ stow_packages() {
   done
 }
 
+# select_arch_packages - Determine which Arch stow packages to use based on DE_TYPE
+select_arch_packages() {
+  local -a arch_pkgs=("${ARCH_COMMON_PKGS[@]}")
+  
+  case "$DE_TYPE" in
+    hyde)
+      arch_pkgs+=("${ARCH_HYDE_PKGS[@]}")
+      ;;
+    niri)
+      arch_pkgs+=("${ARCH_NIRI_PKGS[@]}")
+      ;;
+    none)
+      # No DE-specific packages - just common
+      ;;
+  esac
+  
+  printf '%s\n' "${arch_pkgs[@]}"
+}
+
 unstow_all() {
   local -a all=(
     "${BASE_STOW_PKGS[@]}"
     "${MACOS_STOW_PKGS[@]}"
-    "${ARCH_STOW_PKGS[@]}"
+    "${ARCH_COMMON_PKGS[@]}"
+    "${ARCH_HYDE_PKGS[@]}"
+    "${ARCH_NIRI_PKGS[@]}"
   )
   for pkg in "${all[@]}"; do
     # Silently ignore packages that were never stowed
@@ -508,8 +643,10 @@ dry_run_summary() {
 
   step "Dry Run Summary"
 
-  printf "  OS: %s\n" "$OS"
+  printf "  OS: %s (distro: %s)\n" "$OS" "${DISTRO_ID:-unknown}"
+  printf "  DE/VM type: %s\n" "${DE_TYPE:-none}"
   printf "  HyDE detected: %s\n" "$HYDE_DETECTED"
+  printf "  Niri detected: %s\n" "$NIRI_DETECTED"
 
   # Starship context
   local starship_selected=false
@@ -625,12 +762,15 @@ interactive_mode() {
     warn "Dry-run: registering all tasks (no prompts)"
     STOW_SELECTED=("${BASE_STOW_PKGS[@]}")
     [[ "$OS" == "macos" ]] && STOW_SELECTED+=("${MACOS_STOW_PKGS[@]}")
-    [[ "$OS" == "arch"  ]] && STOW_SELECTED+=("${ARCH_STOW_PKGS[@]}")
+    if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+      mapfile -t STOW_SELECTED_ARCH < <(select_arch_packages)
+      STOW_SELECTED+=("${STOW_SELECTED_ARCH[@]}")
+    fi
     register_task "stow_selected"
     if [[ "$OS" == "macos" ]]; then
       BREW_SELECTED=("${BREW_FILES[@]}")
       register_task "brew_selected"
-    elif [[ "$OS" == "arch" ]]; then
+    elif [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
       ARCH_SELECTED=("${ARCH_PKG_FILES[@]}")
       register_task "arch_selected"
     fi
@@ -643,10 +783,16 @@ interactive_mode() {
   # ── Stow packages ─────────────────────────────────────────────────────────
   local -a all_stow=("${BASE_STOW_PKGS[@]}")
   [[ "$OS" == "macos" ]] && all_stow+=("${MACOS_STOW_PKGS[@]}")
-  [[ "$OS" == "arch"  ]] && all_stow+=("${ARCH_STOW_PKGS[@]}")
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+    # For Arch, show all arch packages (common + DE-specific)
+    all_stow+=("${ARCH_COMMON_PKGS[@]}" "${ARCH_HYDE_PKGS[@]}" "${ARCH_NIRI_PKGS[@]}")
+  fi
 
   printf '\n'
   log "Select packages to stow (Tab/Space = toggle, Enter = confirm, Esc = skip):"
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+    log "  Hint: Select arch-common + your WM package (arch-hyde for Hyprland, arch-niri for Niri)"
+  fi
   local sel
   sel="$(interactive_select "${all_stow[@]}")"
 
@@ -686,7 +832,7 @@ interactive_mode() {
     fi
   fi
 
-  if [[ "$OS" == "arch" ]]; then
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
     printf '\n'
     log "Select Arch package lists to install:"
     local asel
@@ -710,8 +856,8 @@ interactive_mode() {
   read -rp "  Run post-install tasks (TPM, HyDE reload)? (y/N): " ans
   [[ "${ans:-n}" =~ ^[Yy]$ ]] && register_task "post_install_task"
 
-  # HyDE config.toml seed (arch + HyDE only, automatic — no prompt needed)
-  if [[ "$OS" == "arch" ]] && $HYDE_DETECTED; then
+  # HyDE config.toml seed (arch/cachyos + HyDE only, automatic — no prompt needed)
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]] && $HYDE_DETECTED; then
     register_task "hyde_seed_config"
   fi
 }
@@ -806,7 +952,10 @@ default_base() {
   step "Default base install"
   STOW_SELECTED=("${BASE_STOW_PKGS[@]}")
   [[ "$OS" == "macos" ]] && STOW_SELECTED+=("${MACOS_STOW_PKGS[@]}")
-  [[ "$OS" == "arch"  ]] && STOW_SELECTED+=("${ARCH_STOW_PKGS[@]}")
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+    mapfile -t STOW_SELECTED_ARCH < <(select_arch_packages)
+    STOW_SELECTED+=("${STOW_SELECTED_ARCH[@]}")
+  fi
 
   if $HYDE_DETECTED; then
     warn "HyDE detected in non-interactive mode."
@@ -816,7 +965,7 @@ default_base() {
 
   stow_selected
 
-  if [[ "$OS" == "arch" ]] && $HYDE_DETECTED; then
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]] && $HYDE_DETECTED; then
     register_task "hyde_seed_config"
   fi
 }
@@ -829,7 +978,10 @@ main() {
   local -a original_args=("$@")
 
   detect_os
-  detect_hyde
+  detect_de
+
+  # Log final detection state
+  log "Distro: ${DISTRO_ID:-${OS}}, DE/VM: ${DE_TYPE}"
 
   # Source HyDE-specific patches when HyDE is present
   if $HYDE_DETECTED; then
