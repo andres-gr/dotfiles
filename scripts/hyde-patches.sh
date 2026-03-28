@@ -49,32 +49,31 @@ hyde_seed_config() {
 
 prompt_starship_mode() {
   ! $HYDE_DETECTED && { STARSHIP_MODE="dotfiles"; return; }
+
+  # Show the options menu first
   cat <<'EOF'
 
   ┌─────────────────────────────────────────────────────────────────┐
   │  HyDE is installed. Choose how Starship should be configured:   │
   ├─────────────────────────────────────────────────────────────────┤
-  │  1) dotfiles  Our starship.toml; we own "starship init zsh"     │
-  │               (stows starship/ pkg; disables HYDE_ZSH_PROMPT)   │
+  │  dotfiles  Our starship.toml; we own "starship init zsh"       │
+  │            (stows starship/ pkg; disables HYDE_ZSH_PROMPT)     │
   │                                                                 │
-  │  2) hyde      HyDE manages starship entirely — no stow          │
-  │               (STARSHIP_CONFIG stays at HyDE's starship.toml)   │
+  │  hyde      HyDE manages starship entirely — no stow            │
+  │            (STARSHIP_CONFIG stays at HyDE's starship.toml)     │
   │                                                                 │
-  │  3) env       Custom STARSHIP_CONFIG path; we own the init      │
-  │               (no stow of starship/; disables HYDE_ZSH_PROMPT)  │
+  │  env       Custom STARSHIP_CONFIG path; we own the init        │
+  │            (no stow of starship/; disables HYDE_ZSH_PROMPT)    │
   └─────────────────────────────────────────────────────────────────┘
 EOF
+
+  require_gum
+
   local choice
-  while true; do
-    read -rp "  Choice [1/2/3] (default 1): " choice
-    choice="${choice:-1}"
-    case "$choice" in
-      1) STARSHIP_MODE="dotfiles"; break ;;
-      2) STARSHIP_MODE="hyde";     break ;;
-      3) STARSHIP_MODE="env";      break ;;
-      *) warn "Enter 1, 2, or 3" ;;
-    esac
-  done
+  choice=$(printf '%s\n' "dotfiles" "hyde" "env" | gum choose --header="Select starship mode:")
+
+  # Default to dotfiles if cancelled or empty
+  STARSHIP_MODE="${choice:-dotfiles}"
   log "Starship mode: $STARSHIP_MODE"
 }
 
@@ -105,7 +104,7 @@ apply_starship_mode() {
       run stow -D --no-folding -d "$DOTFILES_DIR" -t "$HOME" starship 2>/dev/null || true
       local user_zsh="${ZDOTDIR:-$HOME/.config/zsh}/user.zsh"
       local custom_path
-      read -rp "  Path to starship.toml [$HOME/.config/starship.toml]: " custom_path
+      custom_path=$(gum input --value="$HOME/.config/starship.toml" --placeholder="Path to starship.toml")
       custom_path="${custom_path:-$HOME/.config/starship.toml}"
       log "Starship/env: STARSHIP_CONFIG=$custom_path"
       _append_if_absent "$user_zsh" \

@@ -102,7 +102,7 @@ HYDE_CONFIG_TOML_DEST="$HOME/.config/hyde/config.toml"
 # Logging
 ###############################################################################
 
-log()  { printf "\033[1;34m[info]\033[0m  %s\n" "$*"; }
+log()  { printf "\033[1;34m[info]\033[0m  %s\n" "$*" >&2; }
 ok()   { printf "\033[1;32m[ ok ]\033[0m  %s\n" "$*"; }
 warn() { printf "\033[1;33m[warn]\033[0m  %s\n" "$*"; }
 err()  { printf "\033[1;31m[err ]\033[0m  %s\n" "$*" >&2; }
@@ -506,11 +506,17 @@ install_gitconfig_task() {
     return
   fi
 
+  require_gum
   local git_name git_email
-  read -rp "  git user.name:  " git_name
-  read -rp "  git user.email: " git_email
-  git config --file "$dest" user.name  "$git_name"
-  git config --file "$dest" user.email "$git_email"
+  git_name=$(gum input --placeholder="git user.name" || true)
+  git_email=$(gum input --placeholder="git user.email" || true)
+
+  if [[ -n "$git_name" ]]; then
+    git config --file "$dest" user.name "$git_name"
+  fi
+  if [[ -n "$git_email" ]]; then
+    git config --file "$dest" user.email "$git_email"
+  fi
   ok "gitconfig written"
 }
 
@@ -573,10 +579,11 @@ post_install_task() {
 # Task queue
 ###############################################################################
 
-register_task() { TASKS+=("$1"); }
+register_task() { [[ -n "$1" ]] && TASKS+=("$1"); }
 
 execute_tasks() {
   for task in "${TASKS[@]:-}"; do
+    [[ -z "$task" ]] && continue
     "$task"
   done
 }
@@ -717,37 +724,117 @@ dry_run_summary() {
 }
 
 ###############################################################################
-# Interactive helpers
+# Interactive helpers (using gum)
 ###############################################################################
+
+# require_gum - Check if gum is installed, exit if not
+require_gum() {
+  if ! command -v gum &>/dev/null; then
+    err "gum is required but not installed."
+    err "Install it from: https://github.com/charmbracelet/gum"
+    exit 1
+  fi
+}
 
 # interactive_select ITEM...
 #   Prints selected items to stdout, one per line.
-#   Always exits 0 — empty output means "nothing selected / skip".
+#   Uses gum choose --no-limit for multi-selection.
+#   Returns empty if user presses Escape or Ctrl+C (to skip).
+#   Shows exit option if can_exit=true.
 interactive_select() {
-  if command -v fzf &>/dev/null; then
-    # fzf exits 130 on Ctrl-C / Esc — treat as empty (not error)
-    printf "%s\n" "$@" | fzf --multi --prompt="  select> " 2>/dev/null || true
-    return 0
+  require_gum
+  local can_exit="false"
+
+  # Check if first arg is "--exit" flag
+  if [[ "${1:-}" == "--exit" ]]; then
+    can_exit="true"
+    shift
   fi
 
-  # Fallback: numbered menu
-  local -a items=("$@")
+  local items=("$@")
+
+  # Temporarily enable exit on error to catch gum's exit codes
+  (
+    set +e  # Disable exit-on-error inside subshell
+    local result
+    result=$(printf '%s\n' "${items[@]}" | gum choose --no-limit --header="Select items (Space to toggle, Enter to confirm):")
+    local exit_code=$?
+
+    # If exit code is 130 (Escape/Ctrl+C), show exit prompt
+    if [[ $exit_code -eq 130 ]]; then
+      if [[ "$can_exit" == "true" ]]; then
+        local exit_choice
+        exit_choice=$(printf '%s\n' "Skip this step" "Exit installer" | gum choose --header="What would you like to do?" || true)
+
+        if [[ "$exit_choice" == "Exit installer" ]]; then
+          printf '\n  ➜ Exiting installer.\n\n'
+          exit 130
+        fi
+      fi
+    fi
+
+    printf '%s' "$result"
+  )
+}
+
+# interactive_choose ITEM...
+#   Single selection (radio style) using gum.
+#   Returns the selected item or empty if cancelled (Escape/Ctrl+C).
+interactive_choose() {
+  require_gum
+  local items=("$@")
+  local result
+  result=$(printf '%s\n' "${items[@]}" | gum choose --header="Select an option:" || true)
+  printf '%s' "$result"
+}
+
+# interactive_confirm MESSAGE
+#   Returns 0 (true) if user confirms, 1 (false) if not.
+#   Default is "No" - user must explicitly confirm.
+#   Second arg: if "true", pressing No/Escape will exit the entire script
+interactive_confirm() {
+  local msg="${1:-Continue?}"
+  local can_exit="${2:-false}"
+  require_gum
+
+  local exit_code=0
+  local result
+
+  # Run gum and capture both result and exit code properly
+  result=$(gum confirm --default "$msg") || exit_code=$?
+
+  # Exit code 0 = Yes, 1 = No, 130 = Ctrl+C/Escape
+  if [[ $exit_code -eq 0 ]]; then
+    return 0  # Yes selected
+  fi
+
+  # No/Escape/Ctrl+C pressed
   printf '\n'
-  local i=1
-  for item in "${items[@]}"; do
-    printf "    %2d) %s\n" "$i" "$item"
-    (( i++, 1 ))
-  done
-  printf "     0) Skip\n\n"
+  if [[ "$can_exit" == "true" ]]; then
+    printf '  ➜ Exiting installer.\n\n'
+    exit 0
+  else
+    # For subsequent prompts, ask if they want to exit or skip
+    local exit_choice
+    exit_choice=$(printf '%s\n' "Skip this step" "Exit installer" | gum choose --header="What would you like to do?" || true)
 
-  local input
-  read -rp "  Space-separated numbers (0 to skip): " input
+    if [[ "$exit_choice" == "Exit installer" ]]; then
+      printf '  ➜ Exiting installer.\n\n'
+      exit 0
+    fi
+    # Otherwise skip (return 1)
+  fi
+  return 1  # Skip this step
+}
 
-  for n in $input; do
-    [[ "$n" == "0" ]] && return 0
-    local idx=$(( n - 1 ))
-    [[ -n "${items[$idx]:-}" ]] && printf '%s\n' "${items[$idx]}"
-  done
+# interactive_input PROMPT [DEFAULT]
+#   Prompts for text input using gum.
+#   Returns the input value (or default if empty).
+interactive_input() {
+  local prompt="$1"
+  local default="${2:-}"
+  require_gum
+  gum input --value="$default" --placeholder="$prompt" || true
 }
 
 ###############################################################################
@@ -756,6 +843,16 @@ interactive_select() {
 
 interactive_mode() {
   step "Interactive mode"
+
+  # Show welcome and instructions
+  printf '\n'
+  printf '  Welcome to neo-dots installer!\n'
+  printf '  • Press Escape to skip/close any prompt without selecting\n'
+  printf '  • Use arrow keys or vim keys (j/k) to navigate\n'
+  printf '  • Space to toggle, Enter to confirm\n'
+  printf '  • Press Ctrl+C anytime to cancel entire installation\n\n'
+
+  interactive_confirm "Start installation?" true
 
   # In dry-run we skip prompts and simulate a full run
   if $DRY_RUN; then
@@ -789,12 +886,11 @@ interactive_mode() {
   fi
 
   printf '\n'
-  log "Select packages to stow (Tab/Space = toggle, Enter = confirm, Esc = skip):"
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-    log "  Hint: Select arch-common + your WM package (arch-hyde for Hyprland, arch-niri for Niri)"
+    log "Hint: Select arch-common + your WM package (arch-hyde for Hyprland, arch-niri for Niri)"
   fi
   local sel
-  sel="$(interactive_select "${all_stow[@]}")"
+  sel="$(interactive_select --exit "${all_stow[@]}")"
 
   if [[ -n "$sel" ]]; then
     while IFS= read -r pkg; do
@@ -821,7 +917,7 @@ interactive_mode() {
     printf '\n'
     log "Select Brewfiles to install:"
     local bsel
-    bsel="$(interactive_select "${BREW_FILES[@]}")"
+    bsel="$(interactive_select --exit "${BREW_FILES[@]}")"
     if [[ -n "$bsel" ]]; then
       while IFS= read -r f; do
         [[ -n "$f" ]] && BREW_SELECTED+=("$f")
@@ -836,7 +932,7 @@ interactive_mode() {
     printf '\n'
     log "Select Arch package lists to install:"
     local asel
-    asel="$(interactive_select "${ARCH_PKG_FILES[@]}")"
+    asel="$(interactive_select --exit "${ARCH_PKG_FILES[@]}")"
     if [[ -n "$asel" ]]; then
       while IFS= read -r f; do
         [[ -n "$f" ]] && ARCH_SELECTED+=("$f")
@@ -849,12 +945,13 @@ interactive_mode() {
 
   # ── Optional tasks ─────────────────────────────────────────────────────────
   printf '\n'
-  local ans
-  read -rp "  Install gitconfig? (y/N): " ans
-  [[ "${ans:-n}" =~ ^[Yy]$ ]] && register_task "install_gitconfig_task"
+  if interactive_confirm "Install gitconfig?"; then
+    register_task "install_gitconfig_task"
+  fi
 
-  read -rp "  Run post-install tasks (TPM, HyDE reload)? (y/N): " ans
-  [[ "${ans:-n}" =~ ^[Yy]$ ]] && register_task "post_install_task"
+  if interactive_confirm "Run post-install tasks (TPM, HyDE reload)?"; then
+    register_task "post_install_task"
+  fi
 
   # HyDE config.toml seed (arch/cachyos + HyDE only, automatic — no prompt needed)
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]] && $HYDE_DETECTED; then
