@@ -15,13 +15,14 @@
 # Dependencies required for all OS
 REQUIRED_DEPS=(gum stow)
 
-# Get DOTFILES_DIR (directory containing this script)
+# Get DOTFILES_DIR (parent of the directory containing this script)
+# This script is in scripts/, so we need to go up one level
 _get_dotfiles_dir() {
   # When sourced, BASH_SOURCE[1] is the calling script
   local source="${BASH_SOURCE[0]:-${BASH_SOURCE[1]}}"
   if [[ -z "$source" ]]; then
     # Fallback: use current working directory
-    echo "$(pwd)"
+    echo "$(cd .. && pwd)"
     return
   fi
   while [[ -h "$source" ]]; do
@@ -29,7 +30,8 @@ _get_dotfiles_dir() {
     source="$(readlink "$source")"
     [[ $source != /* ]] && source="$dir/$source"
   done
-  echo "$(cd -P "$(dirname "$source")" && pwd)"
+  # Go up one level from scripts/ to get the dotfiles root
+  echo "$(cd -P "$(dirname "$source")/.." && pwd)"
 }
 
 DOTFILES_DIR="$(_get_dotfiles_dir)"
