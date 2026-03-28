@@ -786,7 +786,7 @@ require_gum() {
       # Ensure bootstrap.sh is sourced (in case require_gum called before main)
       if ! declare -f install_deps &>/dev/null; then
         # shellcheck source=bootstrap.sh
-        source "$DOTFILES_DIR/bootstrap.sh"
+        source "$DOTFILES_DIR/scripts/bootstrap.sh"
       fi
       log "Running bootstrap..."
       if install_deps; then
@@ -1176,7 +1176,7 @@ main() {
   # Source bootstrap for dependency installation and shared detection
   # This gives us detect_os() and install_deps() functions
   # shellcheck source=bootstrap.sh
-  source "$DOTFILES_DIR/bootstrap.sh"
+  source "$DOTFILES_DIR/scripts/bootstrap.sh"
 
   detect_os
   detect_de
