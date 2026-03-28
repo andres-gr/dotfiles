@@ -39,7 +39,7 @@ install_ghostty_misc_config() {
   fi
 
   if $is_arch; then
-    log "Creating Ghostty Arch overrides: $misc_config"
+    log "Creating Ghostty misc overrides: $misc_config"
     run mkdir -p "$ghostty_config_dir"
     if $DRY_RUN; then
       log "[dry-run] would write to $misc_config:"

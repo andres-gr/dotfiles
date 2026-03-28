@@ -24,8 +24,22 @@ IFS=$'\n\t'
 ###############################################################################
 # Globals
 ###############################################################################
+# Source-only mode (used by bootstrap.sh)
+###############################################################################
 
-DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Check if being sourced vs executed
+# When sourced, BASH_SOURCE[0] will be the sourcing script, not this one
+# We detect sourcing by checking if the script name doesn't match
+###############################################################################
+# Globals
+###############################################################################
+
+# Get directory of this script - fallback to pwd if unavailable
+if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
+  DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+else
+  DOTFILES_DIR="$(pwd)"
+fi
 OS=""                  # "macos" | "arch" | "cachyos"
 DISTRO_ID=""           # "arch" | "cachyos" (for Linux)
 DE_TYPE=""             # "hyde" | "niri" | "none"
@@ -131,6 +145,8 @@ run() {
 # OS detection
 ###############################################################################
 
+# detect_os - Detect operating system
+# Sets: OS ("macos" | "arch" | "cachyos"), DISTRO_ID
 detect_os() {
   case "$(uname -s)" in
     Darwin)
@@ -160,21 +176,22 @@ detect_os() {
               DISTRO_ID="$ID"  # Keep original ID for package selection
             else
               err "Unsupported Linux distro: $ID (only Arch-based distros are supported)"
-              exit 1
+              return 1
             fi
             ;;
         esac
       else
         err "Cannot detect distro: /etc/os-release not found"
-        exit 1
+        return 1
       fi
       ;;
     *)
       err "Unsupported OS: $(uname -s)"
-      exit 1
+      return 1
       ;;
   esac
   log "Detected OS: $OS (distro: ${DISTRO_ID:-unknown})"
+  return 0
 }
 
 ###############################################################################
@@ -758,12 +775,34 @@ dry_run_summary() {
 # Interactive helpers (using gum)
 ###############################################################################
 
-# require_gum - Check if gum is installed, exit if not
+# require_gum - Check if gum is installed, offer to bootstrap if missing
 require_gum() {
   if ! command -v gum &>/dev/null; then
     err "gum is required but not installed."
-    err "Install it from: https://github.com/charmbracelet/gum"
-    exit 1
+    echo ""
+    read -p "Run bootstrap to install dependencies? [Y/n] " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+      # Ensure bootstrap.sh is sourced (in case require_gum called before main)
+      if ! declare -f install_deps &>/dev/null; then
+        # shellcheck source=bootstrap.sh
+        source "$DOTFILES_DIR/bootstrap.sh"
+      fi
+      log "Running bootstrap..."
+      if install_deps; then
+        ok "Bootstrap complete"
+      else
+        err "Bootstrap failed. Please install gum manually:"
+        err "  Arch:     yay -S gum stow"
+        err "  macOS:    brew install gum stow"
+        err "  Or see:   https://github.com/charmbracelet/gum"
+        exit 1
+      fi
+    else
+      err "gum is required to continue."
+      err "Install it from: https://github.com/charmbracelet/gum"
+      exit 1
+    fi
   fi
 }
 
@@ -1134,6 +1173,11 @@ default_base() {
 main() {
   local -a original_args=("$@")
 
+  # Source bootstrap for dependency installation and shared detection
+  # This gives us detect_os() and install_deps() functions
+  # shellcheck source=bootstrap.sh
+  source "$DOTFILES_DIR/bootstrap.sh"
+
   detect_os
   detect_de
 
@@ -1219,4 +1263,8 @@ main() {
   ok "Done."
 }
 
-main "$@"
+# Skip main() if --source-only is passed (used by bootstrap.sh)
+# This allows bootstrap.sh to source install.sh to get detect_os() etc.
+if [[ "${1:-}" != "--source-only" ]]; then
+  main "$@"
+fi
