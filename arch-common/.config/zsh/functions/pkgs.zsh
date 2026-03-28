@@ -17,10 +17,10 @@
 
   case "$action" in
     install|-S)
-      paru -S --needed "${pkgs[@]}"
+      yay -S --needed "${pkgs[@]}"
       ;;
     uninstall|remove|-R)
-      paru -Rns "${pkgs[@]}"
+      yay -Rns "${pkgs[@]}"
       ;;
     *)
       echo "Usage: pkg [install|uninstall] [list.txt]"
