@@ -130,6 +130,19 @@ M.setup = function ()
         })
       end
 
+      if server_name == 'bashls' then
+        opts = vim.tbl_deep_extend('force', default_opts, {
+          filetypes = {
+            'bash',
+            'command',
+            'inc',
+            'ksh',
+            'sh',
+            'zsh',
+          },
+        })
+      end
+
       lspconfig[server_name].setup(opts)
     end,
   }
