@@ -32,4 +32,6 @@ export PNPM_HOME="${PNPM_HOME:-$HOME/.local/share/pnpm}"
 export SPICETIFY_HOME="${SPICETIFY_HOME:-$HOME/.spicetify}"
 [[ -d "$SPICETIFY_HOME" ]] && path+=("$SPICETIFY_HOME")
 
+[[ -d "$HOME/.config/zsh/bin" ]] && path+=("$HOME/.config/zsh/bin")
+
 export PATH

@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+
+_NO_TMUX=1 exec "$@" -e zsh
