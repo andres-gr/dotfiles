@@ -34,6 +34,21 @@ N.setup = function ()
         -- Timeout for golangci-lint
         timeout = 10000,
       }),
+
+      -- KDL formatting
+      {
+        filetypes = { 'kdl' },
+        generator = h.formatter_factory {
+          command = 'kdlfmt',
+          args = {
+            'format',
+            '-'
+          },
+          to_stdin = true,
+        },
+        method = null_ls.methods.FORMATTING,
+        name = 'kdlfmt',
+      }
     },
   }
 end
