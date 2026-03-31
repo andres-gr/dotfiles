@@ -1,3 +1,4 @@
+# Package manager helper function
  pkg() {
   local action="${1:-install}"
   local list="${2:-list.txt}"
