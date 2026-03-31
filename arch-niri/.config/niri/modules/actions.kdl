@@ -1,5 +1,8 @@
 // Override to disable super+tab
 recent-windows {
+    debounce-ms 750
+    open-delay-ms 100
+
     binds {
         Mod+Tab {
             next-window scope="output"
@@ -14,10 +17,18 @@ recent-windows {
             previous-window filter="app-id"
         }
     }
+    highlight {
+        padding 16
+    }
+
+    previews {
+        max-height 500
+        max-scale 0.75
+    }
 }
 overview {
-    zoom 0.35
     workspace-shadow {
         on
     }
+    zoom 0.35
 }

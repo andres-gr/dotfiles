@@ -5,15 +5,16 @@ layout {
     background-color "transparent"
 
     focus-ring {
-        active-color   "#00bcd4"
-        inactive-color "#899295"
-        urgent-color   "#f2b8b5"
+        active-color   "#9580ff"
+        inactive-color "#7970a9"
+        urgent-color   "#ff9580"
     }
 
     border {
-        active-color   "#00bcd4"
-        inactive-color "#899295"
-        urgent-color   "#f2b8b5"
+        on
+        active-gradient   from="#9580FF" to="#FF80BF" angle=45 in="oklch shorter hue" relative-to="workspace-view"
+        inactive-gradient from="#454158" to="#7970A9" angle=45
+        urgent-gradient   from="#FF9580" to="#FFCA80" angle=45
     }
 
     shadow {
@@ -21,19 +22,19 @@ layout {
     }
 
     tab-indicator {
-        active-color   "#00bcd4"
-        inactive-color "#899295"
-        urgent-color   "#f2b8b5"
+        active-color   "#9580ff"
+        inactive-color "#7970a9"
+        urgent-color   "#ff9580"
     }
 
     insert-hint {
-        color "#00bcd480"
+        color "#9580ff80"
     }
 }
 
 recent-windows {
     highlight {
-        active-color   "#004d5c"
-        urgent-color   "#f2b8b5"
+        active-color   "#7970a9"
+        urgent-color   "#ff9580"
     }
 }
