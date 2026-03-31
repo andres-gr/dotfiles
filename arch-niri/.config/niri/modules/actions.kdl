@@ -1,0 +1,23 @@
+// Override to disable super+tab
+recent-windows {
+    binds {
+        Mod+Tab {
+            next-window scope="output"
+        }
+        Mod+Shift+Tab {
+            previous-window scope="output"
+        }
+        Alt+Tab {
+            next-window filter="app-id"
+        }
+        Alt+Shift+Tab {
+            previous-window filter="app-id"
+        }
+    }
+}
+overview {
+    zoom 0.35
+    workspace-shadow {
+        on
+    }
+}

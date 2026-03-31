@@ -1,0 +1,36 @@
+config-notification {
+    disable-failed
+}
+//
+//
+debug {
+    honor-xdg-activation-with-invalid-serial
+}
+//
+//
+environment {
+    XDG_CURRENT_DESKTOP "niri"
+}
+//
+//
+gestures {
+    hot-corners {
+        off
+    }
+}
+//
+//
+hotkey-overlay {
+    skip-at-startup
+}
+//
+//
+prefer-no-csd
+//
+//
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+//
+//
+xwayland-satellite {
+    path "xwayland-satellite"
+}

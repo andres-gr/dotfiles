@@ -1,0 +1,4 @@
+layer-rule {
+    match namespace="^quickshell$"
+    place-within-backdrop true
+}

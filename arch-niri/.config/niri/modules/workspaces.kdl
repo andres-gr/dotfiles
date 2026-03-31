@@ -1,0 +1,21 @@
+// Workspaces on main monitor
+workspace "prim-1" {
+    open-on-output "ASUSTek COMPUTER INC VG27AQ3A S2LMAS007481"
+}
+workspace "prim-2" {
+    open-on-output "ASUSTek COMPUTER INC VG27AQ3A S2LMAS007481"
+}
+workspace "prim-3" {
+    open-on-output "ASUSTek COMPUTER INC VG27AQ3A S2LMAS007481"
+}
+//
+// Workspaces on secondary monitor
+workspace "sec-1" {
+    open-on-output "ASUSTek COMPUTER INC VG27AQL1A M2LMQS047771"
+}
+workspace "sec-2" {
+    open-on-output "ASUSTek COMPUTER INC VG27AQL1A M2LMQS047771"
+}
+workspace "sec-3" {
+    open-on-output "ASUSTek COMPUTER INC VG27AQL1A M2LMQS047771"
+}

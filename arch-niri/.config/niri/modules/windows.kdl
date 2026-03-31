@@ -1,0 +1,69 @@
+// Window rules let you adjust behavior for individual windows.
+// Find more information on the wiki:
+// https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
+// Work around WezTerm's initial configure bug
+// by setting an empty default-column-width.
+window-rule {
+    // This regular expression is intentionally made as specific as possible,
+    // since this is the default config, and we want no false positives.
+    // You can get away with just app-id="wezterm" if you want.
+    match app-id="^org\\.wezfurlong\\.wezterm$"
+    default-column-width {
+        proportion 0.5
+    }
+}
+window-rule {
+    match app-id="^org\\.gnome\\."
+    draw-border-with-background false
+    geometry-corner-radius 12
+    clip-to-geometry true
+}
+window-rule {
+    match app-id="^gnome-control-center$"
+    match app-id="^pavucontrol$"
+    match app-id="^nm-connection-editor$"
+    default-column-width {
+        proportion 0.5
+    }
+    open-floating false
+}
+window-rule {
+    match app-id="^gnome-calculator$"
+    match app-id="^galculator$"
+    match app-id="^blueman-manager$"
+    match app-id="^org\\.gnome\\.Nautilus$"
+    match app-id="^xdg-desktop-portal$"
+    open-floating true
+}
+window-rule {
+    match app-id="^steam$" title="^notificationtoasts_\\d+_desktop$"
+    default-floating-position x=10 y=10 relative-to="bottom-right"
+    open-focused false
+}
+window-rule {
+    match app-id="^org\\.wezfurlong\\.wezterm$"
+    match app-id="Alacritty"
+    match app-id="zen"
+    match app-id="com.mitchellh.ghostty"
+    match app-id="kitty"
+    draw-border-with-background false
+}
+window-rule {
+    match app-id="firefox$" title="^Picture-in-Picture$"
+    match app-id="zoom"
+    open-floating true
+}
+// Open dms windows as floating by default
+window-rule {
+    match app-id="org.quickshell$"
+    match app-id="com.danklinux.dms$"
+    open-floating true
+}
+window-rule {
+    match is-focused=true
+    opacity 0.95
+}
+window-rule {
+    match is-focused=false
+    opacity 0.9
+}
