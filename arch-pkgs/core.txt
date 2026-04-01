@@ -132,6 +132,7 @@ nomacs                       # Lightweight image viewer
 opencode-desktop-bin         # OpenCode AI coding assistant desktop app
 qbittorrent                  # Open-source Qt BitTorrent client
 spotify                      # Spotify desktop music streaming client
+spicetify-cli-git            # Customize themes, inject extensions of your Spotify client
 visual-studio-code-bin       # Microsoft VS Code editor (proprietary binary build)
 zapzap                       # WhatsApp desktop client (unofficial wrapper)
 
