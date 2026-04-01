@@ -298,11 +298,11 @@ html.fullscreen .main-playPauseButton-button svg {
 }
 
 .playback-bar .x-progressBar-foregroundWrapper>.x-progressBar-foreground {
-  background-color: var(--spice-misc);
+  background-color: var(--spice-button-secondary);
 }
 
 .player-controls__buttons>button.e-91000-button-primary>span.e-91000-button-primary__inner {
-  background-color: var(--spice-play-button);
+  background-color: var(--spice-accent);
 }
 
 /*
