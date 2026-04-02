@@ -28,6 +28,7 @@ layout {
     default-column-width {
         proportion 0.5
     }
+    gaps 12
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
     // By default focus ring and border are rendered as a solid background rectangle
@@ -41,11 +42,12 @@ layout {
     // Alternatively, you can override it with a window rule called
     // `draw-border-with-background`.
     border {
+        on
+        width 1
+    }
+    focus-ring {
         off
-        active-color "#707070"      // Neutral gray
-        inactive-color "#d0d0d0"    // Light gray
-        urgent-color "#cc4444"      // Softer red
-        width 4
+        width 1
     }
     shadow {
         color "#0007"

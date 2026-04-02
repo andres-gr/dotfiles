@@ -17,7 +17,7 @@ include "modules/animations.kdl"
 //
 // Include dms files
 include "dms/colors.kdl"
-include "dms/layout.kdl"
+// include "dms/layout.kdl"
 include "dms/alttab.kdl"
 include "dms/binds.kdl"
 include "dms/outputs.kdl"
