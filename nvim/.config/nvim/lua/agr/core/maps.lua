@@ -63,6 +63,7 @@ map('n', '\\t', '<CMD>windo bd<CR>', desc_opts('Quit window tab'))
 map('i', 'jk', '<ESC>', desc_opts('Escape'))
 map('i', 'jj', '<ESC>', desc_opts('Escape'))
 map(all, '<M-o>', '<ESC>', desc_opts('Escape'))
+map('i', '<ESC>', '<ESC>', { noremap = true, silent = true })
 
 -- Black hole deletes
 map({ 'n', 'v' }, '<leader>d', '"_d', desc_opts('Black hole delete'))
