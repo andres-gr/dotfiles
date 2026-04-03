@@ -18,6 +18,7 @@ recent-windows {
         }
     }
     highlight {
+        corner-radius 16
         padding 16
     }
 

@@ -14,70 +14,14 @@ binds {
         spawn "ghostty"
     }
     Alt+Space hotkey-overlay-title="Application Launcher" {
-        spawn "dms" "ipc" "call" "spotlight" "toggle"
-    }
-    Mod+V hotkey-overlay-title="Clipboard Manager" {
-        spawn "dms" "ipc" "call" "clipboard" "toggle"
-    }
-    Mod+Shift+backspace hotkey-overlay-title="Power Menu: Toggle" {
-        spawn "dms" "ipc" "call" "powermenu" "toggle"
-    }
-    Mod+N hotkey-overlay-title="Notification Center" {
-        spawn "dms" "ipc" "call" "notifications" "toggle"
-    }
-    Mod+Shift+N hotkey-overlay-title="Notepad" {
-        spawn "dms" "ipc" "call" "notepad" "toggle"
+        spawn "fuzzel"
     }
     // === Security ===
-    Mod+Ctrl+Alt+L hotkey-overlay-title="Lock Screen" {
-        spawn "dms" "ipc" "call" "lock" "lock"
-    }
-    Ctrl+Alt+Delete hotkey-overlay-title="Task Manager" {
-        spawn "dms" "ipc" "call" "processlist" "focusOrToggle"
-    }
     Ctrl+Shift+Escape hotkey-overlay-title="Btop Process Monitor" {
         spawn-sh "exec ghostty -e zsh -c btop"
     }
     Mod+Ctrl+Alt+E {
         quit
-    }
-    // === Audio Controls ===
-    XF86AudioRaiseVolume allow-when-locked=true {
-        spawn "dms" "ipc" "call" "audio" "increment" "2"
-    }
-    XF86AudioLowerVolume allow-when-locked=true {
-        spawn "dms" "ipc" "call" "audio" "decrement" "2"
-    }
-    XF86AudioMute allow-when-locked=true {
-        spawn "dms" "ipc" "call" "audio" "mute"
-    }
-    XF86AudioMicMute allow-when-locked=true {
-        spawn "dms" "ipc" "call" "audio" "micmute"
-    }
-    XF86AudioPause allow-when-locked=true {
-        spawn "dms" "ipc" "call" "mpris" "playPause"
-    }
-    XF86AudioPlay allow-when-locked=true {
-        spawn "dms" "ipc" "call" "mpris" "playPause"
-    }
-    XF86AudioPrev allow-when-locked=true {
-        spawn "dms" "ipc" "call" "mpris" "previous"
-    }
-    XF86AudioNext allow-when-locked=true {
-        spawn "dms" "ipc" "call" "mpris" "next"
-    }
-    Ctrl+XF86AudioRaiseVolume allow-when-locked=true {
-        spawn "dms" "ipc" "call" "mpris" "increment" "2"
-    }
-    Ctrl+XF86AudioLowerVolume allow-when-locked=true {
-        spawn "dms" "ipc" "call" "mpris" "decrement" "2"
-    }
-    // === Brightness Controls ===
-    XF86MonBrightnessUp allow-when-locked=true {
-        spawn "dms" "ipc" "call" "brightness" "increment" "5" ""
-    }
-    XF86MonBrightnessDown allow-when-locked=true {
-        spawn "dms" "ipc" "call" "brightness" "decrement" "5" ""
     }
     // === Window Management ===
     Mod+W repeat=false hotkey-overlay-title="Close Window" {
@@ -100,9 +44,6 @@ binds {
     }
     Mod+Ctrl+D hotkey-overlay-title="Toggle Column Tabbed Display" {
         toggle-column-tabbed-display
-    }
-    Mod+Alt+D hotkey-overlay-title="Create Window Rule" {
-        spawn "dms" "ipc" "call" "window-rules" "toggle"
     }
     // === Focus Navigation ===
     Mod+Left {
@@ -223,10 +164,6 @@ binds {
     }
     Mod+Shift+Comma hotkey-overlay-title="Move To Workspace Up" {
         move-column-to-workspace-up
-    }
-    // === Workspace Management ===
-    Mod+Ctrl+Shift+R hotkey-overlay-title="Rename Workspace" {
-        spawn "dms" "ipc" "call" "workspace-rename" "open"
     }
     // === Move Workspaces ===
     Mod+Shift+Page_Down {

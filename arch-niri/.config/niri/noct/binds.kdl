@@ -1,0 +1,68 @@
+// Noctalia binds
+binds {
+    // === Application Launchers ===
+    Alt+Space hotkey-overlay-title="Application Launcher" {
+        spawn-sh "qs -c noctalia-shell ipc call launcher toggle"
+    }
+    Mod+S hotkey-overlay-title="Control Center" {
+        spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle"
+    }
+    Mod+Shift+S hotkey-overlay-title="Emoji Picker" {
+        spawn-sh "qs -c noctalia-shell ipc call launcher emoji"
+    }
+    Mod+V hotkey-overlay-title="Clipboard Manager" {
+        spawn-sh "qs -c noctalia-shell ipc call launcher clipboard"
+    }
+    Mod+Shift+backspace hotkey-overlay-title="Power Menu: Toggle" {
+        spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"
+    }
+    Mod+N hotkey-overlay-title="Notification Center" {
+        spawn-sh "qs -c noctalia-shell ipc call notifications toggleHistory"
+    }
+    // === Security ===
+    Mod+Ctrl+Alt+L hotkey-overlay-title="Lock Screen" {
+        spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"
+    }
+    Ctrl+Alt+Delete hotkey-overlay-title="System Monitor" {
+        spawn-sh "qs -c noctalia-shell ipc call systemMonitor toggle"
+    }
+    Ctrl+Shift+Escape hotkey-overlay-title="Btop Process Monitor" {
+        spawn-sh "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
+    }
+    // === Audio Controls ===
+    XF86AudioRaiseVolume allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call volume increase"
+    }
+    XF86AudioLowerVolume allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call volume decrease"
+    }
+    XF86AudioMute allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call volume muteOutput"
+    }
+    XF86AudioMicMute allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call volume muteInput"
+    }
+    XF86AudioPause allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call media playPause"
+    }
+    XF86AudioPlay allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call media playPause"
+    }
+    XF86AudioPrev allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call media previous"
+    }
+    XF86AudioNext allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call media next"
+    }
+    // === Brightness Controls ===
+    XF86MonBrightnessUp allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call brightness increase"
+    }
+    XF86MonBrightnessDown allow-when-locked=true {
+        spawn-sh "qs -c noctalia-shell ipc call brightness decrease"
+    }
+    // === Misc ===
+    Mod+Ctrl+Alt+Backslash hotkey-overlay-title="" {
+        spawn-sh "qs -c noctalia-shell ipc call idleInhibitor toggle"
+    }
+}

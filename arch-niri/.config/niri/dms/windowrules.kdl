@@ -1,9 +1,0 @@
-// DMS Window Rules - Managed by DankMaterialShell
-// Do not edit manually - changes may be overwritten
-
-// @id=wr_1774852872054100770 @name=spotify
-window-rule {
-    match app-id="^spotify$"
-    open-maximized true
-    open-on-workspace "prim-2"
-}

@@ -10,15 +10,6 @@ window-rule {
     tiled-state true
 }
 window-rule {
-    // This regular expression is intentionally made as specific as possible,
-    // since this is the default config, and we want no false positives.
-    // You can get away with just app-id="wezterm" if you want.
-    match app-id="^org\\.wezfurlong\\.wezterm$"
-    default-column-width {
-        proportion 0.5
-    }
-}
-window-rule {
     match app-id="^org\\.gnome\\."
     draw-border-with-background false
     geometry-corner-radius 12
@@ -59,17 +50,16 @@ window-rule {
     match app-id="zoom"
     open-floating true
 }
-// Open dms windows as floating by default
 window-rule {
-    match app-id="org.quickshell$"
-    match app-id="com.danklinux.dms$"
-    open-floating true
+    match app-id="^spotify$"
+    open-maximized true
+    open-on-workspace "prim-2"
 }
 window-rule {
     match is-focused=true
-    opacity 0.95
+    opacity 0.98
 }
 window-rule {
     match is-focused=false
-    opacity 0.9
+    opacity 0.95
 }

@@ -2,8 +2,6 @@
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Layout
 layout {
-    // Set gaps around windows in logical pixels.
-    background-color "transparent"
     // When to center a column when changing focus, options are:
     // - "never", default behavior, focusing an off-screen column will keep at the left
     //   or right edge of the screen.
@@ -42,15 +40,12 @@ layout {
     // Alternatively, you can override it with a window rule called
     // `draw-border-with-background`.
     border {
-        on
         width 1
     }
     focus-ring {
-        off
         width 1
     }
     shadow {
-        color "#0007"
         offset x=0 y=5
         softness 30
         spread 5

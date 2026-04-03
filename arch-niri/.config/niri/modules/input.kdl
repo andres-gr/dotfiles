@@ -32,7 +32,7 @@ input {
         // scroll-method "no-scroll"
         accel-speed 0.0
         accel-profile "flat"
-        scroll-factor 3.0
+        scroll-factor 1.75
     }
     trackpoint {}
     // Uncomment this to make the mouse warp to the center of newly focused windows.

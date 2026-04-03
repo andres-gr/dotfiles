@@ -2,24 +2,20 @@
 // "/-" comments out the following node.
 // Check the wiki for a full description of the configuration:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Introduction
-//
-//
+
 // Include our niri config files
-include "modules/root.kdl"
-include "modules/input.kdl"
-include "modules/layout.kdl"
-include "modules/layers.kdl"
-include "modules/windows.kdl"
-include "modules/workspaces.kdl"
+include "modules/root.kdl"          // must be first
+
+// our base config modules
 include "modules/actions.kdl"
 include "modules/animations.kdl"
-//
-//
-// Include dms files
-include "dms/colors.kdl"
-// include "dms/layout.kdl"
-include "dms/alttab.kdl"
-include "dms/binds.kdl"
-include "dms/outputs.kdl"
-include "dms/cursor.kdl"
-include "dms/windowrules.kdl"
+include "modules/binds.kdl"
+include "modules/input.kdl"
+include "modules/layers.kdl"
+include "modules/layout.kdl"
+include "modules/outputs.kdl"
+include "modules/windows.kdl"
+include "modules/workspaces.kdl"
+
+// interchangeable modules bundle
+include "bundle.kdl"

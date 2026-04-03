@@ -1,10 +1,8 @@
-// ! Auto-generated file. Do not edit directly.
-// Remove `include "dms/colors.kdl"` from your config to override.
-
 layout {
     background-color "transparent"
 
     focus-ring {
+        off
         active-color   "#9580ff"
         inactive-color "#7970a9"
         urgent-color   "#ff9580"
@@ -38,3 +36,4 @@ recent-windows {
         urgent-color   "#ff9580"
     }
 }
+
