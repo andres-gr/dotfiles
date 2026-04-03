@@ -1,2 +1,0 @@
-dms-shell-bin              # Shell for the DMS greeter (greetd companion)
-greetd-dms-greeter-git     # DMS greeter frontend for greetd login manager

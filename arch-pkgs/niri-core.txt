@@ -3,30 +3,11 @@ niri                         # Scrollable-tiling Wayland compositor
 greetd                       # Minimal, flexible login/session manager daemon
 xwayland-satellite           # Rootless XWayland for compositors that lack native X support
 
-# ── Shell / bar ───────────────────────────────────────────────────────────────
-quickshell-git               # Modular Wayland shell toolkit (QML-based, DMS bar backend)
-
-# ── Theming ───────────────────────────────────────────────────────────────────
-matugen                      # Material You color palette generator from wallpapers
-
 # ── CachyOS distro specifics ─────────────────────────────────────────────────
-cachyos-hooks                # CachyOS pacman hooks (kernel, initramfs automation)
-cachyos-keyring              # GPG keyring for the CachyOS repository
-cachyos-mirrorlist           # Mirror list for the CachyOS repository
-cachyos-plymouth-bootanimation # CachyOS branded Plymouth boot animation
-cachyos-rate-mirrors         # Tool to rank and select the fastest CachyOS mirrors
-cachyos-settings             # CachyOS system defaults and sysctl/udev tuning
-cachyos-v3-mirrorlist        # CachyOS mirror list for x86-64-v3 optimized packages
-cachyos-v4-mirrorlist        # CachyOS mirror list for x86-64-v4 optimized packages
-chwd                         # CachyOS hardware detection tool (auto-installs drivers)
 rebuild-detector             # Detects packages needing rebuild after library updates
 reflector                    # Auto-selects fastest Arch mirrors by speed/age
 
 # ── Kernel ────────────────────────────────────────────────────────────────────
-linux-cachyos                # CachyOS optimized Linux kernel (BORE scheduler, etc.)
-linux-cachyos-headers        # Headers for the linux-cachyos kernel
-linux-cachyos-lts            # CachyOS LTS kernel variant
-linux-cachyos-lts-headers    # Headers for the linux-cachyos-lts kernel
 mkinitcpio                   # Initramfs generation tool for Arch Linux
 plymouth                     # Graphical boot splash screen
 
@@ -144,7 +125,6 @@ bash-completion              # Tab completion definitions for bash
 cava                         # Console-based audio visualizer
 cli11                        # C++ CLI argument parsing library
 cpptrace                     # C++ stack trace library
-dgop                         # Desktop/GUI operation helper utility
 glances                      # Cross-platform system monitoring tool (htop alternative)
 go                           # Go programming language toolchain
 hunspell                     # Spell-checking library and CLI

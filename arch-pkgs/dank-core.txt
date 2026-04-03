@@ -1,0 +1,8 @@
+# ── Shell / bar ───────────────────────────────────────────────────────────────
+quickshell-git               # Modular Wayland shell toolkit (QML-based, DMS bar backend)
+
+# ── Theming ───────────────────────────────────────────────────────────────────
+matugen                      # Material You color palette generator from wallpapers
+
+# ── Desktop/GUI operation helper utility ─────────────────────────────────────
+dgop                         # Desktop/GUI operation helper utility
