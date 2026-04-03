@@ -50,6 +50,7 @@ install_ghostty_misc_config() {
       log "  gtk-titlebar = false"
       log "  keybind = ctrl+enter=unbind"
       log "  keybind = shift+enter=text:\n"
+      log "  mouse-scroll-multiplier = 0.5"
       log "  shell-integration = detect"
       log "  shell-integration-features = cursor,sudo,title,no-cursor"
       log "  window-decoration = false"
@@ -62,6 +63,7 @@ gtk-single-instance = true
 gtk-titlebar = false
 keybind = ctrl+enter=unbind
 keybind = shift+enter=text:\n
+mouse-scroll-multiplier = 0.5
 shell-integration = detect
 shell-integration-features = cursor,sudo,title,no-cursor
 window-decoration = false
