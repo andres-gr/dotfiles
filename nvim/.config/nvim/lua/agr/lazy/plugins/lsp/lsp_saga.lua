@@ -28,6 +28,7 @@ S.setup = function ()
       scroll_up = '<C-k>',
     },
     ui = {
+      border = 'rounded',
       code_action = '', -- '󰌵', '', '', ''
       colors = {
         black = colors.bg,

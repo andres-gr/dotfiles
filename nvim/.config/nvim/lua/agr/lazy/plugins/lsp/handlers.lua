@@ -44,13 +44,6 @@ H.setup = function ()
     options.border = 'single'
     return options
   end
-
-  vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(function (_, result, ctx, cfg)
-    if result then
-      vim.lsp.handlers.hover(_, result, ctx, cfg)
-    end
-  end, { border = 'rounded' })
-  vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, { border = 'rounded' })
 end
 
 H.on_attach = function (client, bufnr)
@@ -64,7 +57,10 @@ H.on_attach = function (client, bufnr)
     set(m, lhs, rhs, desc_opts(desc))
   end
 
-  local function buf_set_option (...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  -- local function buf_set_option (...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local function buf_set_option (name, value)
+    vim.api.nvim_set_option_value(name, value, { buf = bufnr })
+  end
 
   -- if client.name == 'tsserver' or client.name == 'ts_ls' or client.name == 'typescript-tools' then
   --   client.server_capabilities.document_formatting = nil
