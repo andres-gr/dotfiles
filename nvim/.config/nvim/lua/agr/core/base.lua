@@ -61,9 +61,8 @@ o.splitright = true -- Splitting a new window at the right of the current one
 o.swapfile = false -- Disable use of swapfile for the buffer
 o.tabstop = 2 -- Number of space in a tab
 o.termguicolors = true -- Enable 24-bit RGB color in the TUI
-o.timeoutlen = 500 -- Length of time to wait for a mapped sequence
+o.timeoutlen = 200 -- Length of time to wait for a mapped sequence
 o.title = false
-o.ttimeoutlen = 0 -- Time in milliseconds to wait for a key code sequence to complete.
 o.undofile = true -- Enable persistent undo
 o.updatetime = 300 -- Length of time to wait before triggering the plugin
 o.whichwrap:append '<,>,[,],h,l' -- Automatically wrap left or right

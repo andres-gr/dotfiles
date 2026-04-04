@@ -26,7 +26,7 @@ A.config = function ()
       highlight = 'PmenuSel',
       highlight_grey = 'LineNr',
       keys = 'qwertyuiopzxcvbnmasdfghjkl',
-      map = '<M-e>',
+      map = '<M-t>',
       offset = 0,
       pattern = string.gsub([[ [%'%'%)%>%]%)%}%,] ]], '%s+', ''),
     },
