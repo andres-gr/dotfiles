@@ -22,6 +22,7 @@ gestures {
 //
 //
 hotkey-overlay {
+    hide-not-bound
     skip-at-startup
 }
 //

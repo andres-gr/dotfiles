@@ -62,7 +62,7 @@ binds {
         spawn-sh "qs -c noctalia-shell ipc call brightness decrease"
     }
     // === Misc ===
-    Mod+Ctrl+Alt+Backslash hotkey-overlay-title="" {
+    Mod+Ctrl+Alt+Backslash hotkey-overlay-title="Toggle Idle Inhibitor" {
         spawn-sh "qs -c noctalia-shell ipc call idleInhibitor toggle"
     }
 }
