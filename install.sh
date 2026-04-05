@@ -139,7 +139,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   # dank
   [reload_dms]="Reload Dank Material Shell"
   # noctalia
-  [noctalia_patches]="Apply Noctalia patches"
+  [noctalia_patches]="Apply Noctalia patches (Zen Browser userChrome.css)"
 )
 
 # For backward compatibility - will be dynamically selected in selection logic
