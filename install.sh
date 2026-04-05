@@ -51,6 +51,7 @@ TASKS=()
 STOW_SELECTED=()
 BREW_SELECTED=()
 ARCH_SELECTED=()
+PATCHES_SELECTED=()
 
 # HyDE — populated by detect_de()
 HYDE_DETECTED=false
@@ -94,6 +95,27 @@ DANK_STOW_PKGS=(arch-dank)
 
 # Optional stow packages (available on any platform, can override earlier files)
 OPTIONAL_STOW_PKGS=(opencode)
+
+# Patch file definitions: patch_name -> (script_file, os_filter, de_filter)
+# os_filter: "arch" (arch/cachyos), "macos", "all"
+# de_filter: "hyprland", "niri", "dank", "noctalia", "none" (always runs)
+declare -A PATCH_FILES=(
+  [common]="scripts/patches/common.sh:all:none"
+  [hyprland]="scripts/patches/hyprland.sh:all:hyprland"
+  [niri]="scripts/patches/niri.sh:all:niri"
+  [dank]="scripts/patches/dank.sh:all:dank"
+  [noctalia]="scripts/patches/noctalia.sh:all:noctalia"
+)
+
+# Individual patch functions per patch file
+# Format: patch_name="func1 func2 func3 ..."
+declare -A PATCH_FUNCTIONS=(
+  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services"
+  [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
+  [niri]="reload_niri"
+  [dank]="reload_dms"
+  [noctalia]="noctalia_patches"
+)
 
 # For backward compatibility - will be dynamically selected in selection logic
 ARCH_STOW_PKGS=()
@@ -621,39 +643,216 @@ install_gitconfig_task() {
 # Post-install
 ###############################################################################
 
+# get_available_patches
+#   Returns list of available patch files based on OS and detected DE/shell
+get_available_patches() {
+  local -a available=()
+
+  for patch in "${!PATCH_FILES[@]}"; do
+    local def="${PATCH_FILES[$patch]}"
+    local script="${def%%:*}"
+    local os_filter="${def#*:}"
+    os_filter="${os_filter%:*}"
+    local de_filter="${def##*:}"
+
+    # Check OS filter
+    local os_match=false
+    case "$os_filter" in
+      all) os_match=true ;;
+      arch) [[ "$OS" == "arch" || "$OS" == "cachyos" ]] && os_match=true ;;
+      macos) [[ "$OS" == "macos" ]] && os_match=true ;;
+    esac
+
+    # Check DE filter
+    local de_match=false
+    case "$de_filter" in
+      none) de_match=true ;;  # Always available
+      hyprland) $HYDE_DETECTED || $HYPRLAND_DETECTED && de_match=true ;;
+      niri) $NIRI_DETECTED && de_match=true ;;
+      dank) $DMS_DETECTED && de_match=true ;;
+      noctalia) $NOCTALIA_DETECTED && de_match=true ;;
+    esac
+
+    if $os_match && $de_match; then
+      available+=("$patch")
+    fi
+  done
+
+  printf '%s\n' "${available[@]}"
+}
+
+# get_patch_functions PATCH_NAME
+#   Returns list of individual functions available in a patch file
+get_patch_functions() {
+  local patch="$1"
+  local func_str
+  func_str="${PATCH_FUNCTIONS[$patch]:-}"
+  if [[ -z "$func_str" ]]; then
+    # Fallback: try to source and list functions
+    local script="${PATCH_FILES[$patch]%%:*}"
+    if [[ -f "$DOTFILES_DIR/$script" ]]; then
+      # shellcheck source=scripts/patches/common.sh
+      source "$DOTFILES_DIR/$script"
+      func_str="$(declare -F | grep -E "^declare -f (install_|reload_|apply_|remind_|backup_|hyde_)" | sed 's/declare -f //' | grep "^${patch}_" || true)"
+    fi
+  fi
+  # Use awk to split on whitespace - works in both bash and zsh
+  # This ensures each function name is on its own line
+  if [[ -n "$func_str" ]]; then
+    printf '%s\n' "$func_str" | awk '{for(i=1;i<=NF;i++) print $i}'
+  fi
+}
+
+# run_patch PATCH_NAME [FUNC1 FUNC2 ...]
+#   Sources patch file and runs specified functions (or all if none specified)
+run_patch() {
+  local patch="$1"
+  shift
+  local -a selected_funcs=("$@")
+
+  local def="${PATCH_FILES[$patch]:-}"
+  [[ -z "$def" ]] && { warn "Unknown patch: $patch"; return 1; }
+
+  local script="${def%%:*}"
+  local script_path="$DOTFILES_DIR/$script"
+  [[ -f "$script_path" ]] || { warn "Patch script not found: $script_path"; return 1; }
+
+  # Source the patch file
+  # shellcheck source=scripts/patches/common.sh
+  source "$script_path"
+
+  # Get all available functions for this patch if none specified
+  local -a funcs_to_run=()
+  if (( ${#selected_funcs[@]} == 0 )); then
+    # Use get_patch_functions which handles word splitting correctly
+    mapfile -t funcs_to_run < <(get_patch_functions "$patch")
+  else
+    funcs_to_run=("${selected_funcs[@]}")
+  fi
+
+  # Run each function
+  for func in "${funcs_to_run[@]}"; do
+    if declare -f "$func" >/dev/null 2>&1; then
+      log "  → running: $func"
+      "$func"
+    else
+      warn "  ✗ function not found: $func"
+    fi
+  done
+}
+
 post_install_task() {
   step "Post-install"
 
-  # Source and run common patches (generic Arch/Linux)
-  source "$DOTFILES_DIR/scripts/patches/common.sh"
-  common_patches
+  # Get available patch files based on OS and detected DE/shell
+  local -a available_patches
+  mapfile -t available_patches < <(get_available_patches)
 
-  # Hyprland patches (also covers HyDE which uses Hyprland)
-  if $HYDE_DETECTED || command -v hyprctl &>/dev/null; then
-    source "$DOTFILES_DIR/scripts/patches/hyprland.sh"
-    hyprland_patches
+  if (( ${#available_patches[@]} == 0 )); then
+    log "No patches available for this configuration — skipping"
+    return
   fi
 
-  # Niri patches
-  if $NIRI_DETECTED; then
-    source "$DOTFILES_DIR/scripts/patches/niri.sh"
-    niri_patches
+  printf '\n'
+  log "Available patch groups: ${available_patches[*]}"
+
+  # First level: select which patch groups to apply
+  local -a selected_patches=()
+
+  if (( ${#PATCHES_SELECTED[@]} > 0 )); then
+    # Explicit patches passed via --patches flag
+    for p in "${PATCHES_SELECTED[@]}"; do
+      local valid=false
+      for av in "${available_patches[@]}"; do
+        [[ "$p" == "$av" ]] && valid=true && break
+      done
+      if $valid; then
+        selected_patches+=("$p")
+      else
+        warn "Skipping unavailable patch group: $p"
+      fi
+    done
+  elif $INTERACTIVE; then
+    log "Select patch groups to apply:"
+    local sel
+    sel="$(interactive_select --exit "${available_patches[@]}")"
+
+    if [[ -n "$sel" ]]; then
+      while IFS= read -r p; do
+        [[ -n "$p" ]] && selected_patches+=("$p")
+      done <<< "$sel"
+    fi
+  else
+    # Non-interactive: include all available patches
+    selected_patches=("${available_patches[@]}")
   fi
 
-  # DMS (Dank Material Shell) patches - can run alongside Hyprland or Niri
-  if $DMS_DETECTED; then
-    source "$DOTFILES_DIR/scripts/patches/dank.sh"
-    dank_patches
+  if (( ${#selected_patches[@]} == 0 )); then
+    log "No patch groups selected — skipping post-install"
+    return
   fi
 
-  # Noctalia patches
-  if $NOCTALIA_DETECTED; then
-    source "$DOTFILES_DIR/scripts/patches/noctalia.sh"
-    noctalia_patches
+  # Second level: for each selected patch group, select which functions to run
+  local -a all_runs=()  # Format: "patch:func"
+
+  if $INTERACTIVE; then
+    for patch in "${selected_patches[@]}"; do
+      # Get functions using while read (works in both bash and zsh)
+      # Don't use local on funcs - causes issues with array access
+      local -a funcs
+      funcs=()
+      while IFS= read -r f; do
+        [[ -n "$f" ]] && funcs+=("$f")
+      done < <(get_patch_functions "$patch")
+
+      if (( ${#funcs[@]} == 0 )); then
+        warn "No functions defined for patch: $patch"
+        continue
+      fi
+
+      if (( ${#funcs[@]} == 1 )); then
+        # Single function - auto-select
+        # Build entry directly without local storage
+        all_runs+=("$patch:${funcs[0]}")
+        log "  $patch: auto-selecting ${funcs[0]}"
+      else
+        log "Select functions for $patch:"
+        local sel
+        sel="$(interactive_select --exit "${funcs[@]}")"
+
+        if [[ -n "$sel" ]]; then
+          while IFS= read -r f; do
+            [[ -n "$f" ]] && all_runs+=("$patch:$f")
+          done <<< "$sel"
+        fi
+      fi
+    done
+  else
+    # Non-interactive: run all functions from each selected patch
+    for patch in "${selected_patches[@]}"; do
+      local -a funcs
+      funcs=()
+      while IFS= read -r f; do
+        [[ -n "$f" ]] && funcs+=("$f")
+      done < <(get_patch_functions "$patch")
+      for f in "${funcs[@]}"; do
+        all_runs+=("$patch:$f")
+      done
+    done
   fi
 
-  # HyDE-specific post-install steps (in scripts/patches/hyde.sh)
-  $HYDE_DETECTED && hyde_post_install
+  if (( ${#all_runs[@]} == 0 )); then
+    log "No functions selected — skipping post-install"
+    return
+  fi
+
+  # Run selected patches with their functions
+  log "Running ${#all_runs[@]} patch function(s)..."
+  for run in "${all_runs[@]}"; do
+    local patch="${run%%:*}"
+    local func="${run#*:}"
+    run_patch "$patch" "$func"
+  done
 }
 
 ###############################################################################
@@ -1182,6 +1381,16 @@ parse_args() {
       --post-install)
         register_task "post_install_task"
         ;;
+      --patches)
+        shift
+        if [[ -z "${1:-}" ]]; then
+          err "--patches requires patch name(s) (comma-separated)"
+          exit 1
+        fi
+        IFS=',' read -r -a _patches <<< "$1"
+        PATCHES_SELECTED+=("${_patches[@]}")
+        register_task "post_install_task"
+        ;;
       --stow)
         shift
         if [[ -z "${1:-}" ]]; then
@@ -1217,6 +1426,7 @@ Usage: ./install.sh [OPTIONS]
                           (skips the interactive prompt)
   --gitconfig             Install .gitconfig only
   --post-install          Run post-install tasks only (TPM, HyDE reload)
+  --patches PATCH[,…]     Run specific patch(es) (comma-separated)
   --help                  This help
 
 HyDE integration
