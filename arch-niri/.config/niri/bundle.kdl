@@ -1,6 +1,2 @@
 include "modules/colors.kdl"
 include "modules/cursor.kdl"
-
-include "noct/binds.kdl"
-include "noct/layers.kdl"
-include "noct/noctalia.kdl"
