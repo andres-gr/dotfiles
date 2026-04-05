@@ -92,6 +92,9 @@ SHELL_STOW_PKGS=()
 NOCTALIA_STOW_PKGS=(arch-noctalia)
 DANK_STOW_PKGS=(arch-dank)
 
+# Optional stow packages (available on any platform, can override earlier files)
+OPTIONAL_STOW_PKGS=(opencode)
+
 # For backward compatibility - will be dynamically selected in selection logic
 ARCH_STOW_PKGS=()
 
@@ -685,14 +688,18 @@ stow_selected() {
     fi
   fi
 
-  # Separate regular packages from shell packages
+  # Separate regular packages from shell packages and optional packages
   local -a regular_pkgs=()
   local -a shell_pkgs=()
+  local -a optional_pkgs=()
   
   for pkg in "${STOW_SELECTED[@]:-}"; do
     # Check if it's a shell-specific package
     if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
       shell_pkgs+=("$pkg")
+    # Check if it's an optional package (should be stowed last)
+    elif [[ " ${OPTIONAL_STOW_PKGS[*]} " == *" $pkg "* ]]; then
+      optional_pkgs+=("$pkg")
     else
       regular_pkgs+=("$pkg")
     fi
@@ -703,9 +710,16 @@ stow_selected() {
     stow_packages "${regular_pkgs[@]}"
   fi
   
-  # Stow shell packages last with override capability
+  # Stow shell packages with override capability
   if (( ${#shell_pkgs[@]} > 0 )); then
     for pkg in "${shell_pkgs[@]}"; do
+      stow_shell_pkg "$pkg"
+    done
+  fi
+
+  # Stow optional packages last (can override earlier files)
+  if (( ${#optional_pkgs[@]} > 0 )); then
+    for pkg in "${optional_pkgs[@]}"; do
       stow_shell_pkg "$pkg"
     done
   fi
@@ -780,18 +794,20 @@ dry_run_summary() {
     printf "    %s\n" "$bkp_root"
   fi
 
-   # Stow
-   if (( ${#STOW_SELECTED[@]} > 0 )); then
-     printf "\n  Stow packages:\n"
-     # Show in order: base, DE/WM, then shell
-     for pkg in "${STOW_SELECTED[@]}"; do
-       if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
-         printf "    - %s (with override)\n" "$pkg"
-       else
-         printf "    - %s\n" "$pkg"
-       fi
-     done
-   fi
+    # Stow
+    if (( ${#STOW_SELECTED[@]} > 0 )); then
+      printf "\n  Stow packages:\n"
+      # Show in order: base, DE/WM, then shell
+      for pkg in "${STOW_SELECTED[@]}"; do
+        if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
+          printf "    - %s (with override)\n" "$pkg"
+        elif [[ "$pkg" == "opencode" ]]; then
+          printf "    - %s (optional, may override)\n" "$pkg"
+        else
+          printf "    - %s\n" "$pkg"
+        fi
+      done
+    fi
 
   # Brew
   if (( ${#BREW_SELECTED[@]} > 0 )); then
@@ -1027,46 +1043,55 @@ interactive_mode() {
        hyprland|none)
          # Plain Hyprland or no WM - no additional stow packages needed
          ;;
-     esac
-     
-     # Add shell-specific packages (available regardless of DE_TYPE)
-     if $NOCTALIA_DETECTED; then
-       all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
-     fi
-     
-     if $DMS_DETECTED; then
-       all_stow+=("${DANK_STOW_PKGS[@]}")
-     fi
-   fi
+      esac
 
-   printf '\n'
-   # Show accurate hint based on detected WM/Shell
-   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-     case "$DE_TYPE" in
-       hyde)
-         log "Hint: Select arch-common + arch-hyde"
-         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-         ;;
-       niri)
-         log "Hint: Select arch-common + arch-niri"
-         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-         ;;
-       hyprland)
-         log "Hint: Select arch-common"
-         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-         ;;
-       none)
-         log "Hint: Select arch-common (no WM detected)"
-         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-         ;;
-     esac
-   fi
-  local sel
-  sel="$(interactive_select --exit "${all_stow[@]}")"
+      # Add shell-specific packages (available regardless of DE_TYPE)
+      if $NOCTALIA_DETECTED; then
+        all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
+      fi
+
+      if $DMS_DETECTED; then
+        all_stow+=("${DANK_STOW_PKGS[@]}")
+      fi
+    fi
+
+    # Add optional packages (available on any OS)
+    all_stow+=("${OPTIONAL_STOW_PKGS[@]}")
+
+    printf '\n'
+    # Show accurate hint based on detected WM/Shell
+    if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+      case "$DE_TYPE" in
+        hyde)
+          log "Hint: Select arch-common + arch-hyde"
+          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+          ;;
+        niri)
+          log "Hint: Select arch-common + arch-niri"
+          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+          ;;
+        hyprland)
+          log "Hint: Select arch-common"
+          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+          ;;
+        none)
+          log "Hint: Select arch-common (no WM detected)"
+          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+          ;;
+      esac
+
+      # Hint about optional packages
+      log "  Also available: opencode (optional, can override earlier files)"
+    elif [[ "$OS" == "macos" ]]; then
+      log "Hint: Select macos + base packages"
+      log "  Also available: opencode (optional, can override earlier files)"
+    fi
+    local sel
+    sel="$(interactive_select --exit "${all_stow[@]}")"
 
   if [[ -n "$sel" ]]; then
     while IFS= read -r pkg; do
