@@ -64,11 +64,14 @@ NIRI_DETECTED=false
 # DMS (Dank Material Shell) — populated by detect_de()
 DMS_DETECTED=false
 
-# Hyprland — populated by detect_de()
-HYPRLAND_DETECTED=false
-
 # Noctalia — populated by detect_de()
 NOCTALIA_DETECTED=false
+
+# Greetd — populated by detect_de()
+GREETD_DETECTED=false
+
+# Hyprland — populated by detect_de()
+HYPRLAND_DETECTED=false
 
 # Starship — resolved by prompt_starship_mode()
 STARSHIP_MODE="dotfiles"   # dotfiles | hyde | env
@@ -110,11 +113,32 @@ declare -A PATCH_FILES=(
 # Individual patch functions per patch file
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
-  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services"
+  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs"
   [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
   [niri]="reload_niri"
   [dank]="reload_dms"
   [noctalia]="noctalia_patches"
+)
+
+# Descriptions for each patch function
+# Format: func_name="description"
+declare -A PATCH_FUNCTION_DESCRIPTIONS=(
+  # common
+  [install_tpm]="Install TPM (Tmux Plugin Manager)"
+  [install_ghostty_misc_config]="Configure Ghostty platform-specific settings"
+  [apply_arch_patch_dconf]="Load dconf profiles for Arch patches"
+  [install_arch_patch_services]="Install systemd services for Arch patches"
+  [install_pam_configs]="Install PAM configs for greetd"
+  # hyprland
+  [reload_hyprland]="Reload Hyprland configuration"
+  [reload_waybar]="Reload waybar status bar"
+  [remind_hyprlock_preset]="Show hyprlock preset info"
+  # niri
+  [reload_niri]="Show Niri reload instructions"
+  # dank
+  [reload_dms]="Reload Dank Material Shell"
+  # noctalia
+  [noctalia_patches]="Apply Noctalia patches"
 )
 
 # For backward compatibility - will be dynamically selected in selection logic
@@ -132,6 +156,9 @@ DMS_DETECTED=false
 
 # Noctalia — populated by detect_de()
 NOCTALIA_DETECTED=false
+
+# Greetd — populated by detect_de()
+GREETD_DETECTED=false
 
 # Hyprland — populated by detect_de()
 HYPRLAND_DETECTED=false
@@ -299,16 +326,21 @@ detect_de() {
      DMS_DETECTED=true
    fi
 
-   # Check for Noctalia - look for config directory or command
-   if [[ -d "$HOME/.config/noctalia" ]] || command -v noctalia &>/dev/null; then
-     NOCTALIA_DETECTED=true
-   fi
+    # Check for Noctalia - look for config directory or command
+    if [[ -d "$HOME/.config/noctalia" ]] || command -v noctalia &>/dev/null; then
+      NOCTALIA_DETECTED=true
+    fi
 
-   # Check for plain Hyprland (NOT HyDE - HyDE takes precedence)
-   # Detect if Hyprland or hyprctl command exists
-   if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
-     HYPRLAND_DETECTED=true
-   fi
+    # Check for greetd - look for greetd session or command
+    if command -v greetd &>/dev/null || [[ -f "/usr/bin/greetd" ]]; then
+      GREETD_DETECTED=true
+    fi
+
+    # Check for plain Hyprland (NOT HyDE - HyDE takes precedence)
+    # Detect if Hyprland or hyprctl command exists
+    if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
+      HYPRLAND_DETECTED=true
+    fi
   
   # Determine DE_TYPE based on detections
   if $HYDE_DETECTED; then
@@ -334,14 +366,17 @@ detect_de() {
    fi
    if $DMS_DETECTED; then
      ok "DMS (Dank Material Shell) detected"
-   fi
-   if $NOCTALIA_DETECTED; then
-     ok "Noctalia detected"
-   fi
-   if $HYPRLAND_DETECTED; then
-     ok "Hyprland detected"
-   fi
-  if [[ "$DE_TYPE" == "none" ]]; then
+    fi
+    if $NOCTALIA_DETECTED; then
+      ok "Noctalia detected"
+    fi
+    if $GREETD_DETECTED; then
+      ok "greetd detected"
+    fi
+    if $HYPRLAND_DETECTED; then
+      ok "Hyprland detected"
+    fi
+    if [[ "$DE_TYPE" == "none" ]]; then
     log "No specific DE/WM detected — using plain dotfiles mode"
   fi
 }
@@ -703,6 +738,32 @@ get_patch_functions() {
   fi
 }
 
+# get_patch_function_choices PATCH_NAME
+#   Returns list of "func_name: description" for interactive selection
+get_patch_function_choices() {
+  local patch="$1"
+  local func_str="${PATCH_FUNCTIONS[$patch]:-}"
+
+  if [[ -z "$func_str" ]]; then
+    return
+  fi
+
+  # Split function names
+  local -a funcs
+  func_str=$(printf '%s\n' "$func_str" | awk '{for(i=1;i<=NF;i++) print $i}')
+  mapfile -t funcs < <(printf '%s\n' "$func_str")
+
+  # Output each with description
+  for f in "${funcs[@]}"; do
+    local desc="${PATCH_FUNCTION_DESCRIPTIONS[$f]:-}"
+    if [[ -n "$desc" ]]; then
+      printf '%s: %s\n' "$f" "$desc"
+    else
+      printf '%s\n' "$f"
+    fi
+  done
+}
+
 # run_patch PATCH_NAME [FUNC1 FUNC2 ...]
 #   Sources patch file and runs specified functions (or all if none specified)
 run_patch() {
@@ -816,13 +877,22 @@ post_install_task() {
         all_runs+=("$patch:${funcs[0]}")
         log "  $patch: auto-selecting ${funcs[0]}"
       else
+        # Get choices with descriptions
+        local -a choices=()
+        while IFS= read -r c; do
+          [[ -n "$c" ]] && choices+=("$c")
+        done < <(get_patch_function_choices "$patch")
+
         log "Select functions for $patch:"
         local sel
-        sel="$(interactive_select --exit "${funcs[@]}")"
+        sel="$(interactive_select --exit "${choices[@]}")"
 
         if [[ -n "$sel" ]]; then
-          while IFS= read -r f; do
-            [[ -n "$f" ]] && all_runs+=("$patch:$f")
+          while IFS= read -r c; do
+            [[ -n "$c" ]] || continue
+            # Extract function name (before the colon)
+            local func_name="${c%%:*}"
+            all_runs+=("$patch:$func_name")
           done <<< "$sel"
         fi
       fi
@@ -970,6 +1040,7 @@ dry_run_summary() {
   printf "  Niri detected: %s\n" "$NIRI_DETECTED"
   printf "  DMS detected: %s\n" "$DMS_DETECTED"
   printf "  Noctalia detected: %s\n" "$NOCTALIA_DETECTED"
+  printf "  greetd detected: %s\n" "$GREETD_DETECTED"
 
   # Starship context
   local starship_selected=false

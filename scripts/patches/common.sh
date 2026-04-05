@@ -19,7 +19,7 @@ install_tpm() {
 }
 
 ###############################################################################
-# Ghostty arch-config
+# Ghostty misc-config
 # Creates platform-specific overrides for Ghostty terminal
 ###############################################################################
 
@@ -171,4 +171,52 @@ common_patches() {
   install_ghostty_misc_config
   apply_arch_patch_dconf
   install_arch_patch_services
+  install_pam_configs
+}
+
+###############################################################################
+# PAM configuration patches
+# Installs greetd PAM configs if greetd is detected
+###############################################################################
+
+install_pam_configs() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  # Check if greetd is installed
+  if ! $GREETD_DETECTED; then
+    log "greetd not detected — skipping PAM configs"
+    return 0
+  fi
+
+  local src_dir="$DOTFILES_DIR/arch-patches/pam.d"
+  [[ -d "$src_dir" ]] || { log "arch-patches/pam.d not found"; return 0; }
+
+  local -a pam_files
+  mapfile -t pam_files < <(find "$src_dir" -maxdepth 1 -type f -printf '%f\n')
+
+  if (( ${#pam_files[@]} == 0 )); then
+    log "arch-patches/pam.d: no files found — skipping"
+    return 0
+  fi
+
+  step "Installing PAM configurations for greetd"
+
+  local bkp_root="$HOME/.local/share/neo-dots/pam-bkp"
+  run mkdir -p "$bkp_root"
+
+  for pam in "${pam_files[@]}"; do
+    local dest="/etc/pam.d/$pam"
+
+    # Backup existing file
+    if [[ -f "$dest" ]]; then
+      local bkp="$bkp_root/${pam}.bak"
+      log "  Backing up $dest → $bkp"
+      run sudo cp "$dest" "$bkp"
+    fi
+
+    log "  Installing $pam → $dest"
+    run sudo cp "$src_dir/$pam" "$dest"
+    ok "  $pam installed"
+  done
 }
