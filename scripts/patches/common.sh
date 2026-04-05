@@ -172,6 +172,7 @@ common_patches() {
   apply_arch_patch_dconf
   install_arch_patch_services
   install_pam_configs
+  install_systemd_scripts
 }
 
 ###############################################################################
@@ -218,5 +219,64 @@ install_pam_configs() {
     log "  Installing $pam → $dest"
     run sudo cp "$src_dir/$pam" "$dest"
     ok "  $pam installed"
+  done
+}
+
+###############################################################################
+# systemd scripts installation
+# Installs scripts to /lib/systemd/ (e.g., system-sleep, system-rdsleep, etc.)
+###############################################################################
+
+install_systemd_scripts() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  local src_base="$DOTFILES_DIR/arch-patches/systemd"
+  [[ -d "$src_base" ]] || return 0
+
+  # Find all subdirectories (like system-sleep, system-rdsleep, etc.)
+  local -a subdirs
+  mapfile -t subdirs < <(find "$src_base" -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+
+  if (( ${#subdirs[@]} == 0 )); then
+    log "arch-patches/systemd: no subdirectories found — skipping"
+    return 0
+  fi
+
+  step "Installing systemd scripts"
+
+  local bkp_root="$HOME/.local/share/neo-dots/systemd-bkp"
+  run mkdir -p "$bkp_root"
+
+  for subdir in "${subdirs[@]}"; do
+    local src_dir="$src_base/$subdir"
+    local dest_dir="/lib/systemd/$subdir"
+
+    # Create destination directory if it doesn't exist
+    run sudo mkdir -p "$dest_dir"
+
+    # Find all scripts in this subdirectory
+    local -a scripts
+    mapfile -t scripts < <(find "$src_dir" -maxdepth 1 -type f -printf '%f\n')
+
+    for script in "${scripts[@]}"; do
+      local src_file="$src_dir/$script"
+      local dest_file="$dest_dir/$script"
+
+      # Backup existing script
+      if [[ -f "$dest_file" ]]; then
+        local bkp="$bkp_root/${subdir}_${script}.bak"
+        log "  Backing up $dest_file → $bkp"
+        run sudo cp "$dest_file" "$bkp"
+      fi
+
+      # Copy script
+      log "  Installing $script → $dest_file"
+      run sudo cp "$src_file" "$dest_file"
+
+      # Make executable
+      run sudo chmod +x "$dest_file"
+      ok "  $script installed and executable"
+    done
   done
 }
