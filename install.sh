@@ -66,6 +66,9 @@ DMS_DETECTED=false
 # Hyprland — populated by detect_de()
 HYPRLAND_DETECTED=false
 
+# Noctalia — populated by detect_de()
+NOCTALIA_DETECTED=false
+
 # Starship — resolved by prompt_starship_mode()
 STARSHIP_MODE="dotfiles"   # dotfiles | hyde | env
 
@@ -84,8 +87,29 @@ ARCH_COMMON_PKGS=(arch-common)
 ARCH_HYDE_PKGS=(arch-hyde)
 ARCH_NIRI_PKGS=(arch-niri)
 
+# Shell-specific stow packages (can overlay DE-specific configs)
+SHELL_STOW_PKGS=()
+NOCTALIA_STOW_PKGS=(arch-noctalia)
+DANK_STOW_PKGS=(arch-dank)
+
 # For backward compatibility - will be dynamically selected in selection logic
 ARCH_STOW_PKGS=()
+
+# Detection flags
+HYDE_DETECTED=false
+HYDE_SHELL_BIN=""   # full path to hyde-shell binary
+HYDE_CTL_BIN=""     # full path to hydectl binary
+
+NIRI_DETECTED=false
+
+# DMS (Dank Material Shell) — populated by detect_de()
+DMS_DETECTED=false
+
+# Noctalia — populated by detect_de()
+NOCTALIA_DETECTED=false
+
+# Hyprland — populated by detect_de()
+HYPRLAND_DETECTED=false
 
 BREW_FILES=(
   Brewfile.taps
@@ -245,16 +269,21 @@ detect_de() {
     NIRI_DETECTED=true
   fi
 
-  # Check for DMS (Dank Material Shell) - can run alongside Hyprland or Niri
-  if command -v dms-shell &>/dev/null || command -v dmsctl &>/dev/null; then
-    DMS_DETECTED=true
-  fi
+   # Check for DMS (Dank Material Shell) - can run alongside Hyprland or Niri
+   if command -v dms-shell &>/dev/null || command -v dmsctl &>/dev/null; then
+     DMS_DETECTED=true
+   fi
 
-  # Check for plain Hyprland (NOT HyDE - HyDE takes precedence)
-  # Detect if Hyprland or hyprctl command exists
-  if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
-    HYPRLAND_DETECTED=true
-  fi
+   # Check for Noctalia - look for config directory or command
+   if [[ -d "$HOME/.config/noctalia" ]] || command -v noctalia &>/dev/null; then
+     NOCTALIA_DETECTED=true
+   fi
+
+   # Check for plain Hyprland (NOT HyDE - HyDE takes precedence)
+   # Detect if Hyprland or hyprctl command exists
+   if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
+     HYPRLAND_DETECTED=true
+   fi
   
   # Determine DE_TYPE based on detections
   if $HYDE_DETECTED; then
@@ -275,15 +304,18 @@ detect_de() {
     [[ -n "$HYDE_CTL_BIN"   ]] && log "  hydectl    → $HYDE_CTL_BIN"
     [[ -z "$HYDE_SHELL_BIN" ]] && warn "hyde-shell not found in PATH — CLI features may be limited"
   fi
-  if $NIRI_DETECTED; then
-    ok "Niri detected"
-  fi
-  if $DMS_DETECTED; then
-    ok "DMS (Dank Material Shell) detected"
-  fi
-  if $HYPRLAND_DETECTED; then
-    ok "Hyprland detected"
-  fi
+   if $NIRI_DETECTED; then
+     ok "Niri detected"
+   fi
+   if $DMS_DETECTED; then
+     ok "DMS (Dank Material Shell) detected"
+   fi
+   if $NOCTALIA_DETECTED; then
+     ok "Noctalia detected"
+   fi
+   if $HYPRLAND_DETECTED; then
+     ok "Hyprland detected"
+   fi
   if [[ "$DE_TYPE" == "none" ]]; then
     log "No specific DE/WM detected — using plain dotfiles mode"
   fi
@@ -292,54 +324,6 @@ detect_de() {
 # Kept for backward compatibility - wraps detect_de
 detect_hyde() {
   detect_de
-}
-
-detect_hyde() {
-  # Locate hyde-shell — check PATH first, then well-known fallbacks
-  local -a candidates
-  mapfile -t candidates < <(
-    command -v hyde-shell 2>/dev/null || true
-    printf '%s\n' \
-      "$HOME/.local/bin/hyde-shell" \
-      "/usr/local/bin/hyde-shell"
-  )
-
-  for c in "${candidates[@]}"; do
-    [[ -x "$c" ]] && { HYDE_SHELL_BIN="$c"; break; }
-  done
-
-  # Locate hydectl
-  local -a ctl_candidates
-  mapfile -t ctl_candidates < <(
-    command -v hydectl 2>/dev/null || true
-    printf '%s\n' \
-      "$HOME/.local/bin/hydectl" \
-      "/usr/local/bin/hydectl"
-  )
-
-  for c in "${ctl_candidates[@]}"; do
-    [[ -x "$c" ]] && { HYDE_CTL_BIN="$c"; break; }
-  done
-
-  # HyDE is present if the binary OR config directory exists
-  local zdotdir="${ZDOTDIR:-$HOME/.config/zsh}"
-  local hyde_zsh_dir="$zdotdir/conf.d/hyde"
-
-  if [[ -d "$hyde_zsh_dir" ]]; then
-    HYDE_DETECTED=true
-  elif [[ -n "$HYDE_SHELL_BIN" && -d "$HOME/.config/hyde" ]]; then
-    # Fallback: binary + main config dir exist
-    HYDE_DETECTED=true
-  fi
-
-  if $HYDE_DETECTED; then
-    ok "HyDE install detected"
-    if [[ -n "$HYDE_SHELL_BIN" ]]; then log "  hyde-shell → $HYDE_SHELL_BIN"; fi
-    if [[ -n "$HYDE_CTL_BIN"   ]]; then log "  hydectl    → $HYDE_CTL_BIN";   fi
-    if [[ -z "$HYDE_SHELL_BIN" ]]; then warn "hyde-shell not found in PATH — CLI features may be limited"; fi
-  else
-    log "HyDE not detected — plain dotfiles mode"
-  fi
 }
 
 ###############################################################################
@@ -409,10 +393,41 @@ stow_packages() {
   done
 }
 
+# stow_shell_pkg PKG
+#   Stows shell-specific packages with override flag to allow overriding base/DE files
+stow_shell_pkg() {
+  local pkg="$1"
+  log "Stowing (shell override): $pkg"
+  
+  if ! $DRY_RUN; then
+    # Collect conflict lines from the simulate run
+    local sim_out
+    sim_out="$(
+      stow --simulate --no-folding \
+           --override='.*' \
+           -d "$DOTFILES_DIR" -t "$HOME" "$pkg" 2>&1
+    )" || true
+    
+    # stow prints: "  * cannot stow ... over existing target PATH since neither..."
+    while IFS= read -r line; do
+      [[ "$line" == *"since neither a link nor a directory"* ]] || continue
+      # extract the path between "existing target " and " since"
+      local rel
+      rel="${line#*existing target }"
+      rel="${rel% since*}"
+      backup_path "$HOME/$rel"
+    done <<< "$sim_out"
+  fi
+  
+  run stow --no-folding --override='.*' -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
+}
+
 # select_arch_packages - Determine which Arch stow packages to use based on DE_TYPE
+# Returns: newline-separated list of packages in correct order
 select_arch_packages() {
   local -a arch_pkgs=("${ARCH_COMMON_PKGS[@]}")
-  
+   
+  # Add DE/WM-specific packages first
   case "$DE_TYPE" in
     hyde)
       arch_pkgs+=("${ARCH_HYDE_PKGS[@]}")
@@ -428,7 +443,16 @@ select_arch_packages() {
       # No DE-specific packages - just common
       ;;
   esac
-  
+   
+  # Add shell-specific packages last (they can override DE/base files)
+  if $NOCTALIA_DETECTED; then
+    arch_pkgs+=("${NOCTALIA_STOW_PKGS[@]}")
+  fi
+   
+  if $DMS_DETECTED; then
+    arch_pkgs+=("${DANK_STOW_PKGS[@]}")
+  fi
+   
   printf '%s\n' "${arch_pkgs[@]}"
 }
 
@@ -615,8 +639,14 @@ post_install_task() {
 
   # DMS (Dank Material Shell) patches - can run alongside Hyprland or Niri
   if $DMS_DETECTED; then
-    source "$DOTFILES_DIR/scripts/patches/dms.sh"
-    dms_patches
+    source "$DOTFILES_DIR/scripts/patches/dank.sh"
+    dank_patches
+  fi
+
+  # Noctalia patches
+  if $NOCTALIA_DETECTED; then
+    source "$DOTFILES_DIR/scripts/patches/noctalia.sh"
+    noctalia_patches
   fi
 
   # HyDE-specific post-install steps (in scripts/patches/hyde.sh)
@@ -655,7 +685,30 @@ stow_selected() {
     fi
   fi
 
-  stow_packages "${STOW_SELECTED[@]}"
+  # Separate regular packages from shell packages
+  local -a regular_pkgs=()
+  local -a shell_pkgs=()
+  
+  for pkg in "${STOW_SELECTED[@]:-}"; do
+    # Check if it's a shell-specific package
+    if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
+      shell_pkgs+=("$pkg")
+    else
+      regular_pkgs+=("$pkg")
+    fi
+  done
+  
+  # Stow regular packages first (base, DE/WM)
+  if (( ${#regular_pkgs[@]} > 0 )); then
+    stow_packages "${regular_pkgs[@]}"
+  fi
+  
+  # Stow shell packages last with override capability
+  if (( ${#shell_pkgs[@]} > 0 )); then
+    for pkg in "${shell_pkgs[@]}"; do
+      stow_shell_pkg "$pkg"
+    done
+  fi
 
   # Apply starship mode only if starship was selected
   local starship_selected=false
@@ -702,6 +755,8 @@ dry_run_summary() {
   printf "  DE/VM type: %s\n" "${DE_TYPE:-none}"
   printf "  HyDE detected: %s\n" "$HYDE_DETECTED"
   printf "  Niri detected: %s\n" "$NIRI_DETECTED"
+  printf "  DMS detected: %s\n" "$DMS_DETECTED"
+  printf "  Noctalia detected: %s\n" "$NOCTALIA_DETECTED"
 
   # Starship context
   local starship_selected=false
@@ -725,13 +780,18 @@ dry_run_summary() {
     printf "    %s\n" "$bkp_root"
   fi
 
-  # Stow
-  if (( ${#STOW_SELECTED[@]} > 0 )); then
-    printf "\n  Stow packages:\n"
-    for pkg in "${STOW_SELECTED[@]}"; do
-      printf "    - %s\n" "$pkg"
-    done
-  fi
+   # Stow
+   if (( ${#STOW_SELECTED[@]} > 0 )); then
+     printf "\n  Stow packages:\n"
+     # Show in order: base, DE/WM, then shell
+     for pkg in "${STOW_SELECTED[@]}"; do
+       if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
+         printf "    - %s (with override)\n" "$pkg"
+       else
+         printf "    - %s\n" "$pkg"
+       fi
+     done
+   fi
 
   # Brew
   if (( ${#BREW_SELECTED[@]} > 0 )); then
@@ -947,47 +1007,64 @@ interactive_mode() {
     return
   fi
 
-  # ── Stow packages ─────────────────────────────────────────────────────────
-  # Build the list of available stow packages based on OS and detected WM
-  local -a all_stow=("${BASE_STOW_PKGS[@]}")
-  [[ "$OS" == "macos" ]] && all_stow+=("${MACOS_STOW_PKGS[@]}")
+   # ── Stow packages ─────────────────────────────────────────────────────────
+   # Build the list of available stow packages based on OS and detected WM/Shell
+   local -a all_stow=("${BASE_STOW_PKGS[@]}")
+   [[ "$OS" == "macos" ]] && all_stow+=("${MACOS_STOW_PKGS[@]}")
+   
+   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+     # Always include arch-common for Arch/CachyOS
+     all_stow+=("${ARCH_COMMON_PKGS[@]}")
+     
+     # Add WM-specific packages based on detected DE_TYPE
+     case "$DE_TYPE" in
+       hyde)
+         all_stow+=("${ARCH_HYDE_PKGS[@]}")
+         ;;
+       niri)
+         all_stow+=("${ARCH_NIRI_PKGS[@]}")
+         ;;
+       hyprland|none)
+         # Plain Hyprland or no WM - no additional stow packages needed
+         ;;
+     esac
+     
+     # Add shell-specific packages (available regardless of DE_TYPE)
+     if $NOCTALIA_DETECTED; then
+       all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
+     fi
+     
+     if $DMS_DETECTED; then
+       all_stow+=("${DANK_STOW_PKGS[@]}")
+     fi
+   fi
 
-  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-    # Always include arch-common for Arch/CachyOS
-    all_stow+=("${ARCH_COMMON_PKGS[@]}")
-
-    # Add WM-specific packages based on detected DE_TYPE
-    case "$DE_TYPE" in
-      hyde)
-        all_stow+=("${ARCH_HYDE_PKGS[@]}")
-        ;;
-      niri)
-        all_stow+=("${ARCH_NIRI_PKGS[@]}")
-        ;;
-      hyprland|none)
-        # Plain Hyprland or no WM - no additional stow packages needed
-        ;;
-    esac
-  fi
-
-  printf '\n'
-  # Show accurate hint based on detected WM
-  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-    case "$DE_TYPE" in
-      hyde)
-        log "Hint: Select arch-common + arch-hyde"
-        ;;
-      niri)
-        log "Hint: Select arch-common + arch-niri"
-        ;;
-      hyprland)
-        log "Hint: Select arch-common"
-        ;;
-      none)
-        log "Hint: Select arch-common (no WM detected)"
-        ;;
-    esac
-  fi
+   printf '\n'
+   # Show accurate hint based on detected WM/Shell
+   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+     case "$DE_TYPE" in
+       hyde)
+         log "Hint: Select arch-common + arch-hyde"
+         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+         ;;
+       niri)
+         log "Hint: Select arch-common + arch-niri"
+         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+         ;;
+       hyprland)
+         log "Hint: Select arch-common"
+         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+         ;;
+       none)
+         log "Hint: Select arch-common (no WM detected)"
+         [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+         [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+         ;;
+     esac
+   fi
   local sel
   sel="$(interactive_select --exit "${all_stow[@]}")"
 

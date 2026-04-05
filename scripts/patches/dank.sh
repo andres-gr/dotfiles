@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# dms.sh - Dank Material Shell patches
+# dank.sh - Dank Material Shell patches
 # Can run alongside Hyprland or Niri
 
 ###############################################################################
@@ -20,6 +20,9 @@ reload_dms() {
 # Main entry point for DMS patches
 ###############################################################################
 
-dms_patches() {
+dank_patches() {
   reload_dms
 }
+
+# Export function
+export -f dank_patches
