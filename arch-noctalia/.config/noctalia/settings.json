@@ -163,30 +163,11 @@
                     "visualizerType": "linear"
                 },
                 {
-                    "blacklist": [
-                    ],
-                    "chevronColor": "none",
-                    "colorizeIcons": false,
-                    "drawerEnabled": true,
-                    "hidePassive": false,
-                    "id": "Tray",
-                    "pinned": [
-                    ]
-                },
-                {
                     "displayMode": "alwaysShow",
                     "iconColor": "none",
                     "id": "Volume",
                     "middleClickCommand": "pwvucontrol || pavucontrol",
                     "textColor": "none"
-                },
-                {
-                    "hideWhenZero": false,
-                    "hideWhenZeroUnread": false,
-                    "iconColor": "none",
-                    "id": "NotificationHistory",
-                    "showUnreadBadge": true,
-                    "unreadBadgeColor": "secondary"
                 },
                 {
                     "compactMode": true,
@@ -209,6 +190,34 @@
                     "textColor": "none",
                     "useMonospaceFont": true,
                     "usePadding": false
+                },
+                {
+                    "blacklist": [
+                    ],
+                    "chevronColor": "none",
+                    "colorizeIcons": false,
+                    "drawerEnabled": true,
+                    "hidePassive": false,
+                    "id": "Tray",
+                    "pinned": [
+                    ]
+                },
+                {
+                    "hideWhenZero": false,
+                    "hideWhenZeroUnread": false,
+                    "iconColor": "none",
+                    "id": "NotificationHistory",
+                    "showUnreadBadge": true,
+                    "unreadBadgeColor": "secondary"
+                },
+                {
+                    "defaultSettings": {
+                        "currentIconName": "world-download",
+                        "hideOnZero": false,
+                        "updateIntervalMinutes": 30,
+                        "updateTerminalCommand": "foot -e"
+                    },
+                    "id": "plugin:update-count"
                 },
                 {
                     "colorizeDistroLogo": false,
@@ -558,18 +567,18 @@
                 "keybind": "L"
             },
             {
-                "action": "logout",
-                "command": "",
-                "countdownEnabled": true,
-                "enabled": true,
-                "keybind": "O"
-            },
-            {
                 "action": "suspend",
                 "command": "",
                 "countdownEnabled": true,
                 "enabled": true,
                 "keybind": "S"
+            },
+            {
+                "action": "logout",
+                "command": "",
+                "countdownEnabled": true,
+                "enabled": true,
+                "keybind": "O"
             },
             {
                 "action": "reboot",
@@ -678,11 +687,15 @@
             },
             {
                 "enabled": true,
-                "id": "discord"
+                "id": "spicetify"
             },
             {
                 "enabled": true,
-                "id": "spicetify"
+                "id": "kcolorscheme"
+            },
+            {
+                "enabled": true,
+                "id": "discord"
             }
         ],
         "enableUserTheming": true
