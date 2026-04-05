@@ -10,6 +10,14 @@ window-rule {
     tiled-state true
 }
 window-rule {
+    match is-focused=true
+    opacity 0.98
+}
+window-rule {
+    match is-focused=false
+    opacity 0.95
+}
+window-rule {
     match app-id="^org\\.gnome\\."
     draw-border-with-background false
     geometry-corner-radius 12
@@ -30,6 +38,8 @@ window-rule {
     match app-id="^blueman-manager$"
     match app-id="^org\\.gnome\\.Nautilus$"
     match app-id="^xdg-desktop-portal$"
+    match app-id="^org\\.kde\\.haruna$"
+    match app-id="^org\\.nomacs\\.ImageLounge$"
     open-floating true
 }
 window-rule {
@@ -56,10 +66,14 @@ window-rule {
     open-on-workspace "prim-2"
 }
 window-rule {
-    match is-focused=true
-    opacity 0.98
-}
-window-rule {
-    match is-focused=false
-    opacity 0.95
+    match app-id="^org\\.kde\\.haruna$"
+    match app-id="^org\\.nomacs\\.ImageLounge$"
+
+    default-column-width {
+        proportion 0.95
+    }
+    default-window-height {
+        proportion 0.97
+    }
+    opacity 1.0
 }

@@ -45,6 +45,9 @@ binds {
     Mod+Ctrl+D hotkey-overlay-title="Toggle Column Tabbed Display" {
         toggle-column-tabbed-display
     }
+    Mod+Shift+U hotkey-overlay-title="Toggle Rule Opacity" {
+        toggle-window-rule-opacity
+    }
     // === Focus Navigation ===
     Mod+Left {
         focus-column-left
