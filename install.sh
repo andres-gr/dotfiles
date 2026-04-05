@@ -538,6 +538,11 @@ select_arch_pkg_files() {
       ;;
   esac
 
+  # Add DMS-specific packages if detected (works alongside any DE/WM)
+  if $DMS_DETECTED; then
+    pkg_files+=(dank-core.txt dank-aur.txt)
+  fi
+
   ARCH_PKG_FILES=("${pkg_files[@]}")
 }
 
