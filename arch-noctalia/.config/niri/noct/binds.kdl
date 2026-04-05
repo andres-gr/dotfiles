@@ -26,7 +26,7 @@ binds {
     Ctrl+Alt+Delete hotkey-overlay-title="System Monitor" {
         spawn-sh "qs -c noctalia-shell ipc call systemMonitor toggle"
     }
-    Ctrl+Shift+Escape hotkey-overlay-title="Btop Process Monitor" {
+    Ctrl+Alt+Shift+L hotkey-overlay-title="Lock & Suspend" {
         spawn-sh "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
     }
     // === Audio Controls ===
