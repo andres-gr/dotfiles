@@ -438,28 +438,28 @@
     "hooks": {
         "colorGeneration": "",
         "darkModeChange": "",
-        "enabled": true,
+        "enabled": false,
         "performanceModeDisabled": "",
         "performanceModeEnabled": "",
-        "screenLock": "~/.local/bin/noctalia-lock-hook",
-        "screenUnlock": "~/.local/bin/noctalia-lock-hook",
+        "screenLock": "",
+        "screenUnlock": "",
         "session": "",
         "startup": "",
         "wallpaperChange": ""
     },
     "idle": {
         "customCommands": "[]",
-        "enabled": false,
-        "fadeDuration": 3,
+        "enabled": true,
+        "fadeDuration": 2,
         "lockCommand": "",
         "lockTimeout": 600,
         "resumeLockCommand": "",
         "resumeScreenOffCommand": "",
         "resumeSuspendCommand": "",
         "screenOffCommand": "",
-        "screenOffTimeout": 900,
+        "screenOffTimeout": 720,
         "suspendCommand": "",
-        "suspendTimeout": 1800
+        "suspendTimeout": 15
     },
     "location": {
         "analogClockInCalendar": false,
@@ -553,7 +553,7 @@
         "notifyUpdates": true
     },
     "sessionMenu": {
-        "countdownDuration": 4000,
+        "countdownDuration": 3000,
         "enableCountdown": true,
         "largeButtonsLayout": "grid",
         "largeButtonsStyle": true,
