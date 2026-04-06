@@ -1,11 +1,15 @@
 #!/usr/bin/env bash
 # Noctalia post-install patches
 
+# Get script directory for relative paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 ###############################################################################
 # Zen Browser: Hide titlebar buttons via userChrome.css
 ###############################################################################
 
 patch_zen_userchrome() {
+  local src="$SCRIPT_DIR/data/noctalia-zen-override.css"
   local zen_config_dir="$HOME/.config/zen"
 
   # Find the default profile directory (ends with ".Default (release)")
@@ -28,12 +32,15 @@ patch_zen_userchrome() {
     run mkdir -p "$chrome_dir"
   fi
 
+  # Copy overwrite the patch css file
+  cp -f "$src" "$chrome_dir"
+
   # CSS snippet to add
-  local css_snippet='.titlebar-buttonbox-container { display: none !important; }'
+  local css_snippet="@import \"./noctalia-zen-override.css\";"
 
   # Check if the snippet already exists
-  if [[ -f "$css_file" ]] && grep -q "titlebar-buttonbox-container" "$css_file" 2>/dev/null; then
-    log "userChrome.css: titlebar-buttonbox-container already present — skipping"
+  if [[ -f "$css_file" ]] && grep -q "noctalia-zen-override" "$css_file" 2>/dev/null; then
+    log "userChrome.css: noctalia override import already present — skipping"
     return 0
   fi
 
@@ -44,7 +51,7 @@ patch_zen_userchrome() {
   else
     log "Patching $css_file"
     printf '\n%s\n' "$css_snippet" >> "$css_file"
-    ok "  Added titlebar-buttonbox-container to userChrome.css"
+    ok "  Added Noctalia override import to userChrome.css"
   fi
 }
 
