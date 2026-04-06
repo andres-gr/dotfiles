@@ -10,9 +10,9 @@ layout {
 
     border {
         on
-        active-gradient   from="{{colors.primary.default.hex}}" to="{{colors.tertiary.default.hex}}" angle=45 in="oklch shorter hue" relative-to="workspace-view"
+        active-gradient   from="{{colors.primary.default.hex}}" to="{{colors.secondary.default.hex}}" angle=45 in="oklch shorter hue" relative-to="workspace-view"
         inactive-gradient from="{{colors.surface_variant.default.hex}}" to="{{colors.on_surface_variant.default.hex}}" angle=45
-        urgent-gradient   from="{{colors.error.default.hex}}" to="{{colors.tertiary_fixed_dim.default.hex}}" angle=45
+        urgent-gradient   from="{{colors.error.default.hex}}" to="{{colors.secondary_fixed_dim.default.hex}}" angle=45
     }
 
     shadow {
