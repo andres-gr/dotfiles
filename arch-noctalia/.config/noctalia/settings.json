@@ -734,7 +734,7 @@
         "randomIntervalSec": 420,
         "setWallpaperOnAllMonitors": false,
         "showHiddenFiles": false,
-        "skipStartupTransition": true,
+        "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
         "sortOrder": "name",
         "transitionDuration": 1500,

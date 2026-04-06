@@ -1,5 +1,5 @@
 layout {
-    background-color "transparent"
+    background-color "{{colors.on_primary.default.hex}}80"
 
     focus-ring {
         off
