@@ -170,6 +170,9 @@
                     "textColor": "none"
                 },
                 {
+                    "id": "plugin:usb-drive-manager"
+                },
+                {
                     "compactMode": true,
                     "diskPath": "/",
                     "iconColor": "none",
