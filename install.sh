@@ -444,7 +444,7 @@ stow_pkg() {
     done <<< "$sim_out"
   fi
 
-  run stow --no-folding -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
+  run stow --no-folding --override='.*' -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
 }
 
 stow_packages() {
