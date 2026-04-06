@@ -13,3 +13,9 @@ environment {
 
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 spawn-at-startup "qs" "-c" "noctalia-shell"
+
+// Idle pre lock hook
+spawn-at-startup "~/.local/bin/idle-pre-lock"
+
+// Idle inhibit on media playback
+spawn-at-startup "~/.local/bin/media-idle-inhibit"

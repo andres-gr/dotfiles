@@ -438,11 +438,11 @@
     "hooks": {
         "colorGeneration": "",
         "darkModeChange": "",
-        "enabled": false,
+        "enabled": true,
         "performanceModeDisabled": "",
         "performanceModeEnabled": "",
-        "screenLock": "",
-        "screenUnlock": "",
+        "screenLock": "~/.local/bin/noctalia-lock-hook",
+        "screenUnlock": "~/.local/bin/noctalia-lock-hook",
         "session": "",
         "startup": "",
         "wallpaperChange": ""

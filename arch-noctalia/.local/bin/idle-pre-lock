@@ -1,0 +1,6 @@
+#!/bin/env bash
+
+IPC="qs -c noctalia-shell ipc call"
+
+exec swayidle -w \
+  timeout 600   "$IPC lockScreen lock"
