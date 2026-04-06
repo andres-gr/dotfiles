@@ -56,12 +56,58 @@ patch_zen_userchrome() {
 }
 
 ###############################################################################
+# Spotify Toast plugin
+# Clone or update the noctalia-spotify-toast plugin
+###############################################################################
+
+install_spotify_toast_plugin() {
+  local plugin_dir="$HOME/.config/noctalia/plugins/noctalia-spotify-toast"
+  local repo_url="https://github.com/andres-gr/noctalia-spotify-toast"
+
+  # Create plugins directory if it doesn't exist
+  if [[ ! -d "$(dirname "$plugin_dir")" ]]; then
+    mkdir -p "$(dirname "$plugin_dir")"
+  fi
+
+  if [[ -d "$plugin_dir" ]]; then
+    # Already exists — check if it's a git repo
+    if [[ -d "$plugin_dir/.git" ]]; then
+      log "Spotify Toast plugin found, pulling latest..."
+      if $DRY_RUN; then
+        log "[dry-run] would cd to $plugin_dir and git pull"
+      else
+        if cd "$plugin_dir" && git pull --ff-only 2>/dev/null; then
+          ok "Updated Spotify Toast plugin"
+        else
+          warn "Spotify Toast plugin: git pull failed or no remote — skipping update"
+        fi
+      fi
+    else
+      log "Spotify Toast plugin directory exists but is not a git repo — skipping"
+    fi
+  else
+    # Clone the repo
+    log "Cloning Spotify Toast plugin..."
+    if $DRY_RUN; then
+      log "[dry-run] would git clone $repo_url to $plugin_dir"
+    else
+      if git clone --depth 1 "$repo_url" "$plugin_dir" 2>/dev/null; then
+        ok "Cloned Spotify Toast plugin"
+      else
+        warn "Failed to clone Spotify Toast plugin"
+      fi
+    fi
+  fi
+}
+
+###############################################################################
 # Main entry point
 ###############################################################################
 
 noctalia_patches() {
   step "Applying Noctalia patches"
   patch_zen_userchrome
+  install_spotify_toast_plugin
 }
 
 # Export function

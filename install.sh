@@ -117,7 +117,7 @@ declare -A PATCH_FUNCTIONS=(
   [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
   [niri]="install_niri_config"
   [dank]="reload_dms"
-  [noctalia]="noctalia_patches"
+  [noctalia]="patch_zen_userchrome install_spotify_toast_plugin"
 )
 
 # Descriptions for each patch function
@@ -139,7 +139,8 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   # dank
   [reload_dms]="Reload Dank Material Shell"
   # noctalia
-  [noctalia_patches]="Apply Noctalia patches (Zen Browser userChrome.css)"
+  [patch_zen_userchrome]="Patch Zen Browser userChrome.css"
+  [install_spotify_toast_plugin]="Install Spotify Toast plugin"
 )
 
 # For backward compatibility - will be dynamically selected in selection logic
