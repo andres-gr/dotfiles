@@ -459,7 +459,7 @@
         "screenOffCommand": "",
         "screenOffTimeout": 720,
         "suspendCommand": "",
-        "suspendTimeout": 15
+        "suspendTimeout": 900
     },
     "location": {
         "analogClockInCalendar": false,
