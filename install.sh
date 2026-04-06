@@ -115,7 +115,7 @@ declare -A PATCH_FILES=(
 declare -A PATCH_FUNCTIONS=(
   [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs install_systemd_scripts"
   [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
-  [niri]="reload_niri"
+  [niri]="install_niri_config"
   [dank]="reload_dms"
   [noctalia]="noctalia_patches"
 )
@@ -135,7 +135,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [reload_waybar]="Reload waybar status bar"
   [remind_hyprlock_preset]="Show hyprlock preset info"
   # niri
-  [reload_niri]="Show Niri reload instructions"
+  [install_niri_config]="Install main niri config.kdl"
   # dank
   [reload_dms]="Reload Dank Material Shell"
   # noctalia
