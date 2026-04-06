@@ -170,6 +170,15 @@
                     "textColor": "none"
                 },
                 {
+                    "defaultSettings": {
+                        "autoMount": false,
+                        "fileBrowser": "yazi",
+                        "hideWhenEmpty": false,
+                        "iconColor": "none",
+                        "showBadge": false,
+                        "showNotifications": true,
+                        "terminalCommand": "kitty"
+                    },
                     "id": "plugin:usb-drive-manager"
                 },
                 {
@@ -306,10 +315,10 @@
                     "id": "Bluetooth"
                 },
                 {
-                    "id": "WallpaperSelector"
+                    "id": "NoctaliaPerformance"
                 },
                 {
-                    "id": "NoctaliaPerformance"
+                    "id": "WallpaperSelector"
                 }
             ],
             "right": [
@@ -719,7 +728,7 @@
     },
     "wallpaper": {
         "automationEnabled": true,
-        "directory": "/home/agr/Pictures/Wallpapers",
+        "directory": "/home/agr/Pictures/Walls",
         "enableMultiMonitorDirectories": true,
         "enabled": true,
         "favorites": [
@@ -729,6 +738,16 @@
         "hideWallpaperFilenames": false,
         "linkLightAndDarkWallpapers": true,
         "monitorDirectories": [
+            {
+                "directory": "/home/agr/Pictures/Walls",
+                "name": "DP-1",
+                "wallpaper": ""
+            },
+            {
+                "directory": "/home/agr/Pictures/Walls",
+                "name": "DP-3",
+                "wallpaper": ""
+            }
         ],
         "overviewBlur": 0.9,
         "overviewEnabled": true,

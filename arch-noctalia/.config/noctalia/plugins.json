@@ -13,7 +13,8 @@
     ],
     "states": {
         "noctalia-spotify-toast": {
-            "enabled": true
+            "enabled": true,
+            "sourceUrl": "https://github.com/noctalia-dev/noctalia-plugins"
         },
         "update-count": {
             "enabled": true,
