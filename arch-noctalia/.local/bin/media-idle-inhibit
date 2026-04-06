@@ -1,10 +1,8 @@
 #!/bin/env bash
 
-IPC="qs -c noctalia-shell ipc call"
-
 playerctl --follow status 2>/dev/null | while read -r status; do
   case "$status" in
-    "Playing")  "$IPC idleInhibitor enable" ;;
-    *)          "$IPC idleInhibitor disable" ;;
+    "Playing")  qs -c noctalia-shell ipc call idleInhibitor enable && qs -c noctalia-shell ipc call toast dismiss ;;
+    *)          qs -c noctalia-shell ipc call idleInhibitor disable && qs -c noctalia-shell ipc call toast dismiss ;;
   esac
 done

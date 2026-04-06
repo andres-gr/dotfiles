@@ -1,9 +1,0 @@
-#!/bin/env bash
-
-IPC="qs -c noctalia-shell ipc call"
-
-exec swayidle -w \
-  timeout 300   "$IPC monitors off" \
-  timeout 600   "systemctl suspend" \
-  resume        "$IPC monitors on" \
-  before-sleep  "$IPC lockScreen lock"
