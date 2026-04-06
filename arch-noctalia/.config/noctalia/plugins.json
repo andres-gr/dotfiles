@@ -4,12 +4,16 @@
             "enabled": true,
             "name": "Noctalia Plugins",
             "url": "https://github.com/noctalia-dev/noctalia-plugins"
+        },
+        {
+            "enabled": true,
+            "name": "AGR toast repo",
+            "url": "https://github.com/andres-gr/noctalia-spotify-toast"
         }
     ],
     "states": {
-        "spotify-art-toast": {
-            "enabled": true,
-            "sourceUrl": "https://github.com/noctalia-dev/noctalia-plugins"
+        "noctalia-spotify-toast": {
+            "enabled": true
         },
         "update-count": {
             "enabled": true,
