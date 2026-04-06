@@ -280,3 +280,78 @@ install_systemd_scripts() {
     done
   done
 }
+
+###############################################################################
+# Yazi plugins installation
+# Install/update yazi plugins if yazi is available
+###############################################################################
+
+install_yazi_plugins() {
+  # Check if yazi is installed
+  if ! command -v ya &>/dev/null; then
+    log "Yazi not installed — skipping plugins"
+    return 0
+  fi
+
+  local -a plugins=(
+    "boydaihungst/mediainfo"
+    "lpnh/fr"
+    "yazi-rs/plugins:git"
+  )
+
+  log "Checking yazi plugins..."
+
+  # Get list of installed plugins
+  local installed_plugins
+  installed_plugins=$(ya pkg list 2>/dev/null || echo "")
+
+  local -a to_install=()
+  local -a to_upgrade=()
+
+  for plugin in "${plugins[@]}"; do
+    # Extract just the plugin identifier for checking
+    local plugin_name="${plugin%%:*}"  # Remove :git suffix if present
+    plugin_name="${plugin_name##*/}"    # Remove owner/ prefix
+
+    if echo "$installed_plugins" | grep -qw "$plugin_name"; then
+      to_upgrade+=("$plugin")
+    else
+      to_install+=("$plugin")
+    fi
+  done
+
+  # Upgrade existing plugins
+  if (( ${#to_upgrade[@]} > 0 )); then
+    log "Upgrading ${#to_upgrade[@]} yazi plugin(s)..."
+    if $DRY_RUN; then
+      log "[dry-run] would run: ya pkg upgrade"
+    else
+      if ya pkg upgrade 2>/dev/null; then
+        ok "Upgraded yazi plugins"
+      else
+        warn "Some yazi plugins failed to upgrade"
+      fi
+    fi
+  fi
+
+  # Install missing plugins
+  if (( ${#to_install[@]} > 0 )); then
+    log "Installing ${#to_install[@]} new yazi plugin(s)..."
+    for plugin in "${to_install[@]}"; do
+      if $DRY_RUN; then
+        log "[dry-run] would run: ya pkg add $plugin"
+      else
+        if ya pkg add "$plugin" 2>/dev/null; then
+          log "  Installed: $plugin"
+        else
+          warn "  Failed to install: $plugin"
+        fi
+      fi
+    done
+    ok "Installed yazi plugins"
+  fi
+
+  if (( ${#to_install[@]} == 0 )) && (( ${#to_upgrade[@]} == 0 )); then
+    log "All yazi plugins already installed"
+  fi
+}

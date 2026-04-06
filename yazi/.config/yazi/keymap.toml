@@ -157,6 +157,24 @@ keymap = [
 	{ on = "~",    run = "help", desc = "Open help" },
 	{ on = "<F1>", run = "help", desc = "Open help" },
 ]
+prepend_keymap = [
+  { on = [ "<C-m>", "m" ], run = "plugin mediainfo -- toggle-metadata", desc = "Toggle media preview metadata" },
+  { on = [ "<C-m>", "p" ], run = "plugin mediainfo -- toggle-preview", desc = "Toggle media preview image" },
+
+  # Hide and show metadata, image
+  { on = [ "<C-m>", "<S-m>" ], run = "plugin mediainfo -- hide-metadata", desc = "Hide media preview metadata" },
+  { on = [ "<C-m>", "<S-p>" ], run = "plugin mediainfo -- hide-preview", desc = "Hide media preview image" },
+
+  { on = [ "<C-m>", "<A-m>" ], run = "plugin mediainfo -- show-metadata", desc = "Show media preview metadata" },
+  { on = [ "<C-m>", "<A-p>" ], run = "plugin mediainfo -- show-preview", desc = "Show media preview image" },
+
+  # Reset to defautl settings in yazi.toml file
+  { on = [ "<C-m>", "r" ], run = "plugin mediainfo -- reset", desc = "Reset media preview to default settings" },
+
+	# File search with fzf with bat preview for rg search and rga preview for rga search
+	{ on = [ "<A-f>", "r" ], run = "plugin fr rg", desc = "Search file by content (rg)" },
+	{ on = [ "<A-f>", "a" ], run = "plugin fr rga", desc = "Search file by content (rga)" }
+]
 
 [tasks]
 
