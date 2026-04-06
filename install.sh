@@ -97,7 +97,7 @@ NOCTALIA_STOW_PKGS=(arch-noctalia)
 DANK_STOW_PKGS=(arch-dank)
 
 # Optional stow packages (available on any platform, can override earlier files)
-OPTIONAL_STOW_PKGS=(opencode)
+OPTIONAL_STOW_PKGS=(opencode yazi)
 
 # Patch file definitions: patch_name -> (script_file, os_filter, de_filter)
 # os_filter: "arch" (arch/cachyos), "macos", "all"
@@ -1078,7 +1078,7 @@ dry_run_summary() {
       for pkg in "${STOW_SELECTED[@]}"; do
         if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
           printf "    - %s (with override)\n" "$pkg"
-        elif [[ "$pkg" == "opencode" ]]; then
+        elif [[ " ${OPTIONAL_STOW_PKGS[*]} " == *" $pkg "* ]]; then
           printf "    - %s (optional, may override)\n" "$pkg"
         else
           printf "    - %s\n" "$pkg"
@@ -1362,10 +1362,10 @@ interactive_mode() {
       esac
 
       # Hint about optional packages
-      log "  Also available: opencode (optional, can override earlier files)"
+      log "  Also available: opencode, yazi (optional, can override earlier files)"
     elif [[ "$OS" == "macos" ]]; then
       log "Hint: Select macos + base packages"
-      log "  Also available: opencode (optional, can override earlier files)"
+      log "  Also available: opencode, yazi (optional, can override earlier files)"
     fi
     local sel
     sel="$(interactive_select --exit "${all_stow[@]}")"
