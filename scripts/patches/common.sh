@@ -449,6 +449,8 @@ install_sddm_x11_config() {
   # This runs while niri IS running, so we can query it directly
   local primary_model=""
   local primary_connector=""
+  local primary_mode=""
+  local primary_rate=""
   local niri_outputs="$HOME/.config/niri/modules/outputs.kdl"
 
   if [[ -f "$niri_outputs" ]]; then
@@ -461,12 +463,31 @@ install_sddm_x11_config() {
       primary_connector=$(niri msg outputs 2>/dev/null | grep -F "$primary_model" | grep -oP '\(\K[^)]+' || true)
       log "Primary connector: $primary_connector"
     fi
+
+    # Extract mode from niri config (format: "2560x1440@120.000")
+    if [[ -n "$primary_model" ]]; then
+      primary_mode=$(awk -v model="$primary_model" '
+        /^output/ { in_output=0 }
+        $0 ~ model { in_output=1 }
+        /^}/ { in_output=0 }
+        /mode/ && in_output { gsub(/"/, ""); print $2; exit }
+      ' "$niri_outputs" 2>/dev/null || true)
+      # Parse mode into resolution and rate
+      primary_rate=$(echo "$primary_mode" | grep -oP '@\K[0-9.]+' || true)
+      primary_rate=${primary_rate%.*}
+      log "Primary mode: $primary_mode (rate: $primary_rate Hz)"
+    fi
   fi
 
   # Fallback: detect from xrandr if niri detection failed
   if [[ -z "$primary_connector" ]] && command -v xrandr &>/dev/null; then
     primary_connector=$(xrandr --list 2>/dev/null | grep -w connected | head -1 | awk '{print $1}' || true)
     log "Fallback: using first connected display: $primary_connector"
+  fi
+
+  # Fallback for rate if not detected
+  if [[ -z "$primary_rate" ]]; then
+    primary_rate="60"
   fi
 
   # Step 1: Configure SDDM to use X11 backend with proper server arguments
@@ -505,7 +526,7 @@ EOF
   # This script configures displays to show greeter only on primary monitor
   # Uses a separate config file for the connector value
 
-  # Create the config file with the primary connector (read by the display script)
+  # Create the config file with the primary connector and mode
   local connector_config="/etc/sddm/scripts/primary-connector.conf"
 
   if $DRY_RUN; then
@@ -515,8 +536,9 @@ EOF
     run sudo mkdir -p "$(dirname "$connector_config")"
     run sudo tee "$connector_config" >/dev/null << EOF
 PRIMARY_CONNECTOR=$primary_connector
+PRIMARY_RATE=$primary_rate
 EOF
-    log "Created connector config: $primary_connector"
+    log "Created connector config: $primary_connector @ ${primary_rate}Hz"
   fi
 
   # Generate the display-setup.sh script that reads from config
@@ -524,18 +546,21 @@ EOF
   script_content=$(cat << 'SCRIPTEOF'
 #!/bin/sh
 # display-setup.sh - SDDM display configuration
-# Configures greeter to appear only on primary monitor
-# Reads connector from config file
+# Configures greeter to appear only on primary monitor with correct mode
+# Reads connector and rate from config file
 
 set -e
 
 CONFIG_FILE='/etc/sddm/scripts/primary-connector.conf'
 LOG_FILE='/etc/sddm/scripts/display-setup.log'
 
-# Read connector from config file
+# Read connector and rate from config file
 if [ -f "$CONFIG_FILE" ]; then
   . "$CONFIG_FILE"
 fi
+
+# Default rate if not set
+PRIMARY_RATE=${PRIMARY_RATE:-60}
 
 # Create log file if it doesn't exist
 touch "$LOG_FILE" 2>/dev/null || true
@@ -546,29 +571,63 @@ log_msg() {
 }
 
 log_msg 'SDDM display-setup.sh started'
-log_msg "Primary connector: $PRIMARY_CONNECTOR"
+log_msg "Primary connector: $PRIMARY_CONNECTOR, rate: ${PRIMARY_RATE}Hz"
 
-# Enable primary display and set as primary
-if [ -n "$PRIMARY_CONNECTOR" ]; then
-  if xrandr --list | grep -w "$PRIMARY_CONNECTOR" >/dev/null 2>&1; then
-    log_msg "Enabling primary display: $PRIMARY_CONNECTOR"
-    xrandr --output "$PRIMARY_CONNECTOR" --auto --primary
-    log_msg 'Primary display configured'
-  else
-    log_msg "ERROR: Primary connector $PRIMARY_CONNECTOR not found"
+# Check if xrandr is available
+if ! command -v xrandr >/dev/null 2>&1; then
+  log_msg "ERROR: xrandr not found"
+  exit 1
+fi
+
+# Enable primary display with explicit mode and rate
+# First try the configured connector, then fallback to position-based detection
+PRIMARY_FOUND=""
+
+if [ -n "$PRIMARY_CONNECTOR" ] && xrandr | grep "^$PRIMARY_CONNECTOR " >/dev/null 2>&1; then
+  PRIMARY_FOUND="$PRIMARY_CONNECTOR"
+  log_msg "Found primary connector: $PRIMARY_CONNECTOR"
+fi
+
+# Fallback: find display at position x=0 (primary position)
+if [ -z "$PRIMARY_FOUND" ]; then
+  PRIMARY_FOUND=$(xrandr | grep " connected " | awk '{if ($3 ~ /^[0-9]+x[0-9]+[+]0[+]0$/) print $1}' | head -1)
+  if [ -n "$PRIMARY_FOUND" ]; then
+    log_msg "Found primary by position: $PRIMARY_FOUND"
   fi
 fi
 
-# Disable all other connected displays
-for output in $(xrandr --list 2>/dev/null | grep -w connected | awk '{print $1}'); do
-  if [ "$output" != "$PRIMARY_CONNECTOR" ]; then
-    log_msg "Disabling display: $output"
-    xrandr --output "$output" --off 2>/dev/null || true
+# Fallback: use first connected display
+if [ -z "$PRIMARY_FOUND" ]; then
+  PRIMARY_FOUND=$(xrandr | grep " connected " | head -1 | awk '{print $1}')
+  log_msg "Using first connected display: $PRIMARY_FOUND"
+fi
+
+# Now configure the primary display
+if [ -n "$PRIMARY_FOUND" ]; then
+  log_msg "Configuring primary display: $PRIMARY_FOUND @ ${PRIMARY_RATE}Hz"
+
+  # Try explicit rate first, fallback to auto if not available
+  if xrandr --output "$PRIMARY_FOUND" --mode 2560x1440 --rate "$PRIMARY_RATE" --primary 2>/dev/null; then
+    log_msg "Primary display configured: 2560x1440 @ ${PRIMARY_RATE}Hz"
+  else
+    # Fallback: try without specific rate, just use mode
+    xrandr --output "$PRIMARY_FOUND" --mode 2560x1440 --primary 2>/dev/null
+    log_msg "Primary display configured: 2560x1440 (auto rate)"
   fi
-done
+
+  # Disable all other connected displays
+  for output in $(xrandr | grep " connected " | awk '{print $1}'); do
+    if [ "$output" != "$PRIMARY_FOUND" ]; then
+      log_msg "Disabling display: $output"
+      xrandr --output "$output" --off 2>/dev/null || true
+    fi
+  done
+else
+  log_msg "ERROR: No primary display found"
+fi
 
 log_msg 'Display configuration complete'
-log_msg "SDDM greeter will appear only on $PRIMARY_CONNECTOR"
+log_msg "SDDM greeter will appear only on $PRIMARY_CONNECTOR @ ${PRIMARY_RATE}Hz"
 SCRIPTEOF
 )
 
