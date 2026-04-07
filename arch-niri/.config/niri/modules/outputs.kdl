@@ -1,11 +1,11 @@
 output "ASUSTek COMPUTER INC VG27AQL1A M2LMQS047771" {
     mode "2560x1440@120.000"
     scale 1
-    position x=0 y=0
+    position x=-2560 y=0
 }
 output "ASUSTek COMPUTER INC VG27AQ3A S2LMAS007481" {
     mode "2560x1440@120.000"
     scale 1
-    position x=2560 y=0
+    position x=0 y=0
     focus-at-startup
 }

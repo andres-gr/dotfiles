@@ -61,7 +61,7 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match app-id="^spotify$"
+    match app-id="^(S|s)potify$"
     open-maximized true
     open-on-workspace "prim-2"
 }
