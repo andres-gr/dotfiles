@@ -6,6 +6,7 @@ set -euo pipefail
 
 THEME_NAME="sddm-noctalia-theme"
 DEST_DIR="/usr/share/sddm/themes/$THEME_NAME/Assets/Wallpaper"
+SETTINGS_CONF="/usr/share/sddm/themes/$THEME_NAME/Commons/Settings.conf"
 WALLPAPER_JSON="$HOME/.cache/noctalia/wallpapers.json"
 SETTINGS_JSON="$HOME/.config/noctalia/settings.json"
 
@@ -66,19 +67,35 @@ if [[ ! -f "$WALLPAPER" ]]; then
   exit 1
 fi
 
-# Ensure destination directory exists
-mkdir -p "$DEST_DIR"
-
-# Copy/convert wallpaper to destination (SDDM expects bg.png)
-# Use magick (IMv7) or convert (IMv6) or fall back to cp
-# File is chmod 666 after initial install, no sudo needed
-if command -v magick &>/dev/null; then
-  magick "$WALLPAPER" "$DEST_DIR/bg.png"
-elif command -v convert &>/dev/null; then
-  convert "$WALLPAPER" "$DEST_DIR/bg.png"
-else
-  # Fallback: just copy, may not work if source is not png
-  cp -f "$WALLPAPER" "$DEST_DIR/bg.png"
+# Detect source extension and use it for destination
+EXT="${WALLPAPER##*.}"
+EXT="${EXT,,}"
+if [[ "$EXT" != "png" && "$EXT" != "jpg" && "$EXT" != "jpeg" ]]; then
+  EXT="png"
 fi
 
-echo "SDDM wallpaper updated: $WALLPAPER -> $DEST_DIR/bg.png"
+# Ensure destination directory exists and is writable
+mkdir -p "$DEST_DIR"
+chmod 777 "$DEST_DIR" 2>/dev/null || true
+
+# Destination filename (keep same extension as source)
+DEST_FILE="$DEST_DIR/bg.$EXT"
+
+# Copy wallpaper directly (no conversion)
+cp -f "$WALLPAPER" "$DEST_FILE"
+
+# Make file writable (Settings.conf is already world-writable)
+chmod 666 "$DEST_FILE" 2>/dev/null || true
+
+# Update Settings.conf to point to correct background file
+# Only update the background line, preserve everything else
+if [[ -f "$SETTINGS_CONF" ]]; then
+  # Use /tmp for temp file, then cp (not mv) to preserve perms
+  TMP_CONF=$(mktemp /tmp/sddm-settings.XXXX.conf)
+  sed "s|^background=.*|background=Assets/Wallpaper/bg.$EXT|" "$SETTINGS_CONF" > "$TMP_CONF"
+  cp -f "$TMP_CONF" "$SETTINGS_CONF"
+  rm -f "$TMP_CONF"
+  # Note: file is already 666 from install, no chmod needed
+fi
+
+echo "SDDM wallpaper updated: $WALLPAPER -> $DEST_FILE"
