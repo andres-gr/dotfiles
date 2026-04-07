@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Set SDDM wallpaper from Noctalia wallpaper cache
+# Picks a random wallpaper from the available options based on dark/light mode
+
+set -euo pipefail
+
+THEME_NAME="sddm-noctalia-theme"
+DEST_DIR="/usr/share/sddm/themes/$THEME_NAME/Assets/Wallpaper"
+WALLPAPER_JSON="$HOME/.cache/noctalia/wallpapers.json"
+SETTINGS_JSON="$HOME/.config/noctalia/settings.json"
+
+# Determine dark/light mode
+DARK_MODE="dark"
+if [[ -f "$SETTINGS_JSON" ]]; then
+  mode=$(jq -r '.colorSchemes.darkMode // true' "$SETTINGS_JSON" 2>/dev/null || echo "true")
+  if [[ "$mode" == "false" ]]; then
+    DARK_MODE="light"
+  fi
+fi
+
+# Check if wallpaper JSON file exists
+if [[ ! -f "$WALLPAPER_JSON" ]]; then
+  echo "Noctalia wallpaper config not found: $WALLPAPER_JSON"
+  exit 1
+fi
+
+# Determine which source to use based on monitor count in wallpapers
+# First get an array of candidate wallpapers (one per line), then pick randomly with bash
+WALLPAPER=$(
+  jq -r --arg mode "$DARK_MODE" '
+    if (.wallpapers | length) > 1 then
+      # Multiple monitors - collect all dark/light wallpapers (one per line)
+      [.wallpapers[].[$mode]] | .[]
+    elif (.wallpapers | length) == 1 then
+      # Single monitor - get from usedRandomWallpapers or wallpapers
+      if (.usedRandomWallpapers | length) > 0 then
+        [.usedRandomWallpapers[].[]] | .[]
+      else
+        [.wallpapers[].[$mode]] | .[]
+      end
+    else
+      # No wallpapers - use default or usedRandomWallpapers
+      if (.usedRandomWallpapers | length) > 0 then
+        [.usedRandomWallpapers[].[]] | .[]
+      else
+        .defaultWallpaper
+      end
+    end
+  ' "$WALLPAPER_JSON"
+)
+
+# Pick a random line from the results using shuf
+if [[ -n "$WALLPAPER" && "$WALLPAPER" != "null" ]]; then
+  WALLPAPER=$(echo "$WALLPAPER" | grep -v '^$' | shuf -n1)
+fi
+
+# Check if we got a valid wallpaper
+if [[ -z "$WALLPAPER" || "$WALLPAPER" == "null" ]]; then
+  echo "No wallpaper found in config"
+  exit 1
+fi
+
+# Check if source file exists
+if [[ ! -f "$WALLPAPER" ]]; then
+  echo "Wallpaper file not found: $WALLPAPER"
+  exit 1
+fi
+
+# Ensure destination directory exists
+mkdir -p "$DEST_DIR"
+
+# Copy/convert wallpaper to destination (SDDM expects bg.png)
+# Use magick (IMv7) or convert (IMv6) or fall back to cp
+# File is chmod 666 after initial install, no sudo needed
+if command -v magick &>/dev/null; then
+  magick "$WALLPAPER" "$DEST_DIR/bg.png"
+elif command -v convert &>/dev/null; then
+  convert "$WALLPAPER" "$DEST_DIR/bg.png"
+else
+  # Fallback: just copy, may not work if source is not png
+  cp -f "$WALLPAPER" "$DEST_DIR/bg.png"
+fi
+
+echo "SDDM wallpaper updated: $WALLPAPER -> $DEST_DIR/bg.png"

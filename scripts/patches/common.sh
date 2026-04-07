@@ -3,6 +3,9 @@
 # Called from post_install_task in install.sh
 # These patches run regardless of which WM/DE is used
 
+# Get script directory for relative paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
 ###############################################################################
 # TPM installation (tmux plugins)
 ###############################################################################
@@ -353,5 +356,70 @@ install_yazi_plugins() {
 
   if (( ${#to_install[@]} == 0 )) && (( ${#to_upgrade[@]} == 0 )); then
     log "All yazi plugins already installed"
+  fi
+}
+
+###############################################################################
+# SDDM theme settings update
+# Update SDDM theme settings if the theme is installed
+###############################################################################
+
+update_sddm_theme() {
+  local src="$SCRIPT_DIR/data/sddm-settings.conf"
+  local dest="/usr/share/sddm/themes/sddm-noctalia-theme/Commons/Settings.conf"
+  local bkp_dir="$HOME/.local/share/neo-dots/sddm-bkp"
+
+  # Check if source file exists
+  if [[ ! -f "$src" ]]; then
+    warn "SDDM settings source not found at $src"
+    return 1
+  fi
+
+  # Check if target directory/theme exists
+  if [[ ! -d "/usr/share/sddm/themes/sddm-noctalia-theme" ]]; then
+    log "SDDM Noctalia theme not installed — skipping"
+    return 0
+  fi
+
+  # Check if target file exists
+  if [[ ! -f "$dest" ]]; then
+    log "SDDM Settings.conf not found at $dest — skipping"
+    return 0
+  fi
+
+  # Initialize bg.png if it doesn't exist (do this first, before early return)
+  local wallpaper="/usr/share/sddm/themes/sddm-noctalia-theme/Assets/Wallpaper/bg.png"
+  local default_wallpaper="/usr/share/sddm/themes/sddm-noctalia-theme/Assets/Wallpaper/noctalia.png"
+  if [[ ! -f "$wallpaper" ]] && [[ -f "$default_wallpaper" ]]; then
+    run sudo cp "$default_wallpaper" "$wallpaper"
+    log "Initialized bg.png from default wallpaper"
+  fi
+
+  # Ensure wallpaper is writable for user updates (always run)
+  if [[ -f "$wallpaper" ]]; then
+    run sudo chmod 666 "$wallpaper"
+  fi
+
+  # Check if already up to date (compare content)
+  if cmp -s "$src" "$dest"; then
+    log "SDDM Settings.conf already up to date — skipping"
+    return 0
+  fi
+
+  # Backup existing file
+  mkdir -p "$bkp_dir"
+  local timestamp
+  timestamp=$(date +%Y%m%d_%H%M%S)
+  run sudo cp "$dest" "$bkp_dir/Settings.conf.$timestamp"
+  log "Backed up Settings.conf to $bkp_dir"
+
+  # Copy new settings
+  if $DRY_RUN; then
+    log "[dry-run] would copy $src to $dest"
+  else
+    run sudo cp "$src" "$dest"
+    # Make writable for user (Noctalia shell hook needs to update later)
+    run sudo chmod 666 "$dest"
+    ok "Updated SDDM theme Settings.conf"
   fi
 }

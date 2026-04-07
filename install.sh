@@ -113,7 +113,7 @@ declare -A PATCH_FILES=(
 # Individual patch functions per patch file
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
-  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs install_systemd_scripts install_yazi_plugins"
+  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs install_systemd_scripts install_yazi_plugins update_sddm_theme"
   [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
   [niri]="install_niri_config"
   [dank]="reload_dms"
@@ -131,6 +131,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [install_pam_configs]="Install PAM configs for greetd"
   [install_systemd_scripts]="Install systemd scripts (e.g., system-sleep)"
   [install_yazi_plugins]="Install/update yazi plugins"
+  [update_sddm_theme]="Update SDDM theme settings"
   # hyprland
   [reload_hyprland]="Reload Hyprland configuration"
   [reload_waybar]="Reload waybar status bar"
