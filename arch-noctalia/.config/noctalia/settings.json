@@ -691,10 +691,6 @@
             },
             {
                 "enabled": true,
-                "id": "zenBrowser"
-            },
-            {
-                "enabled": true,
                 "id": "code"
             },
             {
@@ -734,7 +730,7 @@
         "favorites": [
         ],
         "fillColor": "#000000",
-        "fillMode": "fit",
+        "fillMode": "crop",
         "hideWallpaperFilenames": false,
         "linkLightAndDarkWallpapers": true,
         "monitorDirectories": [
