@@ -395,7 +395,11 @@ update_sddm_theme() {
     log "Initialized bg.png from default wallpaper"
   fi
 
-  # Ensure wallpaper is writable for user updates (always run)
+  # Ensure wallpaper directory and file are writable for user updates (always run)
+  local wallpaper_dir="$(dirname "$wallpaper")"
+  if [[ -d "$wallpaper_dir" ]]; then
+    run sudo chmod 777 "$wallpaper_dir"
+  fi
   if [[ -f "$wallpaper" ]]; then
     run sudo chmod 666 "$wallpaper"
   fi
@@ -422,4 +426,174 @@ update_sddm_theme() {
     run sudo chmod 666 "$dest"
     ok "Updated SDDM theme Settings.conf"
   fi
+}
+
+###############################################################################
+# SDDM X11 single display configuration
+# Configure SDDM to use X11 backend and show greeter only on primary display
+###############################################################################
+
+install_sddm_x11_config() {
+  local sddm_conf_dir="/etc/sddm.conf.d"
+  local sddm_scripts_dir="/etc/sddm/scripts"
+  local display_setup_script="$sddm_scripts_dir/display-setup.sh"
+  local bkp_dir="$HOME/.local/share/neo-dots/sddm-bkp"
+
+  # Check if SDDM is installed
+  if ! command -v sddm &>/dev/null; then
+    log "SDDM not installed — skipping X11 config"
+    return 0
+  fi
+
+  # Detect primary monitor from niri config at patch time
+  # This runs while niri IS running, so we can query it directly
+  local primary_model=""
+  local primary_connector=""
+  local niri_outputs="$HOME/.config/niri/modules/outputs.kdl"
+
+  if [[ -f "$niri_outputs" ]]; then
+    # Extract the monitor name at position x=0 y=0 (primary)
+    primary_model=$(awk -F'"' '/output /{name=$2} /position x=0 y=0/{print name}' "$niri_outputs" 2>/dev/null || true)
+    log "Primary monitor model: $primary_model"
+
+    # Query niri for connector name
+    if [[ -n "$primary_model" ]] && command -v niri &>/dev/null; then
+      primary_connector=$(niri msg outputs 2>/dev/null | grep -F "$primary_model" | grep -oP '\(\K[^)]+' || true)
+      log "Primary connector: $primary_connector"
+    fi
+  fi
+
+  # Fallback: detect from xrandr if niri detection failed
+  if [[ -z "$primary_connector" ]] && command -v xrandr &>/dev/null; then
+    primary_connector=$(xrandr --list 2>/dev/null | grep -w connected | head -1 | awk '{print $1}' || true)
+    log "Fallback: using first connected display: $primary_connector"
+  fi
+
+  # Step 1: Configure SDDM to use X11 backend with proper server arguments
+  # Xinerama is critical for multi-monitor handling in X11
+  local sddm_conf="$sddm_conf_dir/10-x11.conf"
+
+  if $DRY_RUN; then
+    log "[dry-run] would create SDDM X11 config at $sddm_conf"
+  else
+    run sudo mkdir -p "$sddm_conf_dir"
+    run sudo tee "$sddm_conf" >/dev/null << 'EOF'
+[General]
+DisplayServer=x11
+
+[X11]
+ServerArguments=-nolisten tcp -background none +xinerama +extension RANDR +extension RENDER +extension GLX
+EOF
+    ok "Configured SDDM X11 with Xinerama support"
+  fi
+
+  # Step 2: Create monitor-specific config to use DisplayCommand
+  # DisplayCommand runs after X server is fully started, more reliable than Xsetup
+  local monitor_conf="$sddm_conf_dir/20-monitor.conf"
+
+  if $DRY_RUN; then
+    log "[dry-run] would create monitor config at $monitor_conf"
+  else
+    run sudo tee "$monitor_conf" >/dev/null << EOF
+[X11]
+DisplayCommand=$display_setup_script
+EOF
+    ok "Configured DisplayCommand for single display"
+  fi
+
+# Step 3: Create display-setup.sh script
+  # This script configures displays to show greeter only on primary monitor
+  # Uses a separate config file for the connector value
+
+  # Create the config file with the primary connector (read by the display script)
+  local connector_config="/etc/sddm/scripts/primary-connector.conf"
+
+  if $DRY_RUN; then
+    log "[dry-run] would create connector config at $connector_config"
+  else
+    # Create scripts directory first
+    run sudo mkdir -p "$(dirname "$connector_config")"
+    run sudo tee "$connector_config" >/dev/null << EOF
+PRIMARY_CONNECTOR=$primary_connector
+EOF
+    log "Created connector config: $primary_connector"
+  fi
+
+  # Generate the display-setup.sh script that reads from config
+  local script_content
+  script_content=$(cat << 'SCRIPTEOF'
+#!/bin/sh
+# display-setup.sh - SDDM display configuration
+# Configures greeter to appear only on primary monitor
+# Reads connector from config file
+
+set -e
+
+CONFIG_FILE='/etc/sddm/scripts/primary-connector.conf'
+LOG_FILE='/etc/sddm/scripts/display-setup.log'
+
+# Read connector from config file
+if [ -f "$CONFIG_FILE" ]; then
+  . "$CONFIG_FILE"
+fi
+
+# Create log file if it doesn't exist
+touch "$LOG_FILE" 2>/dev/null || true
+
+log_msg() {
+  date_str=$(date '+%Y-%m-%d %H:%M:%S')
+  echo "[$date_str] $1" >> "$LOG_FILE" 2>/dev/null || true
+}
+
+log_msg 'SDDM display-setup.sh started'
+log_msg "Primary connector: $PRIMARY_CONNECTOR"
+
+# Enable primary display and set as primary
+if [ -n "$PRIMARY_CONNECTOR" ]; then
+  if xrandr --list | grep -w "$PRIMARY_CONNECTOR" >/dev/null 2>&1; then
+    log_msg "Enabling primary display: $PRIMARY_CONNECTOR"
+    xrandr --output "$PRIMARY_CONNECTOR" --auto --primary
+    log_msg 'Primary display configured'
+  else
+    log_msg "ERROR: Primary connector $PRIMARY_CONNECTOR not found"
+  fi
+fi
+
+# Disable all other connected displays
+for output in $(xrandr --list 2>/dev/null | grep -w connected | awk '{print $1}'); do
+  if [ "$output" != "$PRIMARY_CONNECTOR" ]; then
+    log_msg "Disabling display: $output"
+    xrandr --output "$output" --off 2>/dev/null || true
+  fi
+done
+
+log_msg 'Display configuration complete'
+log_msg "SDDM greeter will appear only on $PRIMARY_CONNECTOR"
+SCRIPTEOF
+)
+
+  if $DRY_RUN; then
+    log "[dry-run] would create display-setup.sh script"
+  else
+    # Create scripts directory
+    run sudo mkdir -p "$sddm_scripts_dir"
+
+    # Backup existing script if it exists
+    if [[ -f "$display_setup_script" ]]; then
+      mkdir -p "$bkp_dir"
+      local timestamp
+      timestamp=$(date +%Y%m%d_%H%M%S)
+      run sudo cp "$display_setup_script" "$bkp_dir/display-setup.sh.$timestamp"
+      log "Backed up existing display-setup.sh script"
+    fi
+
+    # Write new script
+    echo "$script_content" | run sudo tee "$display_setup_script" >/dev/null
+    run sudo chmod +x "$display_setup_script"
+    ok "Created display-setup.sh for single display greeter"
+  fi
+
+  # Notify about restart requirement
+  log "SDDM X11 single display configuration complete"
+  log "IMPORTANT: Restart SDDM or reboot for changes to take effect"
 }

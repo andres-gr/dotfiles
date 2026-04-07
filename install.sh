@@ -113,7 +113,7 @@ declare -A PATCH_FILES=(
 # Individual patch functions per patch file
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
-  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs install_systemd_scripts install_yazi_plugins update_sddm_theme"
+  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs install_systemd_scripts install_yazi_plugins update_sddm_theme install_sddm_x11_config"
   [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
   [niri]="install_niri_config"
   [dank]="reload_dms"
@@ -132,6 +132,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [install_systemd_scripts]="Install systemd scripts (e.g., system-sleep)"
   [install_yazi_plugins]="Install/update yazi plugins"
   [update_sddm_theme]="Update SDDM theme settings"
+  [install_sddm_x11_config]="Configure SDDM for X11 single display"
   # hyprland
   [reload_hyprland]="Reload Hyprland configuration"
   [reload_waybar]="Reload waybar status bar"
@@ -240,7 +241,7 @@ detect_os() {
         # shellcheck disable=SC1091
         source /etc/os-release
         DISTRO_ID="$ID"
-        
+
         # Check if it's a derivative (CachyOS, EndeavourOS, etc.)
         case "$ID" in
           cachyos)
@@ -282,11 +283,11 @@ detect_os() {
 # Sets: DE_TYPE ("hyde" | "niri" | "none"), HYDE_DETECTED, NIRI_DETECTED
 detect_de() {
   local zdotdir="${ZDOTDIR:-$HOME/.config/zsh}"
-  
+
   # Check for HyDE (Hyprland Development Environment)
   local hyde_zsh_dir="$zdotdir/conf.d/hyde"
   local hyde_config_dir="$HOME/.config/hyde"
-  
+
   # Locate hyde-shell binary
   local -a hyde_shell_candidates
   mapfile -t hyde_shell_candidates < <(
@@ -295,11 +296,11 @@ detect_de() {
       "$HOME/.local/bin/hyde-shell" \
       "/usr/local/bin/hyde-shell"
   )
-  
+
   for c in "${hyde_shell_candidates[@]}"; do
     [[ -x "$c" ]] && { HYDE_SHELL_BIN="$c"; break; }
   done
-  
+
   # Locate hydectl binary
   local -a hyde_ctl_candidates
   mapfile -t hyde_ctl_candidates < <(
@@ -308,18 +309,18 @@ detect_de() {
       "$HOME/.local/bin/hydectl" \
       "/usr/local/bin/hydectl"
   )
-  
+
   for c in "${hyde_ctl_candidates[@]}"; do
     [[ -x "$c" ]] && { HYDE_CTL_BIN="$c"; break; }
   done
-  
+
   # Detect HyDE presence
   if [[ -d "$hyde_zsh_dir" ]]; then
     HYDE_DETECTED=true
   elif [[ -n "$HYDE_SHELL_BIN" && -d "$hyde_config_dir" ]]; then
     HYDE_DETECTED=true
   fi
-  
+
   # Check for Niri compositor
   if command -v niri &>/dev/null && [[ -d "$HOME/.config/niri" || -d "/etc/niri" ]]; then
     NIRI_DETECTED=true
@@ -345,7 +346,7 @@ detect_de() {
     if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
       HYPRLAND_DETECTED=true
     fi
-  
+
   # Determine DE_TYPE based on detections
   if $HYDE_DETECTED; then
     DE_TYPE="hyde"
@@ -356,7 +357,7 @@ detect_de() {
   else
     DE_TYPE="none"
   fi
-  
+
   # Log detection results
   log "Desktop environment: ${DE_TYPE}"
   if $HYDE_DETECTED; then
@@ -462,7 +463,7 @@ stow_packages() {
 stow_shell_pkg() {
   local pkg="$1"
   log "Stowing (shell override): $pkg"
-  
+
   if ! $DRY_RUN; then
     # Collect conflict lines from the simulate run
     local sim_out
@@ -471,7 +472,7 @@ stow_shell_pkg() {
            --override='.*' \
            -d "$DOTFILES_DIR" -t "$HOME" "$pkg" 2>&1
     )" || true
-    
+
     # stow prints: "  * cannot stow ... over existing target PATH since neither..."
     while IFS= read -r line; do
       [[ "$line" == *"since neither a link nor a directory"* ]] || continue
@@ -482,7 +483,7 @@ stow_shell_pkg() {
       backup_path "$HOME/$rel"
     done <<< "$sim_out"
   fi
-  
+
   run stow --no-folding --override='.*' -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
 }
 
@@ -490,7 +491,7 @@ stow_shell_pkg() {
 # Returns: newline-separated list of packages in correct order
 select_arch_packages() {
   local -a arch_pkgs=("${ARCH_COMMON_PKGS[@]}")
-   
+
   # Add DE/WM-specific packages first
   case "$DE_TYPE" in
     hyde)
@@ -507,16 +508,16 @@ select_arch_packages() {
       # No DE-specific packages - just common
       ;;
   esac
-   
+
   # Add shell-specific packages last (they can override DE/base files)
   if $NOCTALIA_DETECTED; then
     arch_pkgs+=("${NOCTALIA_STOW_PKGS[@]}")
   fi
-   
+
   if $DMS_DETECTED; then
     arch_pkgs+=("${DANK_STOW_PKGS[@]}")
   fi
-   
+
   printf '%s\n' "${arch_pkgs[@]}"
 }
 
@@ -970,7 +971,7 @@ stow_selected() {
   local -a regular_pkgs=()
   local -a shell_pkgs=()
   local -a optional_pkgs=()
-  
+
   for pkg in "${STOW_SELECTED[@]:-}"; do
     # Check if it's a shell-specific package
     if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
@@ -982,12 +983,12 @@ stow_selected() {
       regular_pkgs+=("$pkg")
     fi
   done
-  
+
   # Stow regular packages first (base, DE/WM)
   if (( ${#regular_pkgs[@]} > 0 )); then
     stow_packages "${regular_pkgs[@]}"
   fi
-  
+
   # Stow shell packages with override capability
   if (( ${#shell_pkgs[@]} > 0 )); then
     for pkg in "${shell_pkgs[@]}"; do
@@ -1306,11 +1307,11 @@ interactive_mode() {
    # Build the list of available stow packages based on OS and detected WM/Shell
    local -a all_stow=("${BASE_STOW_PKGS[@]}")
    [[ "$OS" == "macos" ]] && all_stow+=("${MACOS_STOW_PKGS[@]}")
-   
+
    if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
      # Always include arch-common for Arch/CachyOS
      all_stow+=("${ARCH_COMMON_PKGS[@]}")
-     
+
      # Add WM-specific packages based on detected DE_TYPE
      case "$DE_TYPE" in
        hyde)
