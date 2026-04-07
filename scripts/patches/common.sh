@@ -606,15 +606,6 @@ fi
 if [ -n "$PRIMARY_FOUND" ]; then
   log_msg "Configuring primary display: $PRIMARY_FOUND @ ${PRIMARY_RATE}Hz"
 
-  # Try explicit rate first, fallback to auto if not available
-  if xrandr --output "$PRIMARY_FOUND" --mode 2560x1440 --rate "$PRIMARY_RATE" --primary 2>/dev/null; then
-    log_msg "Primary display configured: 2560x1440 @ ${PRIMARY_RATE}Hz"
-  else
-    # Fallback: try without specific rate, just use mode
-    xrandr --output "$PRIMARY_FOUND" --mode 2560x1440 --primary 2>/dev/null
-    log_msg "Primary display configured: 2560x1440 (auto rate)"
-  fi
-
   # Disable all other connected displays
   for output in $(xrandr | grep " connected " | awk '{print $1}'); do
     if [ "$output" != "$PRIMARY_FOUND" ]; then
@@ -622,6 +613,18 @@ if [ -n "$PRIMARY_FOUND" ]; then
       xrandr --output "$output" --off 2>/dev/null || true
     fi
   done
+
+  # Configure primary display
+  # Note: --pos 0x0 may fail if X server is already configured; we try without position to at least get display working
+  if xrandr --output "$PRIMARY_FOUND" --mode 2560x1440 --rate "$PRIMARY_RATE" --primary 2>/dev/null; then
+    log_msg "Primary display configured: 2560x1440 @ ${PRIMARY_RATE}Hz"
+  else
+    xrandr --output "$PRIMARY_FOUND" --mode 2560x1440 --primary 2>/dev/null
+    log_msg "Primary display configured: 2560x1440"
+  fi
+
+  # Try to set position to 0x0 (may fail in some X configs)
+  xrandr --output "$PRIMARY_FOUND" --pos 0x0 2>/dev/null || log_msg "Note: Could not set position (X server limitation)"
 else
   log_msg "ERROR: No primary display found"
 fi
