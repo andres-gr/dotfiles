@@ -13,6 +13,9 @@ binds {
     Mod+Ctrl+T hotkey-overlay-title="Open Terminal w/Tmux" {
         spawn "ghostty"
     }
+    Mod+Ctrl+Y hotkey-overlay-title="Open Yazi" {
+        spawn-sh "exec ghostty -e zsh -c yazi"
+    }
     Alt+Space hotkey-overlay-title="Application Launcher" {
         spawn "fuzzel"
     }
