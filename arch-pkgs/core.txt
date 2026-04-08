@@ -41,7 +41,11 @@ fuse2                        # FUSE v2 library, needed by some AppImages and leg
 gptfdisk                     # GPT partition table editor (gdisk/sgdisk/cgdisk)
 intel-ucode                  # Intel CPU microcode updates (security and stability patches)
 iwd                          # Intel wireless daemon, lightweight Wi-Fi backend
+linux                        # Vanilla upstream Linux kernel
 linux-firmware               # Firmware blobs for various hardware (Wi-Fi, GPU, etc.)
+linux-headers                # Linux kernel header files
+linux-zen                    # Linux kernel with latency/desktop-tuned patches
+linux-zen-headers            # Linux kernel header files with latency/desktop-tuned patches
 man-db                       # Man page database and viewer
 man-pages                    # Linux man pages (syscalls, libc, etc.)
 ninja                        # Small, fast build system (often used with CMake)

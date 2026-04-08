@@ -659,3 +659,49 @@ SCRIPTEOF
   log "SDDM X11 single display configuration complete"
   log "IMPORTANT: Restart SDDM or reboot for changes to take effect"
 }
+
+###############################################################################
+# broadcom-wl-dkms - Blacklist conflicting wifi modules + switch to wpa_supplicant
+###############################################################################
+
+install_broadcom_blacklist() {
+  # Check if broadcom-wl-dkms is installed
+  if ! yay -Q broadcom-wl-dkms &>/dev/null; then
+    log "broadcom-wl-dkms not installed — skipping blacklist"
+    return 0
+  fi
+
+  local conf_file="/etc/modprobe.d/broadcom-wl-dkms.conf"
+  local nm_conf_dir="/etc/NetworkManager/conf.d"
+  local nm_wifi_conf="$nm_conf_dir/wifi_backend.conf"
+
+  if $DRY_RUN; then
+    log "[dry-run] would create broadcom-wl blacklist at $conf_file"
+    log "[dry-run] would switch wifi backend to wpa_supplicant"
+  else
+    # Create blacklist for conflicting modules
+    run sudo tee "$conf_file" >/dev/null << 'EOF'
+# Blacklist conflicting Broadcom wifi modules
+# This allows broadcom-wl-dkms to work properly
+blacklist b43
+blacklist b43legacy
+blacklist bcm43xx
+blacklist bcma
+blacklist brcm80211
+blacklist brcmfmac
+blacklist brcmsmac
+blacklist ssb
+EOF
+    ok "Created broadcom-wl blacklist"
+
+    # Switch wifi backend to wpa_supplicant (broadcom-wl-dkms has issues with iwd)
+    # See: https://gitlab.archlinux.org/archlinux/packaging/packages/broadcom-wl-dkms/-/issues/1
+    run sudo mkdir -p "$nm_conf_dir"
+    run sudo tee "$nm_wifi_conf" >/dev/null << 'EOF'
+[device]
+wifi.backend=wpa_supplicant
+EOF
+    ok "Switched wifi backend to wpa_supplicant (broadcom-wl-dkms compatibility)"
+    log "Note: Restart NetworkManager or reboot for wifi to work"
+  fi
+}
