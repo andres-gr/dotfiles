@@ -2,6 +2,8 @@
 # Set SDDM wallpaper from Noctalia wallpaper cache
 # Picks a random wallpaper from the available options based on dark/light mode
 
+sleep 4 # Wait for Noctalia
+
 set -euo pipefail
 
 THEME_NAME="sddm-noctalia-theme"
