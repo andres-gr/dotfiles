@@ -42,7 +42,7 @@ fi
 # --------------------------------------------------
 # Runs after all plugins load. NEO_GREETING set in conf.d/00-env.zsh.
 # Override per-machine in conf.d/99-local.zsh.
-case "${NEO_GREETING:-pokego}" in
+case "${NEO_GREETING:-fastfetch}" in
   pokego)
     if (( $+commands[pokego] )); then
       pokego --nt -r 1,2
