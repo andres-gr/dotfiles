@@ -1,0 +1,2 @@
+# ── Niri-specific AUR ─────────────────────────────────────────────────
+# (packages that are installed or available for Niri)

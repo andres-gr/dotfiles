@@ -8,6 +8,8 @@ fastfetch                    # Fast system info display (neofetch alternative)
 fd                           # Fast and user-friendly find alternative
 fzf                          # General-purpose fuzzy finder for the terminal
 ghostty                      # GPU-accelerated terminal emulator by Mitchell Hashimoto
+ghostty-shell-integration    # Shell integration scripts for ghostty
+ghostty-terminfo             # Terminfo for ghostty
 jq                           # Lightweight CLI JSON processor
 just                         # Command runner / Makefile alternative (Justfile)
 kitty                        # GPU-accelerated terminal emulator
@@ -143,3 +145,13 @@ bibata-rainbow-cursor-theme  # Animated rainbow cursor theme
 bun                          # Fast all-in-one JS runtime, bundler, and package manager
 fnm                          # Fast Node.js version manager
 pnpm                         # Fast, disk-efficient Node.js package manager
+
+# ── Compositor & Session ──────────────────────────────────────────────────────
+greetd                       # Minimal, flexible login/session manager daemon
+greetd-agreety               # Greetd greeter using agreety
+greetd-tuigreet              # Greetd greeter with TUI
+sddm                         # Qt-based display/login manager
+
+# ── X11 for SDDM ──────────────────────────────────────────────────────────
+xorg-server                  # X11 server (required for SDDM X11 backend)
+xorg-xrandr                  # RandR extension for xrandr (display configuration)

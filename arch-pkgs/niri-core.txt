@@ -1,6 +1,5 @@
 # ── Compositor & Session ──────────────────────────────────────────────────────
 niri                         # Scrollable-tiling Wayland compositor
-greetd                       # Minimal, flexible login/session manager daemon
 xwayland-satellite           # Rootless XWayland for compositors that lack native X support
 
 # ── CachyOS distro specifics ─────────────────────────────────────────────────

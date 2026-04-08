@@ -1,0 +1,3 @@
+# ── Noctalia Shell ───────────────────────────────────────────────────
+noctalia-qs                 # Quickshell fork powering Noctalia Shell
+noctalia-shell              # Desktop shell for Wayland built with Quickshell

@@ -7,9 +7,6 @@ hyprpicker                   # Wayland color picker for Hyprland
 hyprsunset                   # Blue light filter / night mode for Hyprland
 uwsm                         # Universal Wayland Session Manager (manages compositor lifecycle)
 
-# ── Display & Login ───────────────────────────────────────────────────────────
-sddm                         # Qt-based display/login manager
-
 # ── Kernel ────────────────────────────────────────────────────────────────────
 linux                        # Vanilla upstream Linux kernel
 linux-zen                    # Linux kernel with latency/desktop-tuned patches
