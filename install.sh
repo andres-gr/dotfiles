@@ -534,7 +534,6 @@ select_arch_pkg_files() {
       ;;
     niri)
       # Niri: include both niri-specific and generic packages
-      # User can choose niri-core.txt + niri-aur.txt OR core.txt + aur.txt + work.txt
       pkg_files+=(niri-core.txt niri-aur.txt)
       ;;
     none)
@@ -545,6 +544,11 @@ select_arch_pkg_files() {
   # Add DMS-specific packages if detected (works alongside any DE/WM)
   if $DMS_DETECTED; then
     pkg_files+=(dank-core.txt dank-aur.txt)
+  fi
+
+  # Add Noctalia-specific AUR packages if detected (works alongside any compositor)
+  if $NOCTALIA_DETECTED; then
+    pkg_files+=(noctalia-aur.txt)
   fi
 
   ARCH_PKG_FILES=("${pkg_files[@]}")
