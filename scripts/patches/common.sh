@@ -745,18 +745,24 @@ install_custom_fonts() {
 
   step "Installing custom fonts"
 
+  # Use nullglob to avoid literal "*" if no matches
+  shopt -s nullglob
+
   # Process each format directory (ttf, otf, etc.)
   for format_dir in "${format_dirs[@]}"; do
     local src_format_dir="$src_fonts_dir/$format_dir"
     local dest_format_dir="$dest_fonts_base/$format_dir"
+
+    # Skip if format directory doesn't exist or is empty
+    if [[ ! -d "$src_format_dir" ]]; then
+      continue
+    fi
 
     # Create format directory (e.g., /usr/local/share/fonts/ttf)
     run sudo mkdir -p "$dest_format_dir"
 
     # Find all font name directories in this format directory
     for font_dir in "$src_format_dir"/*/; do
-      [[ -d "$font_dir" ]] || continue
-
       local font_name
       font_name=$(basename "$font_dir")
       log "  Installing font: $format_dir/$font_name"
@@ -767,6 +773,8 @@ install_custom_fonts() {
     done
   done
 
+  shopt -u nullglob
+
   # Rebuild font cache
   if command -v fc-cache &>/dev/null; then
     run sudo fc-cache -f "$dest_fonts_base"
@@ -775,6 +783,93 @@ install_custom_fonts() {
 
   log "Custom fonts installed to $dest_fonts_base"
   log "Note: Log out and back in for fonts to appear in applications"
+}
+
+###############################################################################
+# Configure font rendering
+# Sets up fontconfig symlinks, freetype2 properties, and rebuilds cache
+###############################################################################
+
+configure_font_rendering() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  local font_conf_dir="/etc/fonts/conf.d"
+  local freetype2_sh="/etc/profile.d/freetype2.sh"
+
+  # Required fontconfig files
+  local -a fontconf_files=(
+    "10-sub-pixel-rgb.conf"
+    "10-hinting-slight.conf"
+    "11-lcdfilter-default.conf"
+  )
+
+  if $DRY_RUN; then
+    log "[dry-run] would configure font rendering"
+    log "  Create fontconfig symlinks in $font_conf_dir"
+    log "  Uncomment FREETYPE_PROPERTIES in $freetype2_sh"
+    log "  Rebuild font cache"
+    return 0
+  fi
+
+  step "Configuring font rendering"
+
+  # Create fontconfig conf.d directory if it doesn't exist
+  if [[ ! -d "$font_conf_dir" ]]; then
+    run sudo mkdir -p "$font_conf_dir"
+  fi
+
+  # Create symbolic links for fontconfig files
+  log "  Font config files to process: ${#fontconf_files[@]} (${fontconf_files[*]})"
+  for conf_file in "${fontconf_files[@]}"; do
+    local dest_conf="$font_conf_dir/$conf_file"
+
+    log "  Processing: $conf_file"
+
+    # Check multiple possible source locations
+    local src_conf=""
+    if [[ -f "/usr/share/fontconfig/conf.avail/$conf_file" ]]; then
+      src_conf="/usr/share/fontconfig/conf.avail/$conf_file"
+    elif [[ -f "/usr/share/fontconfig/conf.default/$conf_file" ]]; then
+      src_conf="/usr/share/fontconfig/conf.default/$conf_file"
+    fi
+
+    if [[ -n "$src_conf" ]]; then
+      if [[ -L "$dest_conf" ]]; then
+        log "    symlink already exists"
+      elif [[ -e "$dest_conf" ]]; then
+        log "    already exists (not a symlink), skipping"
+      else
+        run sudo ln -sf "$src_conf" "$dest_conf"
+        ok "    Linked $conf_file"
+      fi
+    else
+      warn "    source not found in fontconfig"
+    fi
+  done
+
+  # Edit freetype2.sh to enable FREETYPE_PROPERTIES
+  if [[ -f "$freetype2_sh" ]]; then
+    # Check if the line is already uncommented
+    if grep -q '^export FREETYPE_PROPERTIES="truetype:interpreter-version=40"' "$freetype2_sh"; then
+      log "  freetype2.sh: FREETYPE_PROPERTIES already enabled"
+    else
+      # Uncomment the line using sed
+      run sudo sed -i 's/^# *export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/export FREETYPE_PROPERTIES="truetype:interpreter-version=40"/' "$freetype2_sh"
+      ok "  Enabled FREETYPE_PROPERTIES in freetype2.sh"
+    fi
+  else
+    warn "  freetype2.sh not found at $freetype2_sh"
+  fi
+
+  # Rebuild font cache (without verbose to reduce noise)
+  if command -v fc-cache &>/dev/null; then
+    run sudo fc-cache -f
+    ok "Font cache rebuilt"
+  fi
+
+  log "Font rendering configured"
+  log "Note: Log out and back in for changes to take effect"
 }
 
 ###############################################################################
