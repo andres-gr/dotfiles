@@ -707,8 +707,79 @@ EOF
 }
 
 ###############################################################################
+# Install custom fonts
+# Copies font directories from arch-patches/fonts to /usr/local/share/fonts
+###############################################################################
+
+install_custom_fonts() {
+  local src_fonts_dir="$DOTFILES_DIR/arch-patches/fonts"
+  local dest_fonts_base="/usr/local/share/fonts"
+
+  # Check if source fonts exist
+  if [[ ! -d "$src_fonts_dir" ]]; then
+    log "Custom fonts source not found at $src_fonts_dir — skipping"
+    return 0
+  fi
+
+  # Find all format directories (ttf, otf, etc.) in src
+  local -a format_dirs
+  mapfile -t format_dirs < <(find "$src_fonts_dir" -mindepth 1 -maxdepth 1 -type d -printf '%f\n')
+
+  if (( ${#format_dirs[@]} == 0 )); then
+    log "No font format directories found in $src_fonts_dir — skipping"
+    return 0
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would install custom fonts"
+    for format_dir in "${format_dirs[@]}"; do
+      local src_format_dir="$src_fonts_dir/$format_dir"
+      for font_dir in "$src_format_dir"/*/; do
+        local font_name
+        font_name=$(basename "$font_dir")
+        log "  $format_dir/$font_name → $dest_fonts_base/$format_dir/"
+      done
+    done
+    return 0
+  fi
+
+  step "Installing custom fonts"
+
+  # Process each format directory (ttf, otf, etc.)
+  for format_dir in "${format_dirs[@]}"; do
+    local src_format_dir="$src_fonts_dir/$format_dir"
+    local dest_format_dir="$dest_fonts_base/$format_dir"
+
+    # Create format directory (e.g., /usr/local/share/fonts/ttf)
+    run sudo mkdir -p "$dest_format_dir"
+
+    # Find all font name directories in this format directory
+    for font_dir in "$src_format_dir"/*/; do
+      [[ -d "$font_dir" ]] || continue
+
+      local font_name
+      font_name=$(basename "$font_dir")
+      log "  Installing font: $format_dir/$font_name"
+
+      # Copy font directory to destination
+      run sudo cp -r "$font_dir" "$dest_format_dir/"
+      ok "  Installed $font_name"
+    done
+  done
+
+  # Rebuild font cache
+  if command -v fc-cache &>/dev/null; then
+    run sudo fc-cache -f "$dest_fonts_base"
+    ok "Font cache rebuilt"
+  fi
+
+  log "Custom fonts installed to $dest_fonts_base"
+  log "Note: Log out and back in for fonts to appear in applications"
+}
+
+###############################################################################
 # Install Noctalia SDDM theme files
-# Copies prepared Main.qml and NComboBox.qml to the SDDM theme directory
+# Copies prepared Main.qml, NComboBox.qml, and Settings.conf to the SDDM theme
 ###############################################################################
 
 install_noctalia_sddm_theme() {
