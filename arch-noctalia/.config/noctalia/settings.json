@@ -448,7 +448,7 @@
         "telemetryEnabled": false
     },
     "hooks": {
-        "colorGeneration": "",
+        "colorGeneration": "~/.local/bin/fix-colors-hook",
         "darkModeChange": "",
         "enabled": true,
         "performanceModeDisabled": "",

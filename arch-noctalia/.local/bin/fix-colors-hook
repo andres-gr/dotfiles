@@ -1,0 +1,5 @@
+#!/bin/env bash
+
+if command -v spicetify &> /dev/null; then
+  spicetify apply
+fi
