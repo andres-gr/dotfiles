@@ -705,3 +705,59 @@ EOF
     log "Note: Restart NetworkManager or reboot for wifi to work"
   fi
 }
+
+###############################################################################
+# Install Noctalia SDDM theme files
+# Copies prepared Main.qml and NComboBox.qml to the SDDM theme directory
+###############################################################################
+
+install_noctalia_sddm_theme() {
+  local src_theme_dir="$SCRIPT_DIR/data/noctalia-sddm-theme"
+  local dest_theme_dir="/usr/share/sddm/themes/sddm-noctalia-theme"
+  local dest_widgets_dir="$dest_theme_dir/Widgets"
+  local bkp_dir="$HOME/.local/share/neo-dots/sddm-bkp"
+
+  # Check if source files exist
+  if [[ ! -d "$src_theme_dir" ]]; then
+    log "Noctalia SDDM theme source not found at $src_theme_dir — skipping"
+    return 0
+  fi
+
+  # Check if target theme directory exists
+  if [[ ! -d "$dest_theme_dir" ]]; then
+    log "SDDM Noctalia theme not installed — skipping"
+    return 0
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would install Noctalia SDDM theme files"
+    log "  Main.qml → $dest_theme_dir/"
+    log "  NComboBox.qml → $dest_widgets_dir/"
+    return 0
+  fi
+
+  # Backup existing files
+  mkdir -p "$bkp_dir"
+  local timestamp
+  timestamp=$(date +%Y%m%d_%H%M%S)
+
+  if [[ -f "$dest_theme_dir/Main.qml" ]]; then
+    run sudo cp "$dest_theme_dir/Main.qml" "$bkp_dir/Main.qml.$timestamp"
+    log "Backed up Main.qml to $bkp_dir"
+  fi
+
+  if [[ -f "$dest_widgets_dir/NComboBox.qml" ]]; then
+    run sudo cp "$dest_widgets_dir/NComboBox.qml" "$bkp_dir/NComboBox.qml.$timestamp"
+    log "Backed up NComboBox.qml to $bkp_dir"
+  fi
+
+  # Copy new files
+  run sudo cp "$src_theme_dir/Main.qml" "$dest_theme_dir/Main.qml"
+  ok "Installed Main.qml"
+
+  run sudo cp "$src_theme_dir/NComboBox.qml" "$dest_widgets_dir/NComboBox.qml"
+  ok "Installed NComboBox.qml"
+
+  log "Noctalia SDDM theme files installed"
+  log "Note: Restart SDDM to see changes"
+}

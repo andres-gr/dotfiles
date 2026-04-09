@@ -113,7 +113,7 @@ declare -A PATCH_FILES=(
 # Individual patch functions per patch file
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
-  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs install_systemd_scripts install_yazi_plugins update_sddm_theme install_sddm_x11_config install_broadcom_blacklist"
+  [common]="install_tpm install_ghostty_misc_config apply_arch_patch_dconf install_arch_patch_services install_pam_configs install_systemd_scripts install_yazi_plugins update_sddm_theme install_sddm_x11_config install_broadcom_blacklist install_noctalia_sddm_theme"
   [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
   [niri]="install_niri_config"
   [dank]="reload_dms"
@@ -134,6 +134,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [update_sddm_theme]="Update SDDM theme settings"
   [install_sddm_x11_config]="Configure SDDM for X11 single display"
   [install_broadcom_blacklist]="Blacklist conflicting wifi modules for broadcom-wl"
+  [install_noctalia_sddm_theme]="Install Noctalia SDDM theme with user dropdown"
   # hyprland
   [reload_hyprland]="Reload Hyprland configuration"
   [reload_waybar]="Reload waybar status bar"
