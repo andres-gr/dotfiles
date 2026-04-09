@@ -65,4 +65,7 @@ binds {
     Mod+Ctrl+Alt+Backslash hotkey-overlay-title="Toggle Idle Inhibitor" {
         spawn-sh "qs -c noctalia-shell ipc call idleInhibitor toggle"
     }
+    Mod+Slash hotkey-overlay-title="Toggle Keybinds Cheatsheet" {
+        spawn-sh "qs -c noctalia-shell ipc call plugin:keybind-cheatsheet toggle"
+    }
 }
