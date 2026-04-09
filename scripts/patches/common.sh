@@ -873,6 +873,38 @@ configure_font_rendering() {
 }
 
 ###############################################################################
+# Configure keyboard layout
+# Sets X11 keyboard layout using localectl
+###############################################################################
+
+configure_keyboard_layout() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  # Check if localectl is available
+  if ! command -v localectl &>/dev/null; then
+    log "localectl not found — skipping keyboard configuration"
+    return 0
+  fi
+
+  local keymap="us"
+  local model="pc105"
+  local variant="altgr-intl"
+
+  if $DRY_RUN; then
+    log "[dry-run] would set keyboard layout: $keymap $model $variant"
+    return 0
+  fi
+
+  step "Configuring keyboard layout"
+
+  run sudo localectl set-x11-keymap "$keymap" "$model" "$variant"
+  ok "Set keyboard layout: $keymap $model $variant"
+
+  log "Keyboard layout configured"
+}
+
+###############################################################################
 # Install Noctalia SDDM theme files
 # Copies prepared Main.qml, NComboBox.qml, and Settings.conf to the SDDM theme
 ###############################################################################
