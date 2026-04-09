@@ -83,7 +83,7 @@ BKP_TS="$(date +%Y%m%d_%H%M%S)"
 # Package lists
 ###############################################################################
 
-BASE_STOW_PKGS=(bat eza fastfetch ghostty lazygit local nvim starship tmux zsh)
+BASE_STOW_PKGS=(bat claude eza fastfetch ghostty lazygit local nvim starship tmux zsh)
 MACOS_STOW_PKGS=(macos)
 
 # Arch Linux stow packages (selected based on DE_TYPE)

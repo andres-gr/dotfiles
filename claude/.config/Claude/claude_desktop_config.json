@@ -1,0 +1,25 @@
+{
+  "preferences": {
+    "coworkWebSearchEnabled": true,
+    "ccdScheduledTasksEnabled": false,
+    "coworkScheduledTasksEnabled": false,
+    "keepAwakeEnabled": false,
+    "sidebarMode": "chat"
+  },
+  "globalShortcut": "",
+  "mcpServers": {
+    "context-mode": {
+      "command": "bunx",
+      "args": [
+        "context-mode"
+      ]
+    },
+    "repomix": {
+      "command": "bunx",
+      "args": [
+        "repomix",
+        "--mcp"
+      ]
+    }
+  }
+}
