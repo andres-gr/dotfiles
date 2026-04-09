@@ -20,5 +20,23 @@
         "--mcp"
       ]
     }
-  }
+  },
+  "plugin": [
+    "context-mode",
+    "repomix"
+  ],
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "options": {
+        "baseURL": "http://localhost:11434/v1"
+      },
+      "models": {
+        "gemma4-tools": {
+          "name": "gemma4-tools",
+        }
+      }
+    }
+  },
+  "instructions": ["instructions/context-mode.md"]
 }
