@@ -455,9 +455,9 @@
         "performanceModeEnabled": "",
         "screenLock": "",
         "screenUnlock": "",
-        "session": "",
+        "session": "~/.local/bin/set-sddm-wallpaper",
         "startup": "",
-        "wallpaperChange": "~/.local/bin/set-sddm-wallpaper"
+        "wallpaperChange": ""
     },
     "idle": {
         "customCommands": "[]",
