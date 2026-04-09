@@ -48,7 +48,7 @@ install_ghostty_misc_config() {
       log "[dry-run] would write to $misc_config:"
       log "  background-blur = 0"
       log "  background-opacity = 1"
-      log "  font-size = 11"
+      log "  font-size = 12"
       log "  gtk-single-instance = true"
       log "  gtk-titlebar = false"
       log "  keybind = ctrl+enter=unbind"
@@ -61,7 +61,7 @@ install_ghostty_misc_config() {
       cat > "$misc_config" <<'EOF'
 background-blur = 0
 background-opacity = 1
-font-size = 11
+font-size = 12
 gtk-single-instance = true
 gtk-titlebar = false
 keybind = ctrl+enter=unbind
