@@ -733,6 +733,7 @@ install_noctalia_sddm_theme() {
     log "[dry-run] would install Noctalia SDDM theme files"
     log "  Main.qml → $dest_theme_dir/"
     log "  NComboBox.qml → $dest_widgets_dir/"
+    log "  Settings.conf → $dest_theme_dir/Commons/"
     return 0
   fi
 
@@ -757,6 +758,14 @@ install_noctalia_sddm_theme() {
 
   run sudo cp "$src_theme_dir/NComboBox.qml" "$dest_widgets_dir/NComboBox.qml"
   ok "Installed NComboBox.qml"
+
+  # Copy Settings.conf to Commons directory
+  if [[ -f "$src_theme_dir/Settings.conf" ]]; then
+    local dest_commons_dir="$dest_theme_dir/Commons"
+    run sudo mkdir -p "$dest_commons_dir"
+    run sudo cp "$src_theme_dir/Settings.conf" "$dest_commons_dir/Settings.conf"
+    ok "Installed Settings.conf"
+  fi
 
   log "Noctalia SDDM theme files installed"
   log "Note: Restart SDDM to see changes"
