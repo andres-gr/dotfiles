@@ -1,5 +1,5 @@
 ---
-name: bmad-{module-code-or-empty}{skill-name}
+name: {module-code-or-empty}{skill-name}
 description: { skill-description } # [5-8 word summary]. [trigger phrases, e.g. Use when user says create xyz or wants to do abc]
 ---
 

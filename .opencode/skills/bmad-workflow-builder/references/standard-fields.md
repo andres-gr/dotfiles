@@ -6,7 +6,7 @@ Only these fields go in the YAML frontmatter block:
 
 | Field         | Description                                          | Example                                       |
 | ------------- | ---------------------------------------------------- | --------------------------------------------- |
-| `name`        | Full skill name (kebab-case, same as folder name)    | `bmad-workflow-builder`, `bmad-validate-json` |
+| `name`        | Full skill name (kebab-case, same as folder name)    | `validate-json`, `cis-brainstorm` |
 | `description` | [5-8 word summary]. [Use when user says 'X' or 'Y'.] | See Description Format below                  |
 
 ## Content Fields (All Types)
@@ -114,15 +114,22 @@ This provides quick prompt priming for expertise and tone. Workflows may also us
 
 ## Path Rules
 
-### Skill-Internal Files
+### Same-Folder References
 
-All references to files within the skill use `./` prefix:
+Use `./` only when referencing a file in the same directory as the file containing the reference:
 
-- `./references/reference.md`
-- `./references/discover.md`
-- `./scripts/validate.py`
+- From `references/build-process.md` → `./classification-reference.md` (both in references/)
+- From `scripts/scan.py` → `./utils.py` (both in scripts/)
 
-This distinguishes skill-internal files from `{project-root}` paths — without the `./` prefix the LLM may confuse them.
+### Cross-Directory References
+
+Use bare paths relative to the skill root — no `./` prefix:
+
+- `references/build-process.md`
+- `scripts/validate.py`
+- `assets/template.md`
+
+These work from any file in the skill because they're always resolved from the skill root. **Never use `./` for cross-directory paths** — `./scripts/foo.py` from a file in `references/` is misleading because `scripts/` is not next to that file.
 
 ### Project-Scope Paths
 

@@ -147,7 +147,7 @@ python3 ./scripts/scaffold-setup-skill.py \
   --module-csv "{bmad_builder_reports}/{module-code}-temp-help.csv"
 ```
 
-This creates `bmad-{code}-setup/` in the user's skills folder containing:
+This creates `{code}-setup/` in the user's skills folder containing:
 
 - `./SKILL.md` — Generic setup skill with module-specific frontmatter
 - `./scripts/` — merge-config.py, merge-help-csv.py, cleanup-legacy.py
@@ -174,7 +174,7 @@ This adds to the existing skill:
 
 After scaffolding, read the skill's SKILL.md and integrate the registration check into its **On Activation** section. How you integrate depends on whether the skill has an existing first-run init flow:
 
-**If the skill has a first-run init** (e.g., agents with sidecar memory — if sidecar doesn't exist, the skill loads an init template for first-time onboarding): add the module registration to that existing first-run flow. The init reference should load `./assets/module-setup.md` before or as part of first-time setup, so the user gets both module registration and skill initialization in a single first-run experience. The `setup`/`configure` arg should still work independently for reconfiguration.
+**If the skill has a first-run init** (e.g., agents with persistent memory — if the agent memory doesn't exist, the skill loads an init template for first-time onboarding): add the module registration to that existing first-run flow. The init reference should load `./assets/module-setup.md` before or as part of first-time setup, so the user gets both module registration and skill initialization in a single first-run experience. The `setup`/`configure` arg should still work independently for reconfiguration.
 
 **If the skill has no first-run init** (e.g., simple workflows): add a standalone registration check before any config loading:
 
@@ -232,7 +232,7 @@ In headless mode: skip interactive questions, scaffold immediately, and return s
   "status": "success|error",
   "approach": "standalone|setup-skill",
   "module_code": "...",
-  "setup_skill": "bmad-{code}-setup",
+  "setup_skill": "{code}-setup",
   "skill_dir": "/path/to/skill/",
   "location": "/path/to/...",
   "files_created": ["..."],

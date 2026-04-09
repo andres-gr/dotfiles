@@ -30,9 +30,9 @@ Scripts handle plumbing (fetch, transform, validate). Prompts handle judgment (i
 
 SKILL.md stays focused. Detail goes where it belongs.
 
-- Stage instructions → `./references/`
-- Reference data, schemas, large tables → `./references/`
-- Templates, config files → `./assets/`
+- Stage instructions → `references/`
+- Reference data, schemas, large tables → `references/`
+- Templates, config files → `assets/`
 - Multi-branch SKILL.md under ~250 lines: fine as-is
 - Single-purpose up to ~500 lines (~5000 tokens): acceptable if focused
 
@@ -40,13 +40,13 @@ SKILL.md stays focused. Detail goes where it belongs.
 
 Two parts: `[5-8 word summary]. [Use when user says 'X' or 'Y'.]`
 
-Default to conservative triggering. See `./references/standard-fields.md` for full format.
+Default to conservative triggering. See `./standard-fields.md` for full format.
 
 ## 6. Path Construction
 
-Use `{project-root}` for any project-scope path. Use `./` for skill-internal paths. Config variables used directly — they already contain `{project-root}`.
+Use `{project-root}` for any project-scope path. Use `./` only for same-folder references; cross-directory paths are bare and relative to skill root. Config variables used directly — they already contain `{project-root}`.
 
-See `./references/standard-fields.md` for correct/incorrect patterns.
+See `./standard-fields.md` for correct/incorrect patterns.
 
 ## 7. Token Efficiency
 
