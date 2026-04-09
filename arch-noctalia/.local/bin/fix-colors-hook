@@ -1,5 +1,27 @@
 #!/bin/env bash
 
-if command -v spicetify &> /dev/null; then
-  spicetify apply
+# if command -v spicetify &> /dev/null; then
+#   spicetify apply
+# fi
+
+# Configuration: Set your preferred theme names here
+DARK_ICONS="Tela-circle-dracula"
+LIGHT_ICONS="Tela-circle"
+
+# 1. Detect current Noctalia/System mode
+# (Reads the GNOME interface setting which Noctalia often triggers)
+MODE=$(gsettings get org.gnome.desktop.interface color-scheme)
+
+if [[ "$MODE" == *"'prefer-dark'"* ]]; then
+    THEME=$DARK_ICONS
+else
+    THEME=$LIGHT_ICONS
 fi
+
+# 2. Update GTK Icons (System-wide for GTK3/4 apps)
+gsettings set org.gnome.desktop.interface icon-theme "$THEME"
+
+# 3. Update Qt Icons (Modifies qt5ct and qt6ct config files)
+# This uses 'sed' to swap the icon theme line in the config files
+sed -i "s/^icon_theme=.*/icon_theme=$THEME/" ~/.config/qt5ct/qt5ct.conf
+sed -i "s/^icon_theme=.*/icon_theme=$THEME/" ~/.config/qt6ct/qt6ct.conf
