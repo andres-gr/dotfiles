@@ -360,75 +360,6 @@ install_yazi_plugins() {
 }
 
 ###############################################################################
-# SDDM theme settings update
-# Update SDDM theme settings if the theme is installed
-###############################################################################
-
-update_sddm_theme() {
-  local src="$SCRIPT_DIR/data/sddm-settings.conf"
-  local dest="/usr/share/sddm/themes/sddm-noctalia-theme/Commons/Settings.conf"
-  local bkp_dir="$HOME/.local/share/neo-dots/sddm-bkp"
-
-  # Check if source file exists
-  if [[ ! -f "$src" ]]; then
-    warn "SDDM settings source not found at $src"
-    return 1
-  fi
-
-  # Check if target directory/theme exists
-  if [[ ! -d "/usr/share/sddm/themes/sddm-noctalia-theme" ]]; then
-    log "SDDM Noctalia theme not installed — skipping"
-    return 0
-  fi
-
-  # Check if target file exists
-  if [[ ! -f "$dest" ]]; then
-    log "SDDM Settings.conf not found at $dest — skipping"
-    return 0
-  fi
-
-  # Initialize bg.png if it doesn't exist (do this first, before early return)
-  local wallpaper="/usr/share/sddm/themes/sddm-noctalia-theme/Assets/Wallpaper/bg.png"
-  local default_wallpaper="/usr/share/sddm/themes/sddm-noctalia-theme/Assets/Wallpaper/noctalia.png"
-  if [[ ! -f "$wallpaper" ]] && [[ -f "$default_wallpaper" ]]; then
-    run sudo cp "$default_wallpaper" "$wallpaper"
-    log "Initialized bg.png from default wallpaper"
-  fi
-
-  # Ensure wallpaper directory and file are writable for user updates (always run)
-  local wallpaper_dir="$(dirname "$wallpaper")"
-  if [[ -d "$wallpaper_dir" ]]; then
-    run sudo chmod 777 "$wallpaper_dir"
-  fi
-  if [[ -f "$wallpaper" ]]; then
-    run sudo chmod 666 "$wallpaper"
-  fi
-
-  # Check if already up to date (compare content)
-  if cmp -s "$src" "$dest"; then
-    log "SDDM Settings.conf already up to date — skipping"
-    return 0
-  fi
-
-  # Backup existing file
-  mkdir -p "$bkp_dir"
-  local timestamp
-  timestamp=$(date +%Y%m%d_%H%M%S)
-  run sudo cp "$dest" "$bkp_dir/Settings.conf.$timestamp"
-  log "Backed up Settings.conf to $bkp_dir"
-
-  # Copy new settings
-  if $DRY_RUN; then
-    log "[dry-run] would copy $src to $dest"
-  else
-    run sudo cp "$src" "$dest"
-    # Make writable for user (Noctalia shell hook needs to update later)
-    run sudo chmod 666 "$dest"
-    ok "Updated SDDM theme Settings.conf"
-  fi
-}
-
-###############################################################################
 # SDDM X11 single display configuration
 # Configure SDDM to use X11 backend and show greeter only on primary display
 ###############################################################################
@@ -910,61 +841,65 @@ configure_keyboard_layout() {
 ###############################################################################
 
 install_noctalia_sddm_theme() {
-  local src_theme_dir="$SCRIPT_DIR/data/noctalia-sddm-theme"
+  local theme_tarball="$SCRIPT_DIR/data/noctalia-sddm-theme.tar.gz"
   local dest_theme_dir="/usr/share/sddm/themes/sddm-noctalia-theme"
-  local dest_widgets_dir="$dest_theme_dir/Widgets"
-  local bkp_dir="$HOME/.local/share/neo-dots/sddm-bkp"
 
-  # Check if source files exist
-  if [[ ! -d "$src_theme_dir" ]]; then
-    log "Noctalia SDDM theme source not found at $src_theme_dir — skipping"
+  # Check if SDDM is installed
+  if ! command -v sddm &>/dev/null; then
+    log "SDDM not installed — skipping Noctalia theme"
     return 0
   fi
 
-  # Check if target theme directory exists
-  if [[ ! -d "$dest_theme_dir" ]]; then
-    log "SDDM Noctalia theme not installed — skipping"
+  # Check if theme is already installed
+  if [[ -d "$dest_theme_dir" ]]; then
+    log "SDDM Noctalia theme already installed — skipping"
     return 0
+  fi
+
+  # Check if tarball exists
+  if [[ ! -f "$theme_tarball" ]]; then
+    warn "Noctalia SDDM theme tarball not found at $theme_tarball"
+    return 1
   fi
 
   if $DRY_RUN; then
-    log "[dry-run] would install Noctalia SDDM theme files"
-    log "  Main.qml → $dest_theme_dir/"
-    log "  NComboBox.qml → $dest_widgets_dir/"
-    log "  Settings.conf → $dest_theme_dir/Commons/"
+    log "[dry-run] would extract Noctalia SDDM theme from tarball"
+    log "  $theme_tarball → /usr/share/sddm/themes/"
     return 0
   fi
 
-  # Backup existing files
-  mkdir -p "$bkp_dir"
-  local timestamp
-  timestamp=$(date +%Y%m%d_%H%M%S)
+  step "Installing Noctalia SDDM theme"
 
-  if [[ -f "$dest_theme_dir/Main.qml" ]]; then
-    run sudo cp "$dest_theme_dir/Main.qml" "$bkp_dir/Main.qml.$timestamp"
-    log "Backed up Main.qml to $bkp_dir"
+  # Extract tarball to destination
+  local sddm_themes_dir="/usr/share/sddm/themes"
+  run sudo mkdir -p "$sddm_themes_dir"
+  run sudo tar -xzf "$theme_tarball" -C "$sddm_themes_dir"
+  ok "Extracted theme to $sddm_themes_dir"
+
+  # Ensure wallpaper directory is writable for user (noctalia hook)
+  local wallpaper_dir="$dest_theme_dir/Assets/Wallpaper"
+  if [[ -d "$wallpaper_dir" ]]; then
+    run sudo chmod 777 "$wallpaper_dir"
   fi
 
-  if [[ -f "$dest_widgets_dir/NComboBox.qml" ]]; then
-    run sudo cp "$dest_widgets_dir/NComboBox.qml" "$bkp_dir/NComboBox.qml.$timestamp"
-    log "Backed up NComboBox.qml to $bkp_dir"
+  # Initialize bg.png if it doesn't exist (Settings.conf references it)
+  local wallpaper="$wallpaper_dir/bg.png"
+  local default_wallpaper="$wallpaper_dir/noctalia.png"
+  if [[ ! -f "$wallpaper" ]] && [[ -f "$default_wallpaper" ]]; then
+    run sudo cp "$default_wallpaper" "$wallpaper"
+    run sudo chmod 666 "$wallpaper"
+    ok "Initialized bg.png from default wallpaper"
+  elif [[ -f "$wallpaper" ]]; then
+    # Ensure existing wallpaper is writable for noctalia hook
+    run sudo chmod 666 "$wallpaper"
   fi
 
-  # Copy new files
-  run sudo cp "$src_theme_dir/Main.qml" "$dest_theme_dir/Main.qml"
-  ok "Installed Main.qml"
-
-  run sudo cp "$src_theme_dir/NComboBox.qml" "$dest_widgets_dir/NComboBox.qml"
-  ok "Installed NComboBox.qml"
-
-  # Copy Settings.conf to Commons directory
-  if [[ -f "$src_theme_dir/Settings.conf" ]]; then
-    local dest_commons_dir="$dest_theme_dir/Commons"
-    run sudo mkdir -p "$dest_commons_dir"
-    run sudo cp "$src_theme_dir/Settings.conf" "$dest_commons_dir/Settings.conf"
-    ok "Installed Settings.conf"
+  # Make Settings.conf writable for user (noctalia hook)
+  local settings_conf="$dest_theme_dir/Commons/Settings.conf"
+  if [[ -f "$settings_conf" ]]; then
+    run sudo chmod 666 "$settings_conf"
   fi
 
-  log "Noctalia SDDM theme files installed"
-  log "Note: Restart SDDM to see changes"
+  ok "Noctalia SDDM theme installed"
+  log "Note: Restart SDDM or reboot for changes to take effect"
 }
