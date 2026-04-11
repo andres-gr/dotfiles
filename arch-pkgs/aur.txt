@@ -1,6 +1,5 @@
 # ── Generic Tools ──────────────────────────────────────────────────────
 cavasik                   # Audio visualizer with customizable animations (uses CAVA)
-gpu-viewer                # GUI front-end for glxinfo/vulkaninfo
 pokego-bin                # Pokémon sprites in the terminal (used with fastfetch)
 qt5ct-kde                 # Qt5 color scheme for KDE applications
 systemd-boot-manager-git  # Tool for managing systemd-boot
@@ -10,5 +9,6 @@ yay-bin                   # AUR helper (pacman wrapper)
 zen-browser-bin           # Zen Browser — minimal Firefox-based browser
 zinit                     # Fast zsh plugin manager
 
-# ── Not currently installed, kept for reference ────────────────
+# ── Not currently installed, kept for reference ────────────────────────
 # apfs-fuse-git           # FUSE driver for Apple APFS
+# gpu-viewer               GUI front-end for glxinfo/vulkaninfo
