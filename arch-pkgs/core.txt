@@ -6,26 +6,33 @@ c-lolcat                     # Colorizes terminal output with a rainbow gradient
 eza                          # Modern ls replacement with icons and git status
 fastfetch                    # Fast system info display (neofetch alternative)
 fd                           # Fast and user-friendly find alternative
+fortune-mod                  # Fortune teller program (random quotes)
 fzf                          # General-purpose fuzzy finder for the terminal
 ghostty                      # GPU-accelerated terminal emulator by Mitchell Hashimoto
 ghostty-shell-integration    # Shell integration scripts for ghostty
 ghostty-terminfo             # Terminfo for ghostty
+gum                          # CLI tool for writing shell scripts
 jq                           # Lightweight CLI JSON processor
 just                         # Command runner / Makefile alternative (Justfile)
 kitty                        # GPU-accelerated terminal emulator
 lazygit                      # Terminal UI for git
+lazyjournal                  # Terminal-based journal/diary application
+mediainfo                    # Command-line tool for showing media info
 nano                         # Simple terminal text editor
 parallel                     # GNU parallel — run shell commands concurrently
 resvg                        # SVG rendering library
 ripgrep                      # Extremely fast recursive grep tool
+ripgrep-all                  # Ripgrep with additional search capabilities
 rsync                        # Fast, incremental file transfer and sync tool
 socat                        # Multipurpose socket relay tool
 starship                     # Fast, cross-shell customizable prompt
 stow                         # Symlink farm manager, used for dotfiles management
 tmux                         # Terminal multiplexer (sessions, windows, panes)
+tree                         # Display directory tree structure
 tree-sitter-cli              # CLI for the Tree-sitter incremental parsing library
 vim                          # Classic terminal text editor
 wget                         # CLI HTTP/FTP downloader
+xdg-terminal-exec-git        # XDG spec utility for launching default terminal
 yazi                         # Terminal file manager with image preview support
 zoxide                       # Smart cd replacement that learns your frequently used dirs
 zsh                          # Z shell — feature-rich interactive shell
@@ -38,8 +45,10 @@ cmake                        # Cross-platform build system generator
 cpio                         # Archive utility, also needed for initramfs generation
 efibootmgr                   # Tool to manage UEFI boot entries
 fuse2                        # FUSE v2 library, needed by some AppImages and legacy tools
+git                          # Distributed version control system
 gptfdisk                     # GPT partition table editor (gdisk/sgdisk/cgdisk)
 intel-ucode                  # Intel CPU microcode updates (security and stability patches)
+iptables                     # Linux kernel packet filtering tool
 iwd                          # Intel wireless daemon, lightweight Wi-Fi backend
 linux                        # Vanilla upstream Linux kernel
 linux-firmware               # Firmware blobs for various hardware (Wi-Fi, GPU, etc.)
@@ -51,6 +60,7 @@ man-pages                    # Linux man pages (syscalls, libc, etc.)
 ninja                        # Small, fast build system (often used with CMake)
 openssh                      # OpenSSH client and server
 pacman-contrib               # Extra pacman scripts (paccache, pacdiff, checkupdates, etc.)
+seahorse                     # GNOME keyring manager
 sof-firmware                 # Sound Open Firmware for Intel/AMD audio DSPs
 sudo                         # Run commands as another user (typically root)
 unzip                        # ZIP archive extraction utility
@@ -77,7 +87,9 @@ wireplumber                  # PipeWire session/policy manager
 # ── GPU & Graphics ────────────────────────────────────────────────────────────
 imagemagick                  # CLI image manipulation and conversion toolkit
 lib32-mesa-utils             # 32-bit Mesa OpenGL utilities (needed for some 32-bit apps/games)
+libxkbcommon                 # Library for keyboard handling
 mesa-utils                   # OpenGL utilities including glxinfo and glxgears
+rocminfo                     # ROCm hardware info utility
 vulkan-radeon                # Vulkan driver for AMD GPUs (RADV)
 
 # ── Networking ────────────────────────────────────────────────────────────────
@@ -88,13 +100,17 @@ bluez                        # Linux Bluetooth protocol stack
 bluez-utils                  # Bluetooth CLI utilities (bluetoothctl, etc.)
 
 # ── Wayland common ───────────────────────────────────────────────────────────
+adw-gtk-theme                # GTK theme based on Adwaita
 cliphist                     # Wayland clipboard history manager
+fuzzel                       # Application launcher for Wayland
 gst-plugin-pipewire          # GStreamer plugin for PipeWire audio/video routing
 polkit-gnome                 # GNOME/GTK polkit authentication agent for privilege escalation prompts
+qt6ct-kde                    # Qt6 color scheme configuration for KDE apps
 satty                        # Modern Wayland screenshot annotation tool
 udiskie                      # Automounter for removable media with system tray support
 wev                          # Wayland event viewer (debug key/mouse events)
 wl-clip-persist              # Keeps Wayland clipboard contents alive after app closes
+xdg-desktop-portal           # XDG desktop portal backend
 xdg-desktop-portal-gtk       # XDG desktop portal backend using GTK (file chooser, etc.)
 xdg-user-dirs                # Manages standard user directories (Downloads, Documents, etc.)
 
@@ -102,12 +118,14 @@ xdg-user-dirs                # Manages standard user directories (Downloads, Doc
 adobe-source-code-pro-fonts  # Adobe's monospace font family, widely used in terminals and editors
 awesome-terminal-fonts       # Powerline-compatible icon fonts for terminals
 cantarell-fonts              # GNOME default sans-serif UI font
+fontforge                    # Font editor and creation tool
 font-manager                 # GUI app for previewing and managing fonts
 noto-fonts                   # Google Noto font family (Latin, broad coverage)
 noto-fonts-cjk               # Noto fonts for Chinese, Japanese, and Korean scripts
 noto-fonts-emoji             # Noto color emoji font
 noto-fonts-extra             # Additional Noto font variants
 otf-font-awesome             # Font Awesome icon font (OTF version)
+tela-circle-icon-theme-all   # Tela circle icon theme
 ttf-bitstream-vera           # Bitstream Vera font family
 ttf-dejavu                   # DejaVu font family (wide Unicode coverage)
 ttf-dejavu-nerd              # DejaVu fonts patched with Nerd Font icons
@@ -133,12 +151,14 @@ chromium                     # Open-source base for Google Chrome browser
 firefox                      # Mozilla Firefox browser
 firefox-developer-edition    # Firefox with extra dev tools and experimental features
 hfsprogs                     # Tools for reading/writing Apple HFS+ filesystems
+mediainfo-gui                # GUI for mediainfo
 mpv                          # Lightweight, scriptable media player
 nomacs                       # Lightweight image viewer
 opencode-desktop-bin         # OpenCode AI coding assistant desktop app
 qbittorrent                  # Open-source Qt BitTorrent client
-spotify                      # Spotify desktop music streaming client
 spicetify-cli-git            # Customize themes, inject extensions of your Spotify client
+spotify                      # Spotify desktop music streaming client
+usbimager                    # USB imaging tool
 visual-studio-code-bin       # Microsoft VS Code editor (proprietary binary build)
 zapzap                       # WhatsApp desktop client (unofficial wrapper)
 

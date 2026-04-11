@@ -1,6 +1,9 @@
 # ── Containers ────────────────────────────────────────────────────────────────
 docker                       # Container engine for building and running OCI containers
 docker-desktop               # Docker GUI app with integrated VM and Kubernetes support
+podman                       # Container runtime (Docker alternative, rootless)
+podman-compose               # Compose support for Podman
+podman-desktop               # Podman GUI app
 
 # ── JS runtimes & package managers ───────────────────────────────────────────
 yarn-berry                   # Yarn v2+ (Berry) — modern Node.js package manager with PnP support
@@ -8,7 +11,7 @@ yarn-berry                   # Yarn v2+ (Berry) — modern Node.js package manag
 # ── Design tools ──────────────────────────────────────────────────────────────
 inkscape                     # Open-source vector graphics editor (SVG-native)
 
-# ── API clients ───────────────────────────────────────────────────────────────
+# ── API clients ────────────────────────────────────────────────────────────────
 insomnia-bin                 # REST/GraphQL/gRPC API client with environment and collection support
 
 # ── Comms ─────────────────────────────────────────────────────────────────────
@@ -16,4 +19,7 @@ slack-desktop                # Slack messaging client
 zoom                         # Zoom video conferencing client
 
 # ── AI ────────────────────────────────────────────────────────────────────────
-claude-desktop-appimage      # Claude desktop app distributed as an AppImage
+claude-desktop-bin           # Claude AI desktop client
+ollama                       # Local LLM inference runtime
+ollama-docs                  # Ollama documentation
+ollama-rocm                  # ROCm support for Ollama (AMD GPUs)

@@ -1,14 +1,15 @@
 # ── Generic Tools ──────────────────────────────────────────────────────
-cavasik                   # Audio visualizer with customizable animations (uses CAVA)
-pokego-bin                # Pokémon sprites in the terminal (used with fastfetch)
-qt5ct-kde                 # Qt5 color scheme for KDE applications
-systemd-boot-manager-git  # Tool for managing systemd-boot
-ttf-hack-ligatured        # Hack font variant with programming ligatures
-xdg-terminal-exec         # XDG spec utility for launching default terminal
-yay-bin                   # AUR helper (pacman wrapper)
-zen-browser-bin           # Zen Browser — minimal Firefox-based browser
-zinit                     # Fast zsh plugin manager
+cavasik                             # Audio visualizer with customizable animations (uses CAVA)
+pokego-bin                          # Pokémon sprites in the terminal (used with fastfetch)
+qt5ct-kde                           # Qt5 color scheme for KDE applications
+selectdefaultapplication-qt6-git    # Select default application for a MIME type
+systemd-boot-manager-git            # Tool for managing systemd-boot
+ttf-hack-ligatured                  # Hack font variant with programming ligatures
+xdg-terminal-exec                   # XDG spec utility for launching default terminal
+yay-bin                             # AUR helper (pacman wrapper)
+zen-browser-bin                     # Zen Browser — minimal Firefox-based browser
+zinit                               # Fast zsh plugin manager
 
 # ── Not currently installed, kept for reference ────────────────────────
-# apfs-fuse-git           # FUSE driver for Apple APFS
-# gpu-viewer               GUI front-end for glxinfo/vulkaninfo
+# apfs-fuse-git                     # FUSE driver for Apple APFS
+# gpu-viewer                        # GUI front-end for glxinfo/vulkaninfo
