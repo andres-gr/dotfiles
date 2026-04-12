@@ -888,7 +888,7 @@ post_install_task() {
     for p in "${available_patches[@]}"; do
       local w; w="$(get_patch_warning "$p")"
       if [[ -n "$w" ]]; then
-        patch_choices+=("$p  [!] $w")
+        patch_choices+=("$p  ⚠ $w")
       else
         patch_choices+=("$p")
       fi
@@ -1334,14 +1334,14 @@ make_labeled_item() {
   if [[ "$actual_value" == "$expected" ]]; then
     printf '%s' "$item"
   else
-    printf '%s  [!] %s not detected' "$item" "$display_label"
+    printf '%s  ⚠ %s not detected' "$item" "$display_label"
   fi
 }
 
 # strip_label ITEM
-#   Removes "  [!] ..." suffix appended by make_labeled_item.
+#   Removes "  ⚠ ..." suffix appended by make_labeled_item.
 strip_label() {
-  printf '%s' "${1%%  \[!*}"
+  printf '%s' "${1%%  ⚠*}"
 }
 
 # get_patch_warning PATCH_NAME
@@ -1448,7 +1448,7 @@ interactive_mode() {
     printf '\n'
     # Hint based on detected compositor
     if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-      log "Hint: Packages marked [!] have unmet dependencies but can still be selected."
+      log "Hint: Packages marked ⚠ have unmet dependencies but can still be selected."
       [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
       [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
     elif [[ "$OS" == "macos" ]]; then
@@ -1456,9 +1456,6 @@ interactive_mode() {
       log "  Also available: opencode, yazi (optional, can override earlier files)"
     fi
   fi
-
-  # Add optional packages (available on any OS)
-  all_stow+=("${OPTIONAL_STOW_PKGS[@]}")
 
   # Build labeled items
   local -a labeled_stow=()
@@ -1475,7 +1472,7 @@ interactive_mode() {
   fi
 
   printf '\n'
-  log "Packages marked [!] have unmet dependencies but can still be selected."
+  log "Packages marked ⚠ have unmet dependencies but can still be selected."
   local sel
   sel="$(interactive_select --exit "${labeled_stow[@]}")" || true
 
@@ -1518,7 +1515,7 @@ interactive_mode() {
 
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
     log "Select Arch package lists to install:"
-    log "Lists marked [!] have unmet dependencies but can still be selected."
+    log "Lists marked ⚠ have unmet dependencies but can still be selected."
 
     # Build labeled items from full package file list
     local -a labeled_pkg_files=()
