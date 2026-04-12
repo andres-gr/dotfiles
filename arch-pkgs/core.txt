@@ -193,6 +193,4 @@ qt5-imageformats             # Extra image format plugins for Qt5 (webp, tiff, e
 qt5-quickcontrols            # Qt5 QML controls (v1, legacy)
 qt5-quickcontrols2           # Qt5 QML controls (v2, current)
 qt5-wayland                  # Qt5 Wayland platform plugin
-qt5ct                        # Qt5 configuration tool (theme, fonts, icons outside KDE)
 qt6-wayland                  # Qt6 Wayland platform plugin
-qt6ct                        # Qt6 configuration tool
