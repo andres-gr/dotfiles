@@ -26,11 +26,14 @@ map('', '<Space>', '<Nop>', opts)
 --   term_mode = 't',
 --   command_mode = 'c',
 
+map('n', '\\s', '<C-w>v', desc_opts('Open in vertical split'))
+map('n', '\\S', '<C-w>s', desc_opts('Open in horizontal split'))
+
 -- Better window navigation
--- map('n', '<C-h>', '<C-w>h', desc_opts('Move to left window'))
--- map('n', '<C-j>', '<C-w>j', desc_opts('Move to lower window'))
--- map('n', '<C-k>', '<C-w>k', desc_opts('Move to upper window'))
--- map('n', '<C-l>', '<C-w>l', desc_opts('Move to right window'))
+map('n', '\\h', '<C-w>h', desc_opts('Move to left window'))
+map('n', '\\j', '<C-w>j', desc_opts('Move to lower window'))
+map('n', '\\k', '<C-w>k', desc_opts('Move to upper window'))
+map('n', '\\l', '<C-w>l', desc_opts('Move to right window'))
 
 -- Resize with arrows
 map('n', '<C-Up>', '<CMD>resize -2<CR>', desc_opts('Resize window up'))
