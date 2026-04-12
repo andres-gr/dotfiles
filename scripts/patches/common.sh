@@ -170,12 +170,12 @@ install_arch_patch_services() {
 ###############################################################################
 
 common_patches() {
-  install_tpm
-  install_ghostty_misc_config
   apply_arch_patch_dconf
   install_arch_patch_services
+  install_ghostty_misc_config
   install_pam_configs
   install_systemd_scripts
+  install_tpm
 }
 
 ###############################################################################
@@ -843,6 +843,8 @@ configure_keyboard_layout() {
 install_noctalia_sddm_theme() {
   local theme_tarball="$SCRIPT_DIR/data/noctalia-sddm-theme.tar.gz"
   local dest_theme_dir="/usr/share/sddm/themes/sddm-noctalia-theme"
+  local sddm_conf_dir="/etc/sddm.conf.d"
+  local sddm_theme_conf="$sddm_conf_dir/30-noctalia-theme.conf"
 
   # Check if SDDM is installed
   if ! command -v sddm &>/dev/null; then
@@ -850,66 +852,84 @@ install_noctalia_sddm_theme() {
     return 0
   fi
 
-  # Check if theme is already installed
+  # Step 1: Extract theme if needed
+  if [[ ! -d "$dest_theme_dir" ]]; then
+    if [[ ! -f "$theme_tarball" ]]; then
+      warn "Noctalia SDDM theme tarball not found at $theme_tarball"
+      return 1
+    fi
+
+    if $DRY_RUN; then
+      log "[dry-run] would extract Noctalia SDDM theme from tarball"
+      log "  $theme_tarball → /usr/share/sddm/themes/"
+    else
+      step "Installing Noctalia SDDM theme"
+      local sddm_themes_dir="/usr/share/sddm/themes"
+      run sudo mkdir -p "$sddm_themes_dir"
+      run sudo tar -xzf "$theme_tarball" -C "$sddm_themes_dir"
+      ok "Extracted theme to $sddm_themes_dir"
+    fi
+  fi
+
+  # Step 2: Fix permissions if theme exists
   if [[ -d "$dest_theme_dir" ]]; then
-    log "SDDM Noctalia theme already installed — skipping"
-    return 0
+    if $DRY_RUN; then
+      log "[dry-run] would fix permissions for Noctalia theme"
+    else
+      # Ensure wallpaper directory is writable for user (noctalia hook)
+      local wallpaper_dir="$dest_theme_dir/Assets/Wallpaper"
+      if [[ -d "$wallpaper_dir" ]]; then
+        run sudo chmod 777 "$wallpaper_dir"
+      fi
+
+      # Initialize bg.png if it doesn't exist (Settings.conf references it)
+      local wallpaper="$wallpaper_dir/bg.png"
+      local default_wallpaper="$wallpaper_dir/noctalia.png"
+      if [[ ! -f "$wallpaper" ]] && [[ -f "$default_wallpaper" ]]; then
+        run sudo cp "$default_wallpaper" "$wallpaper"
+        run sudo chmod 666 "$wallpaper"
+        ok "Initialized bg.png from default wallpaper"
+      elif [[ -f "$wallpaper" ]]; then
+        run sudo chmod 666 "$wallpaper"
+      fi
+
+      # Make Settings.conf writable for user (noctalia hook)
+      local settings_conf="$dest_theme_dir/Commons/Settings.conf"
+      if [[ -f "$settings_conf" ]]; then
+        run sudo chmod 666 "$settings_conf"
+      fi
+
+      ok "Noctalia SDDM theme permissions fixed"
+    fi
   fi
 
-  # Check if tarball exists
-  if [[ ! -f "$theme_tarball" ]]; then
-    warn "Noctalia SDDM theme tarball not found at $theme_tarball"
-    return 1
-  fi
+  # Step 3: Configure SDDM to use theme if not already configured
+  if [[ -d "$dest_theme_dir" ]]; then
+    # Check if theme is already selected in any sddm config
+    local theme_already_configured=false
+    if [[ -d "$sddm_conf_dir" ]]; then
+      for conf in "$sddm_conf_dir"/*.conf; do
+        [[ -f "$conf" ]] && grep -q "Current=.*noctalia" "$conf" 2>/dev/null && theme_already_configured=true
+      done
+    fi
 
-  if $DRY_RUN; then
-    log "[dry-run] would extract Noctalia SDDM theme from tarball"
-    log "  $theme_tarball → /usr/share/sddm/themes/"
-    return 0
-  fi
-
-  step "Installing Noctalia SDDM theme"
-
-  # Extract tarball to destination
-  local sddm_themes_dir="/usr/share/sddm/themes"
-  run sudo mkdir -p "$sddm_themes_dir"
-  run sudo tar -xzf "$theme_tarball" -C "$sddm_themes_dir"
-  ok "Extracted theme to $sddm_themes_dir"
-
-  # Ensure wallpaper directory is writable for user (noctalia hook)
-  local wallpaper_dir="$dest_theme_dir/Assets/Wallpaper"
-  if [[ -d "$wallpaper_dir" ]]; then
-    run sudo chmod 777 "$wallpaper_dir"
-  fi
-
-  # Initialize bg.png if it doesn't exist (Settings.conf references it)
-  local wallpaper="$wallpaper_dir/bg.png"
-  local default_wallpaper="$wallpaper_dir/noctalia.png"
-  if [[ ! -f "$wallpaper" ]] && [[ -f "$default_wallpaper" ]]; then
-    run sudo cp "$default_wallpaper" "$wallpaper"
-    run sudo chmod 666 "$wallpaper"
-    ok "Initialized bg.png from default wallpaper"
-  elif [[ -f "$wallpaper" ]]; then
-    # Ensure existing wallpaper is writable for noctalia hook
-    run sudo chmod 666 "$wallpaper"
-  fi
-
-  # Make Settings.conf writable for user (noctalia hook)
-  local settings_conf="$dest_theme_dir/Commons/Settings.conf"
-  if [[ -f "$settings_conf" ]]; then
-    run sudo chmod 666 "$settings_conf"
-  fi
-
-  ok "Noctalia SDDM theme installed"
-
-  # Configure SDDM to use the Noctalia theme
-  local sddm_theme_conf="$sddm_conf_dir/30-noctalia-theme.conf"
-  step "Configuring SDDM to use Noctalia theme"
-  run sudo tee "$sddm_theme_conf" >/dev/null << 'EOF'
+    if [[ "$theme_already_configured" == "true" ]]; then
+      log "Noctalia theme already configured in SDDM — skipping config"
+    else
+      if $DRY_RUN; then
+        log "[dry-run] would configure SDDM to use Noctalia theme"
+      else
+        step "Configuring SDDM to use Noctalia theme"
+        run sudo tee "$sddm_theme_conf" >/dev/null << 'EOF'
 [Theme]
 Current=sddm-noctalia-theme
 EOF
-  ok "SDDM theme configured at $sddm_theme_conf"
+        ok "SDDM theme configured at $sddm_theme_conf"
+      fi
+    fi
+  fi
 
-  log "Note: Restart SDDM or reboot for changes to take effect"
+  if [[ -d "$dest_theme_dir" ]]; then
+    log "Note: Restart SDDM or reboot for changes to take effect"
+  fi
 }
