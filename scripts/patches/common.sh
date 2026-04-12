@@ -901,5 +901,15 @@ install_noctalia_sddm_theme() {
   fi
 
   ok "Noctalia SDDM theme installed"
+
+  # Configure SDDM to use the Noctalia theme
+  local sddm_theme_conf="$sddm_conf_dir/30-noctalia-theme.conf"
+  step "Configuring SDDM to use Noctalia theme"
+  run sudo tee "$sddm_theme_conf" >/dev/null << 'EOF'
+[Theme]
+Current=sddm-noctalia-theme
+EOF
+  ok "SDDM theme configured at $sddm_theme_conf"
+
   log "Note: Restart SDDM or reboot for changes to take effect"
 }
