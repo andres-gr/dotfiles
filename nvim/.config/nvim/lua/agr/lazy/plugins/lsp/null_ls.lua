@@ -48,6 +48,26 @@ N.setup = function ()
         },
         method = null_ls.methods.FORMATTING,
         name = 'kdlfmt',
+      },
+
+      -- Shell formatting
+      {
+        filetypes = {
+          'sh',
+          'bash',
+          'zsh',
+        },
+        generator = h.formatter_factory {
+          command = 'beautysh',
+          args = {
+            '-i',
+            '2',
+            '-'
+          },
+          to_stdin = true,
+        },
+        method = null_ls.methods.FORMATTING,
+        name = 'beautysh',
       }
     },
   }
