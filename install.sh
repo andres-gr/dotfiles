@@ -886,11 +886,16 @@ post_install_task() {
     # Build patch group choices
     local -a patch_choices=()
     for p in "${available_patches[@]}"; do
-      patch_choices+=("$p")
+      local w; w="$(get_patch_warning "$p")"
+      if [[ -n "$w" ]]; then
+        patch_choices+=("$p  [!] $w")
+      else
+        patch_choices+=("$p")
+      fi
     done
 
-    local sel
-    sel="$(interactive_select --exit "${patch_choices[@]}")"
+local sel
+  sel="$(interactive_select --exit "${patch_choices[@]}")" || true
 
     if [[ -n "$sel" ]]; then
       while IFS= read -r item; do
@@ -939,7 +944,7 @@ post_install_task() {
 
         log "Select functions for $patch:"
         local sel
-        sel="$(interactive_select --exit "${choices[@]}")"
+        sel="$(interactive_select --exit "${choices[@]}")" || true
 
         if [[ -n "$sel" ]]; then
           while IFS= read -r c; do
@@ -1329,14 +1334,14 @@ make_labeled_item() {
   if [[ "$actual_value" == "$expected" ]]; then
     printf '%s' "$item"
   else
-    printf '%s  ⚠ %s not detected' "$item" "$display_label"
+    printf '%s  [!] %s not detected' "$item" "$display_label"
   fi
 }
 
 # strip_label ITEM
-#   Removes "  ⚠ ..." suffix appended by make_labeled_item.
+#   Removes "  [!] ..." suffix appended by make_labeled_item.
 strip_label() {
-  printf '%s' "${1%%  ⚠*}"
+  printf '%s' "${1%%  \[!*}"
 }
 
 # get_patch_warning PATCH_NAME
@@ -1347,19 +1352,21 @@ get_patch_warning() {
 
   case "$patch" in
     hyprland)
-      [[ "$COMPOSITOR" != "hyprland" ]] && printf 'Hyprland not detected'
+      if [[ "$COMPOSITOR" != "hyprland" ]]; then
+        printf 'Hyprland not detected'
+      fi
       ;;
     hyde)
-      $HYDE_DETECTED || printf 'HyDE not detected'
+      if $HYDE_DETECTED; then :; else printf 'HyDE not detected'; fi
       ;;
     niri)
-      $NIRI_DETECTED || printf 'Niri not detected'
+      if $NIRI_DETECTED; then :; else printf 'Niri not detected'; fi
       ;;
     dank)
-      $DMS_DETECTED || printf 'DMS not detected'
+      if $DMS_DETECTED; then :; else printf 'DMS not detected'; fi
       ;;
     noctalia)
-      $NOCTALIA_DETECTED || printf 'Noctalia not detected'
+      if $NOCTALIA_DETECTED; then :; else printf 'Noctalia not detected'; fi
       ;;
   esac
 }
@@ -1435,8 +1442,18 @@ interactive_mode() {
       all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
     fi
 
-    if $DMS_DETECTED; then
-      all_stow+=("${DANK_STOW_PKGS[@]}")
+    # Add optional packages (available on any OS)
+    all_stow+=("${OPTIONAL_STOW_PKGS[@]}")
+
+    printf '\n'
+    # Hint based on detected compositor
+    if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+      log "Hint: Packages marked [!] have unmet dependencies but can still be selected."
+      [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+      [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+    elif [[ "$OS" == "macos" ]]; then
+      log "Hint: Select macos + base packages"
+      log "  Also available: opencode, yazi (optional, can override earlier files)"
     fi
   fi
 
@@ -1458,10 +1475,9 @@ interactive_mode() {
   fi
 
   printf '\n'
-  log "Hint: Packages marked ⚠ have unmet dependencies"
-
+  log "Packages marked [!] have unmet dependencies but can still be selected."
   local sel
-  sel="$(interactive_select --exit "${labeled_stow[@]}")"
+  sel="$(interactive_select --exit "${labeled_stow[@]}")" || true
 
   if [[ -n "$sel" ]]; then
     while IFS= read -r item; do
@@ -1489,7 +1505,7 @@ interactive_mode() {
     printf '\n'
     log "Select Brewfiles to install:"
     local bsel
-    bsel="$(interactive_select --exit "${BREW_FILES[@]}")"
+    bsel="$(interactive_select --exit "${BREW_FILES[@]}")" || true
     if [[ -n "$bsel" ]]; then
       while IFS= read -r f; do
         [[ -n "$f" ]] && BREW_SELECTED+=("$f")
@@ -1502,8 +1518,7 @@ interactive_mode() {
 
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
     log "Select Arch package lists to install:"
-    log "Hint: Packages marked ⚠ have unmet dependencies"
-    printf '\n'
+    log "Lists marked [!] have unmet dependencies but can still be selected."
 
     # Build labeled items from full package file list
     local -a labeled_pkg_files=()
@@ -1512,7 +1527,7 @@ interactive_mode() {
     done
 
     local asel
-    asel="$(interactive_select --exit "${labeled_pkg_files[@]}")"
+    asel="$(interactive_select --exit "${labeled_pkg_files[@]}")" || true
     if [[ -n "$asel" ]]; then
       while IFS= read -r item; do
         [[ -n "$item" ]] && ARCH_SELECTED+=("$(strip_label "$item")")
