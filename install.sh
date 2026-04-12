@@ -374,26 +374,26 @@ detect_de() {
     NIRI_DETECTED=true
   fi
 
-   # Check for DMS (Dank Material Shell) - can run alongside Hyprland or Niri
-   if command -v dms-shell &>/dev/null || command -v dmsctl &>/dev/null; then
-     DMS_DETECTED=true
-   fi
+  # Check for DMS (Dank Material Shell) - can run alongside Hyprland or Niri
+  if command -v dms-shell &>/dev/null || command -v dmsctl &>/dev/null; then
+    DMS_DETECTED=true
+  fi
 
-    # Check for Noctalia - look for config directory or command
-    if [[ -d "$HOME/.config/noctalia" ]] || command -v noctalia &>/dev/null; then
-      NOCTALIA_DETECTED=true
-    fi
+  # Check for Noctalia - look for config directory or command
+  if [[ -d "$HOME/.config/noctalia" ]] || command -v noctalia &>/dev/null; then
+    NOCTALIA_DETECTED=true
+  fi
 
-    # Check for greetd - look for greetd session or command
-    if command -v greetd &>/dev/null || [[ -f "/usr/bin/greetd" ]]; then
-      GREETD_DETECTED=true
-    fi
+  # Check for greetd - look for greetd session or command
+  if command -v greetd &>/dev/null || [[ -f "/usr/bin/greetd" ]]; then
+    GREETD_DETECTED=true
+  fi
 
-    # Check for plain Hyprland (NOT HyDE - HyDE takes precedence)
-    # Detect if Hyprland or hyprctl command exists
-    if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
-      HYPRLAND_DETECTED=true
-    fi
+  # Check for plain Hyprland (NOT HyDE - HyDE takes precedence)
+  # Detect if Hyprland or hyprctl command exists
+  if ! $HYDE_DETECTED && (command -v Hyprland &>/dev/null || command -v hyprctl &>/dev/null); then
+    HYPRLAND_DETECTED=true
+  fi
 
   # Set COMPOSITOR based on detected compositor binary.
   # HyDE implies Hyprland — both map to COMPOSITOR=hyprland.
@@ -413,22 +413,22 @@ detect_de() {
     [[ -n "$HYDE_CTL_BIN"   ]] && log "  hydectl    → $HYDE_CTL_BIN"
     [[ -z "$HYDE_SHELL_BIN" ]] && warn "hyde-shell not found in PATH — CLI features may be limited"
   fi
-   if $NIRI_DETECTED; then
-     ok "Niri detected"
-   fi
-   if $DMS_DETECTED; then
-     ok "DMS (Dank Material Shell) detected"
-    fi
-    if $NOCTALIA_DETECTED; then
-      ok "Noctalia detected"
-    fi
-    if $GREETD_DETECTED; then
-      ok "greetd detected"
-    fi
-    if $HYPRLAND_DETECTED; then
-      ok "Hyprland detected"
-    fi
-    if [[ "$COMPOSITOR" == "none" ]]; then
+  if $NIRI_DETECTED; then
+    ok "Niri detected"
+  fi
+  if $DMS_DETECTED; then
+    ok "DMS (Dank Material Shell) detected"
+  fi
+  if $NOCTALIA_DETECTED; then
+    ok "Noctalia detected"
+  fi
+  if $GREETD_DETECTED; then
+    ok "greetd detected"
+  fi
+  if $HYPRLAND_DETECTED; then
+    ok "Hyprland detected"
+  fi
+  if [[ "$COMPOSITOR" == "none" ]]; then
     log "No compositor detected — using plain dotfiles mode"
   fi
 }
@@ -864,9 +864,6 @@ post_install_task() {
     return
   fi
 
-  printf '\n'
-  log "Available patch groups: ${available_patches[*]}"
-
   # First level: select which patch groups to apply
   local -a selected_patches=()
 
@@ -886,15 +883,10 @@ post_install_task() {
   elif $INTERACTIVE; then
     log "Select patch groups to apply:"
 
-    # Build labeled patch group choices
+    # Build patch group choices
     local -a patch_choices=()
     for p in "${available_patches[@]}"; do
-      local w; w="$(get_patch_warning "$p")"
-      if [[ -n "$w" ]]; then
-        patch_choices+=("$p  ⚠ $w")
-      else
-        patch_choices+=("$p")
-      fi
+      patch_choices+=("$p")
     done
 
     local sel
@@ -1028,7 +1020,7 @@ stow_selected() {
     # Check if it's a shell-specific package
     if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
       shell_pkgs+=("$pkg")
-    # Check if it's an optional package (should be stowed last)
+      # Check if it's an optional package (should be stowed last)
     elif [[ " ${OPTIONAL_STOW_PKGS[*]} " == *" $pkg "* ]]; then
       optional_pkgs+=("$pkg")
     else
@@ -1126,20 +1118,20 @@ dry_run_summary() {
     printf "    %s\n" "$bkp_root"
   fi
 
-    # Stow
-    if (( ${#STOW_SELECTED[@]} > 0 )); then
-      printf "\n  Stow packages:\n"
-      # Show in order: base, DE/WM, then shell
-      for pkg in "${STOW_SELECTED[@]}"; do
-        if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
-          printf "    - %s (with override)\n" "$pkg"
-        elif [[ " ${OPTIONAL_STOW_PKGS[*]} " == *" $pkg "* ]]; then
-          printf "    - %s (optional, may override)\n" "$pkg"
-        else
-          printf "    - %s\n" "$pkg"
-        fi
-      done
-    fi
+  # Stow
+  if (( ${#STOW_SELECTED[@]} > 0 )); then
+    printf "\n  Stow packages:\n"
+    # Show in order: base, DE/WM, then shell
+    for pkg in "${STOW_SELECTED[@]}"; do
+      if [[ " ${NOCTALIA_STOW_PKGS[*]} ${DANK_STOW_PKGS[*]} " == *" $pkg "* ]]; then
+        printf "    - %s (with override)\n" "$pkg"
+      elif [[ " ${OPTIONAL_STOW_PKGS[*]} " == *" $pkg "* ]]; then
+        printf "    - %s (optional, may override)\n" "$pkg"
+      else
+        printf "    - %s\n" "$pkg"
+      fi
+    done
+  fi
 
   # Brew
   if (( ${#BREW_SELECTED[@]} > 0 )); then
@@ -1157,7 +1149,7 @@ dry_run_summary() {
     done
   fi
 
-# Additional tasks
+  # Additional tasks
   local has_extra=false
   for t in "${TASKS[@]:-}"; do
     case "$t" in
@@ -1422,53 +1414,52 @@ interactive_mode() {
     return
   fi
 
-   # ── Stow packages ─────────────────────────────────────────────────────────
-   # Build the list of available stow packages based on OS and detected WM/Shell
-   local -a all_stow=("${BASE_STOW_PKGS[@]}")
-   [[ "$OS" == "macos" ]] && all_stow+=("${MACOS_STOW_PKGS[@]}")
+  # ── Stow packages ─────────────────────────────────────────────────────────
+  # Build the list of available stow packages based on OS and detected WM/Shell
+  local -a all_stow=("${BASE_STOW_PKGS[@]}")
+  [[ "$OS" == "macos" ]] && all_stow+=("${MACOS_STOW_PKGS[@]}")
 
-   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-     # Always include arch-common for Arch/CachyOS
-     all_stow+=("${ARCH_COMMON_PKGS[@]}")
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+    # Always include arch-common for Arch/CachyOS
+    all_stow+=("${ARCH_COMMON_PKGS[@]}")
 
-# Add compositor base packages (all shown, warnings added later)
-      all_stow+=(
-        "${ARCH_HYPRLAND_PKGS[@]}"
-        "${ARCH_HYDE_PKGS[@]}"
-        "${ARCH_NIRI_PKGS[@]}"
-      )
+    # Add compositor base packages (all shown, warnings added later)
+    all_stow+=(
+      "${ARCH_HYPRLAND_PKGS[@]}"
+      "${ARCH_HYDE_PKGS[@]}"
+      "${ARCH_NIRI_PKGS[@]}"
+    )
 
-      # Add shell-specific packages (available regardless of COMPOSITOR)
-      if $NOCTALIA_DETECTED; then
-        all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
-      fi
-
-      if $DMS_DETECTED; then
-        all_stow+=("${DANK_STOW_PKGS[@]}")
-      fi
+    # Add shell-specific packages (available regardless of COMPOSITOR)
+    if $NOCTALIA_DETECTED; then
+      all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
     fi
 
-    # Add optional packages (available on any OS)
-    all_stow+=("${OPTIONAL_STOW_PKGS[@]}")
-
-    printf '\n'
-    # Hint based on detected compositor
-    if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-      log "Hint: Packages marked ⚠ have unmet dependencies but can still be selected."
-      [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-      [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-    elif [[ "$OS" == "macos" ]]; then
-      log "Hint: Select macos + base packages"
-      log "  Also available: opencode, yazi (optional, can override earlier files)"
+    if $DMS_DETECTED; then
+      all_stow+=("${DANK_STOW_PKGS[@]}")
     fi
-    # Build labeled items — warn on undetected deps
+  fi
+
+  # Add optional packages (available on any OS)
+  all_stow+=("${OPTIONAL_STOW_PKGS[@]}")
+
+  # Build labeled items
   local -a labeled_stow=()
   for pkg in "${all_stow[@]}"; do
     labeled_stow+=("$(make_labeled_item "$pkg" STOW_PKG_REQUIRES)")
   done
 
+  # Hint based on detected compositor
+  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
+    [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+    [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
+  elif [[ "$OS" == "macos" ]]; then
+    log "  Also available: opencode, yazi"
+  fi
+
   printf '\n'
-  log "Packages marked ⚠ have unmet dependencies but can still be selected."
+  log "Hint: Packages marked ⚠ have unmet dependencies"
+
   local sel
   sel="$(interactive_select --exit "${labeled_stow[@]}")"
 
@@ -1490,6 +1481,7 @@ interactive_mode() {
     register_task "stow_selected"
   else
     log "Skipping stow"
+    printf '\n'
   fi
 
   # ── OS-specific packages ───────────────────────────────────────────────────
@@ -1509,9 +1501,9 @@ interactive_mode() {
   fi
 
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-    printf '\n'
     log "Select Arch package lists to install:"
-    log "Lists marked ⚠ have unmet dependencies but can still be selected."
+    log "Hint: Packages marked ⚠ have unmet dependencies"
+    printf '\n'
 
     # Build labeled items from full package file list
     local -a labeled_pkg_files=()
@@ -1528,6 +1520,7 @@ interactive_mode() {
       register_task "arch_selected"
     else
       log "Skipping Arch packages"
+      printf '\n'
     fi
   fi
 
