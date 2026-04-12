@@ -1,0 +1,4 @@
+# ── HyDE AUR Packages ─────────────────────────────────────────────────────
+# HyDE-specific AUR packages
+
+awww                         # HyDE wallpaper switcher utility

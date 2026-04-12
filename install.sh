@@ -42,7 +42,7 @@ else
 fi
 OS=""                  # "macos" | "arch" | "cachyos"
 DISTRO_ID=""           # "arch" | "cachyos" (for Linux)
-DE_TYPE=""             # "hyde" | "niri" | "none"
+COMPOSITOR=""           # "hyprland" | "niri" | "none"
 DRY_RUN=false
 UNINSTALL=false
 INTERACTIVE=false
@@ -86,10 +86,28 @@ BKP_TS="$(date +%Y%m%d_%H%M%S)"
 BASE_STOW_PKGS=(bat claude eza fastfetch ghostty lazygit local nvim starship tmux zsh)
 MACOS_STOW_PKGS=(macos)
 
-# Arch Linux stow packages (selected based on DE_TYPE)
+# Arch Linux stow packages (selected based on COMPOSITOR)
 ARCH_COMMON_PKGS=(arch-common)
 ARCH_HYDE_PKGS=(arch-hyde)
 ARCH_NIRI_PKGS=(arch-niri)
+
+# Arch Linux stow packages — hyprland base (standalone, no HyDE)
+ARCH_HYPRLAND_PKGS=(arch-hyprland)
+
+# Full ordered list of arch pkg files (shown in interactive chooser)
+ARCH_PKG_FILES_ALL=(
+  core.txt
+  aur.txt
+  work.txt
+  hyprland-core.txt
+  hyde-core.txt
+  hyde-aur.txt
+  niri-core.txt
+  niri-aur.txt
+  dank-core.txt
+  dank-aur.txt
+  noctalia-aur.txt
+)
 
 # Shell-specific stow packages (can overlay DE-specific configs)
 SHELL_STOW_PKGS=()
@@ -99,15 +117,40 @@ DANK_STOW_PKGS=(arch-dank)
 # Optional stow packages (available on any platform, can override earlier files)
 OPTIONAL_STOW_PKGS=(opencode yazi)
 
-# Patch file definitions: patch_name -> (script_file, os_filter, de_filter)
+# Maps each DE-dependent stow package to its required detection.
+# Format: [pkg]="VAR_NAME:expected_value:display_label"
+# VAR_NAME is a global boolean flag or "COMPOSITOR" (special case).
+declare -A STOW_PKG_REQUIRES=(
+  [arch-hyprland]="COMPOSITOR:hyprland:Hyprland compositor"
+  [arch-niri]="COMPOSITOR:niri:Niri compositor"
+  [arch-hyde]="HYDE_DETECTED:true:HyDE"
+  [arch-noctalia]="NOCTALIA_DETECTED:true:Noctalia"
+  [arch-dank]="DMS_DETECTED:true:DMS"
+)
+
+# Maps each DE-dependent pkg file to its required detection.
+# Same format as STOW_PKG_REQUIRES.
+declare -A PKG_FILE_REQUIRES=(
+  [hyprland-core.txt]="COMPOSITOR:hyprland:Hyprland compositor"
+  [hyde-core.txt]="HYDE_DETECTED:true:HyDE"
+  [hyde-aur.txt]="HYDE_DETECTED:true:HyDE"
+  [niri-core.txt]="COMPOSITOR:niri:Niri compositor"
+  [niri-aur.txt]="COMPOSITOR:niri:Niri compositor"
+  [dank-core.txt]="DMS_DETECTED:true:DMS"
+  [dank-aur.txt]="DMS_DETECTED:true:DMS"
+  [noctalia-aur.txt]="NOCTALIA_DETECTED:true:Noctalia"
+)
+
+# Patch file definitions: patch_name -> (script_file, os_filter)
 # os_filter: "arch" (arch/cachyos), "macos", "all"
-# de_filter: "hyprland", "niri", "dank", "noctalia", "none" (always runs)
+# Note: patch scripts self-guard with internal detection checks
 declare -A PATCH_FILES=(
-  [common]="scripts/patches/common.sh:all:none"
-  [hyprland]="scripts/patches/hyprland.sh:all:hyprland"
-  [niri]="scripts/patches/niri.sh:all:niri"
-  [dank]="scripts/patches/dank.sh:all:dank"
-  [noctalia]="scripts/patches/noctalia.sh:all:noctalia"
+  [common]="scripts/patches/common.sh:all"
+  [hyprland]="scripts/patches/hyprland.sh:all"
+  [hyde]="scripts/patches/hyde.sh:all"
+  [niri]="scripts/patches/niri.sh:all"
+  [dank]="scripts/patches/dank.sh:all"
+  [noctalia]="scripts/patches/noctalia.sh:all"
 )
 
 # Individual patch functions per patch file
@@ -115,6 +158,7 @@ declare -A PATCH_FILES=(
 declare -A PATCH_FUNCTIONS=(
   [common]="apply_arch_patch_dconf configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_sddm_x11_config install_systemd_scripts install_tpm install_yazi_plugins"
   [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
+  [hyde]="backup_hyde_zsh hyde_seed_config ensure_hyde_completions hyde_post_install"
   [niri]="install_niri_config"
   [dank]="reload_dms"
   [noctalia]="install_spotify_toast_plugin patch_zen_userchrome"
@@ -284,7 +328,7 @@ detect_os() {
 ###############################################################################
 
 # detect_de - Detect desktop environment and window manager
-# Sets: DE_TYPE ("hyde" | "niri" | "none"), HYDE_DETECTED, NIRI_DETECTED
+# Sets: COMPOSITOR ("hyprland" | "niri" | "none"), HYDE_DETECTED, NIRI_DETECTED, etc.
 detect_de() {
   local zdotdir="${ZDOTDIR:-$HOME/.config/zsh}"
 
@@ -351,19 +395,18 @@ detect_de() {
       HYPRLAND_DETECTED=true
     fi
 
-  # Determine DE_TYPE based on detections
-  if $HYDE_DETECTED; then
-    DE_TYPE="hyde"
+  # Set COMPOSITOR based on detected compositor binary.
+  # HyDE implies Hyprland — both map to COMPOSITOR=hyprland.
+  if $HYDE_DETECTED || $HYPRLAND_DETECTED; then
+    COMPOSITOR="hyprland"
   elif $NIRI_DETECTED; then
-    DE_TYPE="niri"
-  elif $HYPRLAND_DETECTED; then
-    DE_TYPE="hyprland"
+    COMPOSITOR="niri"
   else
-    DE_TYPE="none"
+    COMPOSITOR="none"
   fi
 
   # Log detection results
-  log "Desktop environment: ${DE_TYPE}"
+  log "Compositor: ${COMPOSITOR}"
   if $HYDE_DETECTED; then
     ok "HyDE detected"
     [[ -n "$HYDE_SHELL_BIN" ]] && log "  hyde-shell → $HYDE_SHELL_BIN"
@@ -385,8 +428,8 @@ detect_de() {
     if $HYPRLAND_DETECTED; then
       ok "Hyprland detected"
     fi
-    if [[ "$DE_TYPE" == "none" ]]; then
-    log "No specific DE/WM detected — using plain dotfiles mode"
+    if [[ "$COMPOSITOR" == "none" ]]; then
+    log "No compositor detected — using plain dotfiles mode"
   fi
 }
 
@@ -491,33 +534,31 @@ stow_shell_pkg() {
   run stow --no-folding --override='.*' -d "$DOTFILES_DIR" -t "$HOME" "$pkg"
 }
 
-# select_arch_packages - Determine which Arch stow packages to use based on DE_TYPE
+# select_arch_packages - Determine which Arch stow packages to use based on COMPOSITOR
 # Returns: newline-separated list of packages in correct order
 select_arch_packages() {
   local -a arch_pkgs=("${ARCH_COMMON_PKGS[@]}")
 
-  # Add DE/WM-specific packages first
-  case "$DE_TYPE" in
-    hyde)
-      arch_pkgs+=("${ARCH_HYDE_PKGS[@]}")
+  # Add compositor base package
+  case "$COMPOSITOR" in
+    hyprland)
+      arch_pkgs+=("${ARCH_HYPRLAND_PKGS[@]}")
+      # Add HyDE overlay on top if detected
+      if $HYDE_DETECTED; then
+        arch_pkgs+=("${ARCH_HYDE_PKGS[@]}")
+      fi
       ;;
     niri)
       arch_pkgs+=("${ARCH_NIRI_PKGS[@]}")
       ;;
-    hyprland)
-      # Plain Hyprland uses the same packages as HyDE
-      arch_pkgs+=("${ARCH_HYDE_PKGS[@]}")
-      ;;
     none)
-      # No DE-specific packages - just common
       ;;
   esac
 
-  # Add shell-specific packages last (they can override DE/base files)
+  # Add shell/addon layer packages (independent of compositor)
   if $NOCTALIA_DETECTED; then
     arch_pkgs+=("${NOCTALIA_STOW_PKGS[@]}")
   fi
-
   if $DMS_DETECTED; then
     arch_pkgs+=("${DANK_STOW_PKGS[@]}")
   fi
@@ -525,27 +566,31 @@ select_arch_packages() {
   printf '%s\n' "${arch_pkgs[@]}"
 }
 
-# select_arch_pkg_files - Determine which Arch package lists to use based on DE_TYPE
+# select_arch_pkg_files - Determine which Arch package lists to use based on COMPOSITOR
 # Sets: ARCH_PKG_FILES (global array)
 select_arch_pkg_files() {
   # Default: core.txt, aur.txt, work.txt
   local -a pkg_files=(core.txt aur.txt work.txt)
 
-  case "$DE_TYPE" in
-    hyde|hyprland)
-      # HyDE or Plain Hyprland: add hypr-core.txt
-      pkg_files+=(hypr-core.txt)
+  case "$COMPOSITOR" in
+    hyprland)
+      # Base Hyprland packages
+      pkg_files+=(hyprland-core.txt)
+      # HyDE overlay if detected
+      if $HYDE_DETECTED; then
+        pkg_files+=(hyde-core.txt hyde-aur.txt)
+      fi
       ;;
     niri)
       # Niri: include both niri-specific and generic packages
       pkg_files+=(niri-core.txt niri-aur.txt)
       ;;
     none)
-      # No WM: just default (already set)
+      # No compositor: just default (already set)
       ;;
   esac
 
-  # Add DMS-specific packages if detected (works alongside any DE/WM)
+  # Add DMS-specific packages if detected (works alongside any compositor)
   if $DMS_DETECTED; then
     pkg_files+=(dank-core.txt dank-aur.txt)
   fi
@@ -563,6 +608,7 @@ unstow_all() {
     "${BASE_STOW_PKGS[@]}"
     "${MACOS_STOW_PKGS[@]}"
     "${ARCH_COMMON_PKGS[@]}"
+    "${ARCH_HYPRLAND_PKGS[@]}"
     "${ARCH_HYDE_PKGS[@]}"
     "${ARCH_NIRI_PKGS[@]}"
   )
@@ -697,18 +743,16 @@ install_gitconfig_task() {
 ###############################################################################
 
 # get_available_patches
-#   Returns list of available patch files based on OS and detected DE/shell
+#   Returns list of available patch files based on OS filter only.
+#   Patch scripts self-guard with internal detection checks.
 get_available_patches() {
   local -a available=()
 
   for patch in "${!PATCH_FILES[@]}"; do
     local def="${PATCH_FILES[$patch]}"
-    local script="${def%%:*}"
     local os_filter="${def#*:}"
-    os_filter="${os_filter%:*}"
-    local de_filter="${def##*:}"
 
-    # Check OS filter
+    # Check OS filter only
     local os_match=false
     case "$os_filter" in
       all) os_match=true ;;
@@ -716,19 +760,7 @@ get_available_patches() {
       macos) [[ "$OS" == "macos" ]] && os_match=true ;;
     esac
 
-    # Check DE filter
-    local de_match=false
-    case "$de_filter" in
-      none) de_match=true ;;  # Always available
-      hyprland) $HYDE_DETECTED || $HYPRLAND_DETECTED && de_match=true ;;
-      niri) $NIRI_DETECTED && de_match=true ;;
-      dank) $DMS_DETECTED && de_match=true ;;
-      noctalia) $NOCTALIA_DETECTED && de_match=true ;;
-    esac
-
-    if $os_match && $de_match; then
-      available+=("$patch")
-    fi
+    $os_match && available+=("$patch")
   done
 
   printf '%s\n' "${available[@]}"
@@ -853,12 +885,24 @@ post_install_task() {
     done
   elif $INTERACTIVE; then
     log "Select patch groups to apply:"
+
+    # Build labeled patch group choices
+    local -a patch_choices=()
+    for p in "${available_patches[@]}"; do
+      local w; w="$(get_patch_warning "$p")"
+      if [[ -n "$w" ]]; then
+        patch_choices+=("$p  ⚠ $w")
+      else
+        patch_choices+=("$p")
+      fi
+    done
+
     local sel
-    sel="$(interactive_select --exit "${available_patches[@]}")"
+    sel="$(interactive_select --exit "${patch_choices[@]}")"
 
     if [[ -n "$sel" ]]; then
-      while IFS= read -r p; do
-        [[ -n "$p" ]] && selected_patches+=("$p")
+      while IFS= read -r item; do
+        [[ -n "$item" ]] && selected_patches+=("$(strip_label "$item")")
       done <<< "$sel"
     fi
   else
@@ -1053,7 +1097,7 @@ dry_run_summary() {
   step "Dry Run Summary"
 
   printf "  OS: %s (distro: %s)\n" "$OS" "${DISTRO_ID:-unknown}"
-  printf "  DE/VM type: %s\n" "${DE_TYPE:-none}"
+  printf "  Compositor: %s\n" "${COMPOSITOR:-none}"
   printf "  HyDE detected: %s\n" "$HYDE_DETECTED"
   printf "  Niri detected: %s\n" "$NIRI_DETECTED"
   printf "  DMS detected: %s\n" "$DMS_DETECTED"
@@ -1261,6 +1305,73 @@ interactive_confirm() {
   return 1  # Skip this step
 }
 
+# make_labeled_item ITEM REQUIRES_MAP_NAME
+#   Produces a display label for use in gum choosers.
+#   Appends "  ⚠ <label> not detected" if required dependency is unmet.
+#   REQUIRES_MAP_NAME: name of an associative array (passed by name, not value)
+#   Format of map values: "VAR_NAME:expected_value:display_label"
+#   Special case: VAR_NAME="COMPOSITOR" compares against $COMPOSITOR
+make_labeled_item() {
+  local item="$1"
+  local map_name="$2"
+  local -n _req_map="$map_name"
+
+  local req="${_req_map[$item]:-}"
+  if [[ -z "$req" ]]; then
+    printf '%s' "$item"
+    return
+  fi
+
+  local var_name="${req%%:*}"
+  local rest="${req#*:}"
+  local expected="${rest%%:*}"
+  local display_label="${rest##*:}"
+
+  local actual_value
+  if [[ "$var_name" == "COMPOSITOR" ]]; then
+    actual_value="$COMPOSITOR"
+  else
+    actual_value="${!var_name}"   # indirect expansion of boolean flag
+  fi
+
+  if [[ "$actual_value" == "$expected" ]]; then
+    printf '%s' "$item"
+  else
+    printf '%s  ⚠ %s not detected' "$item" "$display_label"
+  fi
+}
+
+# strip_label ITEM
+#   Removes "  ⚠ ..." suffix appended by make_labeled_item.
+strip_label() {
+  printf '%s' "${1%%  ⚠*}"
+}
+
+# get_patch_warning PATCH_NAME
+#   Returns a warning string if a patch's DE dependency is unmet, empty otherwise.
+#   Matches by patch name (not PATCH_FILES entry which no longer has de_filter).
+get_patch_warning() {
+  local patch="$1"
+
+  case "$patch" in
+    hyprland)
+      [[ "$COMPOSITOR" != "hyprland" ]] && printf 'Hyprland not detected'
+      ;;
+    hyde)
+      $HYDE_DETECTED || printf 'HyDE not detected'
+      ;;
+    niri)
+      $NIRI_DETECTED || printf 'Niri not detected'
+      ;;
+    dank)
+      $DMS_DETECTED || printf 'DMS not detected'
+      ;;
+    noctalia)
+      $NOCTALIA_DETECTED || printf 'Noctalia not detected'
+      ;;
+  esac
+}
+
 # interactive_input PROMPT [DEFAULT]
 #   Prompts for text input using gum.
 #   Returns the input value (or default if empty).
@@ -1320,20 +1431,14 @@ interactive_mode() {
      # Always include arch-common for Arch/CachyOS
      all_stow+=("${ARCH_COMMON_PKGS[@]}")
 
-     # Add WM-specific packages based on detected DE_TYPE
-     case "$DE_TYPE" in
-       hyde)
-         all_stow+=("${ARCH_HYDE_PKGS[@]}")
-         ;;
-       niri)
-         all_stow+=("${ARCH_NIRI_PKGS[@]}")
-         ;;
-       hyprland|none)
-         # Plain Hyprland or no WM - no additional stow packages needed
-         ;;
-      esac
+# Add compositor base packages (all shown, warnings added later)
+      all_stow+=(
+        "${ARCH_HYPRLAND_PKGS[@]}"
+        "${ARCH_HYDE_PKGS[@]}"
+        "${ARCH_NIRI_PKGS[@]}"
+      )
 
-      # Add shell-specific packages (available regardless of DE_TYPE)
+      # Add shell-specific packages (available regardless of COMPOSITOR)
       if $NOCTALIA_DETECTED; then
         all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
       fi
@@ -1347,43 +1452,29 @@ interactive_mode() {
     all_stow+=("${OPTIONAL_STOW_PKGS[@]}")
 
     printf '\n'
-    # Show accurate hint based on detected WM/Shell
+    # Hint based on detected compositor
     if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-      case "$DE_TYPE" in
-        hyde)
-          log "Hint: Select arch-common + arch-hyde"
-          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-          ;;
-        niri)
-          log "Hint: Select arch-common + arch-niri"
-          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-          ;;
-        hyprland)
-          log "Hint: Select arch-common"
-          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-          ;;
-        none)
-          log "Hint: Select arch-common (no WM detected)"
-          [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-          [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-          ;;
-      esac
-
-      # Hint about optional packages
-      log "  Also available: opencode, yazi (optional, can override earlier files)"
+      log "Hint: Packages marked ⚠ have unmet dependencies but can still be selected."
+      [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
+      [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
     elif [[ "$OS" == "macos" ]]; then
       log "Hint: Select macos + base packages"
       log "  Also available: opencode, yazi (optional, can override earlier files)"
     fi
-    local sel
-    sel="$(interactive_select --exit "${all_stow[@]}")"
+    # Build labeled items — warn on undetected deps
+  local -a labeled_stow=()
+  for pkg in "${all_stow[@]}"; do
+    labeled_stow+=("$(make_labeled_item "$pkg" STOW_PKG_REQUIRES)")
+  done
+
+  printf '\n'
+  log "Packages marked ⚠ have unmet dependencies but can still be selected."
+  local sel
+  sel="$(interactive_select --exit "${labeled_stow[@]}")"
 
   if [[ -n "$sel" ]]; then
-    while IFS= read -r pkg; do
-      [[ -n "$pkg" ]] && STOW_SELECTED+=("$pkg")
+    while IFS= read -r item; do
+      [[ -n "$item" ]] && STOW_SELECTED+=("$(strip_label "$item")")
     done <<< "$sel"
 
     # ── Starship mode (only if starship selected and HyDE present) ──────────
@@ -1420,11 +1511,19 @@ interactive_mode() {
   if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
     printf '\n'
     log "Select Arch package lists to install:"
+    log "Lists marked ⚠ have unmet dependencies but can still be selected."
+
+    # Build labeled items from full package file list
+    local -a labeled_pkg_files=()
+    for f in "${ARCH_PKG_FILES_ALL[@]}"; do
+      labeled_pkg_files+=("$(make_labeled_item "$f" PKG_FILE_REQUIRES)")
+    done
+
     local asel
-    asel="$(interactive_select --exit "${ARCH_PKG_FILES[@]}")"
+    asel="$(interactive_select --exit "${labeled_pkg_files[@]}")"
     if [[ -n "$asel" ]]; then
-      while IFS= read -r f; do
-        [[ -n "$f" ]] && ARCH_SELECTED+=("$f")
+      while IFS= read -r item; do
+        [[ -n "$item" ]] && ARCH_SELECTED+=("$(strip_label "$item")")
       done <<< "$asel"
       register_task "arch_selected"
     else
@@ -1588,7 +1687,7 @@ main() {
   fi
 
   # Log final detection state
-  log "Distro: ${DISTRO_ID:-${OS}}, DE/VM: ${DE_TYPE}"
+  log "Distro: ${DISTRO_ID:-${OS}}, Compositor: ${COMPOSITOR}"
 
   # Source HyDE-specific patches when HyDE is present
   if $HYDE_DETECTED; then

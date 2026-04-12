@@ -14,6 +14,7 @@ ghostty-terminfo             # Terminfo for ghostty
 gum                          # CLI tool for writing shell scripts
 jq                           # Lightweight CLI JSON processor
 just                         # Command runner / Makefile alternative (Justfile)
+kde-cli-tools                # KDE CLI utilities
 kitty                        # GPU-accelerated terminal emulator
 lazygit                      # Terminal UI for git
 lazyjournal                  # Terminal-based journal/diary application
@@ -85,6 +86,7 @@ pipewire-pulse               # PulseAudio compatibility layer for PipeWire
 wireplumber                  # PipeWire session/policy manager
 
 # ── GPU & Graphics ────────────────────────────────────────────────────────────
+ffmpegthumbs                 # Video thumbnails for Dolphin
 imagemagick                  # CLI image manipulation and conversion toolkit
 lib32-mesa-utils             # 32-bit Mesa OpenGL utilities (needed for some 32-bit apps/games)
 libxkbcommon                 # Library for keyboard handling
@@ -147,13 +149,16 @@ ttf-roboto-mono-nerd         # Roboto Mono patched with Nerd Font icons
 ttf-symbola                  # Symbola font with broad Unicode symbol coverage
 
 # ── Apps ──────────────────────────────────────────────────────────────────────
+ark                          # KDE archive manager
 chromium                     # Open-source base for Google Chrome browser
-firefox                      # Mozilla Firefox browser
+dolphin                      # KDE file manager (HyDE default)
 firefox-developer-edition    # Firefox with extra dev tools and experimental features
+haruna                       # KDE video player
 hfsprogs                     # Tools for reading/writing Apple HFS+ filesystems
 mediainfo-gui                # GUI for mediainfo
 mpv                          # Lightweight, scriptable media player
 nomacs                       # Lightweight image viewer
+nwg-look                     # GTK settings editor for wlroots/Wayland environments
 opencode-desktop-bin         # OpenCode AI coding assistant desktop app
 qbittorrent                  # Open-source Qt BitTorrent client
 spicetify-cli-git            # Customize themes, inject extensions of your Spotify client
@@ -179,3 +184,15 @@ sddm                         # Qt-based display/login manager
 # ── X11 for SDDM ──────────────────────────────────────────────────────────
 xorg-server                  # X11 server (required for SDDM X11 backend)
 xorg-xrandr                  # RandR extension for xrandr (display configuration)
+
+# ── Qt theming ────────────────────────────────────────────────────────────────
+kvantum                      # SVG-based Qt theme engine
+kvantum-qt5                  # Qt5 build of the Kvantum theme engine
+qt5-graphicaleffects         # Qt5 module for GPU-accelerated visual effects (QML)
+qt5-imageformats             # Extra image format plugins for Qt5 (webp, tiff, etc.)
+qt5-quickcontrols            # Qt5 QML controls (v1, legacy)
+qt5-quickcontrols2           # Qt5 QML controls (v2, current)
+qt5-wayland                  # Qt5 Wayland platform plugin
+qt5ct                        # Qt5 configuration tool (theme, fonts, icons outside KDE)
+qt6-wayland                  # Qt6 Wayland platform plugin
+qt6ct                        # Qt6 configuration tool

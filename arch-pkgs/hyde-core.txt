@@ -1,0 +1,47 @@
+# ── HyDE Core ────────────────────────────────────────────────────────────────
+# HyDE-specific applications and configurations
+# For plain Hyprland, use hyprland-core.txt instead
+
+# ── Compositor & Session ──────────────────────────────────────────────────────
+hypridle                     # Hyprland idle daemon (triggers lock/sleep on inactivity)
+hyprlock                     # Hyprland screen locker
+hyprpaper                    # Hyprland wallpaper utility
+hyprpicker                   # Wayland color picker for Hyprland
+hyprsunset                   # Blue light filter / night mode for Hyprland
+uwsm                         # Universal Wayland Session Manager (manages compositor lifecycle)
+
+# ── HyDE Shell & Runtime ────────────────────────────────────────────────
+hyde-shell                   # HyDE shell runtime
+hydectl                      # HyDE CLI controller
+hyprcursor                   # Hyprland cursor theme manager
+rosentre                     # ROSENø theme enabler for Hyprland
+
+# ── HyDE UI Stack ────────────────────────────────────────────────────────
+rofi                         # Application launcher and dmenu replacement
+swaync                       # HyDE notification center
+waybar                       # Highly customizable Wayland status bar
+wlogout                      # Wayland logout/lock/reboot/shutdown menu
+
+# ── Screenshot ────────────────────────────────────────────────────────────────
+grim                         # Wayland screenshot tool
+grimblast-git                # Wrapper around grim adding selection and annotation helpers
+slurp                        # Wayland region/window selection tool (used with grim)
+
+# ── Media & Audio ─────────────────────────────────────────────────────────────
+pamixer                      # CLI PulseAudio/PipeWire volume mixer
+playerctl                    # MPRIS media player CLI controller (play/pause/next)
+
+# ── Hardware ──────────────────────────────────────────────────────────────────
+brightnessctl                # CLI tool to control screen/keyboard brightness
+
+# ── Network & Bluetooth tray ──────────────────────────────────────────────────
+blueman                      # GTK Bluetooth manager GUI (waybar tray)
+network-manager-applet       # System tray applet for NetworkManager (waybar tray)
+
+# ── HyDE Configs (in stow) ────────────────────────────────────────
+# HyDE configs managed via arch-hyde stow package:
+#   .config/hypr/conf.d/       HyDE hyprland overrides
+#   .config/waybar/           HyDE waybar config
+#   .config/hyde/             HyDE main config
+#   .config/wallbash/         Wallpaper theming
+#   .config/spicetify/        Spotify theming

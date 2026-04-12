@@ -1,0 +1,8 @@
+# ── Compositor & Session ──────────────────────────────────────────────────────
+hyprland                     # Tiling Wayland compositor
+
+# ── Monitor layout ────────────────────────────────────────────────────────────
+nwg-displays                 # GUI monitor layout tool for wlroots-based compositors
+
+# ── Hyprland portal ───────────────────────────────────────────────────────────
+xdg-desktop-portal-hyprland  # XDG desktop portal backend for Hyprland (screen share, etc.)
