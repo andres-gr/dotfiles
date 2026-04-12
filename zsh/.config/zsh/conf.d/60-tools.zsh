@@ -39,12 +39,12 @@ if (( $+commands[fzf] )); then
     source /usr/share/fzf/key-bindings.zsh
     source /usr/share/fzf/completion.zsh 2>/dev/null
 
-  # Homebrew Apple Silicon
+    # Homebrew Apple Silicon
   elif [[ -r /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
     source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
     source /opt/homebrew/opt/fzf/shell/completion.zsh 2>/dev/null
 
-  # Homebrew Intel macOS
+    # Homebrew Intel macOS
   elif [[ -r /usr/local/opt/fzf/shell/key-bindings.zsh ]]; then
     source /usr/local/opt/fzf/shell/key-bindings.zsh
     source /usr/local/opt/fzf/shell/completion.zsh 2>/dev/null

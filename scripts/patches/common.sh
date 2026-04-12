@@ -453,7 +453,7 @@ EOF
     ok "Configured DisplayCommand for single display"
   fi
 
-# Step 3: Create display-setup.sh script
+  # Step 3: Create display-setup.sh script
   # This script configures displays to show greeter only on primary monitor
   # Uses a separate config file for the connector value
 
@@ -563,7 +563,7 @@ fi
 log_msg 'Display configuration complete'
 log_msg "SDDM greeter will appear only on $PRIMARY_CONNECTOR @ ${PRIMARY_RATE}Hz"
 SCRIPTEOF
-)
+  )
 
   if $DRY_RUN; then
     log "[dry-run] would create display-setup.sh script"
@@ -837,7 +837,7 @@ configure_keyboard_layout() {
 
 ###############################################################################
 # Install Noctalia SDDM theme files
-# Copies prepared Main.qml, NComboBox.qml, and Settings.conf to the SDDM theme
+# Copies prepared Noctalia SDDM theme into the SDDM themes directory
 ###############################################################################
 
 install_noctalia_sddm_theme() {

@@ -21,12 +21,12 @@ fh() {
 # fuzzy find directory
 fcd() {
   cd $(fd -t d -H\
-    -E .git\
-    -E node_modules\
-    -E .cache\
-    -E .npm\
-    -E .local\
-  | fzf)
+      -E .git\
+      -E node_modules\
+      -E .cache\
+      -E .npm\
+      -E .local\
+    | fzf)
 }
 
 # fuzzy grep via rg and open in nvim with line number
