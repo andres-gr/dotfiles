@@ -159,6 +159,7 @@ xdg-desktop-portal-gtk
 xdg-desktop-portal-hyprland
 xdg-terminal-exec-git
 xdg-user-dirs
+xdotool
 xorg-server
 xorg-xrandr
 yazi
