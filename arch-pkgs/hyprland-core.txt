@@ -6,3 +6,6 @@ nwg-displays                 # GUI monitor layout tool for wlroots-based composi
 
 # ── Hyprland portal ───────────────────────────────────────────────────────────
 xdg-desktop-portal-hyprland  # XDG desktop portal backend for Hyprland (screen share, etc.)
+
+# ── Misc Tools ────────────────────────────────────────────────────────────────
+xdotool                      # X11 automation tool
