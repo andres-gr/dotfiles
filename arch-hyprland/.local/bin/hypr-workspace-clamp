@@ -1,0 +1,43 @@
+#!/bin/env bash
+
+# Arguments: "next" or "prev"
+DIR=$1
+# Arguments: "move" or "movesilent"
+ACTION=$2
+
+# Get the name of the currently focused monitor
+MONITOR=$(hyprctl monitors -j | jq -r '.[] | select(.focused) | .name')
+
+# Get all workspace IDs assigned to this monitor and sort them numerically
+WORKSPACES=$(hyprctl workspaces -j | jq -r ".[] | select(.monitor == \"$MONITOR\") | .id" | sort -n)
+
+# Get the ID of the active workspace
+CURRENT=$(hyprctl activeworkspace -j | jq '.id')
+
+# Find the lowest and highest workspace IDs for this monitor
+MIN=$(echo "$WORKSPACES" | head -n 1)
+MAX=$(echo "$WORKSPACES" | tail -n 1)
+
+case "$ACTION" in
+  "move")
+    ACTION="movetoworkspace"
+    ;;
+  "movesilent")
+    ACTION="movetoworkspacesilent"
+    ;;
+  *)
+    ACTION="workspace"
+    ;;
+esac
+
+if [[ "$DIR" == "next" ]]; then
+  # Only move forward if we aren't already at the maximum ID
+  if [[ "$CURRENT" -lt "$MAX" ]]; then
+    hyprctl dispatch $ACTION m+1
+  fi
+elif [[ "$DIR" == "prev" ]]; then
+  # Only move backward if we aren't already at the minimum ID
+  if [[ "$CURRENT" -gt "$MIN" ]]; then
+    hyprctl dispatch $ACTION m-1
+  fi
+fi
