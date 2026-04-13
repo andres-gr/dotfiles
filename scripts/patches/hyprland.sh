@@ -64,32 +64,52 @@ configure_workspaces_persistent() {
     return 0
   fi
 
-  # Check if already has persistent:true
-  if grep -q 'persistent:true' "$ws_conf" 2>/dev/null; then
-    log "Workspaces already persistent — skipping"
+  # Check if already has defaultName (implies fully configured)
+  if grep -q 'defaultName:' "$ws_conf" 2>/dev/null; then
+    log "Workspaces already have defaultName — skipping"
     return 0
   fi
 
   if $DRY_RUN; then
-    log "[dry-run] would add persistent:true to workspace lines"
+    log "[dry-run] would add persistent:true and defaultName to workspace lines"
     return 0
   fi
 
-  # Add ,persistent:true to each workspace= line
+  # Add ,persistent:true and defaultName to each workspace= line
   local tmp
   tmp=$(mktemp)
   while IFS= read -r line; do
     if [[ "$line" =~ ^workspace= ]]; then
-      # Add ,persistent:true at end if not present
+      # Add ,persistent:true if not present
       if [[ "$line" != *persistent:true* ]]; then
         line="$line,persistent:true"
+      fi
+
+      # Extract workspace number
+      if [[ "$line" =~ ^workspace=([0-9]+) ]]; then
+        local ws_num="${BASH_REMATCH[1]}"
+        local defaultName=""
+
+        # First 4 workspaces (ws 1-4): prim1-prim4 (main monitor)
+        # Last 4 workspaces (ws 5-8): sec1-sec4 (secondary monitor)
+        if (( ws_num <= 4 )); then
+          defaultName="prim$ws_num"
+        elif (( ws_num >= 5 && ws_num <= 8 )); then
+          local sec_num=$(( ws_num - 4 ))
+          defaultName="sec$sec_num"
+        fi
+
+        # Add defaultName if applicable
+        if [[ -n "$defaultName" && "$line" != *defaultName:* ]]; then
+          line="$line,defaultName:$defaultName"
+        fi
       fi
     fi
     printf '%s\n' "$line"
   done < "$ws_conf" > "$tmp"
 
   run mv "$tmp" "$ws_conf"
-  ok "Added persistent:true to workspaces"
+  ok "Added persistent:true and defaultName to workspaces"
 }
 
 ###############################################################################
