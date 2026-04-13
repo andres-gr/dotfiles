@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # hyprland.sh - Hyprland-specific patches
-# Reloads Hyprland configuration and related components
+
+# Get script directory for relative paths
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 ###############################################################################
 # Reload Hyprland configuration
@@ -15,6 +17,38 @@ reload_hyprland() {
   else
     log "No active Hyprland session — skipping reload"
   fi
+}
+
+###############################################################################
+# Install main Hyprland config
+###############################################################################
+
+install_hyprland_config() {
+  local src="$SCRIPT_DIR/data/hypr-config.conf"
+  local dest="$HOME/.config/hypr/hyprland.conf"
+  local bkp_dir="$HOME/.local/share/neo-dots/hypr-bkp"
+
+  if [[ ! -f "$src" ]]; then
+    warn "Source hypr-config.conf not found at $src"
+    return 1
+  fi
+
+  # Create destination directory
+  mkdir -p "$(dirname "$dest")"
+
+  # Backup existing config
+  if [[ -f "$dest" ]]; then
+    mkdir -p "$bkp_dir"
+    local timestamp
+    timestamp=$(date +%Y%m%d_%H%M%S)
+    cp "$dest" "$bkp_dir/hyprland.conf.$timestamp"
+    rm -f "$dest"
+    log "Backed up existing hyprland.conf to $bkp_dir"
+  fi
+
+  # Copy new config
+  cp -f "$src" "$dest"
+  ok "Installed hyprland.conf"
 }
 
 ###############################################################################
@@ -105,6 +139,7 @@ install_hyprtasking() {
 
 hyprland_patches() {
   configure_workspaces_persistent
+  install_hyprland_config
   install_hyprtasking
   reload_hyprland
 }

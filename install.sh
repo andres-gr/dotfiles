@@ -157,7 +157,7 @@ declare -A PATCH_FILES=(
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
   [common]="apply_arch_patch_dconf bootstrap_spicetify configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_sddm_x11_config install_systemd_scripts install_tpm install_yazi_plugins"
-  [hyprland]="configure_workspaces_persistent install_hyprtasking reload_hyprland"
+  [hyprland]="configure_workspaces_persistent install_hyprland_config install_hyprtasking reload_hyprland"
   [hyde]="backup_hyde_zsh ensure_hyde_completions hyde_post_install hyde_seed_config"
   [niri]="install_niri_config"
   [dank]="reload_dms"
@@ -184,6 +184,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [bootstrap_spicetify]="Bootstrap spicetify for Spotify"
   # hyprland
   [configure_workspaces_persistent]="Add persistent:true to workspaces"
+  [install_hyprland_config]="Install main Hyprland hyprland.conf"
   [install_hyprtasking]="Install hyprtasking Hyprland plugin"
   [reload_hyprland]="Reload Hyprland configuration"
   # niri
