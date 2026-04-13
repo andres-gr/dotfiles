@@ -59,10 +59,52 @@ configure_workspaces_persistent() {
 }
 
 ###############################################################################
+# Install hyprtasking plugin
+###############################################################################
+
+install_hyprtasking() {
+  # Check if Hyprland plugin manager is available
+  if ! command -v hyprpm &>/dev/null; then
+    log "hyprpm not found — skipping hyprtasking install"
+    return 0
+  fi
+
+  # Check if already installed
+  local plugins
+  plugins=$(hyprpm list 2>/dev/null) || true
+  if echo "$plugins" | grep -qi "hyprtasking"; then
+    log "hyprtasking already installed"
+    return 0
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would install hyprtasking plugin"
+    return 0
+  fi
+
+  step "Installing hyprtasking plugin"
+
+  # Add the plugin (this may ask for sudo password on first run)
+  run hyprpm add https://github.com/raybbian/hyprtasking || {
+    warn "Failed to add hyprtasking — skipping"
+    return 0
+  }
+
+  # Enable the plugin
+  run hyprpm enable hyprtasking || {
+    warn "Failed to enable hyprtasking — skipping"
+    return 0
+  }
+
+  ok "hyprtasking installed and enabled"
+}
+
+###############################################################################
 # Main entry point for Hyprland patches
 ###############################################################################
 
 hyprland_patches() {
   configure_workspaces_persistent
+  install_hyprtasking
   reload_hyprland
 }
