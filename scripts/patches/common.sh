@@ -933,3 +933,48 @@ EOF
     log "Note: Restart SDDM or reboot for changes to take effect"
   fi
 }
+
+###############################################################################
+# Bootstrap Spicetify for Spotify
+###############################################################################
+
+bootstrap_spicetify() {
+  # Check if spicetify CLI exists
+  if ! command -v spicetify &>/dev/null; then
+    log "spicetify not found — skipping"
+    return 0
+  fi
+
+  local spicetify_dir="$HOME/.config/spicetify"
+
+  # If config dir exists, check if already set up
+  if [[ -d "$spicetify_dir" ]]; then
+    if [[ -d "$spicetify_dir/CustomApps/marketplace" ]]; then
+      log "Spicetify marketplace already installed"
+      return 0
+    fi
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would bootstrap spicetify"
+    return 0
+  fi
+
+  # Change permissions for Spotify
+  step "Setting Spotify permissions for spicetify"
+  run sudo chmod a+wr /opt/spotify
+  run sudo chmod a+wr /opt/spotify/Apps -R
+
+  # Run initial backup
+  step "Running spicetify backup"
+  run spicetify backup apply || true
+
+  # Install marketplace
+  step "Installing spicetify marketplace"
+  run curl -fsSL https://raw.githubusercontent.com/spicetify/cli/main/install.sh | sh || true
+
+  # Apply themes
+  run spicetify restore backup apply || true
+
+  ok "Spicetify bootstrapped"
+}
