@@ -377,15 +377,23 @@ install_sddm_x11_config() {
     return 0
   fi
 
-  # Detect primary monitor from niri config at patch time
-  # This runs while niri IS running, so we can query it directly
+  # Detect primary monitor (Hyprland > niri config > xrandr)
   local primary_model=""
   local primary_connector=""
   local primary_mode=""
   local primary_rate=""
   local niri_outputs="$HOME/.config/niri/modules/outputs.kdl"
 
-  if [[ -f "$niri_outputs" ]]; then
+  # Priority 1: Hyprland - use hyprctl to get monitor with id=0 (same short format as xrandr)
+  if command -v hyprctl &>/dev/null; then
+    primary_connector=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select (.id == 0) | .name' || true)
+    if [[ -n "$primary_connector" ]]; then
+      log "Primary monitor (Hyprland): $primary_connector"
+    fi
+  fi
+
+  # Priority 2: niri config - detect from position x=0 y=0
+  if [[ -z "$primary_connector" && -f "$niri_outputs" ]]; then
     # Extract the monitor name at position x=0 y=0 (primary)
     primary_model=$(awk -F'"' '/output /{name=$2} /position x=0 y=0/{print name}' "$niri_outputs" 2>/dev/null || true)
     log "Primary monitor model: $primary_model"
@@ -411,7 +419,7 @@ install_sddm_x11_config() {
     fi
   fi
 
-  # Fallback: detect from xrandr if niri detection failed
+  # Priority 3: Fallback - detect from xrandr
   if [[ -z "$primary_connector" ]] && command -v xrandr &>/dev/null; then
     primary_connector=$(xrandr --list 2>/dev/null | grep -w connected | head -1 | awk '{print $1}' || true)
     log "Fallback: using first connected display: $primary_connector"
