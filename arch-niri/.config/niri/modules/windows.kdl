@@ -62,6 +62,8 @@ window-rule {
 }
 window-rule {
     match app-id="^(S|s)potify$"
+
+    open-focused false
     open-maximized true
     open-on-workspace "prim-2"
 }
