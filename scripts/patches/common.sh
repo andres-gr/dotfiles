@@ -176,6 +176,7 @@ common_patches() {
   install_pam_configs
   install_systemd_scripts
   install_tpm
+  save_raw_arch_packages
 }
 
 ###############################################################################
@@ -977,4 +978,30 @@ bootstrap_spicetify() {
   run spicetify restore backup apply || true
 
   ok "Spicetify bootstrapped"
+}
+
+###############################################################################
+# Save raw arch packages
+###############################################################################
+
+save_raw_arch_packages() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  if $DRY_RUN; then
+    log "[dry-run] would save raw arch packages"
+    return 0
+  fi
+
+  dst="$DOTFILES_DIR/arch-pkgs/raw"
+
+  if [[ ! -d "$dst" ]]; then
+    run mkdir -p "$dst"
+  fi
+
+  step "Saving raw arch packages"
+  run yay -Qqen > "$dst/core-raw.txt"
+  run yay -Qqem > "$dst/aur-raw.txt"
+
+  ok "Raw arch packages saved"
 }
