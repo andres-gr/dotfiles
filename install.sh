@@ -157,8 +157,8 @@ declare -A PATCH_FILES=(
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
   [common]="apply_arch_patch_dconf configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_sddm_x11_config install_systemd_scripts install_tpm install_yazi_plugins"
-  [hyprland]="reload_hyprland reload_waybar remind_hyprlock_preset"
-  [hyde]="backup_hyde_zsh hyde_seed_config ensure_hyde_completions hyde_post_install"
+  [hyprland]="configure_workspaces_persistent reload_hyprland"
+  [hyde]="backup_hyde_zsh ensure_hyde_completions hyde_post_install hyde_seed_config"
   [niri]="install_niri_config"
   [dank]="reload_dms"
   [noctalia]="install_spotify_toast_plugin patch_zen_userchrome"
@@ -168,30 +168,29 @@ declare -A PATCH_FUNCTIONS=(
 # Format: func_name="description"
 declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   # common
-  [install_tpm]="Install TPM (Tmux Plugin Manager)"
-  [install_ghostty_misc_config]="Configure Ghostty platform-specific settings"
   [apply_arch_patch_dconf]="Load dconf profiles for Arch patches"
-  [install_arch_patch_services]="Install systemd services for Arch patches"
-  [install_pam_configs]="Install PAM configs for greetd"
-  [install_systemd_scripts]="Install systemd scripts (e.g., system-sleep)"
-  [install_yazi_plugins]="Install/update yazi plugins"
-  [install_sddm_x11_config]="Configure SDDM for X11 single display"
-  [install_broadcom_blacklist]="Blacklist conflicting wifi modules for broadcom-wl"
-  [install_noctalia_sddm_theme]="Install Noctalia SDDM theme with user dropdown"
-  [install_custom_fonts]="Install custom fonts to system"
   [configure_font_rendering]="Configure font rendering (sub-pixel, hinting, LCD filter)"
   [configure_keyboard_layout]="Configure X11 keyboard layout (us pc105 altgr-intl)"
+  [install_arch_patch_services]="Install systemd services for Arch patches"
+  [install_broadcom_blacklist]="Blacklist conflicting wifi modules for broadcom-wl"
+  [install_custom_fonts]="Install custom fonts to system"
+  [install_ghostty_misc_config]="Configure Ghostty platform-specific settings"
+  [install_noctalia_sddm_theme]="Install Noctalia SDDM theme with user dropdown"
+  [install_pam_configs]="Install PAM configs for greetd"
+  [install_sddm_x11_config]="Configure SDDM for X11 single display"
+  [install_systemd_scripts]="Install systemd scripts (e.g., system-sleep)"
+  [install_tpm]="Install TPM (Tmux Plugin Manager)"
+  [install_yazi_plugins]="Install/update yazi plugins"
   # hyprland
+  [configure_workspaces_persistent]="Add persistent:true to workspaces"
   [reload_hyprland]="Reload Hyprland configuration"
-  [reload_waybar]="Reload waybar status bar"
-  [remind_hyprlock_preset]="Show hyprlock preset info"
   # niri
   [install_niri_config]="Install main niri config.kdl"
   # dank
   [reload_dms]="Reload Dank Material Shell"
   # noctalia
-  [patch_zen_userchrome]="Patch Zen Browser userChrome.css"
   [install_spotify_toast_plugin]="Install Spotify Toast plugin"
+  [patch_zen_userchrome]="Patch Zen Browser userChrome.css"
 )
 
 # For backward compatibility - will be dynamically selected in selection logic
@@ -894,8 +893,8 @@ post_install_task() {
       fi
     done
 
-local sel
-  sel="$(interactive_select --exit "${patch_choices[@]}")" || true
+    local sel
+    sel="$(interactive_select --exit "${patch_choices[@]}")" || true
 
     if [[ -n "$sel" ]]; then
       while IFS= read -r item; do

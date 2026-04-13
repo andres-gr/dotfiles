@@ -18,29 +18,44 @@ reload_hyprland() {
 }
 
 ###############################################################################
-# Reload waybar
-# Only runs if waybar is running
+# Make Hyprland workspaces persistent
 ###############################################################################
 
-reload_waybar() {
-  if command -v pkill &>/dev/null; then
-    pkill -SIGUSR2 waybar 2>/dev/null || true
-    log "Sent reload signal to waybar"
+configure_workspaces_persistent() {
+  local ws_conf="$HOME/.config/hypr/workspaces.conf"
+
+  # Skip if file doesn't exist
+  if [[ ! -f "$ws_conf" ]]; then
+    log "Hyprland workspaces.conf not found — skipping"
+    return 0
   fi
-}
 
-###############################################################################
-# Remind about hyprlock preset
-###############################################################################
-
-remind_hyprlock_preset() {
-  # Check if arch-hyde was stowed
-  local hyprlock_preset="$HOME/.config/hypr/hyprlock/neo.conf"
-  if [[ -f "$hyprlock_preset" ]]; then
-    log "Hyprlock preset 'neo' available at: $hyprlock_preset"
-    log "  theme.conf already points to it — active on next lock."
-    log "  To switch preset: edit ~/.config/hypr/hyprlock/theme.conf"
+  # Check if already has persistent:true
+  if grep -q 'persistent:true' "$ws_conf" 2>/dev/null; then
+    log "Workspaces already persistent — skipping"
+    return 0
   fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would add persistent:true to workspace lines"
+    return 0
+  fi
+
+  # Add ,persistent:true to each workspace= line
+  local tmp
+  tmp=$(mktemp)
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^workspace= ]]; then
+      # Add ,persistent:true at end if not present
+      if [[ "$line" != *persistent:true* ]]; then
+        line="$line,persistent:true"
+      fi
+    fi
+    printf '%s\n' "$line"
+  done < "$ws_conf" > "$tmp"
+
+  run mv "$tmp" "$ws_conf"
+  ok "Added persistent:true to workspaces"
 }
 
 ###############################################################################
@@ -48,7 +63,6 @@ remind_hyprlock_preset() {
 ###############################################################################
 
 hyprland_patches() {
+  configure_workspaces_persistent
   reload_hyprland
-  reload_waybar
-  remind_hyprlock_preset
 }
