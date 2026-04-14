@@ -1,6 +1,7 @@
 cavasik
 claude-desktop-bin
 hyprqt6engine
+nomacs-git
 pokego-bin
 qt5ct-kde
 selectdefaultapplication-qt6-git

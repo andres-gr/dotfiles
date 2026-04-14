@@ -49,6 +49,7 @@ haruna
 hfsprogs
 hyprland
 imagemagick
+index-fm
 intel-ucode
 iwd
 jq
@@ -75,9 +76,9 @@ mediainfo-gui
 mesa-utils
 mpv
 nano
+nautilus
 networkmanager
 ninja
-nomacs
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
@@ -88,12 +89,14 @@ opencode-desktop-bin
 openssh
 otf-font-awesome
 pacman-contrib
+pamixer
 parallel
 pavucontrol
 pipewire
 pipewire-alsa
 pipewire-jack
 pipewire-pulse
+playerctl
 pnpm
 polkit-gnome
 qbittorrent
@@ -119,6 +122,7 @@ spotify
 starship
 stow
 sudo
+sushi
 tela-circle-icon-theme-all
 tmux
 tree
