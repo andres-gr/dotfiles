@@ -78,6 +78,7 @@ mediainfo
 mediainfo-gui
 mesa-utils
 mpv
+mpvpaper
 nano
 networkmanager
 ninja
