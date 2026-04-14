@@ -21,6 +21,7 @@ cliphist
 cmake
 cpio
 dolphin
+dolphin-plugins
 efibootmgr
 eza
 fastfetch
@@ -55,6 +56,8 @@ iwd
 jq
 just
 kde-cli-tools
+kdegraphics-thumbnailers
+kio-extras
 kitty
 kvantum
 kvantum-qt5
@@ -76,9 +79,10 @@ mediainfo-gui
 mesa-utils
 mpv
 nano
-nautilus
 networkmanager
 ninja
+noctalia-qs
+noctalia-shell
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
@@ -96,6 +100,7 @@ pipewire
 pipewire-alsa
 pipewire-jack
 pipewire-pulse
+plasma-integration
 playerctl
 pnpm
 polkit-gnome

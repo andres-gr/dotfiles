@@ -8,7 +8,7 @@ TerminalApplication=ghostty
 Theme=Tela-circle-dracula
 
 [KDE]
-widgetStyle=kvantum
+widgetStyle=qt6ct-style
 
 [KFileDialog Settings]
 Allow Expansion=false
