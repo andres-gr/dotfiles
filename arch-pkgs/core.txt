@@ -61,6 +61,7 @@ man-pages                    # Linux man pages (syscalls, libc, etc.)
 ninja                        # Small, fast build system (often used with CMake)
 openssh                      # OpenSSH client and server
 pacman-contrib               # Extra pacman scripts (paccache, pacdiff, checkupdates, etc.)
+power-profiles-daemon        # D-Bus daemon for switching power profiles (balanced/performance)
 seahorse                     # GNOME keyring manager
 sof-firmware                 # Sound Open Firmware for Intel/AMD audio DSPs
 sudo                         # Run commands as another user (typically root)
@@ -152,6 +153,7 @@ ttf-symbola                  # Symbola font with broad Unicode symbol coverage
 ark                          # KDE archive manager
 chromium                     # Open-source base for Google Chrome browser
 dolphin                      # KDE file manager (HyDE default)
+dolphin-plugins              # Plugins for Dolphin
 firefox-developer-edition    # Firefox with extra dev tools and experimental features
 haruna                       # KDE video player
 hfsprogs                     # Tools for reading/writing Apple HFS+ filesystems

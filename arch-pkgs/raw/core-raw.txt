@@ -104,6 +104,7 @@ plasma-integration
 playerctl
 pnpm
 polkit-gnome
+power-profiles-daemon
 qbittorrent
 qt5-graphicaleffects
 qt5-imageformats

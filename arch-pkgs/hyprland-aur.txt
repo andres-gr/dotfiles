@@ -1,0 +1,1 @@
+hyprqt6engine                # Hyprland Qt6 engine
