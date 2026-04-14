@@ -738,12 +738,12 @@
         "linkLightAndDarkWallpapers": false,
         "monitorDirectories": [
             {
-                "directory": "/home/agr/Pictures/Walls",
+                "directory": "/home/agr/Pictures/Walls/Right",
                 "name": "DP-1",
                 "wallpaper": ""
             },
             {
-                "directory": "/home/agr/Pictures/Walls",
+                "directory": "/home/agr/Pictures/Walls/Left",
                 "name": "DP-3",
                 "wallpaper": ""
             }
@@ -752,7 +752,7 @@
         "overviewEnabled": true,
         "overviewTint": 0.7000000000000001,
         "panelPosition": "follow_bar",
-        "randomIntervalSec": 480,
+        "randomIntervalSec": 420,
         "setWallpaperOnAllMonitors": true,
         "showHiddenFiles": false,
         "skipStartupTransition": false,
