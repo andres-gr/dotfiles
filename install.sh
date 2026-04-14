@@ -1440,24 +1440,16 @@ interactive_mode() {
       "${ARCH_NIRI_PKGS[@]}"
     )
 
-    # Add shell-specific packages (available regardless of COMPOSITOR)
-    if $NOCTALIA_DETECTED; then
-      all_stow+=("${NOCTALIA_STOW_PKGS[@]}")
-    fi
+    # Add shell-specific packages (shown always, warnings for missing deps)
+    all_stow+=(
+      "${NOCTALIA_STOW_PKGS[@]}"
+      "${DANK_STOW_PKGS[@]}"
+    )
 
     # Add optional packages (available on any OS)
     all_stow+=("${OPTIONAL_STOW_PKGS[@]}")
 
     printf '\n'
-    # Hint based on detected compositor
-    if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-      log "Hint: Packages marked ⚠ have unmet dependencies but can still be selected."
-      [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-      [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-    elif [[ "$OS" == "macos" ]]; then
-      log "Hint: Select macos + base packages"
-      log "  Also available: opencode, yazi (optional, can override earlier files)"
-    fi
   fi
 
   # Build labeled items
@@ -1465,14 +1457,6 @@ interactive_mode() {
   for pkg in "${all_stow[@]}"; do
     labeled_stow+=("$(make_labeled_item "$pkg" STOW_PKG_REQUIRES)")
   done
-
-  # Hint based on detected compositor
-  if [[ "$OS" == "arch" || "$OS" == "cachyos" ]]; then
-    [[ "$DMS_DETECTED" == true ]] && log "  Also available: arch-dank"
-    [[ "$NOCTALIA_DETECTED" == true ]] && log "  Also available: arch-noctalia"
-  elif [[ "$OS" == "macos" ]]; then
-    log "  Also available: opencode, yazi"
-  fi
 
   printf '\n'
   log "Packages marked ⚠ have unmet dependencies but can still be selected."
