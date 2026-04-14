@@ -1013,3 +1013,42 @@ save_raw_arch_packages() {
 
   ok "Raw arch packages saved"
 }
+
+###############################################################################
+# Configure Bluetooth - disable AutoEnable
+# Changes AutoEnable=true to AutoEnable=false to prevent auto-connect
+###############################################################################
+
+configure_bluetooth() {
+  local bt_conf="/etc/bluetooth/main.conf"
+
+  # Skip if file doesn't exist
+  if [[ ! -f "$bt_conf" ]]; then
+    log "Bluetooth main.conf not found — skipping"
+    return 0
+  fi
+
+  # Check if already has AutoEnable=false
+  if grep -q '^AutoEnable=false' "$bt_conf" 2>/dev/null; then
+    log "Bluetooth AutoEnable already false — skipping"
+    return 0
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would set AutoEnable=false in bluetooth main.conf"
+    return 0
+  fi
+
+  # Replace AutoEnable=true with AutoEnable=false, or uncomment and set false
+  local tmp
+  tmp=$(mktemp)
+  while IFS= read -r line; do
+    if [[ "$line" == *AutoEnable=* ]]; then
+      line="AutoEnable=false"
+    fi
+    printf '%s\n' "$line"
+  done < "$bt_conf" > "$tmp"
+
+  run sudo mv "$tmp" "$bt_conf"
+  ok "Set AutoEnable=false in bluetooth main.conf"
+}
