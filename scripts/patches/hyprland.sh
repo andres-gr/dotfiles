@@ -4,6 +4,10 @@
 # Get script directory for relative paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+# Source steam-splash for install function
+# shellcheck source=scripts/patches/steam-splash.sh
+source "$SCRIPT_DIR/steam-splash.sh"
+
 ###############################################################################
 # Reload Hyprland configuration
 # Only runs if Hyprland session is active
@@ -154,10 +158,38 @@ install_hyprtasking() {
 }
 
 ###############################################################################
+# Configure Steam Splash in Hyprland
+###############################################################################
+
+configure_steam_splash_hyprland() {
+  local hypr_root="$HOME/.config/hypr/modules/root.conf"
+
+  # Extract tarball (install script handles check)
+  install_steam_splash
+
+  # Check if symlink and resolve to actual file
+  if [[ -L "$hypr_root" ]]; then
+    local real_root
+    real_root=$(readlink -f "$hypr_root")
+    hypr_root="$real_root"
+  fi
+
+  # Already configured?
+  [[ -f "$hypr_root" ]] && grep -q "steam-girl-splash" "$hypr_root" && return 0
+
+  $DRY_RUN && { log "[dry-run] would add splash exec-once"; return 0; }
+
+  step "Adding splash to Hyprland config"
+  run sed -i '/^exec-once = dbus-update/a exec-once = ~/.local/bin/steam-girl-splash' "$hypr_root"
+  ok "Splash added to root.conf"
+}
+
+###############################################################################
 # Main entry point for Hyprland patches
 ###############################################################################
 
 hyprland_patches() {
+  configure_steam_splash_hyprland
   configure_workspaces_persistent
   install_hyprland_config
   install_hyprtasking
