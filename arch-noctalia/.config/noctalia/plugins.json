@@ -12,6 +12,10 @@
         }
     ],
     "states": {
+        "cb9103:spotify-art-toast": {
+            "enabled": true,
+            "sourceUrl": "https://github.com/andres-gr/noctalia-spotify-toast"
+        },
         "keybind-cheatsheet": {
             "enabled": true,
             "sourceUrl": "https://github.com/noctalia-dev/noctalia-plugins"

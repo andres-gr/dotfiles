@@ -368,6 +368,9 @@
         ],
         "onlySameOutput": false,
         "pinnedApps": [
+            "zen",
+            "spotify",
+            "com.mitchellh.ghostty"
         ],
         "pinnedStatic": true,
         "position": "bottom",
@@ -729,10 +732,10 @@
         "enabled": true,
         "favorites": [
         ],
-        "fillColor": "#000000",
+        "fillColor": "#22212c",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,
-        "linkLightAndDarkWallpapers": true,
+        "linkLightAndDarkWallpapers": false,
         "monitorDirectories": [
             {
                 "directory": "/home/agr/Pictures/Walls",
@@ -749,16 +752,15 @@
         "overviewEnabled": true,
         "overviewTint": 0.7000000000000001,
         "panelPosition": "follow_bar",
-        "randomIntervalSec": 420,
-        "setWallpaperOnAllMonitors": false,
+        "randomIntervalSec": 480,
+        "setWallpaperOnAllMonitors": true,
         "showHiddenFiles": false,
         "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
         "sortOrder": "name",
-        "transitionDuration": 1500,
+        "transitionDuration": 2000,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": [
-            "fade",
             "disc",
             "stripes",
             "wipe",
