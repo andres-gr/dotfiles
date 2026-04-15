@@ -601,6 +601,111 @@ SCRIPTEOF
 }
 
 ###############################################################################
+# Configure SDDM for Wayland backend with primary monitor settings
+###############################################################################
+
+install_sddm_wayland_config() {
+  local sddm_conf_dir="/etc/sddm.conf.d"
+  local niri_outputs="$HOME/.config/niri/modules/outputs.kdl"
+
+  # Check if SDDM is installed
+  if ! command -v sddm &>/dev/null; then
+    log "SDDM not installed — skipping Wayland config"
+    return 0
+  fi
+
+  local primary_connector=""
+  local primary_width=""
+  local primary_height=""
+  local primary_rate=""
+
+  # Priority 1: Hyprland - use hyprctl to get monitor with id=0
+  if command -v hyprctl &>/dev/null; then
+    # Get primary monitor data
+    local hypr_data
+    hypr_data=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select (.id == 0)' || true)
+
+    if [[ -n "$hypr_data" ]]; then
+      primary_connector=$(echo "$hypr_data" | jq -r '.name' || true)
+      primary_width=$(echo "$hypr_data" | jq -r '.width' || true)
+      primary_height=$(echo "$hypr_data" | jq -r '.height' || true)
+      primary_rate=$(echo "$hypr_data" | jq -r '.refreshRate' || true)
+
+      # Clean rate (remove decimal if present)
+      primary_rate=${primary_rate%.*}
+
+      log "Primary monitor (Hyprland): $primary_connector ${primary_width}x${primary_height} @ ${primary_rate}Hz"
+    fi
+  fi
+
+  # Priority 2: Niri config - detect from position x=0 y=0
+  if [[ -z "$primary_connector" && -f "$niri_outputs" ]]; then
+    primary_connector=$(awk -F'"' '/output /{name=$2} /position x=0 y=0/{print name}' "$niri_outputs" 2>/dev/null || true)
+    log "Primary monitor (Niri): $primary_connector"
+
+    # Extract mode from niri config
+    if [[ -n "$primary_connector" ]]; then
+      local niri_mode
+      niri_mode=$(awk -v model="$primary_connector" '
+        /^output/ { in_output=0 }
+        $0 ~ model { in_output=1 }
+        /^}/ { in_output=0 }
+        /mode/ && in_output { gsub(/"/, ""); print $2; exit }
+      ' "$niri_outputs" 2>/dev/null || true)
+
+      if [[ -n "$niri_mode" ]]; then
+        primary_width=$(echo "$niri_mode" | cut -d'x' -f1)
+        primary_height=$(echo "$niri_mode" | cut -d'@' -f1 | cut -d'x' -f2)
+        primary_rate=$(echo "$niri_mode" | grep -oP '@\K[0-9.]+' || true)
+        primary_rate=${primary_rate%.*}
+      fi
+    fi
+  fi
+
+  # Fallback for rate
+  if [[ -z "$primary_rate" ]]; then
+    primary_rate="60"
+  fi
+
+  # Check if we have required data
+  if [[ -z "$primary_connector" || -z "$primary_width" ]]; then
+    log "Could not detect primary monitor — skipping Wayland config"
+    return 0
+  fi
+
+  # Check if already configured (same monitor + mode)
+  local existing_conf="$sddm_conf_dir/10-wayland.conf"
+  if [[ -f "$existing_conf" ]]; then
+    if grep -q "output $primary_connector" "$existing_conf" && \
+      grep -q "$primary_width"x"$primary_height" "$existing_conf"; then
+      log "SDDM Wayland already configured for $primary_connector — skipping"
+      return 0
+    fi
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would create SDDM Wayland config"
+    return 0
+  fi
+
+  step "Configuring SDDM Wayland"
+
+  # Create Wayland config with kwin_wayland and explicit mode
+  run sudo mkdir -p "$sddm_conf_dir"
+  run sudo tee "$sddm_conf_dir/10-wayland.conf" >/dev/null << EOF
+[General]
+DisplayServer=wayland
+GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
+
+[Wayland]
+CompositorCommand=kwin_wayland --drm --output $primary_connector --mode ${primary_width}x${primary_height}@${primary_rate}
+PrimaryMonitor=$primary_connector
+EOF
+
+  ok "Configured SDDM Wayland: $primary_connector ${primary_width}x${primary_height} @ ${primary_rate}Hz"
+}
+
+###############################################################################
 # broadcom-wl-dkms - Blacklist conflicting wifi modules + switch to wpa_supplicant
 ###############################################################################
 
@@ -1036,6 +1141,7 @@ configure_bluetooth() {
 
   if $DRY_RUN; then
     log "[dry-run] would set AutoEnable=false in bluetooth main.conf"
+    log "  would set systemctl disable bluetooth"
     return 0
   fi
 
@@ -1051,4 +1157,49 @@ configure_bluetooth() {
 
   run sudo mv "$tmp" "$bt_conf"
   ok "Set AutoEnable=false in bluetooth main.conf"
+
+  run sudo systemctl disable bluetooth
+  ok "Disabled bluetooth service"
+}
+
+###############################################################################
+# Configure AMD GPU early KMS
+# Add amdgpu to MODULES for early kernel mode setting
+###############################################################################
+
+configure_amdgpu_early_kms() {
+  local mkinitcpio_conf="/etc/mkinitcpio.conf"
+
+  [[ ! -f "$mkinitcpio_conf" ]] && return 0
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  # Check if amdgpu already in MODULES
+  if grep -q '^MODULES=.*amdgpu' "$mkinitcpio_conf" 2>/dev/null; then
+    log "amdgpu already in MODULES — skipping"
+    return 0
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would add amdgpu to MODULES in mkinitcpio.conf"
+    return 0
+  fi
+
+  # Add amdgpu to MODULES
+  local tmp
+  tmp=$(mktemp)
+  while IFS= read -r line; do
+    if [[ "$line" =~ ^MODULES=\( ]]; then
+      # Replace the line entirely with clean formatting
+      line="MODULES=(amdgpu)"
+    fi
+    printf '%s\n' "$line"
+  done < "$mkinitcpio_conf" > "$tmp"
+
+  run sudo mv "$tmp" "$mkinitcpio_conf"
+  ok "Added amdgpu to MODULES in mkinitcpio.conf"
+
+  # Rebuild initramfs for all kernels
+  step "Rebuilding initramfs for all kernels"
+  run sudo mkinitcpio -P
+  ok "Initramfs rebuilt"
 }
