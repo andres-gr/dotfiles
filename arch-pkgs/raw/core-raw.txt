@@ -1,6 +1,7 @@
 7zip
 adobe-source-code-pro-fonts
 adw-gtk-theme
+archlinux-xdg-menu
 ark
 awesome-terminal-fonts
 base

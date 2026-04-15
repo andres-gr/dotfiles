@@ -1,5 +1,6 @@
 # ── Shell & Terminal ──────────────────────────────────────────────────────────
 7zip                         # 7zip compression program
+archlinux-xdg-menu           # XDG menu generator
 bat                          # Cat clone with syntax highlighting and git integration
 btop                         # Terminal resource monitor (CPU, RAM, disk, network)
 c-lolcat                     # Colorizes terminal output with a rainbow gradient
