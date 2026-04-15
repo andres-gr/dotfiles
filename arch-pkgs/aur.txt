@@ -1,5 +1,6 @@
 # ── Generic Tools ──────────────────────────────────────────────────────
 cavasik                             # Audio visualizer with customizable animations (uses CAVA)
+nomacs-git                          # Lightweight image viewer
 pokego-bin                          # Pokémon sprites in the terminal (used with fastfetch)
 qt5ct-kde                           # Qt5 color scheme for KDE applications
 selectdefaultapplication-qt6-git    # Select default application for a MIME type

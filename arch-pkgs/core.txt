@@ -160,7 +160,6 @@ haruna                       # KDE video player
 hfsprogs                     # Tools for reading/writing Apple HFS+ filesystems
 mediainfo-gui                # GUI for mediainfo
 mpv                          # Lightweight, scriptable media player
-nomacs                       # Lightweight image viewer
 nwg-look                     # GTK settings editor for wlroots/Wayland environments
 opencode-desktop-bin         # OpenCode AI coding assistant desktop app
 qbittorrent                  # Open-source Qt BitTorrent client
@@ -182,6 +181,7 @@ pnpm                         # Fast, disk-efficient Node.js package manager
 greetd                       # Minimal, flexible login/session manager daemon
 greetd-agreety               # Greetd greeter using agreety
 greetd-tuigreet              # Greetd greeter with TUI
+plasma-integration           # Qt Platform Theme integration plugins for the Plasma workspaces
 sddm                         # Qt-based display/login manager
 
 # ── X11 for SDDM ──────────────────────────────────────────────────────────
