@@ -707,6 +707,7 @@
             {
                 "enabled": true,
                 "id": "discord"
+            },
             {
                 "enabled": true,
                 "id": "hyprland"
@@ -716,7 +717,7 @@
     },
     "ui": {
         "boxBorderEnabled": false,
-        "fontDefault": "Sans Serif",
+        "fontDefault": "Noto Sans",
         "fontDefaultScale": 1,
         "fontFixed": "monospace",
         "fontFixedScale": 1,
