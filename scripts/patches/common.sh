@@ -1203,3 +1203,18 @@ configure_amdgpu_early_kms() {
   run sudo mkinitcpio -P
   ok "Initramfs rebuilt"
 }
+
+###############################################################################
+# Rebuild KDE menu cache for Arch themes
+###############################################################################
+
+rebuild_kde_menucache() {
+  if $DRY_RUN; then
+    log "[dry-run] would rebuild KDE menu cache"
+    return 0
+  fi
+
+  step "Rebuilding KDE menu cache"
+  run env XDG_MENU_PREFIX=arch- kbuildsycoca6
+  ok "KDE menu cache rebuilt"
+}
