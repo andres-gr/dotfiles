@@ -140,6 +140,7 @@ TerminalApplication=ghostty
 Theme=Tela-circle-dracula
 
 [KDE]
+ShowDeleteCommand=true
 contrast=4
 frameContrast=0.2
 widgetStyle=qt6ct-style
@@ -160,6 +161,10 @@ Sort hidden files last=false
 Sort reversed=false
 Speedbar Width=105
 View Style=DetailTree
+
+[PreviewSettings]
+EnableRemoteFolderThumbnail=false
+MaximumRemoteSize=0
 
 [UiSettings]
 ColorScheme=colors
