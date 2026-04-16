@@ -744,6 +744,9 @@ install_gitconfig_task() {
     git config --file "$dest" user.email "$git_email"
   fi
   ok "gitconfig written"
+
+  # Track selection
+  update_selection "gitconfig" "user"
 }
 
 ###############################################################################
@@ -778,8 +781,11 @@ get_available_patches() {
 #   Returns list of individual functions available in a patch file
 get_patch_functions() {
   local patch="$1"
-  local func_str
-  func_str="${PATCH_FUNCTIONS[$patch]:-}"
+
+  # Validate patch exists in PATCH_FILES before proceeding
+  [[ -z "${PATCH_FILES[$patch]:-}" ]] && return 1
+
+  local func_str="${PATCH_FUNCTIONS[$patch]:-}"
   if [[ -z "$func_str" ]]; then
     # Fallback: try to source and list functions
     local script="${PATCH_FILES[$patch]%%:*}"
@@ -798,6 +804,7 @@ get_patch_functions() {
 
 # get_patch_function_choices PATCH_NAME
 #   Returns list of "func_name: description" for interactive selection
+#   Adds "(last applied: ...)" if previously selected
 get_patch_function_choices() {
   local patch="$1"
   local func_str="${PATCH_FUNCTIONS[$patch]:-}"
@@ -811,14 +818,16 @@ get_patch_function_choices() {
   func_str=$(printf '%s\n' "$func_str" | awk '{for(i=1;i<=NF;i++) print $i}')
   mapfile -t funcs < <(printf '%s\n' "$func_str")
 
-  # Output each with description
+  # Output each with description and last applied timestamp
   for f in "${funcs[@]}"; do
+    local choice="$f"
     local desc="${PATCH_FUNCTION_DESCRIPTIONS[$f]:-}"
     if [[ -n "$desc" ]]; then
-      printf '%s: %s\n' "$f" "$desc"
-    else
-      printf '%s\n' "$f"
+      choice="$choice: $desc"
     fi
+    # Add last applied timestamp
+    choice=$(apply_selection_label "patches" "$f" "$choice")
+    printf '%s\n' "$choice"
   done
 }
 
@@ -837,6 +846,7 @@ run_patch() {
   [[ -f "$script_path" ]] || { warn "Patch script not found: $script_path"; return 1; }
 
   # Source the patch file
+  # These functions are already defined in install.sh before this runs
   # shellcheck source=scripts/patches/common.sh
   source "$script_path"
 
@@ -891,15 +901,16 @@ post_install_task() {
   elif $INTERACTIVE; then
     log "Select patch groups to apply:"
 
-    # Build patch group choices
+    # Build patch group choices (add last applied timestamp if previously selected)
     local -a patch_choices=()
     for p in "${available_patches[@]}"; do
+      local label="$p"
       local w; w="$(get_patch_warning "$p")"
       if [[ -n "$w" ]]; then
-        patch_choices+=("$p  ⚠ $w")
-      else
-        patch_choices+=("$p")
+        label="$label  ⚠ $w"
       fi
+      label=$(apply_selection_label "patches" "$p" "$label")
+      patch_choices+=("$label")
     done
 
     local sel
@@ -957,8 +968,11 @@ post_install_task() {
         if [[ -n "$sel" ]]; then
           while IFS= read -r c; do
             [[ -n "$c" ]] || continue
-            # Extract function name (before the colon)
-            local func_name="${c%%:*}"
+            # Extract function name - strip label first
+            local func_name
+            func_name=$(strip_label "$c")
+            # Extract just the function name (before any colon in original)
+            func_name="${func_name%%:*}"
             all_runs+=("$patch:$func_name")
           done <<< "$sel"
         fi
@@ -989,6 +1003,18 @@ post_install_task() {
     local patch="${run%%:*}"
     local func="${run#*:}"
     run_patch "$patch" "$func"
+  done
+
+  # Track patch group and function selections
+  for p in "${selected_patches[@]}"; do
+    update_selection "patches" "$p"
+  done
+
+  # Track individual functions (sub-selections)
+  for run in "${all_runs[@]}"; do
+    local patch="${run%%:*}"
+    local func="${run#*:}"
+    update_selection "patches" "$func"
   done
 }
 
@@ -1076,6 +1102,11 @@ stow_selected() {
     patch_plugin_zsh
     ensure_hyde_completions
   fi
+
+  # Track selections
+  for pkg in "${STOW_SELECTED[@]:-}"; do
+    update_selection "stows" "$pkg"
+  done
 }
 
 brew_selected() {
@@ -1083,12 +1114,22 @@ brew_selected() {
   for f in "${BREW_SELECTED[@]:-}"; do
     brew_install "$f"
   done
+
+  # Track selections
+  for f in "${BREW_SELECTED[@]:-}"; do
+    update_selection "pkgs" "$f"
+  done
 }
 
 arch_selected() {
   step "Arch packages"
   for f in "${ARCH_SELECTED[@]:-}"; do
     arch_install "$f"
+  done
+
+  # Track selections
+  for f in "${ARCH_SELECTED[@]:-}"; do
+    update_selection "pkgs" "$f"
   done
 }
 
@@ -1347,9 +1388,125 @@ make_labeled_item() {
 }
 
 # strip_label ITEM
-#   Removes "  ⚠ ..." suffix appended by make_labeled_item.
+#   Removes "  ⚠ ..." and " (last applied: ...)" suffixes.
 strip_label() {
-  printf '%s' "${1%%  ⚠*}"
+  local out="$1"
+  out="${out%%  ⚠*}"
+  out="${out%%  (last applied:*}"
+  printf '%s' "$out"
+}
+
+# Selection tracking file
+SELECTIONS_FILE="$HOME/.local/state/dotfiles_selections.conf"
+mkdir -p "$(dirname "$SELECTIONS_FILE")"
+
+# read_selections SECTION
+#   Reads timestamps from a section in the selections file.
+#   Returns: key=value lines for each recorded selection.
+read_selections() {
+  local section="$1"
+  [[ -f "$SELECTIONS_FILE" ]] || return 0
+  awk -F' = ' -v section="$section" '
+    /^\[.*\]$/ { in_section=($0 == "["section"]") }
+    in_section && NF == 2 { print }
+  ' "$SELECTIONS_FILE" 2>/dev/null
+}
+
+# get_selection_timestamp SECTION KEY
+#   Returns timestamp for a specific selection, empty if not found.
+get_selection_timestamp() {
+  local section="$1"
+  local key="$2"
+  read_selections "$section" | awk -F' = ' -v key="$key" '$1 == key { print $2; exit }'
+}
+
+# update_selection SECTION KEY [TIMESTAMP]
+#   Updates (or adds) a selection with current timestamp.
+#   Uses INI-style format in selections file.
+update_selection() {
+  local section="$1"
+  local key="$2"
+  local timestamp="${3:-$(date -u +%Y-%m-%dT%H:%M:%SZ)}"
+
+  local new_ts
+  new_ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+  local tmp="${SELECTIONS_FILE}.tmp"
+
+  {
+    echo "# dotfiles_selections"
+    echo "# Updated: $new_ts"
+    echo ""
+  } > "$tmp"
+
+  local in_target=false
+  local key_done=false
+
+  if [[ -f "$SELECTIONS_FILE" ]]; then
+    while IFS= read -r line; do
+      # Header/blank
+      [[ "$line" == "#"* ]] && continue
+      [[ -z "$line" ]] && continue
+
+      # Section header like [stows]
+      if [[ "$line" == "["*"]" ]]; then
+        # Leaving target section?
+        if $in_target && ! $key_done; then
+          echo "$key = $timestamp" >> "$tmp"
+          key_done=true
+        fi
+        # Check if this is our target section
+        in_target=false
+        [[ "$line" == "[$section]" ]] && in_target=true
+        echo "$line" >> "$tmp"
+        # Key=Value line
+      elif [[ "$line" == *" = "* ]]; then
+        local k="${line%% = *}"
+        [[ "$k" == "$key" ]] && continue  # Skip old key
+        echo "$line" >> "$tmp"
+      else
+        echo "$line" >> "$tmp"
+      fi
+    done < "$SELECTIONS_FILE"
+
+    # File end - if in target and haven't added
+    if $in_target && ! $key_done; then
+      echo "$key = $timestamp" >> "$tmp"
+      key_done=true
+    fi
+  fi
+
+  # New section/file
+  if ! $key_done; then
+    echo "[$section]" >> "$tmp"
+    echo "$key = $timestamp" >> "$tmp"
+  fi
+
+  mv -f "$tmp" "$SELECTIONS_FILE"
+}
+
+# apply_selection_label SECTION KEY LABEL
+#   Appends "(last applied: MMM DD YYYY)" to LABEL if selection exists.
+#   Returns the modified label.
+apply_selection_label() {
+  local section="$1"
+  local key="$2"
+  local label="$3"
+
+  # Strip any existing last applied first (avoid double append)
+  label="${label%%  (last applied:*}"
+
+  local ts
+  ts=$(get_selection_timestamp "$section" "$key")
+
+  if [[ -n "$ts" ]]; then
+    # Parse ISO timestamp to human readable
+    local date_str
+    date_str=$(date -d "${ts%Z}" +"%b %d %Y" 2>/dev/null || printf '%s' "$ts")
+    printf '%s  (last applied: %s)' "$label" "$date_str"
+  else
+    printf '%s' "$label"
+  fi
 }
 
 # get_patch_warning PATCH_NAME
@@ -1457,10 +1614,13 @@ interactive_mode() {
     printf '\n'
   fi
 
-  # Build labeled items
+  # Build labeled items (add last applied timestamp if previously selected)
   local -a labeled_stow=()
   for pkg in "${all_stow[@]}"; do
-    labeled_stow+=("$(make_labeled_item "$pkg" STOW_PKG_REQUIRES)")
+    local label
+    label=$(make_labeled_item "$pkg" STOW_PKG_REQUIRES)
+    label=$(apply_selection_label "stows" "$pkg" "$label")
+    labeled_stow+=("$label")
   done
 
   printf '\n'
@@ -1509,10 +1669,13 @@ interactive_mode() {
     log "Select Arch package lists to install:"
     log "Lists marked ⚠ have unmet dependencies but can still be selected."
 
-    # Build labeled items from full package file list
+    # Build labeled items from full package file list (add last applied timestamp)
     local -a labeled_pkg_files=()
     for f in "${ARCH_PKG_FILES_ALL[@]}"; do
-      labeled_pkg_files+=("$(make_labeled_item "$f" PKG_FILE_REQUIRES)")
+      local label
+      label=$(make_labeled_item "$f" PKG_FILE_REQUIRES)
+      label=$(apply_selection_label "pkgs" "$f" "$label")
+      labeled_pkg_files+=("$label")
     done
 
     local asel
@@ -1530,7 +1693,11 @@ interactive_mode() {
 
   # ── Optional tasks ─────────────────────────────────────────────────────────
   printf '\n'
-  if interactive_confirm "Install gitconfig?"; then
+
+  # Check if gitconfig was previously applied
+  local git_label="Install gitconfig?"
+  git_label=$(apply_selection_label "gitconfig" "user" "$git_label")
+  if interactive_confirm "$git_label"; then
     register_task "install_gitconfig_task"
   fi
 

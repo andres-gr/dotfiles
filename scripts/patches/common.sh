@@ -128,7 +128,7 @@ apply_arch_patch_dconf() {
 ###############################################################################
 # arch-patches systemd services
 # Copies service files from dotfiles/arch-patches/systemctl/
-# Supports interactive selection when INTERACTIVE=true
+# Supports interactive selection, tracks selections
 ###############################################################################
 
 get_available_arch_services() {
@@ -168,19 +168,35 @@ install_arch_patch_services() {
       fi
     done
   elif $INTERACTIVE; then
-    # Interactive selection
+    # Interactive selection with labels
     log "Select systemd services to install:"
     local -a choices=()
     for svc in "${available_services[@]}"; do
-      choices+=("$svc")
+      # Add last applied label
+      local label
+      label=$(apply_selection_label "services" "$svc" "$svc")
+      choices+=("$label")
     done
 
     local sel
     sel="$(interactive_select --exit "${choices[@]}")" || true
 
+    # Check for Exit/Skip immediately
+    if [[ -z "$sel" || "$sel" == "Exit" || "$sel" == "Skip" ]]; then
+      log "No services selected — skipping"
+      return 0
+    fi
+
     if [[ -n "$sel" ]]; then
       while IFS= read -r item; do
-        [[ -n "$item" ]] && selected_services+=("$item")
+        # Skip empty or special values
+        [[ -z "$item" ]] && continue
+        [[ "$item" == "Skip" ]] && continue
+        # Strip and check
+        item=$(strip_label "$item")
+        [[ "$item" == *"Exit"* ]] && continue
+        [[ -z "$item" ]] && continue
+        selected_services+=("$item")
       done <<< "$sel"
     fi
   else
@@ -198,6 +214,8 @@ install_arch_patch_services() {
     local dest="/etc/systemd/system/$svc.service"
     if systemctl is-enabled "$svc" &>/dev/null; then
       log "  $svc: already enabled — skipping"
+      # Still track that it was selected
+      update_selection "services" "$svc"
       continue
     fi
     log "  Installing $svc → $dest"
@@ -213,6 +231,9 @@ install_arch_patch_services() {
         warn "  $svc: enable failed (may need manual enable)"
       fi
     fi
+
+    # Track selection
+    update_selection "services" "$svc"
   done
 }
 
