@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Icon Browser
+GenericName=GTK3 Icon Browser
+Comment=Browse and view current icon theme icons
+Keywords=icons;theme;gtk;viewer;
+Icon=applications-utilities
+Exec=gtk3-icon-browser
+Type=Application
+Terminal=false
+Categories=Utility;System;
