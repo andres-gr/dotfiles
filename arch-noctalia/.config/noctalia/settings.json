@@ -315,6 +315,17 @@
                     "id": "Bluetooth"
                 },
                 {
+                    "id": "WallpaperSelector"
+                },
+                {
+                    "defaultSettings": {
+                        "iconColor": "none"
+                    },
+                    "id": "plugin:color-scheme-creator"
+                }
+            ],
+            "right": [
+                {
                     "enableOnStateLogic": false,
                     "generalTooltipText": "App Defaults",
                     "icon": "apps",
@@ -324,14 +335,6 @@
                     "onRightClicked": "",
                     "showExecTooltip": false,
                     "stateChecksJson": "[]"
-                },
-                {
-                    "id": "WallpaperSelector"
-                }
-            ],
-            "right": [
-                {
-                    "id": "Notifications"
                 },
                 {
                     "id": "NoctaliaPerformance"

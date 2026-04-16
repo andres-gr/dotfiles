@@ -16,6 +16,10 @@
             "enabled": true,
             "sourceUrl": "https://github.com/andres-gr/noctalia-spotify-toast"
         },
+        "color-scheme-creator": {
+            "enabled": true,
+            "sourceUrl": "https://github.com/noctalia-dev/noctalia-plugins"
+        },
         "keybind-cheatsheet": {
             "enabled": true,
             "sourceUrl": "https://github.com/noctalia-dev/noctalia-plugins"

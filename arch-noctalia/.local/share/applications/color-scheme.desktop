@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Color Scheme Creator
+GenericName=Create a new Noctalia color scheme palette
+Comment=Create a new Noctalia color scheme palette
+Keywords=color;colors;theme;creator;settings;palette;
+Icon=applications-graphics
+Exec=qs -c noctalia-shell ipc call plugin:mimeapp-gui open
+Type=Application
+Terminal=false
+Categories=Utility;System;Theme;
