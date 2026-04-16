@@ -23,7 +23,8 @@
   },
   "plugin": [
     "context-mode",
-    "repomix"
+    "repomix",
+    "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "provider": {
     "ollama": {
