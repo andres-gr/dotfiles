@@ -128,29 +128,80 @@ apply_arch_patch_dconf() {
 ###############################################################################
 # arch-patches systemd services
 # Copies service files from dotfiles/arch-patches/systemctl/
+# Supports interactive selection when INTERACTIVE=true
 ###############################################################################
+
+get_available_arch_services() {
+  local src_dir="$DOTFILES_DIR/arch-patches/systemctl"
+  [[ -d "$src_dir" ]] || return 0
+  find "$src_dir" -maxdepth 1 -name '*.service' -printf '%f\n' 2>/dev/null | sed 's/\.service$//'
+}
 
 install_arch_patch_services() {
   local src_dir="$DOTFILES_DIR/arch-patches/systemctl"
   [[ -d "$src_dir" ]] || return 0
 
-  local -a services
-  mapfile -t services < <(find "$src_dir" -maxdepth 1 -name '*.service' -printf '%f\n')
+  # Get available services
+  local -a available_services
+  mapfile -t available_services < <(get_available_arch_services)
 
-  if (( ${#services[@]} == 0 )); then
+  if (( ${#available_services[@]} == 0 )); then
     log "arch-patches/systemctl: no service files found — skipping"
     return 0
   fi
 
+  # Determine which services to install
+  local -a selected_services=()
+
+  if [[ -n "${ARCH_PATCH_SERVICES:-}" ]]; then
+    # Env var takes priority (comma-separated)
+    IFS=',' read -r -a _selected <<< "$ARCH_PATCH_SERVICES"
+    for s in "${_selected[@]}"; do
+      local valid=false
+      for avail in "${available_services[@]}"; do
+        [[ "$s" == "$avail" ]] && valid=true && break
+      done
+      if $valid; then
+        selected_services+=("$s")
+      else
+        warn "Unknown service skipped: $s"
+      fi
+    done
+  elif $INTERACTIVE; then
+    # Interactive selection
+    log "Select systemd services to install:"
+    local -a choices=()
+    for svc in "${available_services[@]}"; do
+      choices+=("$svc")
+    done
+
+    local sel
+    sel="$(interactive_select --exit "${choices[@]}")" || true
+
+    if [[ -n "$sel" ]]; then
+      while IFS= read -r item; do
+        [[ -n "$item" ]] && selected_services+=("$item")
+      done <<< "$sel"
+    fi
+  else
+    # Non-interactive: install all
+    selected_services=("${available_services[@]}")
+  fi
+
+  if (( ${#selected_services[@]} == 0 )); then
+    log "No services selected — skipping"
+    return 0
+  fi
+
   step "Installing arch-patches systemd services"
-  for svc in "${services[@]}"; do
-    local dest="/etc/systemd/system/$svc"
+  for svc in "${selected_services[@]}"; do
+    local dest="/etc/systemd/system/$svc.service"
     if systemctl is-enabled "$svc" &>/dev/null; then
       log "  $svc: already enabled — skipping"
       continue
     fi
     log "  Installing $svc → $dest"
-    run sudo cp "$src_dir/$svc" "$dest"
+    run sudo cp "$src_dir/$svc.service" "$dest"
     run sudo systemctl daemon-reload
     if systemctl is-enabled "$svc" &>/dev/null; then
       ok "  $svc enabled"
