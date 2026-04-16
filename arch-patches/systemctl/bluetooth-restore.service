@@ -1,0 +1,25 @@
+[Unit]
+Description=Restore Bluetooth power state
+After=bluetooth.service
+Requires=bluetooth.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/sh -c '\
+  bt=$(cat /var/lib/bluetooth/power_state 2>/dev/null || echo off); \
+  for i in $(seq 1 15); do \
+    result=$(bluetoothctl power $bt 2>&1); \
+    echo "$result" | grep -q "Busy" || { echo "Power set to $bt"; exit 0; }; \
+    echo "BlueZ busy, retry $i..."; \
+    sleep 1; \
+  done; \
+  echo "Gave up after 15 retries"; exit 1'
+ExecStop=/bin/sh -c '\
+  bluetoothctl show | grep -q "Powered: yes" \
+  && echo on > /var/lib/bluetooth/power_state \
+  || echo off > /var/lib/bluetooth/power_state'
+TimeoutStartSec=30
+
+[Install]
+WantedBy=bluetooth.target
