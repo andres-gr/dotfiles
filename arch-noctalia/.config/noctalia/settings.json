@@ -315,13 +315,13 @@
                     "id": "Bluetooth"
                 },
                 {
-                    "id": "WallpaperSelector"
-                },
-                {
                     "defaultSettings": {
                         "iconColor": "none"
                     },
                     "id": "plugin:color-scheme-creator"
+                },
+                {
+                    "id": "WallpaperSelector"
                 }
             ],
             "right": [

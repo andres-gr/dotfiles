@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Calculator
+GenericName=Noctalia calculator
+Comment=Noctalia theme aware calculator application
+Keywords=calculator;math;arithmetics;work;calculations;
+Icon=accessories-calculator
+Exec=qs -c noctalia-shell ipc call plugin:noctalia-calculator toggle
+Type=Application
+Terminal=false
+Categories=Utility;System;
