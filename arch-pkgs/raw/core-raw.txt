@@ -46,6 +46,7 @@ greetd
 greetd-agreety
 greetd-tuigreet
 gst-plugin-pipewire
+gtk3-demos
 gum
 haruna
 hfsprogs

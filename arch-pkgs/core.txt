@@ -12,6 +12,7 @@ fzf                          # General-purpose fuzzy finder for the terminal
 ghostty                      # GPU-accelerated terminal emulator by Mitchell Hashimoto
 ghostty-shell-integration    # Shell integration scripts for ghostty
 ghostty-terminfo             # Terminfo for ghostty
+gtk3-demos                   # GTK3 utils
 gum                          # CLI tool for writing shell scripts
 jq                           # Lightweight CLI JSON processor
 just                         # Command runner / Makefile alternative (Justfile)
