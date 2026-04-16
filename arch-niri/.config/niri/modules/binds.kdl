@@ -33,10 +33,10 @@ binds {
     Mod+Shift+Q repeat=false hotkey-overlay-title="Kill Window" {
         spawn-sh "niri msg -j focused-window | jq '.pid' | xargs pkill -p -9"
     }
-    Mod+F hotkey-overlay-title="Maximize Column" {
+    Mod+Return hotkey-overlay-title="Maximize Column" {
         maximize-column
     }
-    Mod+Shift+F hotkey-overlay-title="Toggle Fullscreen" {
+    Mod+Shift+Return hotkey-overlay-title="Toggle Fullscreen" {
         fullscreen-window
     }
     Mod+D hotkey-overlay-title="Toggle Floating" {
