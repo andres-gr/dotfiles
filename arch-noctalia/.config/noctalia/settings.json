@@ -17,7 +17,8 @@
         "iconMode": "native",
         "ignoreMouseInput": false,
         "overviewLayer": false,
-        "pinnedApps": [],
+        "pinnedApps": [
+        ],
         "position": "follow_bar",
         "screenshotAnnotationTool": "",
         "showCategories": true,
@@ -27,7 +28,8 @@
         "viewMode": "list"
     },
     "audio": {
-        "mprisBlacklist": [],
+        "mprisBlacklist": [
+        ],
         "preferredPlayer": "",
         "spectrumFrameRate": 60,
         "spectrumMirrored": true,
@@ -57,7 +59,8 @@
         "middleClickAction": "none",
         "middleClickCommand": "",
         "middleClickFollowMouse": false,
-        "monitors": [],
+        "monitors": [
+        ],
         "mouseWheelAction": "none",
         "mouseWheelWrap": true,
         "outerCorners": true,
@@ -153,13 +156,15 @@
                     "id": "plugin:usb-drive-manager"
                 },
                 {
-                    "blacklist": [],
+                    "blacklist": [
+                    ],
                     "chevronColor": "none",
                     "colorizeIcons": false,
                     "drawerEnabled": true,
                     "hidePassive": false,
                     "id": "Tray",
-                    "pinned": []
+                    "pinned": [
+                    ]
                 },
                 {
                     "displayMode": "alwaysShow",
@@ -239,7 +244,8 @@
         }
     },
     "brightness": {
-        "backlightDeviceMappings": [],
+        "backlightDeviceMappings": [
+        ],
         "brightnessStep": 5,
         "enableDdcSupport": false,
         "enforceMinimum": true
@@ -309,7 +315,15 @@
                     "id": "Bluetooth"
                 },
                 {
-                    "id": "NoctaliaPerformance"
+                    "enableOnStateLogic": false,
+                    "generalTooltipText": "App Defaults",
+                    "icon": "apps",
+                    "id": "CustomButton",
+                    "onClicked": "qs -c noctalia-shell ipc call plugin:mimeapp-gui open",
+                    "onMiddleClicked": "",
+                    "onRightClicked": "",
+                    "showExecTooltip": false,
+                    "stateChecksJson": "[]"
                 },
                 {
                     "id": "WallpaperSelector"
@@ -318,6 +332,9 @@
             "right": [
                 {
                     "id": "Notifications"
+                },
+                {
+                    "id": "NoctaliaPerformance"
                 },
                 {
                     "id": "PowerProfile"
@@ -332,7 +349,8 @@
         "enabled": false,
         "gridSnap": false,
         "gridSnapScale": false,
-        "monitorWidgets": [],
+        "monitorWidgets": [
+        ],
         "overviewEnabled": true
     },
     "dock": {
@@ -552,7 +570,8 @@
             3
         ],
         "location": "top_right",
-        "monitors": [],
+        "monitors": [
+        ],
         "overlayLayer": true
     },
     "plugins": {
@@ -726,7 +745,8 @@
         "directory": "/home/agr/Pictures/Walls",
         "enableMultiMonitorDirectories": true,
         "enabled": true,
-        "favorites": [],
+        "favorites": [
+        ],
         "fillColor": "#22212c",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Default Apps
+GenericName=Set default applications
+Comment=Set default applications
+Keywords=default;apps;applications;settings;
+Icon=settings
+Exec=qs -c noctalia-shell ipc call plugin:mimeapp-gui open
+Type=Application
+Terminal=false
+Categories=Utility;System;
