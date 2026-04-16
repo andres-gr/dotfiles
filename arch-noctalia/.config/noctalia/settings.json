@@ -17,8 +17,7 @@
         "iconMode": "native",
         "ignoreMouseInput": false,
         "overviewLayer": false,
-        "pinnedApps": [
-        ],
+        "pinnedApps": [],
         "position": "follow_bar",
         "screenshotAnnotationTool": "",
         "showCategories": true,
@@ -28,8 +27,7 @@
         "viewMode": "list"
     },
     "audio": {
-        "mprisBlacklist": [
-        ],
+        "mprisBlacklist": [],
         "preferredPlayer": "",
         "spectrumFrameRate": 60,
         "spectrumMirrored": true,
@@ -49,7 +47,7 @@
         "contentPadding": 2,
         "density": "comfortable",
         "displayMode": "always_visible",
-        "enableExclusionZoneInset": true,
+        "enableExclusionZoneInset": false,
         "fontScale": 1.1,
         "frameRadius": 12,
         "frameThickness": 8,
@@ -59,8 +57,7 @@
         "middleClickAction": "none",
         "middleClickCommand": "",
         "middleClickFollowMouse": false,
-        "monitors": [
-        ],
+        "monitors": [],
         "mouseWheelAction": "none",
         "mouseWheelWrap": true,
         "outerCorners": true,
@@ -83,23 +80,15 @@
         "widgets": {
             "center": [
                 {
-                    "clockColor": "none",
-                    "customFont": "",
-                    "formatHorizontal": "h:mm AP ddd, MMM d",
-                    "formatVertical": "HH mm - dd MM",
-                    "id": "Clock",
-                    "tooltipFormat": "HH:mm:ss t - dddd, dd MMMM yyyy",
-                    "useCustomFont": false
-                },
-                {
-                    "defaultSettings": {
-                        "customColor": "none",
-                        "showConditionIcon": true,
-                        "showTempUnit": true,
-                        "showTempValue": true,
-                        "tooltipOption": "everything"
-                    },
-                    "id": "plugin:weather-indicator"
+                    "colorizeIcons": false,
+                    "hideMode": "hidden",
+                    "id": "ActiveWindow",
+                    "maxWidth": 250,
+                    "scrollingMode": "always",
+                    "showIcon": true,
+                    "showText": true,
+                    "textColor": "none",
+                    "useFixedWidth": false
                 }
             ],
             "left": [
@@ -120,7 +109,7 @@
                     "focusedColor": "secondary",
                     "followFocusedScreen": true,
                     "fontWeight": "semibold",
-                    "groupedBorderOpacity": 0.9500000000000001,
+                    "groupedBorderOpacity": 0.95,
                     "hideUnoccupied": false,
                     "iconScale": 0.8,
                     "id": "Workspace",
@@ -133,19 +122,6 @@
                     "showLabelsOnlyWhenOccupied": true,
                     "unfocusedIconsOpacity": 0.8
                 },
-                {
-                    "colorizeIcons": false,
-                    "hideMode": "hidden",
-                    "id": "ActiveWindow",
-                    "maxWidth": 240,
-                    "scrollingMode": "always",
-                    "showIcon": true,
-                    "showText": true,
-                    "textColor": "none",
-                    "useFixedWidth": false
-                }
-            ],
-            "right": [
                 {
                     "compactMode": false,
                     "hideMode": "hidden",
@@ -161,14 +137,9 @@
                     "textColor": "none",
                     "useFixedWidth": false,
                     "visualizerType": "linear"
-                },
-                {
-                    "displayMode": "alwaysShow",
-                    "iconColor": "none",
-                    "id": "Volume",
-                    "middleClickCommand": "pwvucontrol || pavucontrol",
-                    "textColor": "none"
-                },
+                }
+            ],
+            "right": [
                 {
                     "defaultSettings": {
                         "autoMount": false,
@@ -182,6 +153,22 @@
                     "id": "plugin:usb-drive-manager"
                 },
                 {
+                    "blacklist": [],
+                    "chevronColor": "none",
+                    "colorizeIcons": false,
+                    "drawerEnabled": true,
+                    "hidePassive": false,
+                    "id": "Tray",
+                    "pinned": []
+                },
+                {
+                    "displayMode": "alwaysShow",
+                    "iconColor": "none",
+                    "id": "Volume",
+                    "middleClickCommand": "pwvucontrol || pavucontrol",
+                    "textColor": "none"
+                },
+                {
                     "compactMode": true,
                     "diskPath": "/",
                     "iconColor": "none",
@@ -189,14 +176,14 @@
                     "showCpuCores": false,
                     "showCpuFreq": false,
                     "showCpuTemp": true,
-                    "showCpuUsage": true,
+                    "showCpuUsage": false,
                     "showDiskAvailable": false,
                     "showDiskUsage": false,
                     "showDiskUsageAsPercent": false,
                     "showGpuTemp": false,
                     "showLoadAverage": false,
                     "showMemoryAsPercent": false,
-                    "showMemoryUsage": true,
+                    "showMemoryUsage": false,
                     "showNetworkStats": true,
                     "showSwapUsage": false,
                     "textColor": "none",
@@ -204,18 +191,7 @@
                     "usePadding": false
                 },
                 {
-                    "blacklist": [
-                    ],
-                    "chevronColor": "none",
-                    "colorizeIcons": false,
-                    "drawerEnabled": true,
-                    "hidePassive": false,
-                    "id": "Tray",
-                    "pinned": [
-                    ]
-                },
-                {
-                    "hideWhenZero": false,
+                    "hideWhenZero": true,
                     "hideWhenZeroUnread": false,
                     "iconColor": "none",
                     "id": "NotificationHistory",
@@ -232,6 +208,25 @@
                     "id": "plugin:update-count"
                 },
                 {
+                    "defaultSettings": {
+                        "customColor": "none",
+                        "showConditionIcon": true,
+                        "showTempUnit": true,
+                        "showTempValue": true,
+                        "tooltipOption": "everything"
+                    },
+                    "id": "plugin:weather-indicator"
+                },
+                {
+                    "clockColor": "none",
+                    "customFont": "",
+                    "formatHorizontal": "h:mm AP ddd, MMM d",
+                    "formatVertical": "HH mm - dd MM",
+                    "id": "Clock",
+                    "tooltipFormat": "HH:mm:ss t - dddd, dd MMMM yyyy",
+                    "useCustomFont": false
+                },
+                {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "primary",
                     "customIconPath": "",
@@ -244,8 +239,7 @@
         }
     },
     "brightness": {
-        "backlightDeviceMappings": [
-        ],
+        "backlightDeviceMappings": [],
         "brightnessStep": 5,
         "enableDdcSupport": false,
         "enforceMinimum": true
@@ -338,13 +332,12 @@
         "enabled": false,
         "gridSnap": false,
         "gridSnapScale": false,
-        "monitorWidgets": [
-        ],
+        "monitorWidgets": [],
         "overviewEnabled": true
     },
     "dock": {
         "animationSpeed": 1.35,
-        "backgroundOpacity": 0.9500000000000001,
+        "backgroundOpacity": 0.95,
         "colorizeIcons": false,
         "deadOpacity": 0.6,
         "displayMode": "auto_hide",
@@ -383,7 +376,7 @@
         "allowPanelsOnScreenWithoutBar": true,
         "allowPasswordWithFprintd": false,
         "animationDisabled": false,
-        "animationSpeed": 1.1500000000000001,
+        "animationSpeed": 1.15,
         "autoStartAuth": false,
         "avatarImage": "/home/agr/.face",
         "boxRadiusRatio": 1,
@@ -559,8 +552,7 @@
             3
         ],
         "location": "top_right",
-        "monitors": [
-        ],
+        "monitors": [],
         "overlayLayer": true
     },
     "plugins": {
@@ -734,8 +726,7 @@
         "directory": "/home/agr/Pictures/Walls",
         "enableMultiMonitorDirectories": true,
         "enabled": true,
-        "favorites": [
-        ],
+        "favorites": [],
         "fillColor": "#22212c",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,
@@ -754,10 +745,10 @@
         ],
         "overviewBlur": 0.9,
         "overviewEnabled": true,
-        "overviewTint": 0.7000000000000001,
+        "overviewTint": 0.7,
         "panelPosition": "follow_bar",
         "randomIntervalSec": 420,
-        "setWallpaperOnAllMonitors": true,
+        "setWallpaperOnAllMonitors": false,
         "showHiddenFiles": false,
         "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
