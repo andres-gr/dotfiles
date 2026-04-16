@@ -147,21 +147,21 @@ declare -A PKG_FILE_REQUIRES=(
 declare -A PATCH_FILES=(
   [common]="scripts/patches/common.sh:all"
   [hyprland]="scripts/patches/hyprland.sh:all"
-  [hyde]="scripts/patches/hyde.sh:all"
   [niri]="scripts/patches/niri.sh:all"
-  [dank]="scripts/patches/dank.sh:all"
   [noctalia]="scripts/patches/noctalia.sh:all"
+  [dank]="scripts/patches/dank.sh:all"
+  [hyde]="scripts/patches/hyde.sh:all"
 )
 
 # Individual patch functions per patch file
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
-  [common]="apply_arch_patch_dconf bootstrap_spicetify configure_amdgpu_early_kms configure_bluetooth configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_sddm_wayland_config install_systemd_scripts install_tpm install_yazi_plugins rebuild_kde_menucache save_raw_arch_packages"
+  [common]="apply_arch_patch_dconf bootstrap_spicetify configure_amdgpu_early_kms configure_bluetooth configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_sddm_wayland_config install_spicetify_comfy_theme install_systemd_scripts install_tpm install_yazi_plugins rebuild_kde_menucache save_raw_arch_packages"
   [hyprland]="configure_steam_splash_hyprland configure_workspaces_persistent install_hyprland_config install_hyprtasking reload_hyprland"
-  [hyde]="backup_hyde_zsh ensure_hyde_completions hyde_post_install hyde_seed_config"
   [niri]="install_niri_config"
-  [dank]="reload_dms"
   [noctalia]="install_spotify_toast_plugin patch_zen_userchrome"
+  [dank]="reload_dms"
+  [hyde]="backup_hyde_zsh ensure_hyde_completions hyde_post_install hyde_seed_config"
 )
 
 # Descriptions for each patch function
@@ -181,6 +181,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [install_noctalia_sddm_theme]="Install Noctalia SDDM theme with user dropdown"
   [install_pam_configs]="Install PAM configs for greetd"
   [install_sddm_wayland_config]="Configure SDDM for Wayland single display"
+  [install_spicetify_comfy_theme]="Install/apply Comfy theme for Spicetify"
   [install_systemd_scripts]="Install systemd scripts (e.g., system-sleep)"
   [install_tpm]="Install TPM (Tmux Plugin Manager)"
   [install_yazi_plugins]="Install/update yazi plugins"

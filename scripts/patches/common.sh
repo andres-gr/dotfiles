@@ -174,6 +174,7 @@ common_patches() {
   install_arch_patch_services
   install_ghostty_misc_config
   install_pam_configs
+  install_spicetify_comfy_theme
   install_systemd_scripts
   install_tpm
   save_raw_arch_packages
@@ -1046,6 +1047,55 @@ EOF
   if [[ -d "$dest_theme_dir" ]]; then
     log "Note: Restart SDDM or reboot for changes to take effect"
   fi
+}
+
+###############################################################################
+# Install Spicetify Comfy theme
+###############################################################################
+
+install_spicetify_comfy_theme() {
+  # Check if spicetify CLI exists
+  if ! command -v spicetify &>/dev/null; then
+    log "spicetify not found — skipping Comfy theme"
+    return 0
+  fi
+
+  local themes_dir="$HOME/.config/spicetify/Themes"
+  local comfy_dir="$themes_dir/Comfy"
+
+  # Check if theme already exists with CSS files
+  local has_css=false
+  if [[ -d "$comfy_dir" ]]; then
+    local -a css_files
+    mapfile -t css_files < <(find "$comfy_dir" -name '*.css' -printf '%f\n' 2>/dev/null)
+    if (( ${#css_files[@]} > 0 )); then
+      has_css=true
+    fi
+  fi
+
+  # Apply if already installed
+  if [[ "$has_css" == "true" ]]; then
+    if $DRY_RUN; then
+      log "[dry-run] would apply: spicetify config + apply"
+    else
+      run spicetify config current_theme Comfy color_scheme Comfy
+      run spicetify config inject_css 1 replace_colors 1 overwrite_assets 1 inject_theme_js 1
+      run spicetify apply
+      ok "Comfy theme applied"
+    fi
+    return 0
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would run: curl -fsSL .../install.sh | sh"
+    return 0
+  fi
+
+  # Install via official install script (applies theme automatically)
+  step "Installing Comfy theme"
+  run curl -fsSL https://raw.githubusercontent.com/NYRI4/Comfy-spicetify/main/install.sh | sh
+
+  ok "Comfy theme installed"
 }
 
 ###############################################################################
