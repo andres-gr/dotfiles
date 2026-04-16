@@ -137,7 +137,7 @@ ColorScheme=noctalia
 TerminalApplication=ghostty
 
 [Icons]
-Theme=Tela-circle-dracula
+Theme=Tela-circle
 
 [KDE]
 ShowDeleteCommand=true

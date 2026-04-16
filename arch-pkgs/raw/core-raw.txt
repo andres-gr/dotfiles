@@ -177,6 +177,7 @@ xorg-xrandr
 yazi
 zapzap
 zen-browser-bin
+zenity
 zip
 zoxide
 zram-generator
