@@ -2,11 +2,14 @@
 # hyprland.sh - Hyprland-specific patches
 
 # Get script directory for relative paths
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="${SCRIPT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)}"
 
-# Source steam-splash for install function
-# shellcheck source=scripts/patches/steam-splash.sh
-source "$SCRIPT_DIR/steam-splash.sh"
+# Define DOTFILES_DIR if not set (for standalone sourcing)
+DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+
+# Source splash-screens for install function
+# shellcheck source=scripts/patches/splash-screens.sh
+source "$SCRIPT_DIR/splash-screens.sh"
 
 ###############################################################################
 # Reload Hyprland configuration
@@ -165,7 +168,7 @@ configure_steam_splash_hyprland() {
   local hypr_root="$HOME/.config/hypr/modules/root.conf"
 
   # Extract tarball (install script handles check)
-  install_steam_splash
+  install_splash_screens
 
   # Check if symlink and resolve to actual file
   if [[ -L "$hypr_root" ]]; then
@@ -175,12 +178,12 @@ configure_steam_splash_hyprland() {
   fi
 
   # Already configured?
-  [[ -f "$hypr_root" ]] && grep -q "steam-girl-splash" "$hypr_root" && return 0
+  [[ -f "$hypr_root" ]] && grep -q "splash-screen-animation" "$hypr_root" && return 0
 
   $DRY_RUN && { log "[dry-run] would add splash exec-once"; return 0; }
 
   step "Adding splash to Hyprland config"
-  run sed -i '/^exec-once = dbus-update/a exec-once = ~/.local/bin/steam-girl-splash' "$hypr_root"
+  run sed -i '/^exec-once = dbus-update/a exec-once = ~/.local/bin/splash-screen-animation' "$hypr_root"
   ok "Splash added to root.conf"
 }
 

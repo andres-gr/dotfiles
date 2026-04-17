@@ -3,8 +3,13 @@
 # Called from post_install_task in install.sh
 # These patches run regardless of which WM/DE is used
 
-# Get script directory for relative paths
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Get script directory for relative paths (fallback if sourced)
+SCRIPT_DIR="${SCRIPT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)}"
+DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+
+# Source splash-screens for install function
+# shellcheck source=scripts/patches/splash-screens.sh
+source "$SCRIPT_DIR/splash-screens.sh"
 
 ###############################################################################
 # TPM installation (tmux plugins)
@@ -247,6 +252,7 @@ common_patches() {
   install_ghostty_misc_config
   install_pam_configs
   install_spicetify_comfy_theme
+  install_splash_screens
   install_systemd_scripts
   install_tpm
   save_raw_arch_packages
