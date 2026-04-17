@@ -11,53 +11,61 @@ window-rule {
 }
 window-rule {
     match is-focused=true
+
     opacity 0.98
 }
 window-rule {
     match is-focused=false
+
     opacity 0.96
 }
 window-rule {
     match app-id="^org\\.gnome\\."
+
+    clip-to-geometry true
     draw-border-with-background false
     geometry-corner-radius 12
-    clip-to-geometry true
 }
 window-rule {
     match app-id="^gnome-control-center$"
-    match app-id="^pavucontrol$"
     match app-id="^nm-connection-editor$"
+    match app-id="^pavucontrol$"
+
     default-column-width {
         proportion 0.5
     }
     open-floating false
 }
 window-rule {
-    match app-id="^gnome-calculator$"
-    match app-id="^galculator$"
     match app-id="^blueman-manager$"
+    match app-id="^galculator$"
+    match app-id="^gnome-calculator$"
     match app-id="^org\\.gnome\\.Nautilus$"
-    match app-id="^xdg-desktop-portal$"
     match app-id="^org\\.kde\\.haruna$"
     match app-id="^org\\.nomacs\\.ImageLounge$"
+    match app-id="^xdg-desktop-portal$"
+
     open-floating true
 }
 window-rule {
     match app-id="^steam$" title="^notificationtoasts_\\d+_desktop$"
+
     default-floating-position x=10 y=10 relative-to="bottom-right"
     open-focused false
 }
 window-rule {
     match app-id="^org\\.wezfurlong\\.wezterm$"
     match app-id="Alacritty"
-    match app-id="zen"
     match app-id="com.mitchellh.ghostty"
     match app-id="kitty"
+    match app-id="zen"
+
     draw-border-with-background false
 }
 window-rule {
     match app-id="firefox$" title="^Picture-in-Picture$"
     match app-id="zoom"
+
     open-floating true
 }
 window-rule {
@@ -89,4 +97,13 @@ window-rule {
         proportion 0.8
     }
     open-floating true
+}
+window-rule {
+    match app-id="^(C|c)laude$"
+
+    default-column-width {
+        proportion 0.7
+    }
+    open-focused true
+    open-on-workspace "sec-2"
 }
