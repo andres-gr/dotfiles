@@ -104,7 +104,6 @@ networkmanager-openvpn       # OpenVPN plugin for NetworkManager
 nss-mdns                     # NSS plugin for mDNS/Bonjour hostname resolution
 
 # ── File manager ──────────────────────────────────────────────────────────────
-nemo                         # Cinnamon file manager (GTK, feature-rich)
 ffmpegthumbnailer            # FFmpeg-based video thumbnail generator
 gnome-keyring                # GNOME keyring daemon for storing credentials/secrets
 libgsf                       # GNOME structured file library (OLE/compound doc support)
