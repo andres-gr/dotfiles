@@ -117,44 +117,44 @@ configure_workspaces_persistent() {
 }
 
 ###############################################################################
-# Install hyprtasking plugin
+# Install hymission plugin
 ###############################################################################
 
-install_hyprtasking() {
+install_hymission() {
   # Check if Hyprland plugin manager is available
   if ! command -v hyprpm &>/dev/null; then
-    log "hyprpm not found — skipping hyprtasking install"
+    log "hyprpm not found — skipping plugins install"
     return 0
   fi
 
   # Check if already installed
   local plugins
   plugins=$(hyprpm list 2>/dev/null) || true
-  if echo "$plugins" | grep -qi "hyprtasking"; then
-    log "hyprtasking already installed"
+  if echo "$plugins" | grep -qi "hymission"; then
+    log "hymission already installed"
     return 0
   fi
 
   if $DRY_RUN; then
-    log "[dry-run] would install hyprtasking plugin"
+    log "[dry-run] would install hymission plugin"
     return 0
   fi
 
-  step "Installing hyprtasking plugin"
+  step "Installing hymission plugin"
 
   # Add the plugin (this may ask for sudo password on first run)
-  run hyprpm add https://github.com/raybbian/hyprtasking || {
-    warn "Failed to add hyprtasking — skipping"
+  run hyprpm add https://github.com/gfhdhytghd/hymission || {
+    warn "Failed to add hymission — skipping"
     return 0
   }
 
   # Enable the plugin
-  run hyprpm enable hyprtasking || {
-    warn "Failed to enable hyprtasking — skipping"
+  run hyprpm enable hymission || {
+    warn "Failed to enable hymission — skipping"
     return 0
   }
 
-  ok "hyprtasking installed and enabled"
+  ok "hymission installed and enabled"
 }
 
 ###############################################################################
@@ -191,7 +191,7 @@ configure_steam_splash_hyprland() {
 hyprland_patches() {
   configure_steam_splash_hyprland
   configure_workspaces_persistent
+  install_hymission
   install_hyprland_config
-  install_hyprtasking
   reload_hyprland
 }
