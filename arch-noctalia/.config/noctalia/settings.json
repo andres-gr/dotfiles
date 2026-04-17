@@ -329,8 +329,8 @@
             "right": [
                 {
                     "enableOnStateLogic": false,
-                    "generalTooltipText": "App Defaults",
-                    "icon": "apps",
+                    "generalTooltipText": "Default Applications",
+                    "icon": "apps-filled",
                     "id": "CustomButton",
                     "onClicked": "qs -c noctalia-shell ipc call plugin:mimeapp-gui open",
                     "onMiddleClicked": "",
