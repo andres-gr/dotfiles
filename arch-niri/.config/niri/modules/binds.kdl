@@ -300,6 +300,12 @@ binds {
     Mod+Shift+C hotkey-overlay-title="Center Visible Columns" {
         center-visible-columns
     }
+    Mod+Space hotkey-overlay-title="Center Column" {
+        center-column
+    }
+    Mod+Shift+Space hotkey-overlay-title="Center Visible Columns" {
+        center-visible-columns
+    }
     // === Manual Sizing ===
     Mod+Minus hotkey-overlay-title="Decrease Column Width" {
         set-column-width "-10%"
