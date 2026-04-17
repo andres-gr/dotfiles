@@ -161,14 +161,30 @@ install_hymission() {
 }
 
 ###############################################################################
-# Configure Steam Splash in Hyprland
+# Configure Splash in Hyprland
 ###############################################################################
 
-configure_steam_splash_hyprland() {
+configure_splash_hyprland() {
   local hypr_root="$HOME/.config/hypr/modules/root.conf"
+  local splashes_dir="$HOME/.local/assets/splashes"
 
   # Extract tarball (install script handles check)
   install_splash_screens
+
+  # Check if splashes directory exists
+  if [[ ! -d "$splashes_dir" ]]; then
+    log "Splashes directory not found at $splashes_dir — skipping"
+    return 0
+  fi
+
+  # Get available splashes
+  local -a available_splashes
+  mapfile -t available_splashes < <(find "$splashes_dir" -maxdepth 1 -type f \( -name "*.mp4" -o -name "*.webm" -o -name "*.gif" \) -printf '%f\n' | sort)
+
+  if (( ${#available_splashes[@]} == 0 )); then
+    log "No splash videos found in $splashes_dir — skipping"
+    return 0
+  fi
 
   # Check if symlink and resolve to actual file
   if [[ -L "$hypr_root" ]]; then
@@ -177,14 +193,52 @@ configure_steam_splash_hyprland() {
     hypr_root="$real_root"
   fi
 
-  # Already configured?
-  [[ -f "$hypr_root" ]] && grep -q "splash-screen-animation" "$hypr_root" && return 0
+  # Already configured with splash?
+  if [[ -f "$hypr_root" ]] && grep -q "splash-screen-animation" "$hypr_root"; then
+    log "Splash already configured — skipping"
+    return 0
+  fi
 
-  $DRY_RUN && { log "[dry-run] would add splash exec-once"; return 0; }
+  # Interactive selection
+  if $INTERACTIVE; then
+    log "Select splash animation to use:"
+    local -a choices=()
+    for s in "${available_splashes[@]}"; do
+      choices+=("$s")
+    done
 
-  step "Adding splash to Hyprland config"
-  run sed -i '/^exec-once = dbus-update/a exec-once = ~/.local/bin/splash-screen-animation' "$hypr_root"
-  ok "Splash added to root.conf"
+    local sel
+    sel="$(interactive_select --exit "${choices[@]}")" || true
+
+    if [[ -z "$sel" || "$sel" == "Exit" || "$sel" == "Skip" ]]; then
+      log "No splash selected — skipping"
+      return 0
+    fi
+
+    local selected_splash="$sel"
+
+    # Ask for duration
+    local duration="3s"
+    if command -v gum &>/dev/null; then
+      duration=$(gum input --placeholder="Enter splash duration (e.g., 3s, 5s)" --value "3" || true)
+      [[ -z "$duration" ]] && duration="3s"
+    else
+      log "gum not found — using default duration: 9.3s"
+    fi
+
+    $DRY_RUN && { log "[dry-run] would add splash: $selected_splash for $duration"; return 0; }
+
+    step "Adding splash to Hyprland config"
+    run sed -i '/^exec-once = dbus-update/a exec-once = STARTUP_SPLASH='"$selected_splash"' STARTUP_SPLASH_DURATION='"$duration"' ~/.local/bin/splash-screen-animation' "$hypr_root"
+    ok "Splash added to root.conf"
+  else
+    # Non-interactive: use default
+    $DRY_RUN && { log "[dry-run] would add splash exec-once"; return 0; }
+
+    step "Adding splash to Hyprland config"
+    run sed -i '/^exec-once = dbus-update/a exec-once = STARTUP_SPLASH=steam-girl.mp4 STARTUP_SPLASH_DURATION=9.3 ~/.local/bin/splash-screen-animation' "$hypr_root"
+    ok "Splash added to root.conf"
+  fi
 }
 
 ###############################################################################
@@ -192,7 +246,7 @@ configure_steam_splash_hyprland() {
 ###############################################################################
 
 hyprland_patches() {
-  configure_steam_splash_hyprland
+  configure_splash_hyprland
   configure_workspaces_persistent
   install_hymission
   install_hyprland_config
