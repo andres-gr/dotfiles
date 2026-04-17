@@ -23,7 +23,7 @@ binds {
     Ctrl+Shift+Escape hotkey-overlay-title="Btop Process Monitor" {
         spawn-sh "exec ghostty -e zsh -c btop"
     }
-    Mod+Ctrl+Alt+E {
+    Mod+Ctrl+Alt+Backspace {
         quit
     }
     // === Window Management ===
@@ -32,12 +32,6 @@ binds {
     }
     Mod+Shift+Q repeat=false hotkey-overlay-title="Kill Window" {
         spawn-sh "niri msg -j focused-window | jq '.pid' | xargs pkill -p -9"
-    }
-    Mod+Return hotkey-overlay-title="Maximize Column" {
-        maximize-column
-    }
-    Mod+Shift+Return hotkey-overlay-title="Toggle Fullscreen" {
-        fullscreen-window
     }
     Mod+D hotkey-overlay-title="Toggle Floating" {
         toggle-window-floating
@@ -282,16 +276,22 @@ binds {
         expel-window-from-column
     }
     // === Sizing & Layout ===
-    Mod+R hotkey-overlay-title="Switch Preset Window Width" {
+    Mod+Return hotkey-overlay-title="Maximize Column" {
+        maximize-column
+    }
+    Mod+Shift+Return hotkey-overlay-title="Toggle Fullscreen" {
+        fullscreen-window
+    }
+    Mod+Backslash hotkey-overlay-title="Switch Preset Window Width" {
         switch-preset-column-width
     }
-    Mod+Shift+R hotkey-overlay-title="Switch Preset Window Height" {
+    Mod+Shift+Backslash hotkey-overlay-title="Switch Preset Window Height" {
         switch-preset-window-height
     }
-    Mod+Ctrl+R hotkey-overlay-title="Reset Window Width" {
+    Mod+Ctrl+Backslash hotkey-overlay-title="Reset Window Width" {
         reset-window-height
     }
-    Mod+Ctrl+F hotkey-overlay-title="Expand Column To Available Width" {
+    Mod+Ctrl+Return hotkey-overlay-title="Expand Column To Available Width" {
         expand-column-to-available-width
     }
     Mod+C hotkey-overlay-title="Center Column" {
