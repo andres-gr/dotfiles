@@ -1,0 +1,40 @@
+prefer-no-csd
+
+config-notification {
+    disable-failed
+}
+
+gestures {
+    hot-corners {
+        off
+    }
+}
+
+hotkey-overlay {
+    hide-not-bound
+    skip-at-startup
+}
+
+environment {
+    XDG_CURRENT_DESKTOP "niri"
+    XDG_SESSION_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
+}
+
+output "{{secondary_monitor}}" {
+    off
+}
+output "{{main_monitor}}" {
+    mode "2560x1440@120.000"
+    scale 1
+    position x=0 y=0
+    focus-at-startup
+}
+
+layout {
+    background-color "transparent"
+}
+
+spawn-at-startup "sddm-greeter-qt6" "--socket" "$WAYLAND_DISPLAY"
+
+spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"

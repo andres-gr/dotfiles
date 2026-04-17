@@ -685,7 +685,6 @@ SCRIPTEOF
 
 install_sddm_wayland_config() {
   local sddm_conf_dir="/etc/sddm.conf.d"
-  local niri_outputs="$HOME/.config/niri/modules/outputs.kdl"
 
   # Check if SDDM is installed
   if ! command -v sddm &>/dev/null; then
@@ -693,95 +692,133 @@ install_sddm_wayland_config() {
     return 0
   fi
 
-  local primary_connector=""
-  local primary_width=""
-  local primary_height=""
-  local primary_rate=""
+  # Determine which compositor config to use
+  local compositor_conf=""
+  case "$COMPOSITOR" in
+    hyprland)
+      compositor_conf="$DOTFILES_DIR/scripts/patches/data/sddm-hypr.conf"
+      ;;
+    niri)
+      compositor_conf="$DOTFILES_DIR/scripts/patches/data/sddm-niri.kdl"
+      ;;
+    *)
+      log "No SDDM Wayland config for compositor: $COMPOSITOR — skipping"
+      return 0
+      ;;
+  esac
 
-  # Priority 1: Hyprland - use hyprctl to get monitor with id=0
-  if command -v hyprctl &>/dev/null; then
-    # Get primary monitor data
-    local hypr_data
-    hypr_data=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select (.id == 0)' || true)
-
-    if [[ -n "$hypr_data" ]]; then
-      primary_connector=$(echo "$hypr_data" | jq -r '.name' || true)
-      primary_width=$(echo "$hypr_data" | jq -r '.width' || true)
-      primary_height=$(echo "$hypr_data" | jq -r '.height' || true)
-      primary_rate=$(echo "$hypr_data" | jq -r '.refreshRate' || true)
-
-      # Clean rate (remove decimal if present)
-      primary_rate=${primary_rate%.*}
-
-      log "Primary monitor (Hyprland): $primary_connector ${primary_width}x${primary_height} @ ${primary_rate}Hz"
-    fi
-  fi
-
-  # Priority 2: Niri config - detect from position x=0 y=0
-  if [[ -z "$primary_connector" && -f "$niri_outputs" ]]; then
-    primary_connector=$(awk -F'"' '/output /{name=$2} /position x=0 y=0/{print name}' "$niri_outputs" 2>/dev/null || true)
-    log "Primary monitor (Niri): $primary_connector"
-
-    # Extract mode from niri config
-    if [[ -n "$primary_connector" ]]; then
-      local niri_mode
-      niri_mode=$(awk -v model="$primary_connector" '
-        /^output/ { in_output=0 }
-        $0 ~ model { in_output=1 }
-        /^}/ { in_output=0 }
-        /mode/ && in_output { gsub(/"/, ""); print $2; exit }
-      ' "$niri_outputs" 2>/dev/null || true)
-
-      if [[ -n "$niri_mode" ]]; then
-        primary_width=$(echo "$niri_mode" | cut -d'x' -f1)
-        primary_height=$(echo "$niri_mode" | cut -d'@' -f1 | cut -d'x' -f2)
-        primary_rate=$(echo "$niri_mode" | grep -oP '@\K[0-9.]+' || true)
-        primary_rate=${primary_rate%.*}
-      fi
-    fi
-  fi
-
-  # Fallback for rate
-  if [[ -z "$primary_rate" ]]; then
-    primary_rate="60"
-  fi
-
-  # Check if we have required data
-  if [[ -z "$primary_connector" || -z "$primary_width" ]]; then
-    log "Could not detect primary monitor — skipping Wayland config"
+  # Check if source config exists
+  if [[ ! -f "$compositor_conf" ]]; then
+    log "SDDM config template not found at $compositor_conf — skipping"
     return 0
   fi
 
-  # Check if already configured (same monitor + mode)
-  local existing_conf="$sddm_conf_dir/10-wayland.conf"
-  if [[ -f "$existing_conf" ]]; then
-    if grep -q "output $primary_connector" "$existing_conf" && \
-      grep -q "$primary_width"x"$primary_height" "$existing_conf"; then
-      log "SDDM Wayland already configured for $primary_connector — skipping"
+  # Get available monitors
+  local -a monitors=()
+  if command -v wlr-randr &>/dev/null && command -v jq &>/dev/null; then
+    mapfile -t monitors < <(wlr-randr --json 2>/dev/null | jq -r '.[].description' 2>/dev/null | while read -r m; do
+        # Strip the connector part like "(DP-1)"
+        printf '%s\n' "${m% (*}"
+    done)
+  fi
+
+  if (( ${#monitors[@]} == 0 )); then
+    log "Could not detect monitors via wlr-randr — skipping SDDM config"
+    return 0
+  fi
+
+  local main_monitor=""
+  local secondary_monitor=""
+
+  if (( ${#monitors[@]} == 1 )); then
+    main_monitor="${monitors[0]}"
+    secondary_monitor=""
+    log "Single monitor detected: $main_monitor"
+  elif $INTERACTIVE; then
+    # Interactive: ask user to select main monitor
+    log "Select main monitor:"
+    local -a choices=()
+    for m in "${monitors[@]}"; do
+      choices+=("$m")
+    done
+
+    local sel
+    sel="$(interactive_select --exit "${choices[@]}")" || true
+
+    if [[ -z "$sel" || "$sel" == "Exit" || "$sel" == "Skip" ]]; then
+      log "No monitor selected — skipping SDDM config"
       return 0
     fi
+
+    main_monitor="$sel"
+    for m in "${monitors[@]}"; do
+      [[ "$m" != "$main_monitor" ]] && secondary_monitor="$m" && break
+    done
+  else
+    # Non-interactive: use first as main
+    main_monitor="${monitors[0]}"
+    for m in "${monitors[@]}"; do
+      [[ "$m" != "$main_monitor" ]] && secondary_monitor="$m" && break
+    done
   fi
 
+  # Skip if no main monitor
+  [[ -z "$main_monitor" ]] && { log "No main monitor selected — skipping"; return 0; }
+
   if $DRY_RUN; then
-    log "[dry-run] would create SDDM Wayland config"
+    log "[dry-run] would create SDDM Wayland config for $main_monitor"
     return 0
   fi
 
-  step "Configuring SDDM Wayland"
+  # Create temp file with substituted values
+  local tmp_conf
+  tmp_conf=$(mktemp)
 
-  # Create Wayland config with kwin_wayland and explicit mode
-  run sudo mkdir -p "$sddm_conf_dir"
-  run sudo tee "$sddm_conf_dir/10-wayland.conf" >/dev/null << EOF
+  # Replace placeholders
+  sed -e "s|{{main_monitor}}|$main_monitor|g" \
+    -e "s|{{secondary_monitor}}|$secondary_monitor|g" \
+    "$compositor_conf" > "$tmp_conf"
+
+  # Create destination directory and copy
+  local sddm_config_dir="/var/lib/sddm/.config"
+  step "Installing SDDM Wayland config for $COMPOSITOR"
+
+  run sudo mkdir -p "$sddm_config_dir"
+
+  if [[ "$COMPOSITOR" == "hyprland" ]]; then
+    run sudo mkdir -p "$sddm_config_dir/hypr"
+    run sudo cp "$tmp_conf" "$sddm_config_dir/hypr/hyprland.conf"
+  elif [[ "$COMPOSITOR" == "niri" ]]; then
+    run sudo mkdir -p "$sddm_config_dir/niri"
+    run sudo cp "$tmp_conf" "$sddm_config_dir/niri/config.kdl"
+  fi
+
+  rm -f "$tmp_conf"
+
+  # Set ownership
+  run sudo chown -R sddm:sddm "$sddm_config_dir"
+
+  # Update SDDM Wayland config file
+  step "Updating SDDM Wayland config"
+  run sudo mkdir -p "/etc/sddm.conf.d"
+
+  local compositor_cmd=""
+  if [[ "$COMPOSITOR" == "hyprland" ]]; then
+    compositor_cmd="start-hyprland -c /var/lib/sddm/.config/hypr/hyprland.conf"
+  elif [[ "$COMPOSITOR" == "niri" ]]; then
+    compositor_cmd="niri-session --config /var/lib/sddm/.config/niri/config.kdl"
+  fi
+
+  run sudo tee "/etc/sddm.conf.d/10-wayland.conf" >/dev/null << EOF
 [General]
 DisplayServer=wayland
 GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell
 
 [Wayland]
-CompositorCommand=kwin_wayland --drm --output $primary_connector --mode ${primary_width}x${primary_height}@${primary_rate}
-PrimaryMonitor=$primary_connector
+CompositorCommand=$compositor_cmd
 EOF
 
-  ok "Configured SDDM Wayland: $primary_connector ${primary_width}x${primary_height} @ ${primary_rate}Hz"
+  ok "SDDM Wayland config installed: $main_monitor"
 }
 
 ###############################################################################
