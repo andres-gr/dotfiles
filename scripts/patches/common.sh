@@ -806,7 +806,7 @@ install_sddm_wayland_config() {
   if [[ "$COMPOSITOR" == "hyprland" ]]; then
     compositor_cmd="start-hyprland -c /var/lib/sddm/.config/hypr/hyprland.conf"
   elif [[ "$COMPOSITOR" == "niri" ]]; then
-    compositor_cmd="niri-session --config /var/lib/sddm/.config/niri/config.kdl"
+    compositor_cmd="niri -c /var/lib/sddm/.config/niri/config.kdl"
   fi
 
   run sudo tee "/etc/sddm.conf.d/10-wayland.conf" >/dev/null << EOF
