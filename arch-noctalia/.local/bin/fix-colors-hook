@@ -5,7 +5,7 @@
 # fi
 
 # Configuration: Set your preferred theme names here
-DARK_ICONS="Tela-circle-dracula"
+DARK_ICONS="Tela-circle-dark"
 LIGHT_ICONS="Tela-circle"
 
 # 1. Detect current Noctalia/System mode

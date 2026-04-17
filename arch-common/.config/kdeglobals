@@ -133,8 +133,9 @@ ForegroundPositive=138,255,128
 ForegroundVisited=255,222,238
 
 [General]
-ColorScheme=noctalia
+ColorScheme=Noctalia
 TerminalApplication=ghostty
+Name=noctalia
 
 [Icons]
 Theme=Tela-circle
