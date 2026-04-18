@@ -47,13 +47,21 @@ install_niri_config() {
 ###############################################################################
 
 configure_splash_niri() {
-  local niri_root="$HOME/.config/niri/modules/root.kdl"
-  local splashes_dir="$HOME/.local/assets/splashes"
+  local niri_conf="$HOME/.config/niri"
+  local niri_splash_conf="$niri_conf/splash.kdl"
+  local niri_temp_binds="$niri_conf/splash-temp-binds.kdl"
+  local splash_template="$DOTFILES_DIR/scripts/patches/data/splash-niri-config.kdl"
+  local niri_main="$niri_conf/config.kdl"
+
+  # Check for timestamp of previous splash selection
+  local prev_ts
+  prev_ts=$(get_selection_timestamp "splashes" "niri")
 
   # Extract tarball (install script handles check)
   install_splash_screens
 
   # Check if splashes directory exists
+  local splashes_dir="$HOME/.local/assets/splashes"
   if [[ ! -d "$splashes_dir" ]]; then
     log "Splashes directory not found at $splashes_dir — skipping"
     return 0
@@ -68,18 +76,40 @@ configure_splash_niri() {
     return 0
   fi
 
-  # Check if Niri config directory exists
-  mkdir -p "$HOME/.config/niri/modules"
+  # Create Niri config directory
+  run mkdir -p "$niri_conf"
 
   # Already configured with splash?
-  if [[ -f "$niri_root" ]] && grep -q "splash-screen-animation" "$niri_root"; then
-    log "Splash already configured — skipping"
-    return 0
+  if [[ -f "$niri_splash_conf" ]] && grep -q "splash-screen-animation" "$niri_splash_conf"; then
+    local msg="Splash already configured"
+    [[ -n "$prev_ts" ]] && msg="$msg (last applied: $prev_ts)"
+
+    # Ask if user wants to update
+    if $INTERACTIVE && command -v gum &>/dev/null; then
+      if gum confirm "$msg — update?"; then
+        log "Updating splash configuration..."
+        # Skip timestamp display during update
+        prev_ts=""
+      else
+        log "$msg — skipping"
+        return 0
+      fi
+    else
+      log "$msg — skipping"
+      return 0
+    fi
   fi
 
   # Interactive selection
+  local selected_splash=""
+  local duration="3s"
+
   if $INTERACTIVE; then
     log "Select splash animation to use:"
+    if [[ -n "$prev_ts" ]]; then
+      log "  (last applied: $prev_ts)"
+    fi
+
     local -a choices=()
     for s in "${available_splashes[@]}"; do
       choices+=("$s")
@@ -93,30 +123,49 @@ configure_splash_niri() {
       return 0
     fi
 
-    local selected_splash="$sel"
+    selected_splash="$sel"
 
     # Ask for duration
-    local duration="3"
     if command -v gum &>/dev/null; then
-      duration=$(gum input --placeholder="Enter splash duration (e.g., 3s, 5s)" --value "3" || true)
-      [[ -z "$duration" ]] && duration="3"
+      duration=$(gum input --placeholder="Enter splash duration (e.g., 3s, 5s)" --value "3s" || true)
+      [[ -z "$duration" ]] && duration="3s"
     else
       log "gum not found — using default duration: 3s"
     fi
-
-    $DRY_RUN && { log "[dry-run] would add splash: $selected_splash for $duration"; return 0; }
-
-    step "Adding splash to Niri config"
-    run sed -i '/^spawn-at-startup "dbus-update-activation-environment/a spawn-at-startup "STARTUP_SPLASH='"$selected_splash"'" "STARTUP_SPLASH_DURATION='"$duration"'" ~/.local/bin/splash-screen-animation' "$niri_root"
-    ok "Splash added to root.kdl"
   else
-    # Non-interactive: use default
-    $DRY_RUN && { log "[dry-run] would add splash exec-once"; return 0; }
-
-    step "Adding splash to Niri config"
-    run sed -i '/^spawn-at-startup "dbus-update-activation-environment/a spawn-at-startup "STARTUP_SPLASH=steam-girl.mp4" "STARTUP_SPLASH_DURATION=3" ~/.local/bin/splash-screen-animation' "$niri_root"
-    ok "Splash added to root.kdl"
+    # Non-interactive: use defaults
+    selected_splash="steam-girl.mp4"
+    duration="3s"
   fi
+
+  $DRY_RUN && { log "[dry-run] would add splash: $selected_splash for $duration"; return 0; }
+
+  # Verify template exists
+  if [[ ! -f "$splash_template" ]]; then
+    log "Splash template not found at $splash_template — skipping"
+    return 0
+  fi
+
+  # Copy and inject variables
+  step "Installing splash config for Niri"
+  run sed -e "s|{{splash}}|$selected_splash|g" \
+         -e "s|{{duration}}|$duration|g" \
+         "$splash_template" > "$niri_splash_conf"
+  ok "Splash config written to $niri_splash_conf"
+
+  # Create minimal temp binds file (valid KDL with comment)
+  run printf '# Custom keybinds can be added here\n' > "$niri_temp_binds"
+  ok "Temp binds file created at $niri_temp_binds"
+
+  # Uncomment include line in main config
+  if [[ -f "$niri_main" ]]; then
+    run sed -i 's|^[[:space:]]*//[[:space:]]*include "splash.kdl"|include "splash.kdl"|' "$niri_main"
+    ok "Splash include uncommented in config.kdl"
+  fi
+
+  # Track selection
+  update_selection "splashes" "niri=$selected_splash"
+  update_selection "splashes" "niri_duration=$duration"
 }
 
 ###############################################################################

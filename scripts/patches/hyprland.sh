@@ -165,13 +165,20 @@ install_hymission() {
 ###############################################################################
 
 configure_splash_hyprland() {
-  local hypr_root="$HOME/.config/hypr/modules/root.conf"
-  local splashes_dir="$HOME/.local/assets/splashes"
+  local hypr_conf="$HOME/.config/hypr"
+  local hypr_splash_conf="$hypr_conf/splash.conf"
+  local splash_template="$DOTFILES_DIR/scripts/patches/data/splash-hypr-config.conf"
+  local hypr_main="$hypr_conf/hyprland.conf"
+
+  # Check for timestamp of previous splash selection
+  local prev_ts
+  prev_ts=$(get_selection_timestamp "splashes" "hyprland")
 
   # Extract tarball (install script handles check)
   install_splash_screens
 
   # Check if splashes directory exists
+  local splashes_dir="$HOME/.local/assets/splashes"
   if [[ ! -d "$splashes_dir" ]]; then
     log "Splashes directory not found at $splashes_dir — skipping"
     return 0
@@ -186,22 +193,37 @@ configure_splash_hyprland() {
     return 0
   fi
 
-  # Check if symlink and resolve to actual file
-  if [[ -L "$hypr_root" ]]; then
-    local real_root
-    real_root=$(readlink -f "$hypr_root")
-    hypr_root="$real_root"
-  fi
-
   # Already configured with splash?
-  if [[ -f "$hypr_root" ]] && grep -q "splash-screen-animation" "$hypr_root"; then
-    log "Splash already configured — skipping"
-    return 0
+  if [[ -f "$hypr_splash_conf" ]] && grep -q "splash-screen-animation" "$hypr_splash_conf"; then
+    local msg="Splash already configured"
+    [[ -n "$prev_ts" ]] && msg="$msg (last applied: $prev_ts)"
+
+    # Ask if user wants to update
+    if $INTERACTIVE && command -v gum &>/dev/null; then
+      if gum confirm "$msg — update?"; then
+        log "Updating splash configuration..."
+        # Skip timestamp display during update
+        prev_ts=""
+      else
+        log "$msg — skipping"
+        return 0
+      fi
+    else
+      log "$msg — skipping"
+      return 0
+    fi
   fi
 
   # Interactive selection
+  local selected_splash=""
+  local duration="3s"
+
   if $INTERACTIVE; then
     log "Select splash animation to use:"
+    if [[ -n "$prev_ts" ]]; then
+      log "  (last applied: $prev_ts)"
+    fi
+
     local -a choices=()
     for s in "${available_splashes[@]}"; do
       choices+=("$s")
@@ -215,30 +237,46 @@ configure_splash_hyprland() {
       return 0
     fi
 
-    local selected_splash="$sel"
+    selected_splash="$sel"
 
     # Ask for duration
-    local duration="3s"
     if command -v gum &>/dev/null; then
-      duration=$(gum input --placeholder="Enter splash duration (e.g., 3s, 5s)" --value "3" || true)
+      duration=$(gum input --placeholder="Enter splash duration (e.g., 3s, 5s)" --value "3s" || true)
       [[ -z "$duration" ]] && duration="3s"
     else
-      log "gum not found — using default duration: 9.3s"
+      log "gum not found — using default duration: 3s"
     fi
-
-    $DRY_RUN && { log "[dry-run] would add splash: $selected_splash for $duration"; return 0; }
-
-    step "Adding splash to Hyprland config"
-    run sed -i '/^exec-once = dbus-update/a exec-once = STARTUP_SPLASH='"$selected_splash"' STARTUP_SPLASH_DURATION='"$duration"' ~/.local/bin/splash-screen-animation' "$hypr_root"
-    ok "Splash added to root.conf"
   else
-    # Non-interactive: use default
-    $DRY_RUN && { log "[dry-run] would add splash exec-once"; return 0; }
-
-    step "Adding splash to Hyprland config"
-    run sed -i '/^exec-once = dbus-update/a exec-once = STARTUP_SPLASH=steam-girl.mp4 STARTUP_SPLASH_DURATION=9.3 ~/.local/bin/splash-screen-animation' "$hypr_root"
-    ok "Splash added to root.conf"
+    # Non-interactive: use defaults
+    selected_splash="steam-girl.mp4"
+    duration="3s"
   fi
+
+  $DRY_RUN && { log "[dry-run] would add splash: $selected_splash for $duration"; return 0; }
+
+  # Verify template exists
+  if [[ ! -f "$splash_template" ]]; then
+    log "Splash template not found at $splash_template — skipping"
+    return 0
+  fi
+
+  # Copy and inject variables
+  step "Installing splash config for Hyprland"
+  run mkdir -p "$hypr_conf"
+  run sed -e "s|{{splash}}|$selected_splash|g" \
+         -e "s|{{duration}}|$duration|g" \
+         "$splash_template" > "$hypr_splash_conf"
+  ok "Splash config written to $hypr_splash_conf"
+
+  # Uncomment source line in main config
+  if [[ -f "$hypr_main" ]]; then
+    run sed -i 's|^[[:space:]]*#[[:space:]]*source = ./splash.conf|source = ./splash.conf|' "$hypr_main"
+    ok "Splash source uncommented in hyprland.conf"
+  fi
+
+  # Track selection
+  update_selection "splashes" "hyprland=$selected_splash"
+  update_selection "splashes" "hyprland_duration=$duration"
 }
 
 ###############################################################################

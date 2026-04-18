@@ -7,11 +7,11 @@ SCRIPT_DIR="${SCRIPT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" && pwd)}"
 
 install_splash_screens() {
   local splash_tar="$DOTFILES_DIR/scripts/patches/data/splash-screens.tar"
-  local dest_dir="$HOME/.local"
-  local bin_script="$dest_dir/bin/splash-screen-animation"
+  local dest_dir="$HOME/.local/assets"
+  local splashes_dir="$dest_dir/splashes"
 
   # Already installed?
-  [[ -f "$bin_script" ]] && {
+  [[ -d "$splashes_dir" ]] && {
     log "Splash screens already installed — skipping"
     return 0
   }
@@ -25,7 +25,7 @@ install_splash_screens() {
   $DRY_RUN && { log "[dry-run] would extract splash screens"; return 0; }
 
   step "Installing Splash Screens"
+  run mkdir -p "$dest_dir"
   run tar -xvf "$splash_tar" -C "$dest_dir"
-  run chmod +x "$bin_script"
-  ok "Splash screens installed to ~/.local"
+  ok "Splash screens installed to ~/.local/assets"
 }

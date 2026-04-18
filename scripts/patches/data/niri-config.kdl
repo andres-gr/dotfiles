@@ -19,3 +19,5 @@ include "modules/workspaces.kdl"
 
 // interchangeable modules bundle
 include "bundle.kdl"
+
+// include "splash.kdl"
