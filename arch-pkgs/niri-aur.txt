@@ -1,2 +1,2 @@
 # ── Niri-specific AUR ─────────────────────────────────────────────────
-# (packages that are installed or available for Niri)
+wayfreeze-git     # Wayland freeze utility

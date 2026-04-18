@@ -9,3 +9,6 @@ xdg-desktop-portal-hyprland  # XDG desktop portal backend for Hyprland (screen s
 
 # ── Misc Tools ────────────────────────────────────────────────────────────────
 xdotool                      # X11 automation tool
+
+# ── Hyprland extras ───────────────────────────────────────────────────────────
+hyprpicker                   # Wayland color picker for Hyprland

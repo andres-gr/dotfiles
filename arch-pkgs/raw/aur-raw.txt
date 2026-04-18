@@ -1,5 +1,6 @@
 cavasik
 claude-desktop-bin
+cpptrace
 hyprqt6engine
 nomacs-git
 pokego-bin
@@ -7,6 +8,7 @@ qt5ct-kde
 selectdefaultapplication-qt6-git
 systemd-boot-manager-git
 ttf-hack-ligatured
+wayfreeze-git
 yay-bin
 yay-bin-debug
 zinit

@@ -90,12 +90,14 @@ wireplumber                  # PipeWire session/policy manager
 
 # ── GPU & Graphics ────────────────────────────────────────────────────────────
 ffmpegthumbs                 # Video thumbnails for Dolphin
+grim                         # Wayland screenshot tool
 imagemagick                  # CLI image manipulation and conversion toolkit
 lib32-mesa-utils             # 32-bit Mesa OpenGL utilities (needed for some 32-bit apps/games)
 libxkbcommon                 # Library for keyboard handling
 mesa-utils                   # OpenGL utilities including glxinfo and glxgears
 mpvpaper                     # Run animated wallpapers in mpv
 rocminfo                     # ROCm hardware info utility
+slurp                        # Screenshot utility
 vulkan-radeon                # Vulkan driver for AMD GPUs (RADV)
 
 # ── Networking ────────────────────────────────────────────────────────────────
