@@ -160,7 +160,7 @@ configure_splash_niri() {
   ok "Splash config written to $niri_splash_conf"
 
   # Create minimal temp binds file (valid KDL with comment)
-  run printf '# Custom keybinds can be added here\n' > "$niri_temp_binds"
+  run printf '// Custom keybinds can be added here\n' > "$niri_temp_binds"
   ok "Temp binds file created at $niri_temp_binds"
 
   # Uncomment include line in main config
