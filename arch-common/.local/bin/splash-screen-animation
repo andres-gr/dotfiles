@@ -28,6 +28,7 @@ binds {
   Escape { spawn-sh "kill -TERM $SELF_PID"; }
   MouseLeft { spawn-sh "kill -TERM $SELF_PID"; }
   MouseRight { spawn-sh "kill -TERM $SELF_PID"; }
+  Return { spawn-sh "kill -TERM $SELF_PID"; }
   Space { spawn-sh "kill -TERM $SELF_PID"; }
 }
 EOF
@@ -35,6 +36,7 @@ EOF
     hyprctl keyword bind ",ESCAPE, exec, kill -TERM $SELF_PID"
     hyprctl keyword bind ",mouse:272, exec, kill -TERM $SELF_PID"
     hyprctl keyword bind ",mouse:273, exec, kill -TERM $SELF_PID"
+    hyprctl keyword bind ",RETURN, exec, kill -TERM $SELF_PID"
     hyprctl keyword bind ",SPACE, exec, kill -TERM $SELF_PID"
   fi
 }
@@ -46,12 +48,17 @@ unbind_keys() {
     hyprctl keyword unbind ",ESCAPE" 2>/dev/null || true
     hyprctl keyword unbind ",mouse:272" 2>/dev/null || true
     hyprctl keyword unbind ",mouse:273" 2>/dev/null || true
+    hyprctl keyword unbind ",RETURN" 2>/dev/null || true
     hyprctl keyword unbind ",SPACE" 2>/dev/null || true
   fi
 }
 
 # ── cleanup ───────────────────────────────────────────────────
 cleanup() {
+  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+    niri msg action do-screen-transition
+  fi
+
   pkill -f mpvpaper 2>/dev/null || true
   unbind_keys
   rm -f /tmp/splash-black.png /tmp/splash.pid
