@@ -1,6 +1,7 @@
 #!/bin/env bash
 VIDEO="$HOME/.local/assets/splashes/$STARTUP_SPLASH"
 DURATION="$STARTUP_SPLASH_DURATION"
+VOLUME="$STARTUP_SPLASH_VOLUME" || "10"
 
 # ── monitor detection ─────────────────────────────────────────
 if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
@@ -72,7 +73,7 @@ echo $$ > /tmp/splash.pid
 
 magick -size "$RES" xc:black /tmp/splash-black.png
 
-mpvpaper -l overlay -o "--panscan=1 --af=volume=+12dB" "$MONITOR" "$VIDEO" &
+mpvpaper -l overlay -o "--panscan=1 --af=volume=+${VOLUME}dB" "$MONITOR" "$VIDEO" &
 
 for MON in $(echo "$ALL" | grep -v "^$MONITOR$"); do
   mpvpaper -l overlay -o "--loop" "$MON" /tmp/splash-black.png &

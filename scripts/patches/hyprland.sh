@@ -216,7 +216,8 @@ configure_splash_hyprland() {
 
   # Interactive selection
   local selected_splash=""
-  local duration="3s"
+  local duration="3"
+  local volume="5"
 
   if $INTERACTIVE; then
     log "Select splash animation to use:"
@@ -239,17 +240,21 @@ configure_splash_hyprland() {
 
     selected_splash="$sel"
 
-    # Ask for duration
+    # Ask for duration and volume
     if command -v gum &>/dev/null; then
-      duration=$(gum input --placeholder="Enter splash duration (e.g., 3s, 5s)" --value "3s" || true)
-      [[ -z "$duration" ]] && duration="3s"
+      duration=$(gum input --placeholder="Enter splash duration (e.g., 3s, 5s)" --value "3" || true)
+      [[ -z "$duration" ]] && duration="3"
+
+      volume=$(gum input --placeholder="Enter splash volume (0-100)" --value "5" || true)
+      [[ -z "$volume" ]] && volume="5"
     else
-      log "gum not found — using default duration: 3s"
+      log "gum not found — using defaults: duration=3, volume=50"
     fi
   else
     # Non-interactive: use defaults
     selected_splash="steam-girl.mp4"
-    duration="3s"
+    duration="3"
+    volume="5"
   fi
 
   $DRY_RUN && { log "[dry-run] would add splash: $selected_splash for $duration"; return 0; }
@@ -265,6 +270,7 @@ configure_splash_hyprland() {
   run mkdir -p "$hypr_conf"
   run sed -e "s|{{splash}}|$selected_splash|g" \
          -e "s|{{duration}}|$duration|g" \
+         -e "s|{{volume}}|$volume|g" \
          "$splash_template" > "$hypr_splash_conf"
   ok "Splash config written to $hypr_splash_conf"
 
@@ -277,6 +283,7 @@ configure_splash_hyprland() {
   # Track selection
   update_selection "splashes" "hyprland=$selected_splash"
   update_selection "splashes" "hyprland_duration=$duration"
+  update_selection "splashes" "hyprland_volume=$volume"
 }
 
 ###############################################################################
