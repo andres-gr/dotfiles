@@ -35,6 +35,6 @@ layout {
     background-color "transparent"
 }
 
-spawn-at-startup "sddm-greeter-qt6" "--socket" "$WAYLAND_DISPLAY"
+spawn-sh-at-startup "sddm-greeter-qt6 --socket $WAYLAND_DISPLAY"
 
-spawn-at-startup "dbus-update-activation-environment" "--systemd" "WAYLAND_DISPLAY" "XDG_CURRENT_DESKTOP"
+spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
