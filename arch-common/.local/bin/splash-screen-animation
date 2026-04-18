@@ -1,0 +1,82 @@
+#!/bin/env bash
+VIDEO="$HOME/.local/assets/splashes/$STARTUP_SPLASH"
+DURATION="$STARTUP_SPLASH_DURATION"
+
+# ── monitor detection ─────────────────────────────────────────
+if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+  ALL=$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[].value.name')
+  PRIMARY_JSON=$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[].value | select(.logical.x == 0)')
+  RES=$(echo "$PRIMARY_JSON" | jq -r '"\(.logical.width)x\(.logical.height)"')
+  MONITOR=$(echo "$PRIMARY_JSON" | jq -r '.name')
+  TEMP_BINDS="$HOME/.config/niri/splash-temp-binds.kdl"
+elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+  ALL=$(hyprctl monitors -j 2>/dev/null | jq -r '.[].name')
+  PRIMARY_JSON=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select(.id == 0) | {name,height,width}')
+  RES=$(echo "$PRIMARY_JSON" | jq -r '"\(.width)x\(.height)"')
+  MONITOR=$(echo "$PRIMARY_JSON" | jq -r '.name')
+else
+  exit 0
+fi
+
+# ── bind helpers ──────────────────────────────────────────────
+SELF_PID=$$
+
+bind_keys() {
+  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+    cat > "$TEMP_BINDS" <<EOF
+binds {
+  Escape { spawn-sh "kill -TERM $SELF_PID"; }
+  MouseLeft { spawn-sh "kill -TERM $SELF_PID"; }
+  MouseRight { spawn-sh "kill -TERM $SELF_PID"; }
+  Space { spawn-sh "kill -TERM $SELF_PID"; }
+}
+EOF
+  elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    hyprctl keyword bind ",ESCAPE, exec, kill -TERM $SELF_PID"
+    hyprctl keyword bind ",mouse:272, exec, kill -TERM $SELF_PID"
+    hyprctl keyword bind ",mouse:273, exec, kill -TERM $SELF_PID"
+    hyprctl keyword bind ",SPACE, exec, kill -TERM $SELF_PID"
+  fi
+}
+
+unbind_keys() {
+  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+    : > "$TEMP_BINDS"
+  elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    hyprctl keyword unbind ",ESCAPE" 2>/dev/null || true
+    hyprctl keyword unbind ",mouse:272" 2>/dev/null || true
+    hyprctl keyword unbind ",mouse:273" 2>/dev/null || true
+    hyprctl keyword unbind ",SPACE" 2>/dev/null || true
+  fi
+}
+
+# ── cleanup ───────────────────────────────────────────────────
+cleanup() {
+  pkill -f mpvpaper 2>/dev/null || true
+  unbind_keys
+  rm -f /tmp/splash-black.png /tmp/splash.pid
+}
+
+# ── main ──────────────────────────────────────────────────────
+pkill -f mpvpaper 2>/dev/null || true
+sleep 0.2
+
+echo $$ > /tmp/splash.pid
+
+magick -size "$RES" xc:black /tmp/splash-black.png
+
+mpvpaper -l overlay -o "--panscan=1 --af=volume=+12dB" "$MONITOR" "$VIDEO" &
+
+for MON in $(echo "$ALL" | grep -v "^$MONITOR$"); do
+  mpvpaper -l overlay -o "--loop" "$MON" /tmp/splash-black.png &
+done
+
+trap cleanup EXIT TERM INT
+
+bind_keys
+
+sleep "$DURATION" &
+SLEEP_PID=$!
+wait $SLEEP_PID
+
+exit 0
