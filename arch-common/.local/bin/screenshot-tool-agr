@@ -1,0 +1,228 @@
+#!/usr/bin/env bash
+# screenshot — universal Wayland capture → satty annotation
+# Usage: screenshot [full|screen|window|region]
+# Deps:  grim slurp satty wl-clipboard jq libnotify
+# Opt:   hyprpicker (freeze on Hyprland)
+#        wayfreeze (freeze on Niri / generic wlroots)
+
+set -euo pipefail
+
+# ── Dependency checks ───────────────────────────────────────────────────────
+
+check_deps() {
+  local missing=()
+  local required=(grim slurp satty wl-copy jq notify-send)
+
+  for cmd in "${required[@]}"; do
+    command -v "$cmd" &>/dev/null || missing+=("$cmd")
+  done
+
+  if [[ ${#missing[@]} -gt 0 ]]; then
+    echo "screenshot: missing required dependencies: ${missing[*]}" >&2
+    echo "  pacman: grim slurp wl-clipboard jq libnotify" >&2
+    echo "  aur:    satty" >&2
+    exit 1
+  fi
+}
+
+check_deps
+
+# ── Output dir setup ────────────────────────────────────────────────────────
+
+SAVE_DIR="${XDG_PICTURES_DIR:-$HOME/Pictures}/Screenshots"
+
+mkdir -p "$SAVE_DIR" || { echo "screenshot: cannot create $SAVE_DIR" >&2; exit 1; }
+
+if [[ ! -w "$SAVE_DIR" ]]; then
+  echo "screenshot: no write permission on $SAVE_DIR" >&2
+  exit 1
+fi
+
+TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+OUTFILE="$SAVE_DIR/screenshot_$TIMESTAMP.png"
+
+FREEZE_PID=""
+
+# ── Compositor detection ────────────────────────────────────────────────────
+
+COMPOSITOR="generic"
+[[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]] && COMPOSITOR="hyprland"
+[[ -n "${NIRI_SOCKET:-}" ]]                 && COMPOSITOR="niri"
+
+# ── Freeze helpers ──────────────────────────────────────────────────────────
+
+freeze_screen() {
+  case "$COMPOSITOR" in
+    hyprland)
+      if command -v hyprpicker &>/dev/null; then
+        hyprpicker --render-inactive &
+        FREEZE_PID=$!
+        sleep 0.15
+      fi
+      ;;
+    niri|generic)
+      if command -v wayfreeze &>/dev/null; then
+        wayfreeze &
+        FREEZE_PID=$!
+        sleep 0.1
+      fi
+      ;;
+  esac
+}
+
+unfreeze_screen() {
+  if [[ -n "$FREEZE_PID" ]]; then
+    kill "$FREEZE_PID" 2>/dev/null || true
+    FREEZE_PID=""
+  fi
+}
+
+trap unfreeze_screen EXIT
+
+# ── Notification helper — xdg-open decoupled from pipe ─────────────────────
+
+notify_done() {
+  local mode="$1"
+  local file="$2"
+
+  [[ -f "$file" ]] || return 0
+  command -v notify-send &>/dev/null || return 0
+
+  local label
+  case "$mode" in
+    full)   label="Full screen" ;;
+    screen) label="Output" ;;
+    window) label="Window" ;;
+    region) label="Region" ;;
+    *)      label="Screenshot" ;;
+  esac
+
+  # Capture the action response into a variable so xdg-open
+  # is not backgrounded inside the pipe — avoids the race with EXIT trap
+  local action
+  action=$(notify-send \
+      --app-name="screenshot" \
+      --icon="$file" \
+      --action="open=Open" \
+    "Screenshot saved" "$label → $(basename "$file")")
+
+  [[ "$action" == "open" && -f "$file" ]] && xdg-open "$file" &
+}
+
+# ── Satty pipe ──────────────────────────────────────────────────────────────
+
+pipe_to_satty() {
+  satty \
+    --filename - \
+    --output-filename "$OUTFILE" \
+    --copy-command "wl-copy" \
+    --early-exit
+}
+
+# ── Window geometry helpers ─────────────────────────────────────────────────
+
+window_hints() {
+  case "$COMPOSITOR" in
+    hyprland)
+      hyprctl clients -j \
+      | jq -r '
+                .[]
+                | select(.workspace.id > 0 and .mapped == true)
+                | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1]) \(.title)"
+              '
+      ;;
+    niri)
+      niri msg windows --json 2>/dev/null \
+      | jq -r '
+                .[]
+                | "\(.x // 0),\(.y // 0) \(.width // 100)x\(.height // 100) \(.title)"
+              ' 2>/dev/null
+      ;;
+  esac
+}
+
+# ── Capture modes ───────────────────────────────────────────────────────────
+
+MODE="${1:-region}"
+
+case "$MODE" in
+
+  full|all)
+    notify-send --app-name="screenshot" --transient \
+      "Screenshot" "Capturing all outputs…" 2>/dev/null
+    grim - | pipe_to_satty
+    notify_done "full" "$OUTFILE"
+    ;;
+
+  screen|output|monitor)
+    OUTPUT=$(slurp -o -f "%o" 2>/dev/null) || { echo "Cancelled"; exit 0; }
+    grim -o "$OUTPUT" - | pipe_to_satty
+    notify_done "screen" "$OUTFILE"
+    ;;
+
+  window)
+    freeze_screen
+    case "$COMPOSITOR" in
+      hyprland)
+        RAW=$(hyprctl activewindow -j 2>/dev/null) || RAW="{}"
+        GEOM=$(echo "$RAW" | jq -r '
+                    if .at and .size and (.size[0] > 0) and (.size[1] > 0)
+                    then "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"
+                    else ""
+                    end
+                ')
+        # No valid active window — fall back to interactive selection
+        if [[ -z "$GEOM" ]]; then
+          HINTS=$(window_hints)
+          if [[ -n "$HINTS" ]]; then
+            GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
+          else
+            GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
+          fi
+        fi
+        ;;
+      niri)
+        WIN=$(niri msg focused-window --json 2>/dev/null) || WIN="{}"
+        X=$(echo "$WIN" | jq -r '.x // 0')
+        Y=$(echo "$WIN" | jq -r '.y // 0')
+        W=$(echo "$WIN" | jq -r '.width // 0')
+        H=$(echo "$WIN" | jq -r '.height // 0')
+        # Fall back to interactive if geometry looks invalid
+        if [[ "$W" -eq 0 || "$H" -eq 0 ]]; then
+          HINTS=$(window_hints)
+          if [[ -n "$HINTS" ]]; then
+            GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
+          else
+            GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
+          fi
+        else
+          GEOM="$X,$Y ${W}x${H}"
+        fi
+        ;;
+      *)
+        HINTS=$(window_hints)
+        if [[ -n "$HINTS" ]]; then
+          GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
+        else
+          GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
+        fi
+        ;;
+    esac
+    unfreeze_screen
+    grim -g "$GEOM" - | pipe_to_satty
+    notify_done "window" "$OUTFILE"
+    ;;
+
+  region)
+    freeze_screen
+    GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
+    unfreeze_screen
+    grim -g "$GEOM" - | pipe_to_satty
+    notify_done "region" "$OUTFILE"
+    ;;
+
+  *)
+    echo "Usage: screenshot [full|screen|window|region]"
+    exit 1
+    ;;
+esac
