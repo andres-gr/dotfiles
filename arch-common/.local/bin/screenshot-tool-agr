@@ -131,13 +131,7 @@ window_hints() {
                 | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1]) \(.title)"
               '
       ;;
-    niri)
-      niri msg windows --json 2>/dev/null \
-      | jq -r '
-                .[]
-                | "\(.x // 0),\(.y // 0) \(.width // 100)x\(.height // 100) \(.title)"
-              ' 2>/dev/null
-      ;;
+      # niri branch removed — window mode now uses output geometry + slurp -r
   esac
 }
 
@@ -182,47 +176,31 @@ case "$MODE" in
         fi
         ;;
       niri)
-        WIN=$(niri msg focused-window --json 2>/dev/null) || WIN="{}"
-        X=$(echo "$WIN" | jq -r '.x // 0')
-        Y=$(echo "$WIN" | jq -r '.y // 0')
-        W=$(echo "$WIN" | jq -r '.width // 0')
-        H=$(echo "$WIN" | jq -r '.height // 0')
-        # Fall back to interactive if geometry looks invalid
-        if [[ "$W" -eq 0 || "$H" -eq 0 ]]; then
-          HINTS=$(window_hints)
-          if [[ -n "$HINTS" ]]; then
-            GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
-          else
-            GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
-          fi
-        else
-          GEOM="$X,$Y ${W}x${H}"
-        fi
-        ;;
-      *)
-        HINTS=$(window_hints)
-        if [[ -n "$HINTS" ]]; then
-          GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
-        else
-          GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
-        fi
-        ;;
-    esac
-    unfreeze_screen
-    grim -g "$GEOM" - | pipe_to_satty
-    notify_done "window" "$OUTFILE"
-    ;;
+        # niri doesn't expose absolute window coordinates via IPC,
+        # instead constrain slurp selection to the focused output bounds
+        # so on multi-monitor the selection stays on the right screen
+        OUTPUT_GEOMS=$(niri msg --json outputs \
+          | jq -r 'to_entries[]
+            | .value.logical
+            | "\(.x),\(.y) \(.width)x\(.height)"')
+          GEOM=$(echo "$OUTPUT_GEOMS" | slurp -r) || { echo "Cancelled"; exit 0; }
+          ;;
+      esac
+      unfreeze_screen
+      grim -g "$GEOM" - | pipe_to_satty
+      notify_done "window" "$OUTFILE"
+      ;;
 
-  region)
-    freeze_screen
-    GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
-    unfreeze_screen
-    grim -g "$GEOM" - | pipe_to_satty
-    notify_done "region" "$OUTFILE"
-    ;;
+    region)
+      freeze_screen
+      GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
+      unfreeze_screen
+      grim -g "$GEOM" - | pipe_to_satty
+      notify_done "region" "$OUTFILE"
+      ;;
 
-  *)
-    echo "Usage: screenshot [full|screen|window|region]"
-    exit 1
-    ;;
-esac
+    *)
+      echo "Usage: screenshot [full|screen|window|region]"
+      exit 1
+      ;;
+  esac
