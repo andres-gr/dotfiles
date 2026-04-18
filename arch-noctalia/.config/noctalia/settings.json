@@ -42,7 +42,7 @@
     "bar": {
         "autoHideDelay": 500,
         "autoShowDelay": 150,
-        "backgroundOpacity": 0.5,
+        "backgroundOpacity": 0.75,
         "barType": "floating",
         "capsuleColorKey": "none",
         "capsuleOpacity": 0.75,
