@@ -32,6 +32,9 @@ binds {
   Return { spawn-sh "kill -TERM $SELF_PID"; }
   Space { spawn-sh "kill -TERM $SELF_PID"; }
 }
+cursor {
+  hide-after-inactive-ms 1
+}
 EOF
   elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
     hyprctl keyword bind ",ESCAPE, exec, kill -TERM $SELF_PID"
