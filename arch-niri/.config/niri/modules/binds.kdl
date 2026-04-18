@@ -320,23 +320,17 @@ binds {
         set-window-height "+10%"
     }
     // === Screenshots ===
-    XF86Launch1 {
-        screenshot
-    }
-    Ctrl+XF86Launch1 {
-        screenshot-screen
-    }
-    Alt+XF86Launch1 {
-        screenshot-window
-    }
     Print hotkey-overlay-title="Screenshot" {
-        screenshot
+        spawn-sh "~/.local/bin/screenshot-tool-agr region"
+    }
+    Shift+Print hotkey-overlay-title="Screenshot Window" {
+        spawn-sh "~/.local/bin/screenshot-tool-agr window"
     }
     Ctrl+Print hotkey-overlay-title="Screenshot Screen" {
-        screenshot-screen
+        spawn-sh "~/.local/bin/screenshot-tool-agr screen"
     }
-    Alt+Print hotkey-overlay-title="Screenshot Window" {
-        screenshot-window
+    Mod+Print hotkey-overlay-title="Screenshot Full" {
+        spawn-sh "~/.local/bin/screenshot-tool-agr full"
     }
     // === System Controls ===
     Mod+Escape allow-inhibiting=false hotkey-overlay-title="Toggle Keyboard Shortcuts Inhibit" {
