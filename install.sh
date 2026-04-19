@@ -156,7 +156,7 @@ declare -A PATCH_FILES=(
 # Individual patch functions per patch file
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
-  [common]="apply_arch_patch_dconf bootstrap_spicetify configure_amdgpu_early_kms configure_bluetooth configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_sddm_wayland_config install_spicetify_comfy_theme install_splash_screens install_systemd_scripts install_tpm install_yazi_plugins rebuild_kde_menucache save_raw_arch_packages"
+  [common]="apply_arch_patch_dconf bootstrap_spicetify configure_amdgpu_early_kms configure_bluetooth configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_sddm_wayland_config install_sddm_x11_config install_spicetify_comfy_theme install_splash_screens install_systemd_scripts install_tpm install_yazi_plugins rebuild_kde_menucache save_raw_arch_packages"
   [hyprland]="configure_splash_hyprland configure_workspaces_persistent install_hymission install_hyprland_config reload_hyprland"
   [niri]="configure_splash_niri install_niri_config"
   [noctalia]="install_spotify_toast_plugin patch_zen_userchrome"
@@ -181,6 +181,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [install_noctalia_sddm_theme]="Install Noctalia SDDM theme with user dropdown"
   [install_pam_configs]="Install PAM configs for greetd"
   [install_sddm_wayland_config]="Configure SDDM for Wayland single display"
+  [install_sddm_x11_config]="Configure SDDM for X11 single display"
   [install_spicetify_comfy_theme]="Install/apply Comfy theme for Spicetify"
   [install_splash_screens]="Install splash screen animations to ~/.local"
   [install_systemd_scripts]="Install systemd scripts (e.g., system-sleep)"
