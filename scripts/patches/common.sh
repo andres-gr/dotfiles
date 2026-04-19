@@ -243,6 +243,107 @@ install_arch_patch_services() {
 }
 
 ###############################################################################
+# Plymouth Boot Splash Installation
+###############################################################################
+
+install_plymouth_boot_splash() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  # Check if plymouth is installed
+  if ! command -v plymouth &>/dev/null; then
+    log "plymouth not installed — skipping boot splash"
+    return 0
+  fi
+
+  local plymouth_tar="$DOTFILES_DIR/scripts/patches/data/plymouth.tar.gz"
+  local plymouth_dir="/usr/share/plymouth/themes/arch-slider-and-glow"
+
+  # Check tarball exists
+  [[ ! -f "$plymouth_tar" ]] && {
+    log "Plymouth tarball not found — skipping"
+    return 0
+  }
+
+  # Extract and install theme if not already present
+  if [[ ! -d "$plymouth_dir" ]]; then
+    if [[ "$DRY_RUN" != "true" ]]; then
+      step "Installing Plymouth theme"
+      run sudo tar -xvzf "$plymouth_tar" -C /usr/share/plymouth/themes/
+      ok "Plymouth theme extracted"
+
+      step "Setting Plymouth theme"
+      run sudo find "$plymouth_dir" -type d -exec chmod 755 {} +
+      run sudo find "$plymouth_dir" -type f -exec chmod 644 {} +
+      run sudo chown -R root:root "$plymouth_dir"
+      run sudo plymouth-set-default-theme -R arch-slider-and-glow
+      ok "Plymouth theme installed"
+    else
+      log "[dry-run] would install plymouth theme"
+    fi
+  else
+    log "Plymouth theme already installed"
+  fi
+
+  # Always update mkinitcpio.conf - ensure amdgpu is in MODULES (check for duplicate)
+  local mkinitcpio_conf="/etc/mkinitcpio.conf"
+  if [[ -f "$mkinitcpio_conf" ]]; then
+    if grep -q '^MODULES=(.*amdgpu' "$mkinitcpio_conf"; then
+      log "amdgpu already in MODULES"
+    else
+      step "Adding amdgpu to mkinitcpio.conf"
+      run sudo sed -i 's/^MODULES=(/MODULES=(amdgpu /' "$mkinitcpio_conf"
+      ok "amdgpu added to MODULES"
+    fi
+
+    # Ensure plymouth is in HOOKS before autodetect
+    if grep -q '^HOOKS=(.*plymouth.*autodetect' "$mkinitcpio_conf"; then
+      log "plymouth already in HOOKS"
+    else
+      step "Adding plymouth to HOOKS"
+      run sudo sed -i 's/\(HOOKS=(base udev \)\(autodetect\)/\1plymouth \2/' "$mkinitcpio_conf"
+      ok "plymouth added to HOOKS"
+    fi
+  fi
+
+  # Update kernel cmdline
+  local cmdline_file="/etc/kernel/cmdline"
+  local current_cmdline
+  current_cmdline=$(cat "$cmdline_file" 2>/dev/null)
+
+  # Build cmdline with quiet splash
+  local new_cmdline="$current_cmdline"
+
+  # Add quiet splash if not present
+  if ! echo "$new_cmdline" | grep -qw 'quiet'; then
+    new_cmdline="$new_cmdline quiet"
+  fi
+  if ! echo "$new_cmdline" | grep -qw 'splash'; then
+    new_cmdline="$new_cmdline splash"
+  fi
+
+  # Write new cmdline (skip in dry-run)
+  if [[ "$new_cmdline" != "$current_cmdline" ]]; then
+    if [[ "$DRY_RUN" != "true" ]]; then
+      step "Updating kernel cmdline"
+      run sudo tee "$cmdline_file" > /dev/null <<< "$new_cmdline"
+      ok "Kernel cmdline updated"
+    else
+      log "[dry-run] would update cmdline: $new_cmdline"
+    fi
+  fi
+
+  # Rebuild initramfs (skip in dry-run)
+  if [[ "$DRY_RUN" != "true" ]]; then
+    step "Rebuilding initramfs"
+    run sudo mkinitcpio -P
+    ok "Initramfs rebuilt"
+  fi
+
+  log "Plymouth boot splash configured"
+}
+
+###############################################################################
 # Main entry point for common patches
 ###############################################################################
 
@@ -251,6 +352,7 @@ common_patches() {
   install_arch_patch_services
   install_ghostty_misc_config
   install_pam_configs
+  install_plymouth_boot_splash
   install_spicetify_comfy_theme
   install_splash_screens
   install_systemd_scripts
