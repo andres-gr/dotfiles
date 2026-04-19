@@ -159,6 +159,12 @@ binds {
     Mod+Ctrl+Up {
         move-column-to-workspace-up
     }
+    Mod+Shift+Page_Down {
+        move-column-to-workspace-down
+    }
+    Mod+Shift+Page_Up {
+        move-column-to-workspace-up
+    }
     Mod+Shift+Period hotkey-overlay-title="Move To Workspace Down" {
         move-column-to-workspace-down
     }
@@ -166,10 +172,10 @@ binds {
         move-column-to-workspace-up
     }
     // === Move Workspaces ===
-    Mod+Shift+Page_Down {
+    Mod+Alt+Page_Down {
         move-workspace-down
     }
-    Mod+Shift+Page_Up {
+    Mod+Alt+Page_Up {
         move-workspace-up
     }
     Mod+Alt+Period hotkey-overlay-title="Move Workspace Down" {
