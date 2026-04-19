@@ -99,7 +99,7 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match app-id="^(C|c)laude$"
+    match app-id="com.anthropic.claude-desktop"
 
     default-column-width {
         proportion 0.7
