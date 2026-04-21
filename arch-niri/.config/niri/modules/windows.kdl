@@ -27,6 +27,29 @@ window-rule {
     geometry-corner-radius 12
 }
 window-rule {
+    match app-id="^org\\.wezfurlong\\.wezterm$"
+    match app-id="Alacritty"
+    match app-id="com.mitchellh.ghostty"
+    match app-id="kitty"
+    match app-id="zen"
+
+    draw-border-with-background false
+}
+window-rule {
+    match app-id="^org\\.kde\\.haruna$"
+    match app-id="^org\\.nomacs\\.ImageLounge$"
+
+    default-column-width {
+        proportion 0.95
+    }
+    default-window-height {
+        proportion 0.97
+    }
+    opacity 1.0
+}
+
+// Floating Windows
+window-rule {
     match app-id="^gnome-control-center$"
     match app-id="^nm-connection-editor$"
     match app-id="^pavucontrol$"
@@ -34,7 +57,7 @@ window-rule {
     default-column-width {
         proportion 0.5
     }
-    open-floating false
+    open-floating true
 }
 window-rule {
     match app-id="^blueman-manager$"
@@ -54,38 +77,10 @@ window-rule {
     open-focused false
 }
 window-rule {
-    match app-id="^org\\.wezfurlong\\.wezterm$"
-    match app-id="Alacritty"
-    match app-id="com.mitchellh.ghostty"
-    match app-id="kitty"
-    match app-id="zen"
-
-    draw-border-with-background false
-}
-window-rule {
     match app-id="firefox$" title="^Picture-in-Picture$"
     match app-id="zoom"
 
     open-floating true
-}
-window-rule {
-    match app-id="^(S|s)potify$"
-
-    open-focused false
-    open-maximized true
-    open-on-workspace "prim-2"
-}
-window-rule {
-    match app-id="^org\\.kde\\.haruna$"
-    match app-id="^org\\.nomacs\\.ImageLounge$"
-
-    default-column-width {
-        proportion 0.95
-    }
-    default-window-height {
-        proportion 0.97
-    }
-    opacity 1.0
 }
 window-rule {
     match app-id="zen" title="^Library$"
@@ -108,6 +103,26 @@ window-rule {
         proportion 0.8
     }
     open-floating true
+}
+window-rule {
+    match app-id="com.gabm.satty" title="^satty$"
+
+    default-column-width {
+        proportion 0.8
+    }
+    default-window-height {
+        proportion 0.8
+    }
+    open-floating true
+}
+
+// Open Windows on Workspaces
+window-rule {
+    match app-id="^(S|s)potify$"
+
+    open-focused false
+    open-maximized true
+    open-on-workspace "prim-2"
 }
 window-rule {
     match app-id="com.anthropic.claude-desktop"
