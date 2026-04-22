@@ -332,7 +332,7 @@
                     "generalTooltipText": "Default Applications",
                     "icon": "apps-filled",
                     "id": "CustomButton",
-                    "onClicked": "qs -c noctalia-shell ipc call plugin:mimeapp-gui open",
+                    "onClicked": "qs -c noctalia-shell ipc call plugin:mimeapp-gui openPanel",
                     "onMiddleClicked": "",
                     "onRightClicked": "",
                     "showExecTooltip": false,
