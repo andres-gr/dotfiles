@@ -167,6 +167,7 @@ install_hymission() {
 configure_splash_hyprland() {
   local hypr_conf="$HOME/.config/hypr"
   local hypr_splash_conf="$hypr_conf/splash.conf"
+  local hypr_temp_binds="$hypr_conf/splash-temp-binds.conf"
   local splash_template="$DOTFILES_DIR/scripts/patches/data/splash-hypr-config.conf"
   local hypr_main="$hypr_conf/hyprland.conf"
 
@@ -273,6 +274,10 @@ configure_splash_hyprland() {
          -e "s|{{volume}}|$volume|g" \
          "$splash_template" > "$hypr_splash_conf"
   ok "Splash config written to $hypr_splash_conf"
+
+  # Create minimal temp binds file (valid KDL with comment)
+  run printf '// Custom keybinds can be added here\n' > "$hypr_temp_binds"
+  ok "Temp binds file created at $hypr_temp_binds"
 
   # Uncomment source line in main config
   if [[ -f "$hypr_main" ]]; then

@@ -15,6 +15,7 @@ elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
   PRIMARY_JSON=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select(.id == 0) | {name,height,width}')
   RES=$(echo "$PRIMARY_JSON" | jq -r '"\(.width)x\(.height)"')
   MONITOR=$(echo "$PRIMARY_JSON" | jq -r '.name')
+  TEMP_BINDS="$HOME/.config/hypr/splash-temp-binds.conf"
 else
   exit 0
 fi
@@ -37,24 +38,21 @@ cursor {
 }
 EOF
   elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
-    hyprctl keyword bind ",ESCAPE, exec, kill -TERM $SELF_PID"
-    hyprctl keyword bind ",mouse:272, exec, kill -TERM $SELF_PID"
-    hyprctl keyword bind ",mouse:273, exec, kill -TERM $SELF_PID"
-    hyprctl keyword bind ",RETURN, exec, kill -TERM $SELF_PID"
-    hyprctl keyword bind ",SPACE, exec, kill -TERM $SELF_PID"
+    cat > "$TEMP_BINDS" <<EOF
+bind = , ESCAPE, exec, kill -TERM $SELF_PID
+bind = , mouse:272, exec, kill -TERM $SELF_PID
+bind = , mouse:273, exec, kill -TERM $SELF_PID
+bind = , RETURN, exec, kill -TERM $SELF_PID
+bind = , SPACE, exec, kill -TERM $SELF_PID
+cursor {
+  invisible = true
+}
+EOF
   fi
 }
 
 unbind_keys() {
-  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
-    : > "$TEMP_BINDS"
-  elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
-    hyprctl keyword unbind ",ESCAPE" 2>/dev/null || true
-    hyprctl keyword unbind ",mouse:272" 2>/dev/null || true
-    hyprctl keyword unbind ",mouse:273" 2>/dev/null || true
-    hyprctl keyword unbind ",RETURN" 2>/dev/null || true
-    hyprctl keyword unbind ",SPACE" 2>/dev/null || true
-  fi
+  : > "$TEMP_BINDS"
 }
 
 # ── cleanup ───────────────────────────────────────────────────
