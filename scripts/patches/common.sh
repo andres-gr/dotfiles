@@ -292,7 +292,7 @@ install_plymouth_boot_splash() {
       log "amdgpu already in MODULES"
     else
       step "Adding amdgpu to mkinitcpio.conf"
-      run sudo sed -i 's/^MODULES=(/MODULES=(amdgpu /' "$mkinitcpio_conf"
+      run sudo sed -i 's/^MODULES=(/MODULES=(amdgpu)/' "$mkinitcpio_conf"
       ok "amdgpu added to MODULES"
     fi
 
