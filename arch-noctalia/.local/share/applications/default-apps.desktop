@@ -2,7 +2,7 @@
 Name=Default Apps
 GenericName=Set default applications
 Comment=Set default applications
-Keywords=default;apps;applications;settings;
+Keywords=default;apps;applications;settings;mime;
 Icon=preferences-system
 Exec=qs -c noctalia-shell ipc call plugin:mimeapp-gui openPanel
 Type=Application
