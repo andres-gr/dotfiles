@@ -10,9 +10,25 @@ debug {
 //
 //
 environment {
+    _JAVA_AWT_WM_NONREPARENTING "1"
+    CLUTTER_BACKEND "wayland"
+    ELECTRON_OZONE_PLATFORM_HINT "auto"
+    GDK_BACKEND "wayland,x11"
+    JAVA_TOOL_OPTIONS "-Dawt.useSystemAAFontSettings=on"
+    MOZ_DBUS_REMOTE "true"
+    MOZ_ENABLE_WAYLAND "true"
+    NIXOS_OZONE_WL "true"
+    QT_AUTO_SCREEN_SCALE_FACTOR "1"
+    QT_QPA_PLATFORM "wayland"
+    QT_QPA_PLATFORMTHEME "qt6ct"
+    QT_QPA_PLATFORMTHEME_QT6 "qt6ct"
+    QT_WAYLAND_DISABLE_WINDOWDECORATION "true"
+    SDL_VIDEODRIVER "wayland"
     TERMINAL "ghostty"
     XDG_CURRENT_DESKTOP "niri"
+    XDG_MENU_PREFIX "arch-"
     XDG_SESSION_DESKTOP "niri"
+    XDG_SESSION_TYPE "wayland"
 }
 //
 //
