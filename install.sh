@@ -778,7 +778,24 @@ get_available_patches() {
     $os_match && available+=("$patch")
   done
 
-  printf '%s\n' "${available[@]}"
+  # Sort patches in desired order
+  local -a desired_order=(common hyprland niri noctalia dank hyde)
+  local -a sorted=()
+  for patch in "${desired_order[@]}"; do
+    for avail in "${available[@]}"; do
+      [[ "$avail" == "$patch" ]] && sorted+=("$avail") && break
+    done
+  done
+  # Add any patches not in desired_order
+  for avail in "${available[@]}"; do
+    local found=false
+    for patch in "${sorted[@]}"; do
+      [[ "$avail" == "$patch" ]] && found=true && break
+    done
+    $found || sorted+=("$avail")
+  done
+
+  printf '%s\n' "${sorted[@]}"
 }
 
 # get_patch_functions PATCH_NAME
