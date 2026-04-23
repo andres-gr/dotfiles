@@ -359,14 +359,14 @@
         "overviewEnabled": true
     },
     "dock": {
-        "animationSpeed": 1.35,
+        "animationSpeed": 1.5,
         "backgroundOpacity": 0.95,
         "colorizeIcons": false,
         "deadOpacity": 0.6,
         "displayMode": "auto_hide",
         "dockType": "floating",
         "enabled": true,
-        "floatingRatio": 1,
+        "floatingRatio": 0.4,
         "groupApps": true,
         "groupClickAction": "cycle",
         "groupContextMenuMode": "extended",
@@ -393,7 +393,7 @@
         "showDockIndicator": true,
         "showLauncherIcon": true,
         "sitOnFrame": false,
-        "size": 1.5
+        "size": 1.7
     },
     "general": {
         "allowPanelsOnScreenWithoutBar": true,
