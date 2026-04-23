@@ -134,8 +134,8 @@ ForegroundVisited=255,222,238
 
 [General]
 ColorScheme=Noctalia
-TerminalApplication=ghostty
 Name=noctalia
+TerminalApplication=ghostty
 
 [Icons]
 Theme=Tela-circle
@@ -162,6 +162,9 @@ Sort hidden files last=false
 Sort reversed=false
 Speedbar Width=105
 View Style=DetailTree
+
+[KShortcutsDialog Settings]
+Dialog Size=600,480
 
 [PreviewSettings]
 EnableRemoteFolderThumbnail=false
