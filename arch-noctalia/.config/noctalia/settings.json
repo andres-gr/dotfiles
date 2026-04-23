@@ -752,7 +752,7 @@
         "enabled": true,
         "favorites": [
         ],
-        "fillColor": "#22212c",
+        "fillColor": "#3b3950",
         "fillMode": "crop",
         "hideWallpaperFilenames": false,
         "linkLightAndDarkWallpapers": false,
@@ -778,7 +778,7 @@
         "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
         "sortOrder": "name",
-        "transitionDuration": 2000,
+        "transitionDuration": 2100,
         "transitionEdgeSmoothness": 0.05,
         "transitionType": [
             "disc",
