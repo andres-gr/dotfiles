@@ -5,11 +5,17 @@ local S = {
 }
 
 S.opts = {
-  lazygit = {},
+  lazygit = {
+    configure = true,
+    theme = {
+      selectedLineBgColor = { bg = 'NeoTreeCursorLine' }
+    }
+  },
 }
 
 S.keys = {
-  { '<leader>lg', function () Snacks.lazygit() end, desc = 'LazyGit' },
+  ---@diagnostic disable-next-line: undefined-global
+  { '<leader>lg', function() Snacks.lazygit() end, desc = 'LazyGit' },
 }
 
 return S
