@@ -253,14 +253,12 @@ cmd({ 'VimEnter', 'ColorScheme' }, {
   group = agr,
 })
 
-cmd('FileType', {
+cmd('BufEnter', {
   callback = function (event)
     local buf = event.buf
 
-    pcall(vim.keymap.del, 'i', 'jk', { buffer = buf })
-    pcall(vim.keymap.del, 'i', 'jj', { buffer = buf })
-    pcall(vim.keymap.del, 't', 'jk', { buffer = buf })
-    pcall(vim.keymap.del, 't', 'jj', { buffer = buf })
+    pcall(vim.keymap.set, 't', 'j', 'j', { buffer = buf, noremap = true, silent = true })
+    pcall(vim.keymap.set, 't', 'k', 'k', { buffer = buf, noremap = true, silent = true })
   end,
   group = general,
   pattern = 'snacks_*',
