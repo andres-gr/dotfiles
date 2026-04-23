@@ -36,8 +36,12 @@ fi
 (( $+commands[fnm] ))         && alias fud='fnm use default'
 (( $+commands[lazygit] ))     && alias lg='lazygit'
 (( $+commands[lolcat] ))      && alias lc='lolcat'
-(( $+commands[opencode] ))    && alias op='opencode'
 (( $+commands[tmux] ))        && alias tm='tmux'
+
+if (( $+commands[opencode] )); then
+  alias op='opencode'
+  alias opp='opencode --port'
+fi
 
 # --------------------------------------------------
 # Utilities
