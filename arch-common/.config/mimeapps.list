@@ -64,3 +64,4 @@ image/x-portable-pixmap=org.nomacs.ImageLounge.desktop
 image/x-xbitmap=org.nomacs.ImageLounge.desktop
 image/x-xpixmap=org.nomacs.ImageLounge.desktop
 x-scheme-handler/claude=com.anthropic.claude-desktop.desktop
+x-scheme-handler/slack=slack.desktop
