@@ -27,7 +27,7 @@ binds {
         quit
     }
     // === Window Management ===
-    Mod+W repeat=false hotkey-overlay-title="Close Window" {
+    Mod+Q repeat=false hotkey-overlay-title="Close Window" {
         close-window
     }
     Mod+Shift+Q repeat=false hotkey-overlay-title="Kill Window" {
