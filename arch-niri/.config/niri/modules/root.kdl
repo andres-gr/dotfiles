@@ -55,6 +55,10 @@ xwayland-satellite {
     path "xwayland-satellite"
 }
 
+// Sync the environment first
 spawn-sh-at-startup "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+
+// Wait for Niri's ScreenCast interface, then kick the portal
+spawn-sh-at-startup "timeout 10s sh -c 'while ! busctl --user status org.gnome.Mutter.ScreenCast >/dev/null 2>&1; do sleep 0.2; done'; pkill -f xdg-desktop-portal-gnome"
 
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
