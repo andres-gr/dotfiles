@@ -180,3 +180,6 @@ activeForeground=212,204,255
 inactiveBackground=34,33,44
 inactiveBlend=121,112,169
 inactiveForeground=121,112,169
+
+[Sounds]
+Enable=false
