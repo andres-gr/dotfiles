@@ -115,6 +115,18 @@ window-rule {
     }
     open-floating true
 }
+window-rule {
+    match title="^Open File$"
+
+    default-column-width {
+        proportion 0.4
+    }
+    default-window-height {
+        proportion 0.5
+    }
+    open-floating true
+    open-focused true
+}
 
 // Open Windows on Workspaces
 window-rule {
