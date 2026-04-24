@@ -116,7 +116,7 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match title="^Open File$"
+    match app-id="^(xdg-desktop-portal.*)" title="^(Open File|Location)$"
 
     default-column-width {
         proportion 0.4
