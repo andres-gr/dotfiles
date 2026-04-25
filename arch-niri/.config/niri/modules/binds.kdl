@@ -45,6 +45,9 @@ binds {
     Mod+Shift+U hotkey-overlay-title="Toggle Rule Opacity" {
         toggle-window-rule-opacity
     }
+    F20 hotkey-overlay-title="Grab and Move Window" {
+        spawn-sh "~/.local/bin/window-grab"
+    }
     // === Focus Navigation ===
     Mod+Left {
         focus-column-left
