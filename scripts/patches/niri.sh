@@ -237,7 +237,10 @@ WantedBy=multi-user.target
 EOF
 
   run sudo systemctl daemon-reload
-  run sudo systemctl enable --now ydotool.service
+  if ! run sudo systemctl enable --now ydotool.service; then
+    warn "ydotool service failed to start — check logs with: sudo journalctl -u ydotool.service"
+    return 1
+  fi
   ok "ydotool service enabled"
 
   # Verify socket with timeout loop
