@@ -237,7 +237,10 @@ WantedBy=multi-user.target
 EOF
 
   run sudo systemctl daemon-reload
-  if ! run sudo systemctl enable --now ydotool.service; then
+  run sudo systemctl enable ydotool.service
+
+  # Start service separately (enable --now can hang if service fails)
+  if ! run sudo systemctl start ydotool.service; then
     warn "ydotool service failed to start — check logs with: sudo journalctl -u ydotool.service"
     return 1
   fi
@@ -245,12 +248,16 @@ EOF
 
   # Verify socket with timeout loop
   step "Waiting for ydotoold socket"
+  local socket_exists=false
   for i in {1..10}; do
-    [[ -S /tmp/ydotool.sock ]] && break
+    if [[ -S /tmp/ydotool.sock ]]; then
+      socket_exists=true
+      break
+    fi
     sleep 0.5
   done
 
-  if [[ -S /tmp/ydotool.sock ]]; then
+  if $socket_exists; then
     ok "ydotool running, socket at /tmp/ydotool.sock"
   else
     warn "ydotoold socket not found — check: sudo journalctl -u ydotool.service"
