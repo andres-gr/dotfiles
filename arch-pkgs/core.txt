@@ -4,6 +4,7 @@ archlinux-xdg-menu           # XDG menu generator
 bat                          # Cat clone with syntax highlighting and git integration
 btop                         # Terminal resource monitor (CPU, RAM, disk, network)
 c-lolcat                     # Colorizes terminal output with a rainbow gradient
+evtest                       # Linux input device event monitor
 eza                          # Modern ls replacement with icons and git status
 fastfetch                    # Fast system info display (neofetch alternative)
 fd                           # Fast and user-friendly find alternative
@@ -37,6 +38,7 @@ vim                          # Classic terminal text editor
 wget                         # CLI HTTP/FTP downloader
 xdg-terminal-exec-git        # XDG spec utility for launching default terminal
 yazi                         # Terminal file manager with image preview support
+ydotool                      # Python wrapper for xdotool
 zoxide                       # Smart cd replacement that learns your frequently used dirs
 zsh                          # Z shell — feature-rich interactive shell
 zsh-completions              # Additional completion definitions for zsh
