@@ -158,7 +158,7 @@ declare -A PATCH_FILES=(
 declare -A PATCH_FUNCTIONS=(
   [common]="apply_arch_patch_dconf bootstrap_spicetify configure_amdgpu_early_kms configure_bluetooth configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_plymouth_boot_splash install_sddm_wayland_config install_sddm_x11_config install_spicetify_comfy_theme install_splash_screens install_systemd_scripts install_tpm install_yazi_plugins rebuild_kde_menucache save_raw_arch_packages"
   [hyprland]="configure_splash_hyprland configure_workspaces_persistent install_hymission install_hyprland_config reload_hyprland"
-  [niri]="configure_splash_niri install_niri_config"
+  [niri]="configure_splash_niri install_niri_config install_niri_window_grab"
   [noctalia]="install_spotify_toast_plugin patch_zen_userchrome"
   [dank]="reload_dms"
   [hyde]="backup_hyde_zsh ensure_hyde_completions hyde_post_install hyde_seed_config"
@@ -199,6 +199,7 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   # niri
   [configure_splash_niri]="Configure Splash in Niri"
   [install_niri_config]="Install main niri config.kdl"
+  [install_niri_window_grab]="Configure Niri window grab (ydotool)"
   # dank
   [reload_dms]="Reload Dank Material Shell"
   # noctalia

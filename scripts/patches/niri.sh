@@ -154,9 +154,9 @@ configure_splash_niri() {
   # Copy and inject variables
   step "Installing splash config for Niri"
   run sed -e "s|{{splash}}|$selected_splash|g" \
-         -e "s|{{duration}}|$duration|g" \
-         -e "s|{{volume}}|$volume|g" \
-         "$splash_template" > "$niri_splash_conf"
+    -e "s|{{duration}}|$duration|g" \
+    -e "s|{{volume}}|$volume|g" \
+    "$splash_template" > "$niri_splash_conf"
   ok "Splash config written to $niri_splash_conf"
 
   # Create minimal temp binds file (valid KDL with comment)
@@ -176,10 +176,93 @@ configure_splash_niri() {
 }
 
 ###############################################################################
+# Configure Niri window-grab script (ydotool)
+###############################################################################
+
+install_niri_window_grab() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  # Check if ydotool is installed
+  if ! command -v ydotool &>/dev/null; then
+    log "ydotool not installed — skipping window grab"
+    return 0
+  fi
+
+  local udev_rule="/etc/udev/rules.d/99-uinput.rules"
+  local systemd_service="/etc/systemd/system/ydotool.service"
+
+  # ── uinput module ──────────────────────────────────────────────────────────
+  step "Ensuring uinput kernel module is loaded"
+  if ! run sudo lsmod | grep -q uinput; then
+    run sudo modprobe uinput
+    ok "uinput module loaded"
+  fi
+
+  step "Configuring uinput module load"
+  run echo "uinput" | sudo tee /etc/modules-load.d/uinput.conf > /dev/null
+  ok "uinput added to modules-load.d"
+
+  # ── udev rule (input group access to uinput) ────────────────────────────────
+  step "Setting up udev rule for /dev/uinput"
+  run echo 'KERNEL=="uinput", GROUP="input", MODE="0660"' | sudo tee "$udev_rule" > /dev/null
+  run sudo udevadm control --reload-rules
+  run sudo udevadm trigger --name-match=uinput
+  ok "udev rule installed"
+
+  # ── input group ────────────────────────────────────────────────────────────
+  if ! groups | grep -q '\binput\b'; then
+    step "Adding $USER to input group"
+    run sudo usermod -aG input "$USER"
+    warn "Group change requires logout/login to take effect"
+    warn "Re-run this script after relogin to complete setup"
+    return 0
+  else
+    log "User already in input group"
+  fi
+
+  # ── ydotoold system service ────────────────────────────────────────────────
+  step "Creating ydotoold system service"
+  run sudo tee "$systemd_service" > /dev/null << 'EOF'
+[Unit]
+Description=ydotool daemon
+After=multi-user.target
+
+[Service]
+ExecStart=/usr/bin/ydotoold --socket-path /tmp/ydotool.sock --socket-perm 0666
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+  run sudo systemctl daemon-reload
+  run sudo systemctl enable --now ydotool.service
+  ok "ydotool service enabled"
+
+  # Verify socket with timeout loop
+  step "Waiting for ydotoold socket"
+  for i in {1..10}; do
+    [[ -S /tmp/ydotool.sock ]] && break
+    sleep 0.5
+  done
+
+  if [[ -S /tmp/ydotool.sock ]]; then
+    ok "ydotool running, socket at /tmp/ydotool.sock"
+  else
+    warn "ydotoold socket not found — check: sudo journalctl -u ydotool.service"
+    return 1
+  fi
+
+  log "Niri window grab configured"
+}
+
+###############################################################################
 # Main entry point for Niri patches
 ###############################################################################
 
 niri_patches() {
   configure_splash_niri
   install_niri_config
+  install_niri_window_grab
 }
