@@ -189,6 +189,12 @@ install_niri_window_grab() {
     return 0
   fi
 
+  # Skip if already configured and running
+  if [[ -S /tmp/ydotool.sock ]] && systemctl is-active --quiet ydotool.service 2>/dev/null; then
+    log "ydotool already configured and running"
+    return 0
+  fi
+
   local udev_rule="/etc/udev/rules.d/99-uinput.rules"
   local systemd_service="/etc/systemd/system/ydotool.service"
 
@@ -222,8 +228,12 @@ install_niri_window_grab() {
   fi
 
   # ── ydotoold system service ────────────────────────────────────────────────
-  step "Creating ydotoold system service"
-  run sudo tee "$systemd_service" > /dev/null << 'EOF'
+  # Check if already running
+  if systemctl is-active --quiet ydotool.service 2>/dev/null; then
+    log "ydotool service already running"
+  else
+    step "Creating ydotoold system service"
+    run sudo tee "$systemd_service" > /dev/null << 'EOF'
 [Unit]
 Description=ydotool daemon
 After=multi-user.target
@@ -236,17 +246,18 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-  run sudo systemctl daemon-reload
-  run sudo systemctl enable ydotool.service
+    run sudo systemctl daemon-reload
+    run sudo systemctl enable ydotool.service
 
-  # Start service separately (enable --now can hang if service fails)
-  if ! run sudo systemctl start ydotool.service; then
-    warn "ydotool service failed to start — check logs with: sudo journalctl -u ydotool.service"
-    return 1
+    # Start service separately
+    if ! run sudo systemctl start ydotool.service; then
+      warn "ydotool service failed to start — check logs with: sudo journalctl -u ydotool.service"
+      return 1
+    fi
+    ok "ydotool service enabled"
   fi
-  ok "ydotool service enabled"
 
-  # Verify socket with timeout loop
+  # Verify socket exists
   step "Waiting for ydotoold socket"
   local socket_exists=false
   for i in {1..10}; do

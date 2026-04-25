@@ -1,6 +1,6 @@
 #!/bin/env bash
 
-# niri-grab — simulate Super+LMB hold via F20 mouse button
+# window-grab — simulate Super+LMB hold via F20 mouse button
 # Grabs focused window on F20 press, releases on F20 release
 export YDOTOOL_SOCKET=/tmp/ydotool.sock
 
@@ -26,20 +26,32 @@ DEVICE=$(find /dev/input/by-id/ -name "*Logitech_USB_*-event-mouse" 2>/dev/null 
   DEVICE=$(find /dev/input/by-id/ -name "*Logitech*event-kbd" 2>/dev/null | head -1)
 
 if [[ -z "$DEVICE" ]]; then
-  notify-send "niri-grab" "No Logitech keyboard input device found" 2>/dev/null || true
+  notify-send "window-grab" "No Logitech keyboard input device found" 2>/dev/null || true
   exit 1
 fi
 
 # grab: Super down + LMB down
 ydotool key 125:1
-sleep 0.02
 ydotool click 0x40
 
 # block until F20 key release (value 0), ignore repeats (value 2)
-while IFS= read -r line; do
-  if echo "$line" | grep -q "KEY_F20), value 0$"; then
-    break
-  fi
-done < <(evtest "$DEVICE" 2>/dev/null)
+python3 - "$DEVICE" << 'PYEOF'
+import struct, sys
+
+DEVICE = sys.argv[1]
+EV_KEY = 1
+KEY_F20 = 190
+EVENT_FMT = "llHHi"
+EVENT_SIZE = struct.calcsize(EVENT_FMT)
+
+with open(DEVICE, 'rb') as f:
+    while True:
+        data = f.read(EVENT_SIZE)
+        if len(data) < EVENT_SIZE:
+            break
+        _, _, etype, code, value = struct.unpack(EVENT_FMT, data)
+        if etype == EV_KEY and code == KEY_F20 and value == 0:
+            break
+PYEOF
 
 # cleanup trap fires here: LMB up + Super up + lock removal
