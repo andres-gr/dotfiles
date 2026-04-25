@@ -1153,16 +1153,17 @@ configure_keyboard_layout() {
   local keymap="us"
   local model="pc105"
   local variant="altgr-intl"
+  local options="fkeys:basic_13-24"
 
   if $DRY_RUN; then
-    log "[dry-run] would set keyboard layout: $keymap $model $variant"
+    log "[dry-run] would set keyboard layout: $keymap $model $variant $options"
     return 0
   fi
 
   step "Configuring keyboard layout"
 
-  run sudo localectl set-x11-keymap "$keymap" "$model" "$variant"
-  ok "Set keyboard layout: $keymap $model $variant"
+  run sudo localectl set-x11-keymap "$keymap" "$model" "$variant" "$options"
+  ok "Set keyboard layout: $keymap $model $variant $options"
 
   log "Keyboard layout configured"
 }
