@@ -214,13 +214,7 @@
                     "unreadBadgeColor": "secondary"
                 },
                 {
-                    "clockColor": "none",
-                    "customFont": "",
-                    "formatHorizontal": "h:mm ap ddd, MMM d",
-                    "formatVertical": "HH mm - dd MM",
-                    "id": "plugin:weather-indicator",
-                    "tooltipFormat": "h:mm AP - dddd dd MMMM yyyy",
-                    "useCustomFont": false
+                    "id": "plugin:weather-indicator"
                 },
                 {
                     "clockColor": "none",
