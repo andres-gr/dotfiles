@@ -21,7 +21,7 @@ cleanup() {
 trap cleanup EXIT
 
 # find Logitech kbd device — prefer if01-event-kbd, fall back to bare event-kbd
-DEVICE=$(find /dev/input/by-id/ -name "*Logitech*if01-event-kbd" 2>/dev/null | head -1)
+DEVICE=$(find /dev/input/by-id/ -name "*Logitech_USB_*-event-mouse" 2>/dev/null | head -1)
 [[ -z "$DEVICE" ]] && \
   DEVICE=$(find /dev/input/by-id/ -name "*Logitech*event-kbd" 2>/dev/null | head -1)
 
