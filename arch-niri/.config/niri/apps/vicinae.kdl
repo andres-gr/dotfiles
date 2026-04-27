@@ -1,0 +1,16 @@
+spawn-sh-at-startup "vicinae server"
+
+binds {
+  Alt+Space repeat=false hotkey-overlay-title="Toggle Vicinae Launcher" {
+    spawn-sh "vicinae toggle"
+  }
+}
+
+layer-rule {
+  match namespace="^vicinae$"
+
+  background-effect {
+    blur true
+    xray false
+  }
+}
