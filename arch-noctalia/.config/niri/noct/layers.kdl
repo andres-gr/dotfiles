@@ -1,5 +1,15 @@
 // Set the overview wallpaper on the backdrop.
 layer-rule {
   match namespace="^noctalia-overview*"
+
   place-within-backdrop true
+}
+
+/* Noctalia: blur everywhere without xray for a better look */
+layer-rule {
+  match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+
+  background-effect {
+    xray false
+  }
 }
