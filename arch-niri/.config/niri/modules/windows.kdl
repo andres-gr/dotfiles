@@ -8,16 +8,42 @@ window-rule {
     draw-border-with-background false
     geometry-corner-radius 16
     tiled-state true
+
+    background-effect {
+        blur true
+        xray false
+    }
+
+    popups {
+        geometry-corner-radius 10
+        opacity 0.97
+
+        background-effect {
+            blur true
+            xray true
+
+            noise 0.05
+            saturation 3
+        }
+    }
 }
+
+blur {
+    noise 0.03
+    offset 3.0
+    passes 2
+    saturation 1.3
+}
+
 window-rule {
     match is-focused=true
 
-    opacity 0.98
+    opacity 0.95
 }
 window-rule {
     match is-focused=false
 
-    opacity 0.96
+    opacity 0.9
 }
 window-rule {
     match app-id="^org\\.gnome\\."

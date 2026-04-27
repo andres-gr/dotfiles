@@ -1,4 +1,25 @@
 layer-rule {
     match namespace="^quickshell$"
+
     place-within-backdrop true
+}
+
+// Enable blur behind the fuzzel launcher.
+layer-rule {
+    match namespace="^launcher$"
+
+    background-effect {
+        blur true
+    }
+}
+
+// Make top and overlay layers use the regular blur (if enabled),
+// while bottom and background layers keep using the efficient xray blur.
+layer-rule {
+    match layer="top"
+    match layer="overlay"
+
+    background-effect {
+        xray false
+    }
 }
