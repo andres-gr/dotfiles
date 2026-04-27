@@ -214,6 +214,13 @@
                     "unreadBadgeColor": "secondary"
                 },
                 {
+                    "defaultSettings": {
+                        "customColor": "none",
+                        "showConditionIcon": true,
+                        "showTempUnit": true,
+                        "showTempValue": true,
+                        "tooltipOption": "everything"
+                    },
                     "id": "plugin:weather-indicator"
                 },
                 {
@@ -379,7 +386,8 @@
         "pinnedApps": [
             "zen",
             "spotify",
-            "com.mitchellh.ghostty"
+            "com.mitchellh.ghostty",
+            "com.rtosta.zapzap"
         ],
         "pinnedStatic": true,
         "position": "bottom",
