@@ -51,7 +51,6 @@ configure_splash_niri() {
   local niri_splash_conf="$niri_conf/splash.kdl"
   local niri_temp_binds="$niri_conf/splash-temp-binds.kdl"
   local splash_template="$DOTFILES_DIR/scripts/patches/data/splash-niri-config.kdl"
-  local niri_main="$niri_conf/config.kdl"
 
   # Check for timestamp of previous splash selection
   local prev_ts
@@ -162,12 +161,6 @@ configure_splash_niri() {
   # Create minimal temp binds file (valid KDL with comment)
   run printf '// Custom keybinds can be added here\n' > "$niri_temp_binds"
   ok "Temp binds file created at $niri_temp_binds"
-
-  # Uncomment include line in main config
-  if [[ -f "$niri_main" ]]; then
-    run sed -i 's|^[[:space:]]*//[[:space:]]*include "splash.kdl"|include "splash.kdl"|' "$niri_main"
-    ok "Splash include uncommented in config.kdl"
-  fi
 
   # Track selection
   update_selection "splashes" "niri=$selected_splash"
