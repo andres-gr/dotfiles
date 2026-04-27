@@ -386,8 +386,8 @@
         "pinnedApps": [
             "zen",
             "spotify",
-            "com.mitchellh.ghostty",
-            "com.rtosta.zapzap"
+            "com.rtosta.zapzap",
+            "com.mitchellh.ghostty"
         ],
         "pinnedStatic": true,
         "position": "bottom",
