@@ -3,11 +3,13 @@ claude-desktop-bin
 cpptrace
 hyprqt6engine
 nomacs-git
+obsidian-bin
 pokego-bin
 qt5ct-kde
 selectdefaultapplication-qt6-git
 systemd-boot-manager-git
 ttf-hack-ligatured
+vicinae-bin
 wayfreeze-git
 yay-bin
 yay-bin-debug

@@ -42,6 +42,7 @@ duf
 efibootmgr
 efitools
 ethtool
+evtest
 exfatprogs
 eza
 f2fs-tools
@@ -54,6 +55,7 @@ fnm
 font-manager
 fontforge
 fortune-mod
+freerdp-git
 fsarchiver
 fuse2
 fuzzel
@@ -106,9 +108,11 @@ lib32-opencl-mesa
 lib32-vulkan-radeon
 libdvdcss
 libgsf
+libinput-tools
 libnotify
 libopenraw
 libpulse
+libratbag
 libxkbcommon
 linux
 linux-firmware
@@ -157,6 +161,7 @@ pacman-contrib
 pamixer
 parallel
 pavucontrol
+piper
 pipewire
 pipewire-alsa
 pipewire-jack
@@ -167,6 +172,8 @@ playerctl
 plocate
 plymouth
 pnpm
+podman
+podman-compose
 polkit-gnome
 power-profiles-daemon
 pv
@@ -193,6 +200,7 @@ sddm
 seahorse
 sg3_utils
 shelly
+slack-desktop
 slurp
 smartmontools
 socat
@@ -204,6 +212,7 @@ starship
 stow
 sudo
 sysfsutils
+teams-for-linux
 tela-circle-icon-theme-all
 tmux
 tree
@@ -232,9 +241,12 @@ ufw
 ufw-extras
 unrar
 unzip
+upscayl-desktop-git
+upscayl-models-desktop
 usb_modeswitch
 usbimager
 usbutils
+vesktop
 vim
 visual-studio-code-bin
 vlc-plugins-all
@@ -242,6 +254,7 @@ vulkan-headers
 vulkan-radeon
 wev
 wget
+winboat
 wireplumber
 wl-clip-persist
 wpa_supplicant
@@ -264,6 +277,7 @@ zapzap
 zen-browser-bin
 zenity
 zip
+zoom
 zoxide
 zram-generator
 zsh
