@@ -53,20 +53,21 @@ COMPOSITOR="generic"
 
 freeze_screen() {
   case "$COMPOSITOR" in
-    hyprland)
-      if command -v hyprpicker &>/dev/null; then
-        hyprpicker --render-inactive &
-        FREEZE_PID=$!
-        sleep 0.15
-      fi
-      ;;
-    niri|generic)
-      if command -v wayfreeze &>/dev/null; then
-        wayfreeze &
-        FREEZE_PID=$!
-        sleep 0.1
-      fi
-      ;;
+  hyprland)
+    # Use wayfreeze instead of hyprpicker (doesn't block ESC)
+    if command -v wayfreeze &>/dev/null; then
+      wayfreeze &
+      FREEZE_PID=$!
+      sleep 0.1
+    fi
+    ;;
+  niri|generic)
+    if command -v wayfreeze &>/dev/null; then
+      wayfreeze &
+      FREEZE_PID=$!
+      sleep 0.1
+    fi
+    ;;
   esac
 }
 
@@ -116,7 +117,8 @@ pipe_to_satty() {
     --filename - \
     --output-filename "$OUTFILE" \
     --copy-command "wl-copy" \
-    --early-exit
+    --early-exit \
+    --disable-notifications
 }
 
 # ── Window geometry helpers ─────────────────────────────────────────────────
@@ -154,50 +156,45 @@ case "$MODE" in
     notify_done "screen" "$OUTFILE"
     ;;
 
-  window)
-    freeze_screen
+window)
     case "$COMPOSITOR" in
-      hyprland)
-        RAW=$(hyprctl activewindow -j 2>/dev/null) || RAW="{}"
-        GEOM=$(echo "$RAW" | jq -r '
-                    if .at and .size and (.size[0] > 0) and (.size[1] > 0)
-                    then "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"
-                    else ""
-                    end
-                ')
-        # No valid active window — fall back to interactive selection
-        if [[ -z "$GEOM" ]]; then
-          HINTS=$(window_hints)
-          if [[ -n "$HINTS" ]]; then
-            GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
-          else
-            GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
-          fi
+    hyprland)
+      RAW=$(hyprctl activewindow -j 2>/dev/null) || RAW="{}"
+      GEOM=$(echo "$RAW" | jq -r '
+                  if .at and .size and (.size[0] > 0) and (.size[1] > 0)
+                  then "\(.at[0]),\(.at[1]) \(.size[0])x(.size[1])"
+                  else ""
+                  end
+              ')
+      # No valid active window — fall back to interactive selection
+      if [[ -z "$GEOM" ]]; then
+        HINTS=$(window_hints)
+        if [[ -n "$HINTS" ]]; then
+          GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
+        else
+          GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
         fi
-        ;;
-      niri)
-        # niri doesn't expose absolute window coordinates via IPC,
-        # instead constrain slurp selection to the focused output bounds
-        # so on multi-monitor the selection stays on the right screen
-        OUTPUT_GEOMS=$(niri msg --json outputs \
-          | jq -r 'to_entries[]
-            | .value.logical
-            | "\(.x),\(.y) \(.width)x\(.height)"')
-          GEOM=$(echo "$OUTPUT_GEOMS" | slurp -r) || { echo "Cancelled"; exit 0; }
-          ;;
-      esac
-      unfreeze_screen
-      grim -g "$GEOM" - | pipe_to_satty
-      notify_done "window" "$OUTFILE"
+      fi
       ;;
-
-    region)
-      freeze_screen
+    niri)
+      # niri doesn't expose absolute window coordinates
+      # use slurp -o to select window outline
+      GEOM=$(slurp -o) || { echo "Cancelled"; exit 0; }
+      ;;
+    *)
       GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
-      unfreeze_screen
-      grim -g "$GEOM" - | pipe_to_satty
-      notify_done "region" "$OUTFILE"
       ;;
+    esac
+    grim -g "$GEOM" - | pipe_to_satty
+    notify_done "window" "$OUTFILE"
+    ;;
+
+  region)
+    # Skip freeze for region - quick selection, ESC works directly
+    GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
+    grim -g "$GEOM" - | pipe_to_satty
+    notify_done "region" "$OUTFILE"
+    ;;
 
     *)
       echo "Usage: screenshot [full|screen|window|region]"
