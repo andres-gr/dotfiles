@@ -1,0 +1,69 @@
+{
+  "$schema": "https://vicinae.com/schemas/config.json",
+  "close_on_focus_loss": true,
+  "pop_to_root_on_close": true,
+  "activate_on_single_click": true,
+  "font": {
+    "normal": {
+      "family": "Noto Sans",
+      "size": 10.5
+    }
+  },
+  "theme": {
+    "dark": {
+      "name": "noctalia",
+      "icon_theme": "Tela circle"
+    }
+  },
+  "telemetry": {
+    "system_info": false
+  },
+  "launcher_window": {
+    "opacity": 0.9,
+    "client_side_decorations": {
+      "enabled": true
+    }
+  },
+  "favorites": [],
+  "providers": {
+    "power": {
+      "entrypoints": {
+        "hibernate": {
+          "enabled": false
+        },
+        "lock": {
+          "preferences": {
+            "confirm": false,
+            "customProgram": "qs -c noctalia-shell ipc call sessionMenu lock"
+          }
+        },
+        "power-off": {
+          "alias": "sh"
+        },
+        "reboot": {
+          "alias": "res"
+        },
+        "sleep": {
+          "enabled": false,
+          "preferences": {
+            "confirm": true,
+            "customProgram": "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
+          }
+        },
+        "soft-reboot": {
+          "enabled": false
+        },
+        "suspend": {
+          "alias": "sl",
+          "preferences": {
+            "confirm": true,
+            "customProgram": "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
+          }
+        }
+      }
+    },
+    "shortcuts": {
+      "enabled": true
+    }
+  }
+}
