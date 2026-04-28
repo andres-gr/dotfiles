@@ -19,6 +19,15 @@
         "repomix",
         "--mcp"
       ]
+    },
+    "serena": {
+      "type": "local",
+      "command": [
+        "serena",
+        "start-mcp-server",
+        "--project-from-cwd",
+        "--context=ide"
+      ]
     }
   },
   "plugin": [

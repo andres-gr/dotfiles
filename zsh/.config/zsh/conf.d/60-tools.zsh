@@ -50,3 +50,11 @@ if (( $+commands[fzf] )); then
     source /usr/local/opt/fzf/shell/completion.zsh 2>/dev/null
   fi
 fi
+
+# --------------------------------------------------
+# uv (extremely fast Python package and project manager)
+# --------------------------------------------------
+if (( $+commands[uv] )); then
+  eval "$(uv generate-shell-completion zsh)"
+  eval "$(uvx --generate-shell-completion zsh)"
+fi
