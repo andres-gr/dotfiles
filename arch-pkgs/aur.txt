@@ -1,11 +1,13 @@
 # ── Generic Tools ──────────────────────────────────────────────────────
 cavasik                             # Audio visualizer with customizable animations (uses CAVA)
 nomacs-git                          # Lightweight image viewer
+obsidian-bin                        # Obsidian — a markdown editor
 pokego-bin                          # Pokémon sprites in the terminal (used with fastfetch)
 qt5ct-kde                           # Qt5 color scheme for KDE applications
 selectdefaultapplication-qt6-git    # Select default application for a MIME type
 systemd-boot-manager-git            # Tool for managing systemd-boot
 ttf-hack-ligatured                  # Hack font variant with programming ligatures
+vicinae-bin                         # Vicinae — A small, fast, modern and extensible launcher
 xdg-terminal-exec                   # XDG spec utility for launching default terminal
 yay-bin                             # AUR helper (pacman wrapper)
 zen-browser-bin                     # Zen Browser — minimal Firefox-based browser
