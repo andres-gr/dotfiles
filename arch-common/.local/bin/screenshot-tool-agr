@@ -146,13 +146,15 @@ case "$MODE" in
   full|all)
     notify-send --app-name="screenshot" --transient \
       "Screenshot" "Capturing all outputs…" 2>/dev/null
-    grim - | pipe_to_satty
+    sleep 0.1
+    grim -c - | pipe_to_satty
     notify_done "full" "$OUTFILE"
     ;;
 
   screen|output|monitor)
     OUTPUT=$(slurp -o -f "%o" 2>/dev/null) || { echo "Cancelled"; exit 0; }
-    grim -o "$OUTPUT" - | pipe_to_satty
+    sleep 0.1
+    grim -o "$OUTPUT" -c - | pipe_to_satty
     notify_done "screen" "$OUTFILE"
     ;;
 
@@ -185,7 +187,8 @@ window)
       GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
       ;;
     esac
-    grim -g "$GEOM" - | pipe_to_satty
+    sleep 0.1
+    grim -g "$GEOM" -c - | pipe_to_satty
     notify_done "window" "$OUTFILE"
     ;;
 
