@@ -24,6 +24,9 @@
       "enabled": true
     }
   },
+  "keybinds": {
+    "toggle-action-panel": "control+A"
+  },
   "favorites": [],
   "providers": {
     "power": {
