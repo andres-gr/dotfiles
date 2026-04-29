@@ -272,11 +272,63 @@ EOF
 }
 
 ###############################################################################
+###############################################################################
+# Configure Niri app includes
+###############################################################################
+
+configure_niri_app_includes() {
+  local niri_config="$HOME/.config/niri/config.kdl"
+  local niri_apps_dir="$HOME/.config/niri/apps"
+
+  # Skip if config doesn't exist
+  if [[ ! -f "$niri_config" ]]; then
+    log "Niri config not found at $niri_config — skipping app includes"
+    return 0
+  fi
+
+  # Skip if apps directory doesn't exist
+  if [[ ! -d "$niri_apps_dir" ]]; then
+    log "Niri apps directory not found at $niri_apps_dir — skipping app includes"
+    return 0
+  fi
+
+  # Get list of .kdl files in apps directory
+  local -a app_files
+  mapfile -t app_files < <(find "$niri_apps_dir" -maxdepth 1 -name "*.kdl" -printf '%f\n' | sort)
+
+  if (( ${#app_files[@]} == 0 )); then
+    log "No .kdl files found in $niri_apps_dir — skipping app includes"
+    return 0
+  fi
+
+  $DRY_RUN && {
+    log "[dry-run] would add app includes for: ${app_files[*]}"
+    return 0
+  }
+
+  # Add missing includes to the end of config file
+  step "Adding Niri app includes"
+  local added=0
+  for app_file in "${app_files[@]}"; do
+    if ! grep -q "include optional=true \"apps/$app_file\"" "$niri_config"; then
+      printf 'include optional=true "apps/%s"\n' "$app_file" >> "$niri_config"
+      ((added++))
+    fi
+  done
+
+  if (( added > 0 )); then
+    ok "Added $added Niri app includes"
+  else
+    log "Niri app includes already configured"
+  fi
+}
+
 # Main entry point for Niri patches
 ###############################################################################
 
 niri_patches() {
   configure_splash_niri
   install_niri_config
+  configure_niri_app_includes
   install_niri_window_grab
 }

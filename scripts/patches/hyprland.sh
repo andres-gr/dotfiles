@@ -292,6 +292,53 @@ configure_splash_hyprland() {
 }
 
 ###############################################################################
+###############################################################################
+# Configure Hyprland app source
+###############################################################################
+
+configure_hyprland_app_source() {
+  local hypr_conf="$HOME/.config/hypr"
+  local hypr_apps_dir="$hypr_conf/apps"
+  local hypr_main="$hypr_conf/hyprland.conf"
+
+  # Skip if main config doesn't exist
+  if [[ ! -f "$hypr_main" ]]; then
+    log "Hyprland main config not found at $hypr_main — skipping app source"
+    return 0
+  fi
+
+  # Skip if apps directory doesn't exist
+  if [[ ! -d "$hypr_apps_dir" ]]; then
+    log "Hyprland apps directory not found at $hypr_apps_dir — skipping app source"
+    return 0
+  fi
+
+  # Get list of .conf files in apps directory
+  local -a app_files
+  mapfile -t app_files < <(find "$hypr_apps_dir" -maxdepth 1 -name "*.conf" -printf '%f\n' | sort)
+
+  if (( ${#app_files[@]} == 0 )); then
+    log "No .conf files found in $hypr_apps_dir — skipping app source"
+    return 0
+  fi
+
+  $DRY_RUN && {
+    log "[dry-run] would add source = ./apps/*.conf"
+    return 0
+  }
+
+   # Check if source line already exists (allowing whitespace before)
+   if grep -q "^[[:space:]]*source[[:space:]]*=[[:space:]]*\./apps/\*.conf" "$hypr_main"; then
+     log "Hyprland app source already configured"
+     return 0
+   fi
+
+  # Add source line to the end of config file
+  step "Adding Hyprland app source"
+  printf '\nsource = ./apps/*.conf\n' >> "$hypr_main"
+  ok "Added Hyprland app source line"
+}
+
 # Main entry point for Hyprland patches
 ###############################################################################
 
@@ -300,5 +347,6 @@ hyprland_patches() {
   configure_workspaces_persistent
   install_hymission
   install_hyprland_config
+  configure_hyprland_app_source
   reload_hyprland
 }
