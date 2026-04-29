@@ -117,24 +117,7 @@ pipe_to_satty() {
     --filename - \
     --output-filename "$OUTFILE" \
     --copy-command "wl-copy" \
-    --early-exit \
     --disable-notifications
-}
-
-# ── Window geometry helpers ─────────────────────────────────────────────────
-
-window_hints() {
-  case "$COMPOSITOR" in
-    hyprland)
-      hyprctl clients -j \
-      | jq -r '
-                .[]
-                | select(.workspace.id > 0 and .mapped == true)
-                | "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1]) \(.title)"
-              '
-      ;;
-      # niri branch removed — window mode now uses output geometry + slurp -r
-  esac
 }
 
 # ── Capture modes ───────────────────────────────────────────────────────────
@@ -161,32 +144,24 @@ case "$MODE" in
 window)
     case "$COMPOSITOR" in
     hyprland)
-      RAW=$(hyprctl activewindow -j 2>/dev/null) || RAW="{}"
-      GEOM=$(echo "$RAW" | jq -r '
-                  if .at and .size and (.size[0] > 0) and (.size[1] > 0)
-                  then "\(.at[0]),\(.at[1]) \(.size[0])x(.size[1])"
-                  else ""
-                  end
-              ')
-      # No valid active window — fall back to interactive selection
-      if [[ -z "$GEOM" ]]; then
-        HINTS=$(window_hints)
-        if [[ -n "$HINTS" ]]; then
-          GEOM=$(echo "$HINTS" | slurp -r) || { echo "Cancelled"; exit 0; }
-        else
-          GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
-        fi
+      # Get all visible windows from hyprctl, pass to slurp for selection
+      WINDOWS=$(hyprctl clients -j 2>/dev/null | jq -r '
+        .[] | select(.workspace.id > 0 and .mapped == true) |
+        "\(.at[0]),\(.at[1]) \(.size[0])x\(.size[1])"
+      ' 2>/dev/null)
+
+      if [[ -n "$WINDOWS" ]]; then
+        GEOM=$(echo "$WINDOWS" | slurp) || { echo "Cancelled"; exit 0; }
+      else
+        GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
       fi
       ;;
-    niri)
-      # niri doesn't expose absolute window coordinates
-      # use slurp -o to select window outline
+    niri|*)
+      # Niri/generic: slurp -o detects window under cursor
       GEOM=$(slurp -o) || { echo "Cancelled"; exit 0; }
       ;;
-    *)
-      GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
-      ;;
     esac
+
     sleep 0.1
     grim -g "$GEOM" -c - | pipe_to_satty
     notify_done "window" "$OUTFILE"
