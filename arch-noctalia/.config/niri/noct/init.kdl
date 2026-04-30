@@ -5,3 +5,5 @@ spawn-at-startup "~/.local/bin/idle-pre-lock"
 
 // Idle inhibit on media playback
 spawn-at-startup "~/.local/bin/media-idle-inhibit"
+
+screenshot-path null
