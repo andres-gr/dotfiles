@@ -27,6 +27,13 @@
   "favorites": [],
   "providers": {
     "clipboard": {
+      "enabled": false,
+      "preferences": {
+        "encryption": false,
+        "eraseOnStartup": false,
+        "ignorePasswords": true,
+        "monitoring": false
+      },
       "entrypoints": {
         "history": {
           "preferences": {
