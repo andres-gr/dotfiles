@@ -156,9 +156,34 @@ window)
         GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
       fi
       ;;
-    niri|*)
-      # Niri/generic: slurp -o detects window under cursor
-      GEOM=$(slurp -o) || { echo "Cancelled"; exit 0; }
+    niri)
+      # Niri: capture focused window to temp file, then pipe to satty
+      TEMP_CAP="$SAVE_DIR/niri_cap_$$.png"
+      niri msg action screenshot-window --path "$TEMP_CAP" 2>/dev/null || {
+        echo "Failed to capture"
+        exit 1
+      }
+
+      # Wait for file
+      for i in {1..30}; do
+        [[ -f "$TEMP_CAP" ]] && break
+        sleep 0.1
+      done
+
+      if [[ ! -f "$TEMP_CAP" ]]; then
+        echo "Screenshot failed"
+        exit 1
+      fi
+
+      # Pipe to satty (handles save/copy/discard)
+      cat "$TEMP_CAP" | pipe_to_satty
+      rm -f "$TEMP_CAP"
+      notify_done "window" "$OUTFILE"
+      exit 0
+      ;;
+    *)
+      # Generic: slurp for region selection
+      GEOM=$(slurp) || { echo "Cancelled"; exit 0; }
       ;;
     esac
 
