@@ -61,6 +61,8 @@ window-rule {
 
     draw-border-with-background false
 }
+
+// Media player rules
 window-rule {
     match app-id="^org\\.kde\\.haruna$"
     match app-id="^org\\.nomacs\\.ImageLounge$"
@@ -72,6 +74,7 @@ window-rule {
         proportion 0.97
     }
     opacity 1.0
+    open-floating true
 }
 
 // Floating Windows
@@ -90,8 +93,6 @@ window-rule {
     match app-id="^galculator$"
     match app-id="^gnome-calculator$"
     match app-id="^org\\.gnome\\.Nautilus$"
-    match app-id="^org\\.kde\\.haruna$"
-    match app-id="^org\\.nomacs\\.ImageLounge$"
     match app-id="^xdg-desktop-portal$"
 
     open-floating true
