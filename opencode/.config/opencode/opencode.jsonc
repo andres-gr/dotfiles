@@ -27,7 +27,8 @@
         "start-mcp-server",
         "--project-from-cwd",
         "--context=ide"
-      ]
+      ],
+      "enabled": false
     }
   },
   "plugin": [
