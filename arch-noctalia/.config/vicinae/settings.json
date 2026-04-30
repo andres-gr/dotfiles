@@ -24,11 +24,17 @@
       "enabled": true
     }
   },
-  "keybinds": {
-    "toggle-action-panel": "control+A"
-  },
   "favorites": [],
   "providers": {
+    "clipboard": {
+      "entrypoints": {
+        "history": {
+          "preferences": {
+            "defaultAction": "copy"
+          }
+        }
+      }
+    },
     "power": {
       "entrypoints": {
         "hibernate": {
