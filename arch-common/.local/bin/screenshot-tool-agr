@@ -158,6 +158,9 @@ window)
       ;;
     niri)
       # Niri: capture focused window to temp file, then pipe to satty
+      # Save current clipboard before Niri overwrites it
+      ORIGINAL_CLIP=$(wl-paste 2>/dev/null || true)
+
       TEMP_CAP="$SAVE_DIR/niri_cap_$$.png"
       niri msg action screenshot-window --path "$TEMP_CAP" 2>/dev/null || {
         echo "Failed to capture"
@@ -173,6 +176,17 @@ window)
       if [[ ! -f "$TEMP_CAP" ]]; then
         echo "Screenshot failed"
         exit 1
+      fi
+
+      # Delete the screenshot from cliphist (newest entry)
+      CLIPHIST_NEWEST=$(cliphist list 2>/dev/null | head -1 | awk '{print $1}' || echo "")
+      if [[ -n "$CLIPHIST_NEWEST" ]]; then
+        echo "$CLIPHIST_NEWEST" | cliphist delete 2>/dev/null || true
+      fi
+
+      # Restore original clipboard
+      if [[ -n "$ORIGINAL_CLIP" ]]; then
+        printf '%s' "$ORIGINAL_CLIP" | wl-copy 2>/dev/null || true
       fi
 
       # Pipe to satty (handles save/copy/discard)
