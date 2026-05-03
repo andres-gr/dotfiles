@@ -26,6 +26,13 @@
   },
   "favorites": [],
   "providers": {
+    "browser-extension": {
+      "entrypoints": {
+        "browse-tabs": {
+          "enabled": false
+        }
+      }
+    },
     "clipboard": {
       "enabled": false,
       "preferences": {
