@@ -49,6 +49,13 @@
         }
       }
     },
+    "core": {
+      "entrypoints": {
+        "sponsor": {
+          "enabled": false
+        }
+      }
+    },
     "power": {
       "entrypoints": {
         "hibernate": {
