@@ -70,3 +70,4 @@ application/pdf=zen.desktop;
 application/x-tar=org.kde.ark.desktop;
 application/zip=org.kde.ark.desktop;
 text/xml=zen.desktop;
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
