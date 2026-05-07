@@ -19,16 +19,6 @@
         "repomix",
         "--mcp"
       ]
-    },
-    "serena": {
-      "type": "local",
-      "command": [
-        "serena",
-        "start-mcp-server",
-        "--project-from-cwd",
-        "--context=ide"
-      ],
-      "enabled": false
     }
   },
   "plugin": [
@@ -36,19 +26,6 @@
     "repomix",
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
-  "provider": {
-    "ollama": {
-      "npm": "@ai-sdk/openai-compatible",
-      "options": {
-        "baseURL": "http://localhost:11434/v1"
-      },
-      "models": {
-        "gemma4-tools": {
-          "name": "gemma4-tools",
-        }
-      }
-    }
-  },
   "instructions": [
     "instructions/caveman.md",
     "instructions/context-mode.md"
