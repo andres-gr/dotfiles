@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Empty Trash
+GenericName=Empty trash in recycle bin
+Comment=Empty trash
+Keywords=trash;empty;recycle;garbage;
+Icon=user-trash-full
+Exec=gio trash --empty
+Type=Application
+Terminal=false
+Categories=Utility;System;
