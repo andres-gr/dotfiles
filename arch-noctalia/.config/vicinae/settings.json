@@ -69,11 +69,22 @@
             "customProgram": "qs -c noctalia-shell ipc call sessionMenu lock"
           }
         },
+        "logout": {
+          "preferences": {
+            "confirm": false
+          }
+        },
         "power-off": {
-          "alias": "sh"
+          "alias": "sh",
+          "preferences": {
+            "confirm": false
+          }
         },
         "reboot": {
-          "alias": "res"
+          "alias": "res",
+          "preferences": {
+            "confirm": false
+          }
         },
         "sleep": {
           "enabled": false,
@@ -88,7 +99,7 @@
         "suspend": {
           "alias": "sl",
           "preferences": {
-            "confirm": true,
+            "confirm": false,
             "customProgram": "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
           }
         }
