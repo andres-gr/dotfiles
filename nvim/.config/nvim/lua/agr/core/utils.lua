@@ -143,21 +143,11 @@ local contains = function (t, key) return t[key] ~= nil end
 
 
 local diagnostics_signs = {
-  {
-    name = 'DiagnosticSignError',
-    text = ''
-  },
-  {
-    name = 'DiagnosticSignWarn',
-    text = ''
-  },
-  {
-    name = 'DiagnosticSignHint',
-    text = ''
-  },
-  {
-    name = 'DiagnosticSignInfo',
-    text = ''
+  text = {
+    [vim.diagnostic.severity.ERROR] = '',
+    [vim.diagnostic.severity.WARN] = '',
+    [vim.diagnostic.severity.INFO] = '',
+    [vim.diagnostic.severity.HINT] = '',
   },
 }
 

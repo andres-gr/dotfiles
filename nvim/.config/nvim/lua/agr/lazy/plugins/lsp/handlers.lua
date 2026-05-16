@@ -24,9 +24,7 @@ H.setup = function ()
   local config = {
     float = float,
     severity_sort = true,
-    signs = {
-      active = signs,
-    },
+    signs = signs,
     underline = true,
     update_in_insert = false,
     virtual_text = {

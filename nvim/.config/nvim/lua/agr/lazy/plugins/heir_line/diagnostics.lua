@@ -13,16 +13,12 @@ D.setup = function ()
     end,
     condition = conditions.has_diagnostics,
     static = {
-      error_icon = vim.fn.sign_getdefined('DiagnosticSignError')[1].text,
-      hint_icon = vim.fn.sign_getdefined('DiagnosticSignHint')[1].text,
-      info_icon = vim.fn.sign_getdefined('DiagnosticSignInfo')[1].text,
-      warn_icon = vim.fn.sign_getdefined('DiagnosticSignWarn')[1].text,
+      icons = require 'agr.core.utils'.diagnostics_signs.text,
     },
     update = { 'DiagnosticChanged', 'BufEnter' },
     {
       provider = function (self)
-        -- 0 is just another output, we can decide to print it or not!
-        return self.errors > 0 and (self.error_icon .. self.errors)
+        return self.errors > 0 and (self.icons[vim.diagnostic.severity.ERROR] .. ' ' .. self.errors)
       end,
       hl = { fg = 'diag_ERROR' },
     },
@@ -33,7 +29,7 @@ D.setup = function ()
     },
     {
       provider = function (self)
-        return self.warnings > 0 and (self.warn_icon .. self.warnings)
+        return self.warnings > 0 and (self.icons[vim.diagnostic.severity.WARN] .. ' ' .. self.warnings)
       end,
       hl = { fg = 'diag_WARN' },
     },
@@ -44,7 +40,7 @@ D.setup = function ()
     },
     {
       provider = function (self)
-        return self.info > 0 and (self.info_icon .. self.info)
+        return self.info > 0 and (self.icons[vim.diagnostic.severity.INFO] .. ' ' .. self.info)
       end,
       hl = { fg = 'diag_INFO' },
     },
@@ -55,7 +51,7 @@ D.setup = function ()
     },
     {
       provider = function (self)
-        return self.hints > 0 and (self.hint_icon .. self.hints)
+        return self.hints > 0 and (self.icons[vim.diagnostic.severity.HINT] .. ' ' .. self.hints)
       end,
       hl = { fg = 'diag_HINT' },
     },
