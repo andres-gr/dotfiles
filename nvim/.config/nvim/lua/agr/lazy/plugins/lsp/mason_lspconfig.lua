@@ -147,6 +147,10 @@ M.setup = function ()
     end,
   }
 
+  -- tombi: not in mason-lspconfig mappings, register via nvim 0.12 vim.lsp API
+  vim.lsp.config('tombi', default_opts)
+  vim.lsp.enable('tombi')
+
   --[[ for _, server_name in ipairs(config_servers) do
     ---@diagnostic disable-next-line: undefined-field
     local server_opts = utils.has_plugin(server_settings_path .. server_name).setup()
