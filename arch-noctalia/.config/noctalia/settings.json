@@ -758,7 +758,7 @@
         "favorites": [
         ],
         "fillColor": "#3b3950",
-        "fillMode": "crop",
+        "fillMode": "fit",
         "hideWallpaperFilenames": false,
         "linkLightAndDarkWallpapers": false,
         "monitorDirectories": [
