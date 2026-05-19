@@ -1,0 +1,21 @@
+-------------------------------
+---- MISC CONFIGURATION ------
+-------------------------------
+
+hl.config {
+  misc = {
+    allow_session_lock_restore = true,
+    animate_mouse_windowdragging = true,
+    disable_hyprland_logo = false,
+    disable_splash_rendering = true,
+    exit_window_retains_fullscreen = true,
+    force_default_wallpaper = 3,
+    key_press_enables_dpms = true,
+    mouse_move_enables_dpms = true,
+    on_focus_under_fullscreen = 1,
+
+    -- Enable window swallowing (terminal → app)
+    -- enable_swallow = true,
+    -- swallow_regex = '^(.*foot|org.wezfurlong.wezterm|ghostty|kitty.*)$',
+  },
+}

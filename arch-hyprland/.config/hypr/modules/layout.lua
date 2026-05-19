@@ -1,0 +1,49 @@
+-------------------------------
+---- LAYOUT CONFIGURATION -----
+-------------------------------
+
+hl.config {
+  general = {
+    border_size = 2,
+    col = {
+      active_border = {
+        colors = {
+          'rgba(bd93f9ff)',
+          'rgba(ff79c6ff)',
+        },
+        angle = 45,
+      },
+      inactive_border = 'rgba(44475aaa)',
+    },
+    extend_border_grab_area = 12,
+    gaps_in = 4,
+    gaps_out = 12,
+    layout = 'dwindle',
+    resize_on_border = true,
+  },
+
+  dwindle = {
+    preserve_split = true,
+  },
+
+  decoration = {
+    active_opacity = 0.95,
+    fullscreen_opacity = 1.0,
+    inactive_opacity = 0.85,
+    rounding = 16,
+    rounding_power = 8,
+
+    blur = {
+      enabled = true,
+      ignore_opacity = true,
+      passes = 2,
+      size = 6,
+      vibrancy = 0.2,
+      xray = false,
+    },
+  },
+
+  binds = {
+    window_direction_monitor_fallback = false
+  },
+}
