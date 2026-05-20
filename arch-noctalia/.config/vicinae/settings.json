@@ -75,7 +75,7 @@
           }
         },
         "power-off": {
-          "alias": "sh",
+          "alias": "shut",
           "preferences": {
             "confirm": false
           }
