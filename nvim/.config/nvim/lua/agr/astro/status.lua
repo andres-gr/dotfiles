@@ -850,7 +850,7 @@ function status.component.ai(opts)
 
       if ok == false or result == ' ON' then return nil end
 
-      return '  ' .. result
+      return '  ' .. result .. ' '
     end
   })
 
