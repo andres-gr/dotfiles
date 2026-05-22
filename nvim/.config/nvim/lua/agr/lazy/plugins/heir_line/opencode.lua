@@ -8,7 +8,7 @@ O.setup = function ()
       return opencode_ok
     end,
     provider = function ()
-      return opencode.statusline()
+      return opencode.statusline() .. ' '
     end,
   }
 end
