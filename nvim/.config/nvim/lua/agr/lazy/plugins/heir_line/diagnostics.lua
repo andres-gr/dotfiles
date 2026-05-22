@@ -1,4 +1,3 @@
-
 local D = {}
 
 D.setup = function ()
