@@ -26,6 +26,8 @@ O.config = function()
   -- Recommended/example keymaps
   vim.keymap.set({ "n", "x" }, "<M-a>", function() require("opencode").ask("@this: ", { submit = true }) end,
     { desc = "Ask opencode…" })
+  vim.keymap.set({ "n", "x" }, "<M-s>", function() require("opencode").ask("", { submit = true }) end,
+    { desc = "Empty ask opencode…" })
   vim.keymap.set({ "n", "x" }, "<M-x>", function() require("opencode").select() end,
     { desc = "Execute opencode action…" })
   vim.keymap.set({ "n", "t" }, "<M-.>", function() require("opencode").toggle() end, { desc = "Toggle opencode" })
@@ -34,6 +36,10 @@ O.config = function()
     { desc = "Add range to opencode", expr = true })
   vim.keymap.set("n", "goo", function() return require("opencode").operator("@this ") .. "_" end,
     { desc = "Add line to opencode", expr = true })
+  vim.keymap.set("n", "gos", function() return require("opencode").command("prompt.submit") end,
+    { desc = "Submit prompt" })
+  vim.keymap.set("n", "goc", function() return require("opencode").command("prompt.clear") end,
+    { desc = "Clear prompt" })
 
   vim.keymap.set("n", "<M-u>", function() require("opencode").command("session.half.page.up") end,
     { desc = "Scroll opencode up" })
