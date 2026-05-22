@@ -14,6 +14,7 @@ H.config = function ()
   local status = require 'agr.astro.status'
   local vimode = require 'agr.lazy.plugins.heir_line.vimode'.setup()
   local diagnostics = require 'agr.lazy.plugins.heir_line.diagnostics'.setup()
+  local opencode = require 'agr.lazy.plugins.heir_line.opencode'.setup()
   local lib = require 'heirline-components.all'
 
   local setup_colors = function ()
@@ -126,6 +127,7 @@ H.config = function ()
       diagnostics,
       status.component.cmd_info(),
       status.component.ai(),
+      opencode,
       status.component.fill(),
       lib.component.lsp(),
       status.component.treesitter(),
