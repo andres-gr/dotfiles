@@ -54,6 +54,11 @@ D.setup = function ()
       end,
       hl = { fg = 'diag_HINT' },
     },
+    {
+      provider = function ()
+        return ' '
+      end
+    },
   }
 end
 
