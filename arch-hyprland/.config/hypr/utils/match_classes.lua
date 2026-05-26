@@ -1,23 +1,16 @@
---- Creates classes regex string from a table of classes strings
+--- Creates a combined regex matching any of the given class patterns.
+--- Produces: ^(pat1)$|^(pat2)$|^(pat3)$
 --- @param classes string[]
---- @return string regex A classes regex string
+--- @return string regex
 local match_classes = function(classes)
-  if #classes == 0 then
-    return ''
+  if #classes == 0 then return '' end
+
+  local parts = {}
+  for _, class in ipairs(classes) do
+    parts[#parts + 1] = '^(' .. class .. ')$'
   end
 
-  local result = '^('
-
-  for i, class in ipairs(classes) do
-    if i == 1 then
-      result = result .. class .. ')$'
-      break
-    end
-
-    result = result .. '|^(' .. class .. ')$'
-  end
-
-  return result
+  return table.concat(parts, '|')
 end
 
 return match_classes
