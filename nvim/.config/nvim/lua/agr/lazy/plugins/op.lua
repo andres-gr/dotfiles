@@ -1,8 +1,10 @@
 local O = {
   'nickjvandyke/opencode.nvim',
   dependencies = {
-    'folke/snacks.nvim',
-    optional = true,
+    {
+      'folke/snacks.nvim',
+      optional = true,
+    },
   },
   version = '*',
 }
@@ -45,7 +47,6 @@ O.config = function()
   vim.keymap.set('n', '<M-d>', function() require('opencode').command('session.half.page.down') end,
     { desc = 'Scroll opencode down' })
 
-  -- You may want these if you use the opinionated `<C-a>` and `<C-x>` keymaps above — otherwise consider `<leader>o…` (and remove terminal mode from the `toggle` keymap)
   vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment under cursor', noremap = true })
   vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement under cursor', noremap = true })
 end
