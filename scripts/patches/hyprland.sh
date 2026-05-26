@@ -31,12 +31,12 @@ reload_hyprland() {
 ###############################################################################
 
 install_hyprland_config() {
-  local src="$SCRIPT_DIR/data/hypr-config.conf"
-  local dest="$HOME/.config/hypr/hyprland.conf"
+  local src="$SCRIPT_DIR/data/hypr_config.lua"
+  local dest="$HOME/.config/hypr/hyprland.lua"
   local bkp_dir="$HOME/.local/share/neo-dots/hypr-bkp"
 
   if [[ ! -f "$src" ]]; then
-    warn "Source hypr-config.conf not found at $src"
+    warn "Source hypr_config.lua not found at $src"
     return 1
   fi
 
@@ -48,14 +48,14 @@ install_hyprland_config() {
     mkdir -p "$bkp_dir"
     local timestamp
     timestamp=$(date +%Y%m%d_%H%M%S)
-    cp "$dest" "$bkp_dir/hyprland.conf.$timestamp"
+    cp "$dest" "$bkp_dir/hyprland.lua.$timestamp"
     rm -f "$dest"
-    log "Backed up existing hyprland.conf to $bkp_dir"
+    log "Backed up existing hyprland.lua to $bkp_dir"
   fi
 
   # Copy new config
   cp -f "$src" "$dest"
-  ok "Installed hyprland.conf"
+  ok "Installed hyprland.lua"
 }
 
 ###############################################################################
@@ -63,60 +63,121 @@ install_hyprland_config() {
 ###############################################################################
 
 configure_workspaces_persistent() {
-  local ws_conf="$HOME/.config/hypr/workspaces.conf"
+  local template="$SCRIPT_DIR/data/hypr_workspaces.lua"
+  local dest="$HOME/.config/hypr/workspaces.lua"
 
-  # Skip if file doesn't exist
-  if [[ ! -f "$ws_conf" ]]; then
-    log "Hyprland workspaces.conf not found — skipping"
+  # Skip if template doesn't exist
+  if [[ ! -f "$template" ]]; then
+    log "Workspace template not found at $template — skipping"
     return 0
   fi
 
-  # Check if already has defaultName (implies fully configured)
-  if grep -q 'defaultName:' "$ws_conf" 2>/dev/null; then
-    log "Workspaces already have defaultName — skipping"
-    return 0
+  # Skip if dest already exists and is fully configured
+  if [[ -f "$dest" ]]; then
+    if grep -q 'hl.workspace_rule' "$dest" 2>/dev/null; then
+      log "Workspaces already configured — skipping"
+      return 0
+    fi
   fi
 
   if $DRY_RUN; then
-    log "[dry-run] would add persistent:true and defaultName to workspace lines"
+    log "[dry-run] would generate workspaces.lua from template"
     return 0
   fi
 
-  # Add ,persistent:true and defaultName to each workspace= line
-  local tmp
-  tmp=$(mktemp)
-  while IFS= read -r line; do
-    if [[ "$line" =~ ^workspace= ]]; then
-      # Add ,persistent:true if not present
-      if [[ "$line" != *persistent:true* ]]; then
-        line="$line,persistent:true"
-      fi
+  # Try to get monitor names from hyprctl (requires Hyprland running)
+  local main_monitor=""
+  local secondary_monitor=""
 
-      # Extract workspace number
-      if [[ "$line" =~ ^workspace=([0-9]+) ]]; then
-        local ws_num="${BASH_REMATCH[1]}"
-        local defaultName=""
-
-        # First 4 workspaces (ws 1-4): prim1-prim4 (main monitor)
-        # Last 4 workspaces (ws 5-8): sec1-sec4 (secondary monitor)
-        if (( ws_num <= 4 )); then
-          defaultName="prim$ws_num"
-        elif (( ws_num >= 5 && ws_num <= 8 )); then
-          local sec_num=$(( ws_num - 4 ))
-          defaultName="sec$sec_num"
-        fi
-
-        # Add defaultName if applicable
-        if [[ -n "$defaultName" && "$line" != *defaultName:* ]]; then
-          line="$line,defaultName:$defaultName"
-        fi
-      fi
+  if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+    # Hyprland is running — get monitor descriptions
+    local monitors
+    monitors=$(hyprctl monitors -j 2>/dev/null) || true
+    if [[ -n "$monitors" && "$monitors" != "null" ]]; then
+      # Use description field (matches old config format)
+      main_monitor=$(echo "$monitors" | jq -r '.[0].description // empty' 2>/dev/null) || true
+      secondary_monitor=$(echo "$monitors" | jq -r '.[1].description // empty' 2>/dev/null) || true
     fi
-    printf '%s\n' "$line"
-  done < "$ws_conf" > "$tmp"
+  fi
 
-  run mv "$tmp" "$ws_conf"
-  ok "Added persistent:true and defaultName to workspaces"
+  # Get monitor names from environment if hyprctl failed
+  [[ -z "$main_monitor" ]] && main_monitor="${HL_MAIN_MONITOR:-}"
+  [[ -z "$secondary_monitor" ]] && secondary_monitor="${HL_SECONDARY_MONITOR:-}"
+
+  # Warn if no monitors configured
+  if [[ -z "$main_monitor" || -z "$secondary_monitor" ]]; then
+    warn "Could not determine monitor names — using placeholders in workspaces.lua"
+    warn "Set HL_MAIN_MONITOR and HL_SECONDARY_MONITOR env vars or run Hyprland first"
+    main_monitor="{{main_monitor}}"
+    secondary_monitor="{{secondary_monitor}}"
+  fi
+
+  # Generate workspaces.lua from template
+  step "Generating workspaces.lua"
+  sed -e "s#{{main_monitor}}#${main_monitor}#g" \
+    -e "s#{{secondary_monitor}}#${secondary_monitor}#g" \
+    "$template" > "$dest"
+  ok "Generated $dest with monitor: $main_monitor, $secondary_monitor"
+}
+
+###############################################################################
+# Install monitors.lua from template
+###############################################################################
+
+configure_monitors_lua() {
+  local template="$SCRIPT_DIR/data/hypr_monitors.lua"
+  local dest="$HOME/.config/hypr/monitors.lua"
+
+  # Skip if template doesn't exist
+  if [[ ! -f "$template" ]]; then
+    log "Monitors template not found at $template — skipping"
+    return 0
+  fi
+
+  # Skip if dest already exists and is fully configured
+  if [[ -f "$dest" ]]; then
+    if grep -q 'hl.monitor' "$dest" 2>/dev/null; then
+      log "Monitors already configured — skipping"
+      return 0
+    fi
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would generate monitors.lua from template"
+    return 0
+  fi
+
+  # Try to get monitor descriptions from hyprctl (requires Hyprland running)
+  local main_monitor=""
+  local secondary_monitor=""
+
+  if [[ -n "${HYPRLAND_INSTANCE_SIGNATURE:-}" ]]; then
+    local monitors
+    monitors=$(hyprctl monitors -j 2>/dev/null) || true
+    if [[ -n "$monitors" && "$monitors" != "null" ]]; then
+      main_monitor=$(echo "$monitors" | jq -r '.[0].description // empty' 2>/dev/null) || true
+      secondary_monitor=$(echo "$monitors" | jq -r '.[1].description // empty' 2>/dev/null) || true
+    fi
+  fi
+
+  # Fall back to env vars
+  [[ -z "$main_monitor" ]] && main_monitor="${HL_MAIN_MONITOR:-}"
+  [[ -z "$secondary_monitor" ]] && secondary_monitor="${HL_SECONDARY_MONITOR:-}"
+
+  # Warn and use placeholders if unknown
+  if [[ -z "$main_monitor" || -z "$secondary_monitor" ]]; then
+    warn "Could not determine monitor descriptions — using placeholders in monitors.lua"
+    warn "Set HL_MAIN_MONITOR and HL_SECONDARY_MONITOR env vars or run Hyprland first"
+    main_monitor="{{main_monitor}}"
+    secondary_monitor="{{secondary_monitor}}"
+  fi
+
+  # Generate monitors.lua from template
+  step "Generating monitors.lua"
+  sed -e "s#{{main_monitor}}#${main_monitor}#g" \
+    -e "s#{{secondary_monitor}}#${secondary_monitor}#g" \
+    "$template" > "$dest"
+  ok "Generated $dest with monitor: $main_monitor, $secondary_monitor"
 }
 
 ###############################################################################
@@ -166,10 +227,10 @@ install_hymission() {
 
 configure_splash_hyprland() {
   local hypr_conf="$HOME/.config/hypr"
-  local hypr_splash_conf="$hypr_conf/splash.conf"
-  local hypr_temp_binds="$hypr_conf/splash-temp-binds.conf"
-  local splash_template="$DOTFILES_DIR/scripts/patches/data/splash-hypr-config.conf"
-  local hypr_main="$hypr_conf/hyprland.conf"
+  local hypr_splash_conf="$hypr_conf/splash.lua"
+  local hypr_temp_binds="$hypr_conf/splash_temp_binds.lua"
+  local splash_template="$DOTFILES_DIR/scripts/patches/data/splash_hypr_config.lua"
+  local hypr_main="$hypr_conf/hyprland.lua"
 
   # Check for timestamp of previous splash selection
   local prev_ts
@@ -270,20 +331,14 @@ configure_splash_hyprland() {
   step "Installing splash config for Hyprland"
   run mkdir -p "$hypr_conf"
   run sed -e "s|{{splash}}|$selected_splash|g" \
-         -e "s|{{duration}}|$duration|g" \
-         -e "s|{{volume}}|$volume|g" \
-         "$splash_template" > "$hypr_splash_conf"
+    -e "s|{{duration}}|$duration|g" \
+    -e "s|{{volume}}|$volume|g" \
+    "$splash_template" > "$hypr_splash_conf"
   ok "Splash config written to $hypr_splash_conf"
 
-  # Create minimal temp binds file (valid KDL with comment)
-  run printf '// Custom keybinds can be added here\n' > "$hypr_temp_binds"
+  # Create minimal temp binds file (valid Lua with comment)
+  run printf '%s\n' '-- Custom keybinds can be added here' > "$hypr_temp_binds"
   ok "Temp binds file created at $hypr_temp_binds"
-
-  # Uncomment source line in main config
-  if [[ -f "$hypr_main" ]]; then
-    run sed -i 's|^[[:space:]]*#[[:space:]]*source = ./splash.conf|source = ./splash.conf|' "$hypr_main"
-    ok "Splash source uncommented in hyprland.conf"
-  fi
 
   # Track selection
   update_selection "splashes" "hyprland=$selected_splash"
@@ -291,62 +346,14 @@ configure_splash_hyprland() {
   update_selection "splashes" "hyprland_volume=$volume"
 }
 
-###############################################################################
-###############################################################################
-# Configure Hyprland app source
-###############################################################################
-
-configure_hyprland_app_source() {
-  local hypr_conf="$HOME/.config/hypr"
-  local hypr_apps_dir="$hypr_conf/apps"
-  local hypr_main="$hypr_conf/hyprland.conf"
-
-  # Skip if main config doesn't exist
-  if [[ ! -f "$hypr_main" ]]; then
-    log "Hyprland main config not found at $hypr_main — skipping app source"
-    return 0
-  fi
-
-  # Skip if apps directory doesn't exist
-  if [[ ! -d "$hypr_apps_dir" ]]; then
-    log "Hyprland apps directory not found at $hypr_apps_dir — skipping app source"
-    return 0
-  fi
-
-  # Get list of .conf files in apps directory
-  local -a app_files
-  mapfile -t app_files < <(find "$hypr_apps_dir" -maxdepth 1 -name "*.conf" -printf '%f\n' | sort)
-
-  if (( ${#app_files[@]} == 0 )); then
-    log "No .conf files found in $hypr_apps_dir — skipping app source"
-    return 0
-  fi
-
-  $DRY_RUN && {
-    log "[dry-run] would add source = ./apps/*.conf"
-    return 0
-  }
-
-   # Check if source line already exists (allowing whitespace before)
-   if grep -q "^[[:space:]]*source[[:space:]]*=[[:space:]]*\./apps/\*.conf" "$hypr_main"; then
-     log "Hyprland app source already configured"
-     return 0
-   fi
-
-  # Add source line to the end of config file
-  step "Adding Hyprland app source"
-  printf '\nsource = ./apps/*.conf\n' >> "$hypr_main"
-  ok "Added Hyprland app source line"
-}
-
 # Main entry point for Hyprland patches
 ###############################################################################
 
 hyprland_patches() {
+  configure_monitors_lua
   configure_splash_hyprland
   configure_workspaces_persistent
   install_hymission
   install_hyprland_config
-  configure_hyprland_app_source
   reload_hyprland
 }

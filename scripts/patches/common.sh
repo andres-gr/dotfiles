@@ -798,7 +798,7 @@ install_sddm_wayland_config() {
   local compositor_conf=""
   case "$COMPOSITOR" in
     hyprland)
-      compositor_conf="$DOTFILES_DIR/scripts/patches/data/sddm-hypr.conf"
+      compositor_conf="$DOTFILES_DIR/scripts/patches/data/sddm_hypr.lua"
       ;;
     niri)
       compositor_conf="$DOTFILES_DIR/scripts/patches/data/sddm-niri.kdl"
@@ -889,7 +889,7 @@ install_sddm_wayland_config() {
 
   if [[ "$COMPOSITOR" == "hyprland" ]]; then
     run sudo mkdir -p "$sddm_config_dir/hypr"
-    run sudo cp "$tmp_conf" "$sddm_config_dir/hypr/hyprland.conf"
+    run sudo cp "$tmp_conf" "$sddm_config_dir/hypr/hyprland.lua"
   elif [[ "$COMPOSITOR" == "niri" ]]; then
     run sudo mkdir -p "$sddm_config_dir/niri"
     run sudo cp "$tmp_conf" "$sddm_config_dir/niri/config.kdl"
@@ -906,7 +906,7 @@ install_sddm_wayland_config() {
 
   local compositor_cmd=""
   if [[ "$COMPOSITOR" == "hyprland" ]]; then
-    compositor_cmd="start-hyprland -c /var/lib/sddm/.config/hypr/hyprland.conf"
+    compositor_cmd="start-hyprland -c /var/lib/sddm/.config/hypr/hyprland.lua"
   elif [[ "$COMPOSITOR" == "niri" ]]; then
     compositor_cmd="niri -c /var/lib/sddm/.config/niri/config.kdl"
   fi
