@@ -4,6 +4,10 @@
 
 local mod = require 'utils.mod_key'
 
+local dont_kill_steam = require 'utils.dont_kill_steam'
+local toggle_prop = require 'utils.toggle_prop'
+local workspace_clamp = require 'utils.workspace_clamp'
+
 local apps = {
   browser = 'zen-browser',
   browser_alt = 'chromium',
@@ -16,21 +20,19 @@ local apps = {
   yazi = 'ghostty -e zsh -c yazi',
 }
 
-local base_path = os.getenv 'XDG_CONFIG_HOME' or os.getenv 'HOME' .. '/.local/bin'
+local home = os.getenv('HOME')
 
 local scripts = {
-  close_window = base_path .. '/dont-kill-steam',
-  screenshot = base_path .. '/screenshot-tool-agr',
-  workspace_clamp = base_path .. '/hypr-workspace-clamp',
+  screenshot = home .. '/.local/bin/screenshot-tool-agr',
 }
 
 hl.bind(mod .. '+ SHIFT + Q', hl.dsp.window.kill(), {
   description = 'Kill Focused Window',
 })
-hl.bind(mod .. '+ Q', hl.dsp.exec_cmd(scripts.close_window), {
+hl.bind(mod .. '+ Q', dont_kill_steam(), {
   description = 'Close Focused Window',
 })
-hl.bind('ALT + F4', hl.dsp.exec_cmd(scripts.close_window), {
+hl.bind('ALT + F4', dont_kill_steam(), {
   description = 'Close Focused Window',
 })
 hl.bind(mod .. '+ D', hl.dsp.window.float { action = 'toggle' }, {
@@ -60,31 +62,52 @@ hl.bind(mod .. '+ SHIFT + RETURN', hl.dsp.window.fullscreen {
 hl.bind(mod .. '+ SHIFT + C', hl.dsp.window.center(), {
   description = 'Center Focused Window',
 })
-hl.bind(mod .. '+ SHIFT + M', hl.dispatch(function()
-  hl.dsp.window.resize {
-    x = '95%',
-    y = '95%',
-  }
-  hl.dsp.window.center()
-end), {
+hl.bind(mod .. '+ SHIFT + M', function()
+  local mon = hl.get_active_monitor()
+  if mon == nil then return end
+
+  hl.dispatch(
+    hl.dsp.window.resize {
+      x = math.ceil(mon.width * 0.95),
+      y = math.ceil(mon.height * 0.95),
+    }
+  )
+  hl.dispatch(
+    hl.dsp.window.center()
+  )
+end, {
   description = 'Maximize Focused Window',
 })
-hl.bind(mod .. '+ SHIFT + N', hl.dispatch(function()
-  hl.dsp.window.resize {
-    x = '65%',
-    y = '85%',
-  }
-  hl.dsp.window.center()
-end), {
+hl.bind(mod .. '+ SHIFT + N', function()
+  local mon = hl.get_active_monitor()
+  if mon == nil then return end
+
+  hl.dispatch(
+    hl.dsp.window.resize {
+      x = math.ceil(mon.width * 0.65),
+      y = math.ceil(mon.height * 0.85),
+    }
+  )
+  hl.dispatch(
+    hl.dsp.window.center()
+  )
+end, {
   description = '3/4 Focused Window',
 })
-hl.bind(mod .. '+ SHIFT + B', hl.dispatch(function()
-  hl.dsp.window.resize {
-    x = '50%',
-    y = '75%',
-  }
-  hl.dsp.window.center()
-end), {
+hl.bind(mod .. '+ SHIFT + B', function()
+  local mon = hl.get_active_monitor()
+  if mon == nil then return end
+
+  hl.dispatch(
+    hl.dsp.window.resize {
+      x = math.ceil(mon.width * 0.5),
+      y = math.ceil(mon.height * 0.75),
+    }
+  )
+  hl.dispatch(
+    hl.dsp.window.center()
+  )
+end, {
   description = 'Half Focused Window',
 })
 
@@ -268,10 +291,10 @@ hl.bind(mod .. '+ P', hl.dsp.window.pseudo(), {
 
 -- ── Window Properties ──
 
-hl.bind(mod .. '+ U', hl.dsp.window.set_prop { prop = 'opaque' }, {
+hl.bind(mod .. '+ U', toggle_prop.opaque, {
   description = 'Toggle Opacity',
 })
-hl.bind(mod .. '+ ALT + U', hl.dsp.window.set_prop { prop = 'no_blur' }, {
+hl.bind(mod .. '+ ALT + U', toggle_prop.no_blur, {
   description = 'Toggle Blur',
 })
 
@@ -308,41 +331,41 @@ hl.bind('CTRL + SHIFT + ESCAPE', hl.dsp.exec_cmd(apps.btop), {
 -- ── Workspace Navigation ──
 
 local workspaces = {
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
+  { key = '1', ws = 1 },
+  { key = '2', ws = 2 },
+  { key = '3', ws = 3 },
+  { key = '4', ws = 4 },
+  { key = '5', ws = 5 },
+  { key = '6', ws = 6 },
+  { key = '7', ws = 7 },
+  { key = '8', ws = 8 },
 }
 
-for i = 1, #workspaces do
-  hl.bind(mod .. '+' .. i, hl.dsp.focus { workspace = i }, {
-    description = 'Navigate To Workspace ' .. i,
+for _, ws in ipairs(workspaces) do
+  hl.bind(mod .. '+' .. ws.key, hl.dsp.focus { workspace = ws.ws }, {
+    description = 'Navigate To Workspace ' .. ws.ws,
   })
 end
 
-hl.bind(mod .. '+ CTRL + RIGHT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next'), {
+hl.bind(mod .. '+ CTRL + RIGHT', workspace_clamp 'next', {
   description = 'Next Workspace',
 })
-hl.bind(mod .. '+ CTRL + LEFT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev'), {
+hl.bind(mod .. '+ CTRL + LEFT', workspace_clamp 'prev', {
   description = 'Previous Workspace',
 })
 hl.bind(mod .. '+ CTRL + DOWN', hl.dsp.focus { workspace = 'empty' }, {
   description = 'Nearest Empty Workspace',
 })
-hl.bind(mod .. '+ mouse_down', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next'), {
+hl.bind(mod .. '+ mouse_down', workspace_clamp 'next', {
   description = 'Next Workspace (Mouse)',
 })
-hl.bind(mod .. '+ mouse_up', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev'), {
+hl.bind(mod .. '+ mouse_up', workspace_clamp 'prev', {
   description = 'Previous Workspace (Mouse)',
 })
-hl.bind(mod .. '+ PERIOD', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next'), {
+hl.bind(mod .. '+ PERIOD', workspace_clamp 'next', {
   description = 'Next Workspace (Key)',
 })
-hl.bind(mod .. '+ COMMA', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev'), {
+hl.bind(mod .. '+ COMMA', workspace_clamp 'prev', {
   description = 'Previous Workspace (Key)',
 })
 hl.bind(mod .. '+ TAB', hl.dsp.focus { workspace = 'm+1' }, {
@@ -351,57 +374,57 @@ hl.bind(mod .. '+ TAB', hl.dsp.focus { workspace = 'm+1' }, {
 hl.bind(mod .. '+ SHIFT + TAB', hl.dsp.focus { workspace = 'm-1' }, {
   description = 'Previous Workspace (Tab)',
 })
-hl.bind(mod .. '+ CTRL + BRACKETRIGHT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next'), {
+hl.bind(mod .. '+ CTRL + BRACKETRIGHT', workspace_clamp 'next', {
   description = 'Next Workspace (Bracket)',
 })
-hl.bind(mod .. '+ CTRL + BRACKETLEFT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev'), {
+hl.bind(mod .. '+ CTRL + BRACKETLEFT', workspace_clamp 'prev', {
   description = 'Previous Workspace (Bracket)',
 })
 
-for i = 1, #workspaces do
-  hl.bind(mod .. '+ SHIFT + ' .. i, hl.dsp.window.move { workspace = i }, {
-    description = 'Move To Workspace ' .. i,
+for _, ws in ipairs(workspaces) do
+  hl.bind(mod .. '+ SHIFT + ' .. ws.key, hl.dsp.window.move { workspace = ws.ws }, {
+    description = 'Move To Workspace ' .. ws.ws,
   })
 end
 
-hl.bind(mod .. '+ ALT + CTRL + RIGHT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next move'), {
+hl.bind(mod .. '+ ALT + CTRL + RIGHT', workspace_clamp('next', 'move'), {
   description = 'Move To Next Workspace',
 })
-hl.bind(mod .. '+ ALT + CTRL + LEFT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev move'), {
+hl.bind(mod .. '+ ALT + CTRL + LEFT', workspace_clamp('prev', 'move'), {
   description = 'Move To Previous Workspace',
 })
-hl.bind(mod .. '+ SHIFT + PERIOD', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next move'), {
+hl.bind(mod .. '+ SHIFT + PERIOD', workspace_clamp('next', 'move'), {
   description = 'Move To Next Workspace (Key)',
 })
-hl.bind(mod .. '+ SHIFT + COMMA', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev move'), {
+hl.bind(mod .. '+ SHIFT + COMMA', workspace_clamp('prev', 'move'), {
   description = 'Move To Previous Workspace (Key)',
 })
-hl.bind(mod .. '+ CTRL + SHIFT + BRACKETRIGHT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next move'), {
+hl.bind(mod .. '+ CTRL + SHIFT + BRACKETRIGHT', workspace_clamp('next', 'move'), {
   description = 'Move To Next Workspace (Bracket)',
 })
-hl.bind(mod .. '+ CTRL + SHIFT + BRACKETLEFT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev move'), {
+hl.bind(mod .. '+ CTRL + SHIFT + BRACKETLEFT', workspace_clamp('prev', 'move'), {
   description = 'Move To Previous Workspace (Bracket)',
 })
 
-for i = 1, #workspaces do
-  hl.bind(mod .. '+ ALT + ' .. i, hl.dsp.window.move {
-    workspace = i,
+for _, ws in ipairs(workspaces) do
+  hl.bind(mod .. '+ ALT + ' .. ws.key, hl.dsp.window.move {
+    workspace = ws.ws,
     follow = false,
   }, {
-    description = 'Move To Workspace ' .. i .. ' (Silent)',
+    description = 'Move To Workspace ' .. ws.ws .. ' (Silent)',
   })
 end
 
-hl.bind(mod .. '+ ALT + PERIOD', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next movesilent'), {
+hl.bind(mod .. '+ ALT + PERIOD', workspace_clamp('next', 'movesilent'), {
   description = 'Move To Next Workspace (Silent)',
 })
-hl.bind(mod .. '+ ALT + COMMA', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev movesilent'), {
+hl.bind(mod .. '+ ALT + COMMA', workspace_clamp('prev', 'movesilent'), {
   description = 'Move To Previous Workspace (Silent)',
 })
-hl.bind(mod .. '+ ALT + CTRL + BRACKETRIGHT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' next movesilent'), {
+hl.bind(mod .. '+ ALT + CTRL + BRACKETRIGHT', workspace_clamp('next', 'movesilent'), {
   description = 'Move To Next Workspace (Silent) (Bracket)',
 })
-hl.bind(mod .. '+ ALT + CTRL + BRACKETLEFT', hl.dsp.exec_cmd(scripts.workspace_clamp .. ' prev movesilent'), {
+hl.bind(mod .. '+ ALT + CTRL + BRACKETLEFT', workspace_clamp('prev', 'movesilent'), {
   description = 'Move To Previous Workspace (Silent) (Bracket)',
 })
 
@@ -466,12 +489,12 @@ hl.bind(mod .. '+ ALT + O', hl.dsp.window.move {
 
 -- ── Hardware Controls ──
 
-hl.bind('', hl.dsp.exec_cmd 'pamixer -i 2', {
+hl.bind('XF86AudioRaiseVolume', hl.dsp.exec_cmd 'pamixer -i 2', {
   description = 'Raise Volume',
   repeating = true,
   locked = true,
 })
-hl.bind('', hl.dsp.exec_cmd 'pamixer -d 2', {
+hl.bind('XF86AudioLowerVolume', hl.dsp.exec_cmd 'pamixer -d 2', {
   description = 'Lower Volume',
   repeating = true,
   locked = true,
