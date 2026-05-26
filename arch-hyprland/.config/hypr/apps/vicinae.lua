@@ -21,6 +21,7 @@ if has_command 'vicinae' then
 
   hl.unbind 'ALT + SPACE'
 
+  -- 15. Vicinae Launcher
   hl.bind('ALT + SPACE', hl.dsp.exec_cmd 'vicinae toggle', {
     description = 'Toggle Vicinae Launcher',
   })

@@ -20,12 +20,13 @@ if hl.plugin.hymission ~= nil then
     },
   }
 
+  -- 14. Hymission Plugin
   hl.bind(mod .. ' + TAB', function()
     hl.plugin.hymission.toggle('forceall')
   end, {
     description = 'Toggle overview for all workspaces',
   })
-  hl.bind(mod .. '+ A', function ()
+  hl.bind(mod .. '+ A', function()
     hl.plugin.hymission.open('onlycurrentworkspace')
   end, {
     description = 'Toggle overview for current workspace',

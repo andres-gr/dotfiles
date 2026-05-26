@@ -26,6 +26,7 @@ local scripts = {
   screenshot = home .. '/.local/bin/screenshot-tool-agr',
 }
 
+-- 1. Window Management
 hl.bind(mod .. '+ SHIFT + Q', hl.dsp.window.kill(), {
   description = 'Kill Focused Window',
 })
@@ -118,8 +119,7 @@ hl.bind(mod .. '+ CTRL + L', hl.dsp.group.next(), {
   description = 'Next Group',
 })
 
--- ── Focus Navigation ──
-
+-- 2. Focus Navigation
 hl.bind(mod .. '+ LEFT', hl.dsp.focus { direction = 'l' }, {
   description = 'Focus Left',
 })
@@ -151,8 +151,7 @@ hl.bind(mod .. '+ J', hl.dsp.focus { direction = 'd' }, {
   description = 'Focus Down (Vim)',
 })
 
--- ── Move Window (Vim) ──
-
+-- 3. Window Movement
 hl.bind(mod .. '+ SHIFT + H', hl.dsp.window.move { direction = 'l' }, {
   description = 'Move Window Left (Vim)',
 })
@@ -165,9 +164,36 @@ hl.bind(mod .. '+ SHIFT + K', hl.dsp.window.move { direction = 'u' }, {
 hl.bind(mod .. '+ SHIFT + J', hl.dsp.window.move { direction = 'd' }, {
   description = 'Move Window Down (Vim)',
 })
+hl.bind(mod .. '+ CTRL + SHIFT + LEFT', hl.dsp.window.move { direction = 'l' }, {
+  description = 'Move Active Window Left',
+  repeating = true,
+})
+hl.bind(mod .. '+ CTRL + SHIFT + RIGHT', hl.dsp.window.move { direction = 'r' }, {
+  description = 'Move Active Window Right',
+  repeating = true,
+})
+hl.bind(mod .. '+ CTRL + SHIFT + UP', hl.dsp.window.move { direction = 'u' }, {
+  description = 'Move Active Window Up',
+  repeating = true,
+})
+hl.bind(mod .. '+ CTRL + SHIFT + DOWN', hl.dsp.window.move { direction = 'd' }, {
+  description = 'Move Active Window Down',
+  repeating = true,
+})
+hl.bind(mod .. '+ mouse:272', hl.dsp.window.drag(), {
+  description = 'Hold To Move Window',
+  mouse = true,
+})
+hl.bind(mod .. '+ Z', hl.dsp.window.drag(), {
+  description = 'Hold To Move Window (Key)',
+  mouse = true,
+})
+hl.bind('F20', hl.dsp.window.drag(), {
+  description = 'Hold To Move Window (Key)',
+  mouse = true,
+})
 
--- ── Resize Window (Arrow + Vim, repeating) ──
-
+-- 4. Window Resizing
 hl.bind(mod .. '+ SHIFT + RIGHT', hl.dsp.window.resize {
   x = 30,
   y = 0,
@@ -232,47 +258,12 @@ hl.bind(mod .. '+ CTRL + J', hl.dsp.window.resize {
   description = 'Resize Window Down (Vim)',
   repeating = true,
 })
-
--- ── Move Active Window (smart: tiled swap / floating pixel, repeating) ──
--- hl.dsp.window.move({ direction }) handles both tiled (swap) and floating (pixel offset)
-
-hl.bind(mod .. '+ CTRL + SHIFT + LEFT', hl.dsp.window.move { direction = 'l' }, {
-  description = 'Move Active Window Left',
-  repeating = true,
-})
-hl.bind(mod .. '+ CTRL + SHIFT + RIGHT', hl.dsp.window.move { direction = 'r' }, {
-  description = 'Move Active Window Right',
-  repeating = true,
-})
-hl.bind(mod .. '+ CTRL + SHIFT + UP', hl.dsp.window.move { direction = 'u' }, {
-  description = 'Move Active Window Up',
-  repeating = true,
-})
-hl.bind(mod .. '+ CTRL + SHIFT + DOWN', hl.dsp.window.move { direction = 'd' }, {
-  description = 'Move Active Window Down',
-  repeating = true,
-})
-
--- ── Drag / Resize Window (mouse + keyboard triggers) ──
-
-hl.bind(mod .. '+ mouse:272', hl.dsp.window.drag(), {
-  description = 'Hold To Move Window',
-  mouse = true,
-})
 hl.bind(mod .. '+ mouse:273', hl.dsp.window.resize(), {
   description = 'Hold To Resize Window',
   mouse = true,
 })
-hl.bind(mod .. '+ Z', hl.dsp.window.drag(), {
-  description = 'Hold To Move Window (Key)',
-  mouse = true,
-})
 hl.bind(mod .. '+ SHIFT + Z', hl.dsp.window.resize(), {
   description = 'Hold To Resize Window (Key)',
-  mouse = true,
-})
-hl.bind('F20', hl.dsp.window.drag(), {
-  description = 'Hold To Move Window (Key)',
   mouse = true,
 })
 hl.bind('SHIFT + F20', hl.dsp.window.resize(), {
@@ -280,17 +271,13 @@ hl.bind('SHIFT + F20', hl.dsp.window.resize(), {
   mouse = true,
 })
 
--- ── Layout Toggles ──
-
+-- 5. Layouts and Window Props
 hl.bind(mod .. '+ ALT + BACKSLASH', hl.dsp.layout 'togglesplit', {
   description = 'Toggle Split',
 })
 hl.bind(mod .. '+ P', hl.dsp.window.pseudo(), {
   description = 'Toggle Pseudo',
 })
-
--- ── Window Properties ──
-
 hl.bind(mod .. '+ U', toggle_prop.opaque, {
   description = 'Toggle Opacity',
 })
@@ -298,8 +285,7 @@ hl.bind(mod .. '+ ALT + U', toggle_prop.no_blur, {
   description = 'Toggle Blur',
 })
 
--- ── App Launchers ──
-
+-- 6. Applications
 hl.bind(mod .. '+ T', hl.dsp.exec_cmd(apps.terminal_no_tmux), {
   description = 'Terminal (No Tmux)',
 })
@@ -328,8 +314,8 @@ hl.bind('CTRL + SHIFT + ESCAPE', hl.dsp.exec_cmd(apps.btop), {
   description = 'Btop Process Monitor',
 })
 
--- ── Workspace Navigation ──
 
+-- 7. Workspaces
 local workspaces = {
   { key = '1', ws = 1 },
   { key = '2', ws = 2 },
@@ -428,8 +414,7 @@ hl.bind(mod .. '+ ALT + CTRL + BRACKETLEFT', workspace_clamp('prev', 'movesilent
   description = 'Move To Previous Workspace (Silent) (Bracket)',
 })
 
--- ── Scratchpad ──
-
+-- 8. Scratchpads
 hl.bind(mod .. '+ SHIFT + S', hl.dsp.window.move { workspace = 'special' }, {
   description = 'Move To Scratchpad',
 })
@@ -443,8 +428,7 @@ hl.bind(mod .. '+ S', hl.dsp.workspace.toggle_special(), {
   description = 'Toggle Scratchpad',
 })
 
--- ── Minimized Workspace ──
-
+-- 9. Minimized Workspace
 hl.bind(mod .. '+ X', hl.dsp.window.move {
   workspace = 'special:minimized',
   follow = false,
@@ -458,8 +442,7 @@ hl.bind(mod .. '+ CTRL + X', hl.dsp.window.move { workspace = '+0' }, {
   description = 'Move from minimized workspace',
 })
 
--- ── Monitor Navigation ──
-
+-- 10. Monitor Focus and Navigation
 hl.bind(mod .. '+ I', hl.dsp.focus { monitor = 'l' }, {
   description = 'Focus Left Monitor',
 })
@@ -487,8 +470,7 @@ hl.bind(mod .. '+ ALT + O', hl.dsp.window.move {
   description = 'Move Window To Right Monitor (Silent)',
 })
 
--- ── Hardware Controls ──
-
+-- 11. Hardware Controls
 hl.bind('XF86AudioRaiseVolume', hl.dsp.exec_cmd 'pamixer -i 2', {
   description = 'Raise Volume',
   repeating = true,
@@ -524,8 +506,7 @@ hl.bind('XF86AudioPrev', hl.dsp.exec_cmd 'playerctl previous', {
   locked = true,
 })
 
--- ── Screenshots ──
-
+-- 12. Screenshots
 hl.bind('Print', hl.dsp.exec_cmd(scripts.screenshot .. ' region'), {
   description = 'Screenshot Region',
 })
@@ -539,8 +520,7 @@ hl.bind(mod .. '+ Print', hl.dsp.exec_cmd(scripts.screenshot .. ' full'), {
   description = 'Screenshot All Monitors',
 })
 
--- ── Misc ──
-
+-- 13. Misc
 hl.bind(mod .. '+ ALT + CTRL + BACKSPACE', hl.dsp.exit(), {
   description = 'Quit Hyprland',
 })
