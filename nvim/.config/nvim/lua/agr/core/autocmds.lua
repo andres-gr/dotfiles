@@ -253,7 +253,7 @@ cmd({ 'VimEnter', 'ColorScheme' }, {
   group = agr,
 })
 
-cmd('BufEnter', {
+cmd('FileType', {
   callback = function (event)
     local buf = event.buf
 
@@ -261,7 +261,7 @@ cmd('BufEnter', {
     pcall(vim.keymap.set, 't', 'k', 'k', { buffer = buf, noremap = true, silent = true })
   end,
   group = general,
-  pattern = 'snacks_*',
+  pattern = 'snacks_terminal',
 })
 
 cmd('FileType', {
