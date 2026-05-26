@@ -86,6 +86,18 @@ binds {
     Mod+Shift+Right {
         move-column-right
     }
+    Mod+Alt+Left hotkey-overlay-title="Move Column Left (Silent*)" {
+        spawn-sh "niri msg action move-column-left; niri msg action focus-window-previous"
+    }
+    Mod+Alt+Down hotkey-overlay-title="Move Window Down (Silent*)" {
+        spawn-sh "niri msg action move-window-down; niri msg action focus-window-previous"
+    }
+    Mod+Alt+Up hotkey-overlay-title="Move Window Up (Silent*)" {
+        spawn-sh "niri msg action move-window-up; niri msg action focus-window-previous"
+    }
+    Mod+Alt+Right hotkey-overlay-title="Move Column Right (Silent*)" {
+        spawn-sh "niri msg action move-column-right; niri msg action focus-window-previous"
+    }
     Mod+Shift+H hotkey-overlay-title="Move Column Left" {
         move-column-left
     }
@@ -97,6 +109,18 @@ binds {
     }
     Mod+Shift+L hotkey-overlay-title="Move Column Right" {
         move-column-right
+    }
+    Mod+Alt+H hotkey-overlay-title="Move Column Left (Silent*)" {
+        spawn-sh "niri msg action move-column-left; niri msg action focus-window-previous"
+    }
+    Mod+Alt+J hotkey-overlay-title="Move Window Down (Silent*)" {
+        spawn-sh "niri msg action move-window-down; niri msg action focus-window-previous"
+    }
+    Mod+Alt+K hotkey-overlay-title="Move Window Up (Silent*)" {
+        spawn-sh "niri msg action move-window-up; niri msg action focus-window-previous"
+    }
+    Mod+Alt+L hotkey-overlay-title="Move Column Right (Silent*)" {
+        spawn-sh "niri msg action move-column-right; niri msg action focus-window-previous"
     }
     // === Column Navigation ===
     Mod+Ctrl+H hotkey-overlay-title="Focus Column First" {
@@ -137,11 +161,29 @@ binds {
     Mod+Shift+Ctrl+Right {
         move-column-to-monitor-right
     }
+    Mod+Alt+Ctrl+Left hotkey-overlay-title="Move To Monitor Left (Silent*)" {
+        spawn-sh "niri msg action move-column-to-monitor-left; niri msg action focus-monitor-previous"
+    }
+    Mod+Alt+Ctrl+Down hotkey-overlay-title="Move To Monitor Down (Silent*)" {
+        spawn-sh "niri msg action move-column-to-monitor-down; niri msg action focus-monitor-previous"
+    }
+    Mod+Alt+Ctrl+Up hotkey-overlay-title="Move To Monitor Up (Silent*)" {
+        spawn-sh "niri msg action move-column-to-monitor-up; niri msg action focus-monitor-previous"
+    }
+    Mod+Alt+Ctrl+Right hotkey-overlay-title="Move To Monitor Right (Silent*)" {
+        spawn-sh "niri msg action move-column-to-monitor-right; niri msg action focus-monitor-previous"
+    }
     Mod+Shift+I hotkey-overlay-title="Move To Monitor Left" {
         move-column-to-monitor-left
     }
     Mod+Shift+O hotkey-overlay-title="Move To Monitor Right" {
         move-column-to-monitor-right
+    }
+    Mod+Alt+I hotkey-overlay-title="Move To Monitor Left (Silent*)" {
+        spawn-sh "niri msg action move-column-to-monitor-left; niri msg action focus-monitor-previous"
+    }
+    Mod+Alt+O hotkey-overlay-title="Move To Monitor Right (Silent*)" {
+        spawn-sh "niri msg action move-column-to-monitor-right; niri msg action focus-monitor-previous"
     }
     // === Workspace Navigation ===
     Mod+Page_Down {
@@ -174,17 +216,29 @@ binds {
     Mod+Shift+Comma hotkey-overlay-title="Move To Workspace Up" {
         move-column-to-workspace-up
     }
+    Mod+Alt+Page_Down hotkey-overlay-title="Move Workspace Down (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace-down; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+Page_Up hotkey-overlay-title="Move Workspace Up (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace-up; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+Period hotkey-overlay-title="Move Workspace Down (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace-down; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+Comma hotkey-overlay-title="Move Workspace Up (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace-up; niri msg action focus-workspace-previous"
+    }
     // === Move Workspaces ===
-    Mod+Alt+Page_Down {
+    Mod+Ctrl+Page_Down {
         move-workspace-down
     }
-    Mod+Alt+Page_Up {
+    Mod+Ctrl+Page_Up {
         move-workspace-up
     }
-    Mod+Alt+Period hotkey-overlay-title="Move Workspace Down" {
+    Mod+Ctrl+Period hotkey-overlay-title="Move Workspace Down" {
         move-workspace-down
     }
-    Mod+Alt+Comma hotkey-overlay-title="Move Workspace Up" {
+    Mod+Ctrl+Comma hotkey-overlay-title="Move Workspace Up" {
         move-workspace-up
     }
     // === Mouse Wheel Navigation ===
@@ -273,6 +327,33 @@ binds {
     }
     Mod+Shift+9 {
         move-column-to-workspace 9
+    }
+    Mod+Alt+1 hotkey-overlay-title="Move To Workspace 1 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 1; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+2 hotkey-overlay-title="Move To Workspace 2 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 2; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+3 hotkey-overlay-title="Move To Workspace 3 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 3; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+4 hotkey-overlay-title="Move To Workspace 4 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 4; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+5 hotkey-overlay-title="Move To Workspace 5 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 5; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+6 hotkey-overlay-title="Move To Workspace 6 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 6; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+7 hotkey-overlay-title="Move To Workspace 7 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 7; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+8 hotkey-overlay-title="Move To Workspace 8 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 8; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+9 hotkey-overlay-title="Move To Workspace 9 (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace 9; niri msg action focus-workspace-previous"
     }
     // === Column Management ===
     Mod+U hotkey-overlay-title="Consume/Expel Window Left" {
