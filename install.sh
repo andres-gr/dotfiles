@@ -157,7 +157,7 @@ declare -A PATCH_FILES=(
 # Format: patch_name="func1 func2 func3 ..."
 declare -A PATCH_FUNCTIONS=(
   [common]="apply_arch_patch_dconf bootstrap_spicetify configure_amdgpu_early_kms configure_bluetooth configure_font_rendering configure_keyboard_layout install_arch_patch_services install_broadcom_blacklist install_custom_fonts install_ghostty_misc_config install_noctalia_sddm_theme install_pam_configs install_plymouth_boot_splash install_sddm_wayland_config install_sddm_x11_config install_spicetify_comfy_theme install_splash_screens install_systemd_scripts install_tpm install_yazi_plugins rebuild_kde_menucache save_raw_arch_packages"
-  [hyprland]="configure_hyprland_app_source configure_splash_hyprland configure_workspaces_persistent install_hymission install_hyprland_config reload_hyprland"
+  [hyprland]="configure_monitors_lua configure_splash_hyprland configure_workspaces_persistent install_hymission install_hyprland_config reload_hyprland"
   [niri]="configure_niri_app_includes configure_splash_niri install_niri_config install_niri_window_grab"
   [noctalia]="install_spotify_toast_plugin patch_zen_userchrome"
   [dank]="reload_dms"
@@ -191,11 +191,11 @@ declare -A PATCH_FUNCTION_DESCRIPTIONS=(
   [rebuild_kde_menucache]="Rebuild KDE menu cache for Arch themes"
   [save_raw_arch_packages]="Save list of raw Arch packages"
   # hyprland
-  [configure_hyprland_app_source]="Add source line for apps in ~/.config/hypr/apps/"
+  [configure_monitors_lua]="Generate monitors config file from template"
   [configure_splash_hyprland]="Configure Splash in Hyprland"
   [configure_workspaces_persistent]="Add persistent:true to workspaces"
   [install_hymission]="Install hymission Hyprland plugin"
-  [install_hyprland_config]="Install main Hyprland hyprland.conf"
+  [install_hyprland_config]="Install main Hyprland hyprland.lua"
   [reload_hyprland]="Reload Hyprland configuration"
   # niri
   [configure_niri_app_includes]="Add include lines for apps in ~/.config/niri/apps/"
