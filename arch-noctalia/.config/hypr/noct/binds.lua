@@ -16,8 +16,7 @@ hl.unbind 'XF86AudioPause'
 hl.unbind 'XF86AudioNext'
 hl.unbind 'XF86AudioPrev'
 
--- ── Application Launchers ──
-
+-- 16. Noctalia Launchers
 hl.bind('ALT + SPACE', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call launcher toggle', {
   description = 'Application Launcher',
 })
@@ -37,8 +36,7 @@ hl.bind(mod .. '+ N', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call notificatio
   description = 'Notification Center',
 })
 
--- ── Security ──
-
+-- 17. Noctalia Session Controls
 hl.bind(mod .. '+ ALT + CTRL + L', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call lockScreen lock', {
   description = 'Lock Screen',
 })
@@ -49,8 +47,7 @@ hl.bind('ALT + CTRL + DELETE', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call sy
   description = 'System Monitor',
 })
 
--- ── Audio Controls ──
-
+-- 18. Noctalia Hardware Controls
 hl.bind('XF86AudioRaiseVolume', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call volume increase', {
   description = 'Raise Volume',
   repeating = true,
@@ -86,8 +83,6 @@ hl.bind('XF86AudioPrev', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call media pr
   locked = true,
 })
 
--- ── Brightness Controls ──
-
 hl.bind('XF86MonBrightnessUp', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call brightness increase', {
   description = 'Increase Brightness',
   repeating = true,
@@ -99,8 +94,7 @@ hl.bind('XF86MonBrightnessDown', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call 
   locked = true,
 })
 
--- ── Misc Noctalia ──
-
+-- 19. Noctalia Extras
 hl.bind(mod .. '+ ALT + CTRL + BACKSLASH', hl.dsp.exec_cmd 'qs -c noctalia-shell ipc call idleInhibitor toggle', {
   description = 'Toggle Idle Inhibitor',
 })
