@@ -16,8 +16,8 @@
 #output_path = "/home/agr/.cache/noctalia/placeholder.json"
 
 [templates.hyprland]
-input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/hyprland.conf"
-output_path = "~/.config/hypr/noctalia/noctalia-colors.conf"
+input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/hyprland.lua"
+output_path = "~/.config/hypr/noctalia/noctalia-colors.lua"
 
 [templates.niri]
 input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/niri.kdl"
