@@ -212,7 +212,7 @@ hl.window_rule {
 hl.window_rule {
   name = 'xdg_desktop_portal',
   match = {
-    class = '^(xdg-desktop-portal.*)',
+    class = '^([Xx]dg-desktop-portal.*)',
   },
   center = true,
   float = true,
