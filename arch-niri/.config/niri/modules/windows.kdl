@@ -142,7 +142,7 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match app-id="^(X|x)dg-desktop-portal.*)"
+    match app-id="^([Xx]dg-desktop-portal.*)"
 
     default-column-width {
         proportion 0.4
