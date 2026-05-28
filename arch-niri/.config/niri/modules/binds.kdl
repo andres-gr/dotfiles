@@ -254,6 +254,12 @@ binds {
     Mod+Shift+WheelScrollUp cooldown-ms=150 hotkey-overlay-title="Move To Workspace Up" {
         move-column-to-workspace-up
     }
+    Mod+Alt+WheelScrollDown cooldown-ms=150 hotkey-overlay-title="Move To Workspace Down (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace-down; niri msg action focus-workspace-previous"
+    }
+    Mod+Alt+WheelScrollUp cooldown-ms=150 hotkey-overlay-title="Move To Workspace Up (Silent*)" {
+        spawn-sh "niri msg action move-column-to-workspace-up; niri msg action focus-workspace-previous"
+    }
     Mod+WheelScrollRight {
         focus-column-right
     }
@@ -271,6 +277,12 @@ binds {
     }
     Mod+Ctrl+Shift+BracketLeft hotkey-overlay-title="Move Column Left" {
         move-column-left
+    }
+    Mod+Ctrl+Alt+BracketRight hotkey-overlay-title="Move Column Right (Silent*)" {
+        spawn-sh "niri msg action move-column-right; niri msg action focus-window-previous"
+    }
+    Mod+Ctrl+Alt+BracketLeft hotkey-overlay-title="Move Column Left (Silent*)" {
+        spawn-sh "niri msg action move-column-left; niri msg action focus-window-previous"
     }
     // === Numbered Workspaces ===
     Mod+1 {
