@@ -174,14 +174,6 @@ hl.window_rule {
 }
 
 hl.window_rule {
-  name = 'claude_to_workspace',
-  match = {
-    class = '^(com.anthropic.claude-desktop|[Cc]laude)$',
-  },
-  workspace = 'name:sec4',
-}
-
-hl.window_rule {
   name = 'update_packages',
   match = {
     class = '^(com.mitchellh.ghostty)$',
