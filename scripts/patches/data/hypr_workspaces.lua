@@ -14,11 +14,11 @@ for _, ws in ipairs(workspaces) do
     local workspace = ws.workspace == 'prim' and i or i + 4
 
     hl.workspace_rule {
-      workspace = workspace,
+      workspace = tostring(workspace),
       monitor = ws.monitor,
       default = i == 1,
       persistent = true,
-      default_name = ws.workspace .. workspace,
+      default_name = ws.workspace .. i,
     }
   end
 end
