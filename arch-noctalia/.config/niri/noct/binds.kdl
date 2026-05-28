@@ -19,7 +19,7 @@ binds {
     Mod+N hotkey-overlay-title="Notification Center" {
         spawn-sh "qs -c noctalia-shell ipc call notifications toggleHistory"
     }
-    Mod+Shift+N hotkey-overlay-title="Notifications Clear All" {
+    Mod+Alt+N hotkey-overlay-title="Notifications Clear All" {
         spawn-sh "qs -c noctalia-shell ipc call notifications clear"
     }
     // === Security ===

@@ -37,7 +37,7 @@ hl.bind(mod .. '+ SHIFT + BACKSPACE', hl.dsp.exec_cmd(noct_ipc .. ' sessionMenu 
 hl.bind(mod .. '+ N', hl.dsp.exec_cmd(noct_ipc .. ' notifications toggleHistory'), {
   description = 'Notification Center',
 })
-hl.bind(mod .. '+ SHIFT + N', hl.dsp.exec_cmd(noct_ipc .. ' notifications clear'), {
+hl.bind(mod .. '+ ALT + N', hl.dsp.exec_cmd(noct_ipc .. ' notifications clear'), {
   description = 'Notifications: Clear All',
 })
 
