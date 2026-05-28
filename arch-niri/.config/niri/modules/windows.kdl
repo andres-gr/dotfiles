@@ -163,11 +163,20 @@ window-rule {
     open-on-workspace "prim-2"
 }
 window-rule {
-    match app-id="com.anthropic.claude-desktop"
+    match app-id="^(com.anthropic.claude-desktop|[Cc]laude)$"
 
     default-column-width {
         proportion 0.7
     }
     open-focused true
     open-on-workspace "sec-2"
+}
+window-rule {
+    match app-id="com.rtosta.zapzap"
+
+    default-column-width {
+        proportion 0.7
+    }
+    open-focused true
+    open-on-workspace "sec-1"
 }
