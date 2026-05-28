@@ -40,6 +40,9 @@ hl.bind(mod .. '+ N', hl.dsp.exec_cmd(noct_ipc .. ' notifications toggleHistory'
 hl.bind(mod .. '+ ALT + N', hl.dsp.exec_cmd(noct_ipc .. ' notifications clear'), {
   description = 'Notifications: Clear All',
 })
+hl.bind(mod .. '+ CTRL + N', hl.dsp.exec_cmd(noct_ipc .. ' notifications dismissAll'), {
+  description = 'Notifications: Dismiss All',
+})
 
 -- 17. Noctalia Session Controls
 hl.bind(mod .. '+ ALT + CTRL + L', hl.dsp.exec_cmd(noct_ipc .. ' lockScreen lock'), {

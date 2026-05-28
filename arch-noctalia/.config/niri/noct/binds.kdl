@@ -22,6 +22,9 @@ binds {
     Mod+Alt+N hotkey-overlay-title="Notifications Clear All" {
         spawn-sh "qs -c noctalia-shell ipc call notifications clear"
     }
+    Mod+Ctrl+N hotkey-overlay-title="Notifications Dismiss All" {
+        spawn-sh "qs -c noctalia-shell ipc call notifications dismissAll"
+    }
     // === Security ===
     Mod+Ctrl+Alt+L hotkey-overlay-title="Lock Screen" {
         spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"
