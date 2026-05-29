@@ -9,7 +9,6 @@ hl.config {
     disable_hyprland_logo = false,
     disable_splash_rendering = true,
     exit_window_retains_fullscreen = true,
-    focus_on_activate = true,
     force_default_wallpaper = 3,
     initial_workspace_tracking = 0,
     key_press_enables_dpms = true,
