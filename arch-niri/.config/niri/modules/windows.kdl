@@ -160,7 +160,7 @@ window-rule {
 
     open-focused false
     open-maximized true
-    open-on-workspace "prim-2"
+    open-on-workspace "prim-3"
 }
 window-rule {
     match app-id="^(com.anthropic.claude-desktop|[Cc]laude)$"
