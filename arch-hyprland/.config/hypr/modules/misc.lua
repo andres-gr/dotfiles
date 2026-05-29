@@ -9,6 +9,7 @@ hl.config {
     disable_hyprland_logo = false,
     disable_splash_rendering = true,
     exit_window_retains_fullscreen = true,
+    focus_on_activate = true,
     force_default_wallpaper = 3,
     initial_workspace_tracking = 0,
     key_press_enables_dpms = true,
@@ -16,7 +17,7 @@ hl.config {
     on_focus_under_fullscreen = 1,
 
     -- Enable window swallowing (terminal → app)
-    -- enable_swallow = true,
-    -- swallow_regex = '^(.*foot|org.wezfurlong.wezterm|ghostty|kitty.*)$',
+    enable_swallow = true,
+    swallow_regex = '^(.*foot|org.wezfurlong.wezterm|com.mitchellh.ghostty|kitty.*)$',
   },
 }
