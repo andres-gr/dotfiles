@@ -127,6 +127,7 @@ N.config = function ()
     },
     filesystem = {
       async_directory_scan = 'auto',
+      bind_to_cwd = false,
       filtered_items = {
         always_show = {}, -- remains visible even if other settings would normally hide it
         hide_by_name = {
