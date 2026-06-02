@@ -783,13 +783,11 @@
         "skipStartupTransition": false,
         "solidColor": "#1a1a2e",
         "sortOrder": "name",
-        "transitionDuration": 2100,
-        "transitionEdgeSmoothness": 0.05,
+        "transitionDuration": 2800,
+        "transitionEdgeSmoothness": 0.08,
         "transitionType": [
             "disc",
-            "stripes",
             "wipe",
-            "pixelate",
             "honeycomb"
         ],
         "useOriginalImages": true,
