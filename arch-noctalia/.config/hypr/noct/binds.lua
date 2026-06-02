@@ -109,3 +109,6 @@ hl.bind(mod .. '+ ALT + CTRL + BACKSLASH', hl.dsp.exec_cmd(noct_ipc .. ' idleInh
 hl.bind(mod .. '+ SLASH', hl.dsp.exec_cmd(noct_ipc .. ' plugin:keybind-cheatsheet toggle'), {
   description = 'Toggle Keybinds Cheatsheet',
 })
+hl.bind(mod .. '+ ALT + CTRL + U', hl.dsp.exec_cmd(noct_ipc .. ' plugin:update-count run'), {
+  description = 'Run System Update',
+})
