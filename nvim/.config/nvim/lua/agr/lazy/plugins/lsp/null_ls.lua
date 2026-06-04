@@ -11,15 +11,15 @@ N.setup = function ()
     root_dir = handlers.root_dir,
     sources = {
       -- Python formatting (your existing config)
-      {
-        filetypes = { 'python' },
-        generator = h.formatter_factory {
-          command = 'blackd-client',
-          to_stdin = true,
-        },
-        method = null_ls.methods.FORMATTING,
-        name = 'blackd',
-      },
+      -- {
+      --   filetypes = { 'python' },
+      --   generator = h.formatter_factory {
+      --     command = 'blackd-client',
+      --     to_stdin = true,
+      --   },
+      --   method = null_ls.methods.FORMATTING,
+      --   name = 'blackd',
+      -- },
 
       -- Go formatting
       null_ls.builtins.formatting.goimports.with({

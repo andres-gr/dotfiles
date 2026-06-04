@@ -125,7 +125,7 @@ M.setup = function ()
       if server_name == 'eslint' then
         opts = vim.tbl_deep_extend('force', default_opts, {
           root_dir = function (...)
-            return root(unpack(eslint_dirs))(...)
+            return root(table.unpack(eslint_dirs))(...)
           end,
         })
       end
