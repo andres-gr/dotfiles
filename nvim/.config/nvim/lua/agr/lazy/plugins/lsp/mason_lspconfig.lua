@@ -143,6 +143,19 @@ M.setup = function ()
         })
       end
 
+      if server_name == 'basedpyright' then
+        opts = vim.tbl_deep_extend('force', default_opts, {
+          handlers = {
+            ['$/progress'] = function (err, result, ctx)
+              if result.token == (vim.g.basedpyright_progress_token or result.token) then
+                vim.g.basedpyright_progress_token = result.token
+                vim.lsp.handlers['$/progress'](err, result, ctx)
+              end
+            end,
+          },
+        })
+      end
+
       lspconfig[server_name].setup(opts)
     end,
   }
