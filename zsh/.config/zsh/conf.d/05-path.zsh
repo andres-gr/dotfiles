@@ -34,4 +34,9 @@ export SPICETIFY_HOME="${SPICETIFY_HOME:-$HOME/.spicetify}"
 
 [[ -d "$HOME/.config/zsh/bin" ]] && path+=("$HOME/.config/zsh/bin")
 
+if (( $+commands[go] )); then
+  export GOPATH="${GOPATH:-$HOME/go}"
+  [[ -d "$GOPATH/bin" ]] && path+=("$GOPATH/bin")
+fi
+
 export PATH
