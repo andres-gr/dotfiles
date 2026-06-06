@@ -184,10 +184,6 @@ hl.bind(mod .. '+ mouse:272', hl.dsp.window.drag(), {
   description = 'Hold To Move Window',
   mouse = true,
 })
-hl.bind(mod .. '+ Z', hl.dsp.window.drag(), {
-  description = 'Hold To Move Window (Key)',
-  mouse = true,
-})
 hl.bind('F20', hl.dsp.window.drag(), {
   description = 'Hold To Move Window (Key)',
   mouse = true,
@@ -260,10 +256,6 @@ hl.bind(mod .. '+ CTRL + J', hl.dsp.window.resize {
 })
 hl.bind(mod .. '+ mouse:273', hl.dsp.window.resize(), {
   description = 'Hold To Resize Window',
-  mouse = true,
-})
-hl.bind(mod .. '+ SHIFT + Z', hl.dsp.window.resize(), {
-  description = 'Hold To Resize Window (Key)',
   mouse = true,
 })
 hl.bind('SHIFT + F20', hl.dsp.window.resize(), {
