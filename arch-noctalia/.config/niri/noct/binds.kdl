@@ -4,10 +4,10 @@ binds {
     Alt+Space hotkey-overlay-title="Application Launcher" {
         spawn-sh "qs -c noctalia-shell ipc call launcher toggle"
     }
-    Mod+S hotkey-overlay-title="Control Center" {
+    Mod+Z hotkey-overlay-title="Control Center" {
         spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle"
     }
-    Mod+Shift+S hotkey-overlay-title="Emoji Picker" {
+    Mod+Shift+E hotkey-overlay-title="Emoji Picker" {
         spawn-sh "qs -c noctalia-shell ipc call launcher emoji"
     }
     Mod+V hotkey-overlay-title="Clipboard Manager" {

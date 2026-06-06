@@ -22,10 +22,10 @@ local noct_ipc = 'qs -c noctalia-shell ipc call'
 hl.bind('ALT + SPACE', hl.dsp.exec_cmd(noct_ipc .. ' launcher toggle'), {
   description = 'Application Launcher',
 })
-hl.bind(mod .. '+ S', hl.dsp.exec_cmd(noct_ipc .. ' controlCenter toggle'), {
+hl.bind(mod .. '+ Z', hl.dsp.exec_cmd(noct_ipc .. ' controlCenter toggle'), {
   description = 'Control Center',
 })
-hl.bind(mod .. '+ SHIFT + S', hl.dsp.exec_cmd(noct_ipc .. ' launcher emoji'), {
+hl.bind(mod .. '+ SHIFT + E', hl.dsp.exec_cmd(noct_ipc .. ' launcher emoji'), {
   description = 'Emoji Picker',
 })
 hl.bind(mod .. '+ V', hl.dsp.exec_cmd(noct_ipc .. ' launcher clipboard'), {
