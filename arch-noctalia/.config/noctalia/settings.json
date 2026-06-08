@@ -495,7 +495,7 @@
     },
     "location": {
         "analogClockInCalendar": false,
-        "autoLocate": false,
+        "autoLocate": true,
         "firstDayOfWeek": 0,
         "hideWeatherCityName": false,
         "hideWeatherTimezone": false,
