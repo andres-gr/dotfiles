@@ -77,4 +77,7 @@ binds {
     Mod+Ctrl+Alt+U hotkey-overlay-title="Run System Update" {
         spawn-sh "qs -c noctalia-shell ipc call plugin:update-count run"
     }
+    Mod+Ctrl+Alt+W hotkey-overlay-title="Random Wallpaper" {
+        spawn-sh "qs -c noctalia-shell ipc call wallpaper random"
+    }
 }

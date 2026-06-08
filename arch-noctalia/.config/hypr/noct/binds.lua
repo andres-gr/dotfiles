@@ -112,3 +112,6 @@ hl.bind(mod .. '+ SLASH', hl.dsp.exec_cmd(noct_ipc .. ' plugin:keybind-cheatshee
 hl.bind(mod .. '+ ALT + CTRL + U', hl.dsp.exec_cmd(noct_ipc .. ' plugin:update-count run'), {
   description = 'Run System Update',
 })
+hl.bind(mod .. '+ ALT + CTRL + W', hl.dsp.exec_cmd(noct_ipc .. ' wallpaper random'), {
+  description = 'Random Wallpaper',
+})
