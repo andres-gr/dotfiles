@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# 1. Clear out any lingering watchers
+killall spicetify 2>/dev/null
+
+# 2. Boot the silent build watcher (No auto-restart flag)
+if command -v spicetify &> /dev/null; then
+  spicetify watch &
+  sleep 0.3
+fi
+
+# 3. Securely force Spotify into Native Wayland
+exec env -u DISPLAY /usr/bin/spotify \
+  --enable-features=UseOzonePlatform \
+  --ozone-platform=wayland \
+  "$@"

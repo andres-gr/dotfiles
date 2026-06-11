@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+unset DISPLAY
+exec /usr/bin/spotify --enable-features=UseOzonePlatform --ozone-platform=wayland "$@"
