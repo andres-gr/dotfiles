@@ -354,6 +354,7 @@ common_patches() {
   install_pam_configs
   install_plymouth_boot_splash
   install_spicetify_comfy_theme
+  configure_spicetify_launch_flags
   install_splash_screens
   install_systemd_scripts
   install_tpm
@@ -1359,6 +1360,91 @@ bootstrap_spicetify() {
   run spicetify restore backup apply || true
 
   ok "Spicetify bootstrapped"
+}
+
+###############################################################################
+# Spicetify Spotify launch flags
+# Configure Spotify to use Wayland backend via config-xpui.ini
+###############################################################################
+
+configure_spicetify_launch_flags() {
+  local spicetify_config="$HOME/.config/spicetify/config-xpui.ini"
+  local launch_flags="env -u DISPLAY --enable-features=UseOzonePlatform --ozone-platform=wayland"
+
+  # Skip if spicetify not installed
+  if ! command -v spicetify &>/dev/null; then
+    log "spicetify not found — skipping Spotify launch flags"
+    return 0
+  fi
+
+  # Create config if missing
+  if [[ ! -f "$spicetify_config" ]]; then
+    if $DRY_RUN; then
+      log "[dry-run] would create $spicetify_config with launch flags"
+      return 0
+    fi
+    step "Creating spicetify config with Wayland launch flags"
+    run mkdir -p "$(dirname "$spicetify_config")"
+    cat > "$spicetify_config" << EOF
+[Setting]
+spotify_launch_flags = $launch_flags
+EOF
+    ok "Created spicetify config with Wayland launch flags"
+    return 0
+  fi
+
+  # Config exists — check for spotify_launch_flags key
+  if grep -q '^spotify_launch_flags' "$spicetify_config"; then
+    # Already has the full flags string — skip
+    if grep "^spotify_launch_flags" "$spicetify_config" | grep -qF "$launch_flags"; then
+      log "Spotify launch flags already configured — skipping"
+      return 0
+    fi
+
+    if $DRY_RUN; then
+      log "[dry-run] would append launch flags to existing spotify_launch_flags"
+      return 0
+    fi
+
+    # Append flags to existing value
+    local tmp
+    tmp=$(mktemp)
+    while IFS= read -r line; do
+      if [[ "$line" =~ ^spotify_launch_flags ]]; then
+        # Strip trailing whitespace before appending to avoid double space
+        line="${line%"${line##*[![:space:]]}"}"
+        line="$line $launch_flags"
+      fi
+      printf '%s\n' "$line"
+    done < "$spicetify_config" > "$tmp"
+    run mv "$tmp" "$spicetify_config"
+    ok "Appended Wayland launch flags to spotify_launch_flags"
+  else
+    if $DRY_RUN; then
+      log "[dry-run] would add spotify_launch_flags to $spicetify_config"
+      return 0
+    fi
+
+    # Add under [Setting] section
+    local tmp
+    tmp=$(mktemp)
+    local added=false
+    while IFS= read -r line; do
+      printf '%s\n' "$line"
+      if [[ "$line" == "[Setting]" ]]; then
+        printf '%s\n' "spotify_launch_flags = $launch_flags"
+        added=true
+      fi
+    done < "$spicetify_config" > "$tmp"
+
+    if ! $added; then
+      # No [Setting] section — append at end
+      printf '\n[Setting]\n%s\n' "spotify_launch_flags = $launch_flags" >> "$tmp"
+    fi
+
+    run mv "$tmp" "$spicetify_config"
+    ok "Added spotify_launch_flags to spicetify config"
+  fi
 }
 
 ###############################################################################
