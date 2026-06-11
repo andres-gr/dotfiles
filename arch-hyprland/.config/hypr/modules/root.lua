@@ -28,8 +28,19 @@ hl.env('YDOTOOL_SOCKET', '/tmp/ydotool.sock')
 -------------------------------
 
 hl.on('hyprland.start', function()
-  hl.exec_cmd 'dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP'
+  -- 1. Hard-kill any stray/SDDM-inherited portals to flush their cache
+  hl.exec_cmd 'systemctl --user stop xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-desktop-portal-gnome'
+
+  -- 2. Inject clean attributes so D-Bus evaluates only your Hyprland configuration profile
+  hl.exec_cmd 'systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=Hyprland'
+  hl.exec_cmd 'dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=Hyprland'
+
+  -- 3. Explicitly restart the core portal wrapper with the fresh environment variables
+  hl.exec_cmd 'systemctl --user start xdg-desktop-portal'
+
   hl.exec_cmd '/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1'
   hl.exec_cmd 'hyprpm reload'
-  hl.exec_cmd "hyprctl --batch 'dispatch workspace 1; dispatch movecursortocorner 1'"
+
+  hl.dispatch(hl.dsp.focus { workspace = 1 })
+  hl.dispatch(hl.dsp.cursor.move_to_corner { corner = 1 })
 end)
