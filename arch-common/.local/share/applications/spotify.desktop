@@ -4,7 +4,8 @@ Name=Spotify
 GenericName=Music Player
 Icon=spotify-client
 TryExec=spotify
-Exec=sh -c "spicetify watch -s & spotify --uri=%u"
+# Exec=sh -c '"$HOME/.local/bin/spicetify-watch" "$@"' _ %U
+Exec=env -u DISPLAY spotify --enable-features=UseOzonePlatform --ozone-platform=wayland --uri=%u
 Terminal=false
 MimeType=x-scheme-handler/spotify;
 Categories=Audio;Music;Player;AudioVideo;
