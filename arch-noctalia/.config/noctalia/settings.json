@@ -233,6 +233,9 @@
                     "useCustomFont": false
                 },
                 {
+                    "id": "plugin:privacy-indicator"
+                },
+                {
                     "colorizeDistroLogo": false,
                     "colorizeSystemIcon": "primary",
                     "colorizeSystemText": "none",
