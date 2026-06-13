@@ -8,7 +8,7 @@ hl.config {
     no_hardware_cursors = true,
   },
   input = {
-    follow_mouse = 1,
+    follow_mouse = true,
     kb_layout = 'us',
     kb_options = 'fkeys:basic_13-24',
     kb_variant = 'altgr-intl',
