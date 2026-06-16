@@ -236,7 +236,6 @@ steam
 stow
 sudo
 sysfsutils
-teams-for-linux
 tela-circle-icon-theme-all
 tk
 tmux
