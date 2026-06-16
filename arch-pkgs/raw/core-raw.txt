@@ -33,6 +33,7 @@ cmake
 cpio
 cpptrace
 cpupower
+crystal-dock-git
 dmidecode
 dmraid
 dnsmasq
