@@ -220,7 +220,6 @@ starship
 stow
 sudo
 sysfsutils
-teams-for-linux
 tela-circle-icon-theme-all
 tmux
 tree
