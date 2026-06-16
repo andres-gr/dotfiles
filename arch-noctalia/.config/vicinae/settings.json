@@ -28,6 +28,22 @@
   },
   "favorites": [],
   "providers": {
+    "applications": {
+      "entrypoints": {
+        "chromium": {
+          "alias": "chrome"
+        },
+        "com.rtosta.zapzap": {
+          "alias": "whatsapp"
+        },
+        "localsend": {
+          "alias": "send"
+        },
+        "vesktop": {
+          "alias": "discord"
+        }
+      }
+    },
     "browser-extension": {
       "entrypoints": {
         "browse-tabs": {
@@ -55,6 +71,13 @@
       "entrypoints": {
         "sponsor": {
           "enabled": false
+        }
+      }
+    },
+    "files": {
+      "entrypoints": {
+        "search": {
+          "alias": "f"
         }
       }
     },
