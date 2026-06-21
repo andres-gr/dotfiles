@@ -226,10 +226,10 @@
                 {
                     "clockColor": "none",
                     "customFont": "",
-                    "formatHorizontal": "h:mm AP ddd, MMM d",
+                    "formatHorizontal": "ddd d MMM, h:mm AP",
                     "formatVertical": "HH mm - dd MM",
                     "id": "Clock",
-                    "tooltipFormat": "HH:mm:ss t - dddd, dd MMMM yyyy",
+                    "tooltipFormat": "dddd dd MMMM yyyy - HH:mm:ss t",
                     "useCustomFont": false
                 },
                 {
