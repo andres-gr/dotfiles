@@ -213,3 +213,13 @@ hl.window_rule {
     '(monitor_h*0.5)',
   },
 }
+
+hl.window_rule {
+  name = 'pygame_float',
+  match = {
+    class = '^(main.py)',
+    title = '^(pygame.*)',
+  },
+  center = true,
+  float = true,
+}
