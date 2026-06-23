@@ -21,55 +21,56 @@ o.backspace = o.backspace + { 'nostop' } -- Don't stop backspace at insert
 o.backup = false
 o.backupskip = { '/tmp/*', '/private/tmp/*' }
 o.breakindent = true
-o.clipboard = 'unnamedplus' -- Connection to the system clipboard
+o.clipboard = 'unnamedplus'                       -- Connection to the system clipboard
 o.cmdheight = 0
 o.completeopt = { 'menu', 'menuone', 'noselect' } -- Options for insert mode completion
-o.conceallevel = 0 -- so that `` is visible in markdown files
-o.copyindent = true -- Copy the previous indentation on autoindenting
-o.cursorline = true -- Highlight the text line of the cursor
-o.expandtab = true -- Enable the use of space in tab
-o.fillchars = { eob = ' ' } -- Disable `~` on nonexistent lines
-o.formatoptions:append { 'r' } -- Add asterisks in block comments
-o.history = 100 -- Number of commands to remember in a history table
+o.conceallevel = 0                                -- so that `` is visible in markdown files
+o.copyindent = true                               -- Copy the previous indentation on autoindenting
+o.cursorline = true                               -- Highlight the text line of the cursor
+o.expandtab = true                                -- Enable the use of space in tab
+o.fillchars = { eob = ' ' }                       -- Disable `~` on nonexistent lines
+o.formatoptions:append { 'r' }                    -- Add asterisks in block comments
+o.history = 100                                   -- Number of commands to remember in a history table
 o.hlsearch = true
-o.ignorecase = true -- Case insensitive searching UNLESS /C or capital in search
+o.ignorecase = true                               -- Case insensitive searching UNLESS /C or capital in search
 o.inccommand = 'split'
-o.laststatus = 3 -- globalstatus
-o.lazyredraw = false -- NOT lazily redraw screen
-o.mouse = 'a' -- Enable mouse support
-o.number = true -- Show numberline
-o.numberwidth = 4 -- Set number column width {default 4}
-o.path:append { '**' } -- Finding files - Search down into subfolders
-o.preserveindent = true -- Preserve indent structure as much as possible
+o.laststatus = 3                                  -- globalstatus
+o.lazyredraw = false                              -- NOT lazily redraw screen
+o.mouse = 'a'                                     -- Enable mouse support
+o.number = true                                   -- Show numberline
+o.numberwidth = 4                                 -- Set number column width {default 4}
+o.path:append { '**' }                            -- Finding files - Search down into subfolders
+o.preserveindent = true                           -- Preserve indent structure as much as possible
 o.pumblend = 0
-o.pumheight = 16 -- Height of the pop up menu
-o.relativenumber = true -- Show relative numberline
-o.scrolloff = 8 -- Number of lines to keep above and below the cursor
+o.pumheight = 16                                  -- Height of the pop up menu
+o.relativenumber = true                           -- Show relative numberline
+o.scrolloff = 8                                   -- Number of lines to keep above and below the cursor
 o.shell = 'zsh'
-o.shiftwidth = 2 -- Number of space inserted for indentation
-o.shortmess:append 'c' -- forget about swap file
+o.shiftwidth = 2                                  -- Number of space inserted for indentation
+o.shortmess:append 'c'                            -- forget about swap file
 o.showcmd = false
-o.showmode = false -- Disable showing modes in command line
-o.showtabline = 2 -- show tabline always
-o.sidescrolloff = 8 -- Number of columns to keep at the sides of the cursor
-o.signcolumn = 'yes' -- Always show the sign column
-o.smartcase = true -- Case sensitivie searching
+o.showmode = false                                -- Disable showing modes in command line
+o.showtabline = 2                                 -- show tabline always
+o.sidescrolloff = 8                               -- Number of columns to keep at the sides of the cursor
+o.signcolumn = 'yes'                              -- Always show the sign column
+o.smartcase = true                                -- Case sensitivie searching
 o.smartindent = true
 o.smarttab = true
-o.splitbelow = true -- Splitting a new window below the current one
-o.splitright = true -- Splitting a new window at the right of the current one
-o.swapfile = false -- Disable use of swapfile for the buffer
-o.tabstop = 2 -- Number of space in a tab
-o.termguicolors = true -- Enable 24-bit RGB color in the TUI
-o.timeoutlen = 200 -- Length of time to wait for a mapped sequence
+o.softtabstop = 2                -- Number of space in a tab
+o.splitbelow = true              -- Splitting a new window below the current one
+o.splitright = true              -- Splitting a new window at the right of the current one
+o.swapfile = false               -- Disable use of swapfile for the buffer
+o.tabstop = 2                    -- Number of space in a tab
+o.termguicolors = true           -- Enable 24-bit RGB color in the TUI
+o.timeoutlen = 200               -- Length of time to wait for a mapped sequence
 o.title = false
-o.undofile = true -- Enable persistent undo
-o.updatetime = 300 -- Length of time to wait before triggering the plugin
+o.undofile = true                -- Enable persistent undo
+o.updatetime = 300               -- Length of time to wait before triggering the plugin
 o.whichwrap:append '<,>,[,],h,l' -- Automatically wrap left or right
 o.wildignore:append { '*/node_modules/*' }
 o.wildoptions = 'pum'
 o.winblend = 0
-o.wrap = false -- Disable wrapping of lines longer than the width of window
+o.wrap = false        -- Disable wrapping of lines longer than the width of window
 o.writebackup = false -- Disable making a backup before overwriting a file
 
 -- Undercurl
@@ -83,7 +84,8 @@ a.nvim_create_autocmd('InsertLeave', {
 })
 
 -- Blinking cursor
-pcall(vim.cmd, [[ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175 ]])
+pcall(vim.cmd,
+  [[ set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor,sm:block-blinkwait175-blinkoff150-blinkon175 ]])
 
 -- Better motion disable default maps
 vim.g.wordmotion_nomap = 1
