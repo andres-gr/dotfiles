@@ -29,7 +29,7 @@ hl.env('YDOTOOL_SOCKET', '/tmp/ydotool.sock')
 
 hl.on('hyprland.start', function()
   -- 1. Hard-kill any stray/SDDM-inherited portals to flush their cache
-  hl.exec_cmd 'systemctl --user stop xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-desktop-portal-gnome'
+  hl.exec_cmd 'systemctl --user stop xdg-desktop-portal xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xdg-desktop-portal-gnome xdg-desktop-portal-kde'
 
   -- 2. Inject clean attributes so D-Bus evaluates only your Hyprland configuration profile
   hl.exec_cmd 'systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=Hyprland'
