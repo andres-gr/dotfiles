@@ -33,11 +33,20 @@
         "chromium": {
           "alias": "chrome"
         },
+        "com.mitchellh.ghostty": {
+          "alias": "terminal"
+        },
         "com.rtosta.zapzap": {
           "alias": "whatsapp"
         },
+        "gmail": {
+          "alias": "mail"
+        },
         "localsend": {
           "alias": "send"
+        },
+        "org.kde.dolphin": {
+          "alias": "files"
         },
         "vesktop": {
           "alias": "discord"
@@ -98,13 +107,13 @@
           }
         },
         "power-off": {
-          "alias": "shut",
+          "alias": "shutdown",
           "preferences": {
             "confirm": false
           }
         },
         "reboot": {
-          "alias": "res",
+          "alias": "restart",
           "preferences": {
             "confirm": false
           }
@@ -120,7 +129,7 @@
           "enabled": false
         },
         "suspend": {
-          "alias": "sl",
+          "alias": "sleep",
           "preferences": {
             "confirm": false,
             "customProgram": "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
