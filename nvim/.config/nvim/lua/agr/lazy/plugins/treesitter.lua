@@ -48,6 +48,8 @@ T.config = function ()
     matchup = { enable = true },
   }
 
+  vim.treesitter.language.register('bash', 'env')
+
   -- Add mdx highlight
   vim.filetype.add {
     extension = {
