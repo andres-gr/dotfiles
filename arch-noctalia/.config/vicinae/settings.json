@@ -45,6 +45,9 @@
         "localsend": {
           "alias": "send"
         },
+        "obsidian": {
+          "alias": "notes"
+        },
         "org.kde.dolphin": {
           "alias": "files"
         },
