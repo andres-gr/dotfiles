@@ -155,7 +155,7 @@ window-rule {
     open-on-workspace "prim-3"
 }
 window-rule {
-    match app-id="^(com.anthropic.claude-desktop|[Cc]laude)$"
+    match app-id="^([Cc]laude.*)"
 
     default-column-width {
         proportion 0.7
