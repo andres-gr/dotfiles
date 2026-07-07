@@ -223,3 +223,21 @@ hl.window_rule {
   center = true,
   float = true,
 }
+
+hl.window_rule {
+  name = 'steam_sub_windows',
+  match = {
+    class = 'steam',
+  },
+  center = true,
+  float = true,
+}
+
+hl.window_rule {
+  name = 'steam_main_window',
+  match = {
+    class = 'steam',
+    title = '^([Ss]team)$',
+  },
+  float = false,
+}
