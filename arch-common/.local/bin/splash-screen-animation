@@ -1,4 +1,5 @@
 #!/bin/env bash
+
 VIDEO="$HOME/.local/assets/splashes/$STARTUP_SPLASH"
 DURATION="$STARTUP_SPLASH_DURATION"
 VOLUME="$STARTUP_SPLASH_VOLUME" || "10"

@@ -1,0 +1,126 @@
+#!/bin/env bash
+
+# ── usage ───────────────────────────────────────────────────────
+usage() {
+  echo "Usage: $(basename "$0") {0|1}"
+  echo "  0 - Performance mode OFF (powersave, VRR off)"
+  echo "  1 - Performance mode ON  (high perf, VRR on)"
+  exit 1
+}
+
+# ── argument validation ────────────────────────────────────────
+[[ $# -ne 1 ]] && usage
+[[ "$1" != "0" && "$1" != "1" ]] && usage
+MODE="$1"
+
+# ── monitor detection ─────────────────────────────────────────
+if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+  PRIMARY_JSON=$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[].value | select(.logical.x == 0)')
+  MONITOR=$(echo "$PRIMARY_JSON" | jq -r '.name')
+  PERF_CONF="$HOME/.config/niri/perf-mode.kdl"
+elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+  PRIMARY_JSON=$(hyprctl monitors -j 2>/dev/null | jq -r '.[] | select(.id == 0) | {name,height,width}')
+  MONITOR=$(echo "$PRIMARY_JSON" | jq -r '.name')
+  PERF_CONF="$HOME/.config/hypr/perf_mode.lua"
+else
+  exit 0
+fi
+
+[[ -z "$MONITOR" ]] && { echo "No primary monitor detected" >&2; exit 1; }
+
+clear_configs() {
+  : > "$PERF_CONF"
+}
+
+# ── write config ──────────────────────────────────────────────
+if [[ "$MODE" == "1" ]]; then
+  if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+    cat > "$PERF_CONF" <<EOF
+// Toggle Performance Mode: ON
+
+animations {
+  off
+}
+
+blur {
+  off
+}
+
+layout {
+  gaps 0
+
+  border {
+    off
+  }
+
+  focus-ring {
+    off
+  }
+
+  shadow {
+    off
+  }
+
+  struts {
+    top 0
+    left 0
+    right 0
+    bottom 0
+  }
+}
+
+output "$MONITOR" {
+    variable-refresh-rate
+}
+EOF
+  elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+    cat > "$PERF_CONF" <<EOF
+-- Toggle Performance Mode: ON
+
+hl.config {
+  general = {
+    border_size = 0,
+    gaps_in = 0,
+    gaps_out = 0,
+  },
+
+  animations = {
+    enabled = false,
+  },
+
+  decoration = {
+    active_opacity = 1.0,
+    fullscreen_opacity = 1.0,
+    inactive_opacity = 1.0,
+    rounding = 0,
+
+    blur = {
+      enabled = false,
+    },
+
+    shadow = {
+      enabled = false,
+    },
+  },
+}
+
+hl.monitor {
+  output = "$MONITOR",
+  mode = "2560x1440@180.0",
+  position = "2560x0",
+  scale = 1.0,
+  vrr = 1,
+}
+EOF
+  fi
+  echo "Performance mode: ON"
+else
+  clear_configs
+
+  echo "Performance mode: OFF"
+fi
+
+# ── reload compositor ─────────────────────────────────────────
+if [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+  hyprctl reload 2>/dev/null || true
+fi
