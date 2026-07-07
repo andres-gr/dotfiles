@@ -80,4 +80,7 @@ binds {
     Mod+Ctrl+Alt+W hotkey-overlay-title="Random Wallpaper" {
         spawn-sh "qs -c noctalia-shell ipc call wallpaper random"
     }
+    Mod+Ctrl+Alt+G hotkey-overlay-title="Toggle Performance Mode" {
+        spawn-sh "qs -c noctalia-shell ipc call powerProfile toggleNoctaliaPerformance"
+    }
 }

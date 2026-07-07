@@ -115,3 +115,6 @@ hl.bind(mod .. '+ ALT + CTRL + U', hl.dsp.exec_cmd(noct_ipc .. ' plugin:update-c
 hl.bind(mod .. '+ ALT + CTRL + W', hl.dsp.exec_cmd(noct_ipc .. ' wallpaper random'), {
   description = 'Random Wallpaper',
 })
+hl.bind(mod .. '+ ALT + CTRL + G', hl.dsp.exec_cmd(noct_ipc .. ' powerProfile toggleNoctaliaPerformance'), {
+  description = 'Toggle Performance Mode',
+})
