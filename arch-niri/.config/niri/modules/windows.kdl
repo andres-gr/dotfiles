@@ -172,3 +172,15 @@ window-rule {
     open-focused true
     open-on-workspace "sec-1"
 }
+
+// Steam rules
+window-rule {
+    match app-id="^(S|s)team"
+
+    open-floating true
+}
+window-rule {
+    match app-id="^(S|s)team" title="^(S|s)team"
+
+    open-floating false
+}
