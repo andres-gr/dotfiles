@@ -33,6 +33,7 @@ reload_hyprland() {
 install_hyprland_config() {
   local src="$SCRIPT_DIR/data/hypr_config.lua"
   local dest="$HOME/.config/hypr/hyprland.lua"
+  local perf_dest="$HOME/.config/hypr/perf_mode.lua"
   local bkp_dir="$HOME/.local/share/neo-dots/hypr-bkp"
 
   if [[ ! -f "$src" ]]; then
@@ -42,6 +43,7 @@ install_hyprland_config() {
 
   # Create destination directory
   mkdir -p "$(dirname "$dest")"
+  mkdir -p "$(dirname "$perf_dest")"
 
   # Backup existing config
   if [[ -f "$dest" ]]; then

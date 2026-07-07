@@ -21,3 +21,6 @@ include "modules/workspaces.kdl"
 include "bundle.kdl"
 
 include optional=true "splash.kdl"
+
+// performance mode override config last
+include optional=true "perf-mode.kdl"

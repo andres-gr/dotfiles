@@ -14,5 +14,8 @@ pcall(require, 'bundle')
 -- Load splash if available
 pcall(require, 'splash')
 
--- Loads all apps configs last
+-- Loads all apps configs
 require_from_dir 'apps'
+
+-- Load performance mode override config last
+pcall(require, 'perf_mode')

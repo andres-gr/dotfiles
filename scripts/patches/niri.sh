@@ -18,6 +18,7 @@ source "$SCRIPT_DIR/splash-screens.sh"
 install_niri_config() {
   local src="$SCRIPT_DIR/data/niri-config.kdl"
   local dest="$HOME/.config/niri/config.kdl"
+  local perf_dest="$HOME/.config/niri/perf-mode.kdl"
   local bkp_dir="$HOME/.local/share/neo-dots/niri-bkp"
 
   if [[ ! -f "$src" ]]; then
@@ -27,6 +28,7 @@ install_niri_config() {
 
   # Create destination directory
   mkdir -p "$(dirname "$dest")"
+  mkdir -p "$(dirname "$perf_dest")"
 
   # Backup existing config
   if [[ -f "$dest" ]]; then
@@ -323,12 +325,46 @@ configure_niri_app_includes() {
   fi
 }
 
+###############################################################################
+# Move perf mode override to bottom of niri config
+###############################################################################
+
+move_perf_mode() {
+  local niri_config="$HOME/.config/niri/config.kdl"
+  local line1="// performance mode override config last"
+  local line2='include optional=true "perf-mode.kdl"'
+
+  [[ ! -f "$niri_config" ]] && { log "Niri config not found — skipping perf mode"; return 0; }
+  $DRY_RUN && { log "[dry-run] would ensure perf-mode.kdl include at end of config"; return 0; }
+
+  # Check if both lines already at end — exit cleanly
+  local tail_lines
+  tail_lines=$(tail -n 3 "$niri_config")
+  if echo "$tail_lines" | grep -qF "$line1" && echo "$tail_lines" | grep -qF "$line2"; then
+    log "Perf mode include already at end of config"
+    return 0
+  fi
+
+  # Remove all occurrences, append at end
+  local tmp
+  tmp=$(mktemp)
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ "$line" == "$line1" || "$line" == "$line2" ]] && continue
+    printf '%s\n' "$line"
+  done < "$niri_config" > "$tmp"
+
+  printf '\n%s\n%s\n' "$line1" "$line2" >> "$tmp"
+  mv "$tmp" "$niri_config"
+  ok "Moved perf-mode.kdl include to end of niri config"
+}
+
 # Main entry point for Niri patches
 ###############################################################################
 
 niri_patches() {
+  configure_niri_app_includes
   configure_splash_niri
   install_niri_config
-  configure_niri_app_includes
   install_niri_window_grab
+  move_perf_mode
 }
