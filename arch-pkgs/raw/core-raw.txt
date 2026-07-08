@@ -18,6 +18,7 @@ bluez
 bluez-hid2hci
 bluez-obex
 bluez-utils
+bottles
 broadcom-wl-dkms
 btop
 btrfs-progs
@@ -65,8 +66,11 @@ ghostty
 ghostty-shell-integration
 ghostty-terminfo
 git
+github-cli
 glances
+gnome-disk-utility
 gnome-keyring
+gnome-network-displays
 gnome-text-editor
 go
 gptfdisk
@@ -122,9 +126,11 @@ linux-firmware
 linux-headers
 linux-zen
 linux-zen-headers
+localsend
 logrotate
 lsb-release
 lsscsi
+lutris
 lvm2
 man-db
 man-pages
@@ -181,6 +187,8 @@ podman
 podman-compose
 polkit-gnome
 power-profiles-daemon
+preload
+protonplus
 pv
 python-defusedxml
 python-packaging
@@ -201,6 +209,7 @@ ripgrep
 ripgrep-all
 rocminfo
 rsync
+rtkit
 s-nail
 satty
 sddm
@@ -216,11 +225,13 @@ speech-dispatcher
 spicetify-cli-git
 spotify
 starship
+steam
 stow
 sudo
 sysfsutils
 teams-for-linux
 tela-circle-icon-theme-all
+tk
 tmux
 tree
 tree-sitter-cli
@@ -265,6 +276,7 @@ wev
 wget
 winboat
 wine
+winetricks
 wireplumber
 wl-clip-persist
 wpa_supplicant

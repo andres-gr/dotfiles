@@ -1,5 +1,7 @@
+apfs-fuse-git
 cavasik
 hyprqt6engine
+jdownloader2
 melonds
 ndstool
 obsidian-bin
@@ -9,5 +11,6 @@ selectdefaultapplication-qt6-git
 systemd-boot-manager-git
 ttf-hack-ligatured
 vicinae-bin
+wayland-pipewire-idle-inhibit
 yay-bin
 zinit
