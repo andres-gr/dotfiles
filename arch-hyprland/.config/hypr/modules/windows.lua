@@ -224,6 +224,7 @@ hl.window_rule {
   float = true,
 }
 
+-- Steam rules
 hl.window_rule {
   name = 'steam_sub_windows',
   match = {
@@ -238,6 +239,25 @@ hl.window_rule {
   match = {
     class = 'steam',
     title = '^([Ss]team)$',
+  },
+  float = false,
+}
+
+-- Davinci rules
+hl.window_rule {
+  name = 'davinci_sub_windows',
+  match = {
+    class = 'resolve',
+  },
+  float = true,
+  opacity = '1 override',
+}
+
+hl.window_rule {
+  name = 'davinci_main_window',
+  match = {
+    class = 'resolve',
+    title = '^(DaVinci.*)$',
   },
   float = false,
 }
