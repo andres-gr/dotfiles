@@ -1,0 +1,10 @@
+# /etc/pacman.d/hooks/noctalia-idle-patch.hook
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = noctalia-shell
+
+[Action]
+Description = Reapply IdleInhibitor native-disable patch
+When = PostTransaction
+Exec = /usr/bin/sed -i.bak 's/nativeInhibitorAvailable = true;/nativeInhibitorAvailable = false;/' /etc/xdg/quickshell/noctalia-shell/Modules/MainScreen/MainScreen.qml

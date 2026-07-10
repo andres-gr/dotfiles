@@ -1,0 +1,11 @@
+# /etc/systemd/system/wol-disable.service
+[Unit]
+Description=Disable Wake-on-LAN
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/ethtool -s enp0s31f6 wol d
+
+[Install]
+WantedBy=multi-user.target
