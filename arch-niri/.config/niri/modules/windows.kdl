@@ -187,3 +187,17 @@ window-rule {
 
     open-floating false
 }
+
+// Davinci rules
+window-rule {
+    match app-id="resolve"
+
+    opacity 1.0
+    open-floating true
+}
+window-rule {
+    match app-id="resolve" title="^DaVinci"
+
+    open-floating false
+    open-maximized true
+}
