@@ -243,6 +243,114 @@ install_arch_patch_services() {
 }
 
 ###############################################################################
+# arch-patches pacman hooks
+# Copies hook files from dotfiles/arch-patches/pac-hooks/
+# Supports interactive selection, tracks selections
+###############################################################################
+
+get_available_pac_hooks() {
+  local src_dir="$DOTFILES_DIR/arch-patches/pac-hooks"
+  [[ -d "$src_dir" ]] || return 0
+  find "$src_dir" -maxdepth 1 -name '*.hook' -printf '%f\n' 2>/dev/null | sed 's/\.hook$//'
+}
+
+install_arch_patch_pac_hooks() {
+  local src_dir="$DOTFILES_DIR/arch-patches/pac-hooks"
+  [[ -d "$src_dir" ]] || return 0
+
+  local dest_base="/etc/pacman.d/hooks"
+
+  # Get available hooks
+  local -a available_hooks
+  mapfile -t available_hooks < <(get_available_pac_hooks)
+
+  if (( ${#available_hooks[@]} == 0 )); then
+    log "arch-patches/pac-hooks: no hook files found — skipping"
+    return 0
+  fi
+
+  # Determine which hooks to install
+  local -a selected_hooks=()
+
+  if [[ -n "${ARCH_PATCH_PAC_HOOKS:-}" ]]; then
+    # Env var takes priority (comma-separated)
+    IFS=',' read -r -a _selected <<< "$ARCH_PATCH_PAC_HOOKS"
+    for h in "${_selected[@]}"; do
+      local valid=false
+      for avail in "${available_hooks[@]}"; do
+        [[ "$h" == "$avail" ]] && valid=true && break
+      done
+      if $valid; then
+        selected_hooks+=("$h")
+      else
+        warn "Unknown pac hook skipped: $h"
+      fi
+    done
+  elif $INTERACTIVE; then
+    # Interactive selection with labels
+    log "Select pacman hooks to install:"
+    local -a choices=()
+    for hook in "${available_hooks[@]}"; do
+      local label
+      label=$(apply_selection_label "pac-hooks" "$hook" "$hook")
+      choices+=("$label")
+    done
+
+    local sel
+    sel="$(interactive_select --exit "${choices[@]}")" || true
+
+    if [[ -z "$sel" || "$sel" == "Exit" || "$sel" == "Skip" ]]; then
+      log "No pac hooks selected — skipping"
+      return 0
+    fi
+
+    if [[ -n "$sel" ]]; then
+      while IFS= read -r item; do
+        [[ -z "$item" ]] && continue
+        [[ "$item" == "Skip" ]] && continue
+        item=$(strip_label "$item")
+        [[ "$item" == *"Exit"* ]] && continue
+        [[ -z "$item" ]] && continue
+        selected_hooks+=("$item")
+      done <<< "$sel"
+    fi
+  else
+    # Non-interactive: install all
+    selected_hooks=("${available_hooks[@]}")
+  fi
+
+  if (( ${#selected_hooks[@]} == 0 )); then
+    log "No pac hooks selected — skipping"
+    return 0
+  fi
+
+  step "Installing arch-patches pacman hooks"
+  run sudo mkdir -p "$dest_base"
+
+  for hook in "${selected_hooks[@]}"; do
+    local dest="$dest_base/$hook.hook"
+
+    if [[ -f "$dest" ]]; then
+      log "  $hook.hook: already exists — skipping"
+      update_selection "pac-hooks" "$hook"
+      continue
+    fi
+
+    if $DRY_RUN; then
+      log "[dry-run] would install $hook.hook → $dest"
+      update_selection "pac-hooks" "$hook"
+      continue
+    fi
+
+    log "  Installing $hook.hook → $dest"
+    run sudo cp "$src_dir/$hook.hook" "$dest"
+    ok "  $hook.hook installed"
+
+    update_selection "pac-hooks" "$hook"
+  done
+}
+
+###############################################################################
 # Plymouth Boot Splash Installation
 ###############################################################################
 
@@ -349,12 +457,13 @@ install_plymouth_boot_splash() {
 
 common_patches() {
   apply_arch_patch_dconf
+  configure_spicetify_launch_flags
+  install_arch_patch_pac_hooks
   install_arch_patch_services
   install_ghostty_misc_config
   install_pam_configs
   install_plymouth_boot_splash
   install_spicetify_comfy_theme
-  configure_spicetify_launch_flags
   install_splash_screens
   install_systemd_scripts
   install_tpm
