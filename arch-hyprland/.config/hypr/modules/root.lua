@@ -41,6 +41,8 @@ hl.on('hyprland.start', function()
   hl.exec_cmd '/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1'
   hl.exec_cmd 'hyprpm reload'
 
+  hl.exec_cmd 'wayland-pipewire-idle-inhibit'
+
   hl.dispatch(hl.dsp.focus { workspace = 1 })
   hl.dispatch(hl.dsp.cursor.move_to_corner { corner = 1 })
 end)
