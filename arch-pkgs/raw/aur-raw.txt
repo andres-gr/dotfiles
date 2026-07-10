@@ -1,5 +1,7 @@
 apfs-fuse-git
 cavasik
+davinci-ffmpeg-encoder-plugin
+davinci-resolve
 hyprqt6engine
 jdownloader2
 melonds

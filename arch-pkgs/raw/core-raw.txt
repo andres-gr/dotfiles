@@ -207,6 +207,7 @@ reflector
 resvg
 ripgrep
 ripgrep-all
+rocm-opencl-runtime
 rocminfo
 rsync
 rtkit
