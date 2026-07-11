@@ -21,6 +21,11 @@ hl.config {
   },
 }
 
+hl.env('XCURSOR_THEME', 'Bibata-Rainbow-Modern')
+hl.env('XCURSOR_SIZE', '24')
+hl.env('HYPRCURSOR_THEME', 'Bibata-Rainbow-Modern')
+hl.env('HYPRCURSOR_SIZE', '24')
+
 hl.on('hyprland.start', function()
   hl.exec_cmd 'hyprctl setcursor Bibata-Rainbow-Modern 24'
 end)
