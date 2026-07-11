@@ -1,3 +1,8 @@
+environment {
+    XCURSOR_THEME "Bibata-Rainbow-Modern"
+    XCURSOR_SIZE "24"
+}
+
 cursor {
     xcursor-theme "Bibata-Rainbow-Modern"
     xcursor-size 24
