@@ -17,6 +17,10 @@ window-rule {
         xray false
     }
 
+    default-column-width {
+        proportion 0.66667
+    }
+
     popups {
         geometry-corner-radius 10
         opacity 0.97
