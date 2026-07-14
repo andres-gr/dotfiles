@@ -161,8 +161,8 @@
                     ],
                     "chevronColor": "none",
                     "colorizeIcons": false,
-                    "drawerEnabled": true,
-                    "hidePassive": false,
+                    "drawerEnabled": false,
+                    "hidePassive": true,
                     "id": "Tray",
                     "pinned": [
                         "steam"
