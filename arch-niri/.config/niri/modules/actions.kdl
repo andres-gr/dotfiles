@@ -5,16 +5,16 @@ recent-windows {
 
     binds {
         Mod+Tab {
-            next-window scope="output"
+            next-window scope="all"
         }
         Mod+Shift+Tab {
-            previous-window scope="output"
+            previous-window scope="all"
         }
         Alt+Tab {
-            next-window filter="app-id"
+            next-window scope="output"
         }
         Alt+Shift+Tab {
-            previous-window filter="app-id"
+            previous-window scope="output"
         }
     }
     highlight {
