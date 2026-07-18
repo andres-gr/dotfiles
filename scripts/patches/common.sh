@@ -99,6 +99,9 @@ EOF
 ###############################################################################
 
 apply_arch_patch_dconf() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local src_dir="$DOTFILES_DIR/arch-patches/dconf"
   [[ -d "$src_dir" ]] || return 0
 
@@ -143,6 +146,9 @@ get_available_arch_services() {
 }
 
 install_arch_patch_services() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local src_dir="$DOTFILES_DIR/arch-patches/systemctl"
   [[ -d "$src_dir" ]] || return 0
 
@@ -255,6 +261,9 @@ get_available_pac_hooks() {
 }
 
 install_arch_patch_pac_hooks() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local src_dir="$DOTFILES_DIR/arch-patches/pac-hooks"
   [[ -d "$src_dir" ]] || return 0
 
@@ -348,6 +357,46 @@ install_arch_patch_pac_hooks() {
 
     update_selection "pac-hooks" "$hook"
   done
+}
+
+###############################################################################
+# Install Bibata Rainbow cursor theme
+# Sets cursor theme in /usr/share/icons/default/index.theme
+###############################################################################
+
+install_bibata_cursor_theme() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  # Check if bibata-rainbow-cursor-theme is installed
+  if ! yay -Q bibata-rainbow-cursor-theme &>/dev/null; then
+    log "bibata-rainbow-cursor-theme not installed — skipping cursor theme"
+    return 0
+  fi
+
+  local index_theme="/usr/share/icons/default/index.theme"
+  local bkp_dir="$HOME/.local/share/neo-dots/cursor-bkp"
+
+  if $DRY_RUN; then
+    log "[dry-run] would backup $index_theme and set Inherits=Bibata-Rainbow-Modern"
+    return 0
+  fi
+
+  # Backup existing file
+  if [[ -f "$index_theme" ]]; then
+    run mkdir -p "$bkp_dir"
+    local timestamp
+    timestamp=$(date +%Y%m%d_%H%M%S)
+    run sudo cp "$index_theme" "$bkp_dir/index.theme.$timestamp"
+    log "Backed up $index_theme to $bkp_dir"
+  fi
+
+  # Write new cursor theme config
+  run sudo tee "$index_theme" > /dev/null << 'EOF'
+[Icon Theme]
+Inherits=Bibata-Rainbow-Modern
+EOF
+  ok "Set cursor theme to Bibata Rainbow"
 }
 
 ###############################################################################
@@ -460,6 +509,7 @@ common_patches() {
   configure_spicetify_launch_flags
   install_arch_patch_pac_hooks
   install_arch_patch_services
+  install_bibata_cursor_theme
   install_ghostty_misc_config
   install_pam_configs
   install_plymouth_boot_splash
@@ -657,6 +707,9 @@ install_yazi_plugins() {
 ###############################################################################
 
 install_sddm_x11_config() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local sddm_conf_dir="/etc/sddm.conf.d"
   local sddm_scripts_dir="/etc/sddm/scripts"
   local display_setup_script="$sddm_scripts_dir/display-setup.sh"
@@ -896,6 +949,9 @@ SCRIPTEOF
 ###############################################################################
 
 install_sddm_wayland_config() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local sddm_conf_dir="/etc/sddm.conf.d"
 
   # Check if SDDM is installed
@@ -1038,6 +1094,9 @@ EOF
 ###############################################################################
 
 install_broadcom_blacklist() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   # Check if broadcom-wl-dkms is installed
   if ! yay -Q broadcom-wl-dkms &>/dev/null; then
     log "broadcom-wl-dkms not installed — skipping blacklist"
@@ -1085,6 +1144,9 @@ EOF
 ###############################################################################
 
 install_custom_fonts() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local src_fonts_dir="$DOTFILES_DIR/arch-patches/fonts"
   local dest_fonts_base="/usr/local/share/fonts"
 
@@ -1284,6 +1346,9 @@ configure_keyboard_layout() {
 ###############################################################################
 
 install_noctalia_sddm_theme() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local theme_tarball="$SCRIPT_DIR/data/noctalia-sddm-theme.tar.gz"
   local dest_theme_dir="/usr/share/sddm/themes/sddm-noctalia-theme"
   local sddm_conf_dir="/etc/sddm.conf.d"
@@ -1588,6 +1653,9 @@ save_raw_arch_packages() {
 ###############################################################################
 
 configure_bluetooth() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local bt_conf="/etc/bluetooth/main.conf"
 
   # Skip if file doesn't exist
@@ -1631,10 +1699,12 @@ configure_bluetooth() {
 ###############################################################################
 
 configure_amdgpu_early_kms() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   local mkinitcpio_conf="/etc/mkinitcpio.conf"
 
   [[ ! -f "$mkinitcpio_conf" ]] && return 0
-  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
 
   # Check if amdgpu already in MODULES
   if grep -q '^MODULES=.*amdgpu' "$mkinitcpio_conf" 2>/dev/null; then
@@ -1672,6 +1742,9 @@ configure_amdgpu_early_kms() {
 ###############################################################################
 
 rebuild_kde_menucache() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
   if $DRY_RUN; then
     log "[dry-run] would rebuild KDE menu cache"
     return 0
