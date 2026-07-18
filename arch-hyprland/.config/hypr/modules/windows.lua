@@ -261,3 +261,19 @@ hl.window_rule {
   },
   float = false,
 }
+-- bittorrent
+hl.window_rule {
+  name = 'bittorrent_sub',
+  match = {
+    class = '^(org.qbittorrent.*)',
+  },
+  float = true,
+}
+hl.window_rule {
+  name = 'bittorrent_main',
+  match = {
+    class = '^(org.qbittorrent.*)',
+    title = '^(q[Bb]ittorrent.*)',
+  },
+  float = false,
+}
