@@ -112,7 +112,7 @@ window-rule {
     open-floating true
 }
 window-rule {
-    match app-id="zen" title="^Library"
+    match app-id="zen"
 
     default-column-width {
         proportion 0.5
@@ -121,6 +121,18 @@ window-rule {
         proportion 0.6
     }
     open-floating true
+}
+window-rule {
+    match app-id="zen" title="(.*Zen Browser.*)"
+
+    default-column-width {
+        proportion 0.66667
+    }
+    default-window-height {
+        proportion 1.0
+    }
+
+    open-floating false
 }
 window-rule {
     match app-id="com.mitchellh.ghostty" title="^System Update$"
