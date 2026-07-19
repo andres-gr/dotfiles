@@ -233,3 +233,22 @@ window-rule {
 
     open-floating false
 }
+
+// ImageGlass
+window-rule {
+    match app-id="ImageGlass"
+
+    opacity 1.0
+    open-floating true
+}
+window-rule {
+    match app-id="ImageGlass"
+    match title="^ImageGlass"
+
+    default-column-width {
+        proportion 0.95
+    }
+    default-window-height {
+        proportion 0.97
+    }
+}

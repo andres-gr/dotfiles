@@ -277,3 +277,25 @@ hl.window_rule {
   },
   float = false,
 }
+
+-- ImageGlass
+hl.window_rule {
+  name = 'image_glass_sub',
+  match = {
+    class = 'ImageGlass',
+  },
+  center = true,
+  float = true,
+  opacity = '1 override',
+}
+hl.window_rule {
+  name = 'image_glass_main',
+  match = {
+    class = 'ImageGlass',
+    title = '^(ImageGlass.*)'
+  },
+  size = {
+    '(monitor_w*0.95)',
+    '(monitor_h*0.95)',
+  },
+}
