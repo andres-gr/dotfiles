@@ -1,0 +1,24 @@
+pkgname=imageglass
+pkgver=10.0.3.720
+pkgrel=2
+pkgdesc="An image viewer for Linux"
+arch=('x86_64')
+url="https://github.com/d2phap/ImageGlass"
+license=('GPL')
+# Include both files in the tracking arrays
+source=("file:///ImageGlass_10.0.3.720-rc_linux-x64.tar.gz"
+        "imageglass.desktop")
+sha256sums=('SKIP' 'SKIP')
+
+package() {
+  # 1. Install application files to /opt
+  install -d "$pkgdir/opt/$pkgname"
+  cp -r "$srcdir/ImageGlass/." "$pkgdir/opt/$pkgname/"
+
+  # 2. Create the executable symlink in /usr/bin
+  install -d "$pkgdir/usr/bin"
+  ln -s "/opt/$pkgname/ImageGlass" "$pkgdir/usr/bin/$pkgname"
+
+  # 3. Securely install the desktop shortcut tracked by pacman
+  install -Dm644 "$srcdir/imageglass.desktop" "$pkgdir/usr/share/applications/imageglass.desktop"
+}
