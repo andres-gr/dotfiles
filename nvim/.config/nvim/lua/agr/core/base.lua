@@ -93,6 +93,10 @@ vim.g.wordmotion_nomap = 1
 -- Add mdx filetype
 vim.filetype.add {
   extension = { mdx = 'mdx' },
+  pattern = {
+    [".*%.conf"] = "hyprlang",
+    [".*/hypr/.*%.conf"] = "hyprlang",
+  },
 }
 
 -- Setup LSP Diagnostics signs

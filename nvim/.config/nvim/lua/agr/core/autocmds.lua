@@ -272,7 +272,6 @@ cmd('FileType', {
   pattern = '*',
 })
 
-
 -- Create an augroup to prevent duplicate autocmds on reload
 local opencode = augroup("OpenCodeSilence", { clear = true })
 
@@ -284,4 +283,21 @@ cmd('VimEnter', {
   group = opencode,
   -- Match temporary files created by OpenCode (e.g., /tmp/opencode-XXXXXX)
   pattern = '/tmp/*.md',
+})
+
+cmd('User', {
+  callback = function ()
+    local parsers = require 'nvim-treesitter.parsers'
+
+    local tmux = {
+      install_info = {
+        branch = 'main',
+        queries = 'queries',
+        url = 'https://github.com/Freed-Wu/tree-sitter-tmux',
+      },
+    }
+
+    parsers['tmux'] = tmux
+  end,
+  pattern = 'TSUpdate',
 })
