@@ -60,7 +60,7 @@ hl.bind(mod .. '+ SHIFT + RETURN', hl.dsp.window.fullscreen {
 }, {
   description = 'Toggle Fullscreen (No Bar)',
 })
-hl.bind(mod .. '+ SHIFT + C', hl.dsp.window.center(), {
+hl.bind(mod .. '+ SPACE', hl.dsp.window.center(), {
   description = 'Center Focused Window',
 })
 hl.bind(mod .. '+ SHIFT + M', function()
@@ -110,6 +110,54 @@ hl.bind(mod .. '+ SHIFT + B', function()
   )
 end, {
   description = 'Half Focused Window',
+})
+hl.bind(mod .. '+ ALT + M', function()
+  local mon = hl.get_active_monitor()
+  if mon == nil then return end
+
+  hl.dispatch(
+    hl.dsp.window.resize {
+      x = math.ceil(mon.width * 0.95),
+      y = math.ceil(mon.height * 0.95),
+    }
+  )
+  hl.dispatch(
+    hl.dsp.window.center()
+  )
+end, {
+  description = 'Maximize Focused Window',
+})
+hl.bind(mod .. '+ ALT + N', function()
+  local mon = hl.get_active_monitor()
+  if mon == nil then return end
+
+  hl.dispatch(
+    hl.dsp.window.resize {
+      x = math.ceil(mon.width * 0.65),
+      y = math.ceil(mon.height * 0.95),
+    }
+  )
+  hl.dispatch(
+    hl.dsp.window.center()
+  )
+end, {
+  description = '3/4 Focused Window, Full Height',
+})
+hl.bind(mod .. '+ ALT + B', function()
+  local mon = hl.get_active_monitor()
+  if mon == nil then return end
+
+  hl.dispatch(
+    hl.dsp.window.resize {
+      x = math.ceil(mon.width * 0.5),
+      y = math.ceil(mon.height * 0.95),
+    }
+  )
+  hl.dispatch(
+    hl.dsp.window.center()
+  )
+end, {
+  description = 'Half Focused Window, Full Height',
 })
 
 hl.bind(mod .. '+ CTRL + H', hl.dsp.group.prev(), {
