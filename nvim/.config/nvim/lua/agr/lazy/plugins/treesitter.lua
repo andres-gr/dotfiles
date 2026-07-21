@@ -16,21 +16,6 @@ T.config = function ()
   treesitter.setup {
     auto_install = 'true',
     autopairs = { enable = true },
-    ensure_installed = {
-      'bash',
-      'css',
-      'go',
-      'html',
-      'javascript',
-      'json',
-      'lua',
-      'markdown',
-      'markdown_inline',
-      'styled',
-      'tsx',
-      'typescript',
-      'vim',
-    },
     highlight = {
       enable = true,
       additional_vim_regex_highlighting = false,
@@ -47,6 +32,34 @@ T.config = function ()
     },
     matchup = { enable = true },
   }
+
+  local ensure_installed = {
+    'bash',
+    'comment',
+    'css',
+    'diff',
+    'dot',
+    'dtd',
+    'gitignore',
+    'go',
+    'html',
+    'ini',
+    'javascript',
+    'json',
+    'lua',
+    'markdown',
+    'markdown_inline',
+    'python',
+    'styled',
+    'toml',
+    'tsx',
+    'typescript',
+    'vim',
+    'xml',
+    'yaml',
+    'zsh',
+  }
+  treesitter.install(ensure_installed)
 
   vim.treesitter.language.register('bash', 'env')
   vim.treesitter.language.register('markdown', 'mdx')
