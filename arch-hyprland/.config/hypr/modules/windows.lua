@@ -3,7 +3,6 @@
 -------------------------------
 
 local match_classes = require 'utils.match_classes'
-local merge_tables  = require 'utils.merge_tables'
 
 local media_players = {
   '.*mpv.*',
@@ -24,27 +23,6 @@ hl.window_rule {
     '(monitor_w*0.95)',
     '(monitor_h*0.95)',
   },
-}
-
-local idle_inhibit_fullscreen_apps = {
-  '.*[Ss]potify.*',
-  '.*brave-browser.*',
-  '.*celluloid.*',
-  '.*chromium.*',
-  '.*firefox.*',
-  '.*floorp.*',
-  '.*LibreWolf.*',
-  '.*vivaldi.*',
-  '.*zen.*',
-}
-
-hl.window_rule {
-  name = 'idle_inhibit_fullscreen_apps',
-  match = {
-    class = match_classes(merge_tables(idle_inhibit_fullscreen_apps, media_players)),
-    fullscreen = true,
-  },
-  idle_inhibit = 'fullscreen',
 }
 
 hl.window_rule {
