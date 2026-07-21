@@ -510,6 +510,7 @@ common_patches() {
   install_arch_patch_pac_hooks
   install_arch_patch_services
   install_bibata_cursor_theme
+  install_cmdline_options
   install_ghostty_misc_config
   install_pam_configs
   install_plymouth_boot_splash
@@ -624,6 +625,61 @@ install_systemd_scripts() {
       ok "  $script installed and executable"
     done
   done
+}
+
+###############################################################################
+# cmdline options installation
+# Installs boot options to /etc/cmdline.d/
+###############################################################################
+
+install_cmdline_options() {
+  # Only run on Arch/CachyOS
+  [[ "$OS" != "arch" && "$OS" != "cachyos" ]] && return 0
+
+  local src_base="$DOTFILES_DIR/arch-patches/cmdline.d"
+  [[ -d "$src_base" ]] || return 0
+
+  local -a files
+  mapfile -t files < <(find "$src_base" -maxdepth 1 -name '*.conf' -type f -printf '%f\n')
+
+  if (( ${#files[@]} == 0 )); then
+    log "arch-patches/cmdline.d: no .conf files found — skipping"
+    return 0
+  fi
+
+  if $DRY_RUN; then
+    log "[dry-run] would install cmdline options: ${files[*]}"
+    log "[dry-run] would run: sudo mkinitcpio -P"
+    return 0
+  fi
+
+  step "Installing cmdline options"
+
+  local bkp_root="$HOME/.local/share/neo-dots/cmdline-bkp"
+  run mkdir -p "$bkp_root"
+  run sudo mkdir -p "/etc/cmdline.d/"
+
+  for f in "${files[@]}"; do
+    local src_file="$src_base/$f"
+    local dest_file="/etc/cmdline.d/$f"
+
+    # Backup existing file
+    if [[ -f "$dest_file" ]]; then
+      local bkp="$bkp_root/${f}.bak"
+      log "  Backing up $dest_file → $bkp"
+      run sudo cp "$dest_file" "$bkp"
+    fi
+
+    # Copy file
+    log "  Installing $f → $dest_file"
+    run sudo cp "$src_file" "$dest_file"
+    ok "  $f installed"
+  done
+
+  # Rebuild initramfs to apply cmdline changes
+  step "Rebuilding initramfs"
+  run sudo mkinitcpio -P
+  ok "Initramfs rebuilt"
 }
 
 ###############################################################################
