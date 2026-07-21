@@ -1,3 +1,5 @@
+MenuBar=Disabled
+
 [ContentDisplay]
 DirectorySizeMode=ContentSize
 ElidingMode=Right
@@ -5,8 +7,9 @@ ElidingMode=Right
 [General]
 AutoExpandFolders=true
 BrowseThroughArchives=true
-EditableUrl=true
+CloseSplitViewChoice=InactiveView
 RememberOpenedTabs=false
+ShowFullPath=true
 ShowFullPathInTitlebar=true
 ShowStatusBar=FullWidth
 ShowToolTips=true
