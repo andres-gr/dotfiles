@@ -44,6 +44,7 @@ duf
 efibootmgr
 efitools
 ethtool
+evince
 evtest
 exfatprogs
 eza
@@ -120,6 +121,7 @@ libnotify
 libopenraw
 libpulse
 libratbag
+libva-utils
 libxkbcommon
 linux
 linux-firmware
@@ -152,6 +154,7 @@ nfs-utils
 nilfs-utils
 ninja
 niri
+nlohmann-json
 noctalia-qs
 noctalia-shell
 nomacs
