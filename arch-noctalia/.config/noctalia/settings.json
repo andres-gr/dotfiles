@@ -398,9 +398,11 @@
         ],
         "onlySameOutput": false,
         "pinnedApps": [
+            "org.kde.dolphin",
             "zen",
             "spotify",
             "com.rtosta.zapzap",
+            "slack",
             "com.mitchellh.ghostty"
         ],
         "pinnedStatic": true,
