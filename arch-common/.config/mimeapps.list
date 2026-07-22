@@ -1,4 +1,5 @@
 [Added Associations]
+application/pdf=org.gnome.Evince.desktop;
 application/vnd.rar=org.kde.ark.desktop;
 application/x-extension-htm=zen.desktop;
 application/x-extension-html=zen.desktop;
@@ -17,7 +18,7 @@ x-scheme-handler/https=zen.desktop;
 
 [Default Applications]
 application/gzip=org.kde.ark.desktop;
-application/pdf=zen.desktop;
+application/pdf=org.gnome.Evince.desktop;
 application/vnd.rar=org.kde.ark.desktop;
 application/x-extension-htm=zen.desktop
 application/x-extension-html=zen.desktop
