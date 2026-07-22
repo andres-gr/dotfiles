@@ -64,4 +64,4 @@ spawn-sh-at-startup "timeout 10s sh -c 'while ! busctl --user status org.gnome.M
 
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 
-spawn-at-startup "wayland-pipewire-idle-inhibit"
+spawn-at-startup "wayland-pipewire-idle-inhibit -d 8"
