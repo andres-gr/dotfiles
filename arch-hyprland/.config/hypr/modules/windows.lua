@@ -146,7 +146,8 @@ hl.window_rule {
 hl.window_rule {
   name = 'claude_to_workspace',
   match = {
-    class = '^([Cc]laude.*)',
+    class = '^(com.anthropic.[Cc]laude)',
+    title = '^([Cc]laude.*)$',
   },
   workspace = 'name:sec4',
 }
