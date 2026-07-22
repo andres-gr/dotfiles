@@ -48,7 +48,7 @@ hl.bind(mod .. '+ CTRL + N', hl.dsp.exec_cmd(noct_ipc .. ' notifications dismiss
 hl.bind(mod .. '+ ALT + CTRL + L', hl.dsp.exec_cmd(noct_ipc .. ' lockScreen lock'), {
   description = 'Lock Screen',
 })
-hl.bind('ALT + CTRL + SHIFT + L', hl.dsp.exec_cmd(noct_ipc .. ' sessionMenu lockAndSuspend'), {
+hl.bind(mod .. '+ CTRL + SHIFT + L', hl.dsp.exec_cmd(noct_ipc .. ' sessionMenu lockAndSuspend'), {
   description = 'Lock & Suspend',
 })
 hl.bind('ALT + CTRL + DELETE', hl.dsp.exec_cmd(noct_ipc .. ' systemMonitor toggle'), {

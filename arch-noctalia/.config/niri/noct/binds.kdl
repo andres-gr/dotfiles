@@ -29,11 +29,11 @@ binds {
     Mod+Ctrl+Alt+L hotkey-overlay-title="Lock Screen" {
         spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"
     }
+    Mod+Ctrl+Shift+L hotkey-overlay-title="Lock & Suspend" {
+        spawn-sh "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
+    }
     Ctrl+Alt+Delete hotkey-overlay-title="System Monitor" {
         spawn-sh "qs -c noctalia-shell ipc call systemMonitor toggle"
-    }
-    Ctrl+Alt+Shift+L hotkey-overlay-title="Lock & Suspend" {
-        spawn-sh "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
     }
     // === Audio Controls ===
     XF86AudioRaiseVolume allow-when-locked=true {
