@@ -7,9 +7,11 @@ layer-rule {
 
 /* Noctalia: blur everywhere without xray for a better look */
 layer-rule {
-  match namespace="^noctalia-(background|launcher-overlay|dock)-.*$"
+  match namespace="^noctalia-(background|launcher-overlay|dock|wallpaper)-.*$"
 
   background-effect {
     xray false
   }
+
+  place-within-backdrop false
 }
