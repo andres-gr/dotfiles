@@ -43,6 +43,11 @@ hl.on('hyprland.start', function()
 
   hl.exec_cmd 'wayland-pipewire-idle-inhibit -d 8'
 
+  hl.exec_cmd 'gsettings set org.gtk.Settings.FileChooser startup-mode "cwd"'
+  hl.exec_cmd 'gsettings set org.gtk.gtk4.Settings.FileChooser startup-mode "cwd"'
+
+  hl.exec_cmd 'gsettings set org.gnome.desktop.privacy remember-recent-files false'
+
   hl.dispatch(hl.dsp.focus { workspace = 1 })
   hl.dispatch(hl.dsp.cursor.move_to_corner { corner = 1 })
 end)
