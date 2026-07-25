@@ -43,6 +43,9 @@
         "com.rtosta.zapzap": {
           "alias": "whatsapp"
         },
+        "dev.noctalia.Noctalia": {
+          "enabled": false
+        },
         "gmail": {
           "alias": "mail"
         },
