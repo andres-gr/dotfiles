@@ -12,6 +12,14 @@ window-rule {
     open-maximized-to-edges false
     tiled-state true
 
+    default-column-width {
+        proportion 0.66667
+    }
+
+    default-window-height {
+        proportion 1.0
+    }
+
     background-effect {
         blur true
         xray false
@@ -36,6 +44,18 @@ window-rule {
     default-column-width {
         proportion 0.66667
     }
+
+    default-window-height {
+        proportion 1.0
+    }
+}
+
+window-rule {
+    match is-floating=true
+
+    default-column-width {}
+
+    default-window-height {}
 }
 
 window-rule {
@@ -76,6 +96,7 @@ window-rule {
     default-window-height {
         proportion 0.97
     }
+
     opacity 1.0
     open-floating true
 }
@@ -89,6 +110,10 @@ window-rule {
     default-column-width {
         proportion 0.5
     }
+    default-window-height {
+        proportion 0.6
+    }
+
     open-floating true
 }
 window-rule {
@@ -143,6 +168,7 @@ window-rule {
     default-window-height {
         proportion 0.8
     }
+
     open-floating true
 }
 window-rule {
@@ -154,6 +180,7 @@ window-rule {
     default-window-height {
         proportion 0.8
     }
+
     open-floating true
 }
 window-rule {
@@ -165,6 +192,7 @@ window-rule {
     default-window-height {
         proportion 0.5
     }
+
     open-floating true
     open-focused true
 }
@@ -181,8 +209,9 @@ window-rule {
     match app-id="^com\\.anthropic\\.(C|c)laude" title="^(C|c)laude"
 
     default-column-width {
-        proportion 0.7
+        proportion 0.66667
     }
+
     open-focused true
     open-on-workspace "sec-2"
 }
@@ -190,8 +219,9 @@ window-rule {
     match app-id="com.rtosta.zapzap"
 
     default-column-width {
-        proportion 0.7
+        proportion 0.66667
     }
+
     open-focused true
     open-on-workspace "sec-1"
 }
@@ -199,6 +229,10 @@ window-rule {
 // Steam rules
 window-rule {
     match app-id="^(S|s)team"
+
+    default-column-width {}
+
+    default-window-height {}
 
     open-floating true
 }
@@ -211,6 +245,10 @@ window-rule {
 // Davinci rules
 window-rule {
     match app-id="resolve"
+
+    default-column-width {}
+
+    default-window-height {}
 
     opacity 1.0
     open-floating true
@@ -226,6 +264,10 @@ window-rule {
 window-rule {
     match app-id="^org\\.qbittorrent"
 
+    default-column-width {}
+
+    default-window-height {}
+
     open-floating true
 }
 window-rule {
@@ -237,6 +279,10 @@ window-rule {
 // ImageGlass
 window-rule {
     match app-id="ImageGlass"
+
+    default-column-width {}
+
+    default-window-height {}
 
     opacity 1.0
     open-floating true

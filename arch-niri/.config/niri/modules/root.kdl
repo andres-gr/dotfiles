@@ -64,4 +64,9 @@ spawn-sh-at-startup "timeout 10s sh -c 'while ! busctl --user status org.gnome.M
 
 spawn-at-startup "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1"
 
-spawn-at-startup "wayland-pipewire-idle-inhibit -d 8"
+spawn-sh-at-startup "wayland-pipewire-idle-inhibit -d 8"
+
+spawn-sh-at-startup "gsettings set org.gtk.Settings.FileChooser startup-mode 'cwd'"
+spawn-sh-at-startup "gsettings set org.gtk.gtk4.Settings.FileChooser startup-mode 'cwd'"
+
+spawn-sh-at-startup "gsettings set org.gnome.desktop.privacy remember-recent-files false"
