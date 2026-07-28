@@ -15,8 +15,8 @@ MODE="$1"
 
 # ── monitor detection ─────────────────────────────────────────
 if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
-  PRIMARY_JSON=$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[].value | select(.logical.x == 0)')
-  SECONDARY_JSON=$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[].value | select(.logical.x < 0)')
+  PRIMARY_JSON=$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[].value | select(.logical.x == 2560)')
+  SECONDARY_JSON=$(niri msg -j outputs 2>/dev/null | jq -r 'to_entries[].value | select(.logical.x < 2560)')
   MONITOR=$(echo "$PRIMARY_JSON" | jq -r '[.make, .model, .serial] | join(" ")')
   SECONDARY_MONITOR=$(echo "$SECONDARY_JSON" | jq -r '[.make, .model, .serial] | join(" ")')
   PERF_CONF="$HOME/.config/niri/perf-mode.kdl"
@@ -82,17 +82,17 @@ window-rule {
   }
 }
 
+output "$SECONDARY_MONITOR" {
+  mode "2560x1440@119.998"
+  position x=0 y=0
+  scale 1
+}
 output "$MONITOR" {
   mode "2560x1440@180.001"
-  position x=0 y=0
+  position x=2560 y=0
   scale 1
   focus-at-startup
   variable-refresh-rate
-}
-output "$SECONDARY_MONITOR" {
-  mode "2560x1440@119.998"
-  scale 1
-  position x=-2560 y=0
 }
 EOF
     # Comment out outputs.kdl include in main config — perf-mode.kdl handles outputs
