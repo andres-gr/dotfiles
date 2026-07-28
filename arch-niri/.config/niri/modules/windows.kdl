@@ -12,10 +12,6 @@ window-rule {
     open-maximized-to-edges false
     tiled-state true
 
-    default-column-width {}
-
-    default-window-height {}
-
     background-effect {
         blur true
         xray false
