@@ -12,13 +12,9 @@ window-rule {
     open-maximized-to-edges false
     tiled-state true
 
-    default-column-width {
-        proportion 0.66667
-    }
+    default-column-width {}
 
-    default-window-height {
-        proportion 1.0
-    }
+    default-window-height {}
 
     background-effect {
         blur true
@@ -39,26 +35,6 @@ blur {
 }
 
 window-rule {
-    match is-floating=false
-
-    default-column-width {
-        proportion 0.66667
-    }
-
-    default-window-height {
-        proportion 1.0
-    }
-}
-
-window-rule {
-    match is-floating=true
-
-    default-column-width {}
-
-    default-window-height {}
-}
-
-window-rule {
     match is-focused=true
 
     opacity 0.95
@@ -76,10 +52,10 @@ window-rule {
     geometry-corner-radius 12
 }
 window-rule {
-    match app-id="^org\\.wezfurlong\\.wezterm$"
     match app-id="Alacritty"
-    match app-id="com.mitchellh.ghostty"
+    match app-id="com\\.mitchellh\\.ghostty"
     match app-id="kitty"
+    match app-id="org\\.wezfurlong\\.wezterm"
     match app-id="zen"
 
     draw-border-with-background false
@@ -160,7 +136,7 @@ window-rule {
     open-floating false
 }
 window-rule {
-    match app-id="com.mitchellh.ghostty" title="^System Update$"
+    match app-id="com\\.mitchellh\\.ghostty" title="^System Update$"
 
     default-column-width {
         proportion 0.6
@@ -296,5 +272,28 @@ window-rule {
     }
     default-window-height {
         proportion 0.97
+    }
+}
+
+// Indicate screencasted windows with red colors.
+window-rule {
+    match is-window-cast-target=true
+
+    focus-ring {
+        active-color "#f38ba8"
+        inactive-color "#7d0d2d"
+    }
+
+    border {
+        inactive-color "#7d0d2d"
+    }
+
+    shadow {
+        color "#7d0d2d70"
+    }
+
+    tab-indicator {
+        active-color "#f38ba8"
+        inactive-color "#7d0d2d"
     }
 }

@@ -31,6 +31,7 @@ layout {
     default-column-width {
         proportion 0.66667
     }
+
     gaps 12
     // If you leave the brackets empty, the windows themselves will decide their initial width.
     // default-column-width {}
