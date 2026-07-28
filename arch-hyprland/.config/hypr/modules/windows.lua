@@ -278,3 +278,12 @@ hl.window_rule {
     '(monitor_h*0.95)',
   },
 }
+
+-- Stremio
+hl.window_rule {
+  name = 'stremio_main',
+  match = {
+    class = '^stremio',
+  },
+  opacity = '1 override',
+}
