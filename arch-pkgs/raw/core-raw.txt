@@ -27,7 +27,6 @@ cantarell-fonts
 chaotic-keyring
 chaotic-mirrorlist
 chromium
-claude-desktop-bin
 cli11
 cliphist
 cmake

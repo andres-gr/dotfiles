@@ -1,5 +1,6 @@
 apfs-fuse-git
 cavasik
+claude-desktop-bin
 davinci-ffmpeg-encoder-plugin
 davinci-resolve
 hyprqt6engine
@@ -10,6 +11,7 @@ obsidian-bin
 pokego-bin
 qt5ct-kde
 selectdefaultapplication-qt6-git
+stremio-enhanced-bin
 systemd-boot-manager-git
 ttf-hack-ligatured
 vicinae-bin
