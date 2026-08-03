@@ -78,7 +78,7 @@ cleanup() {
 
 # ── main ──────────────────────────────────────────────────────
 pkill -f mpvpaper 2>/dev/null || true
-sleep 0.5
+sleep 2.1
 
 echo $$ > /tmp/splash.pid
 
