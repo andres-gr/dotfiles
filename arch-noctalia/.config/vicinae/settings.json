@@ -106,14 +106,17 @@
           "enabled": false
         },
         "lock": {
+          "alias": "lock",
           "preferences": {
             "confirm": false,
             "customProgram": "qs -c noctalia-shell ipc call sessionMenu lock"
           }
         },
         "logout": {
+          "alias": "logout",
           "preferences": {
-            "confirm": false
+            "confirm": false,
+            "customProgram": "~/.local/bin/logout-cmd"
           }
         },
         "power-off": {
