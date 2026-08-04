@@ -841,9 +841,11 @@ install_sddm_x11_config() {
     run sudo tee "$sddm_conf" >/dev/null << 'EOF'
 [General]
 DisplayServer=x11
+InputMethod=
 
 [X11]
 ServerArguments=-nolisten tcp -background none +xinerama +extension RANDR +extension RENDER +extension GLX
+MinimumVT=1
 EOF
     ok "Configured SDDM X11 with Xinerama support"
   fi
