@@ -1,0 +1,9 @@
+#! /usr/bin/env bash
+
+if [[ "$XDG_CURRENT_DESKTOP" == "niri" ]]; then
+  niri msg action quit
+elif [[ "$XDG_CURRENT_DESKTOP" == "Hyprland" ]]; then
+  hyprctl dispatch "hl.dsp.exit()"
+else
+  exit 1
+fi
