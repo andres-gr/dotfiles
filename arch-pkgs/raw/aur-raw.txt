@@ -1,9 +1,11 @@
 apfs-fuse-git
 cavasik
-claude-desktop-bin
+claude-desktop-extra
 davinci-ffmpeg-encoder-plugin
 davinci-resolve
 hyprqt6engine
+imageglass
+imageglass-debug
 jdownloader2
 melonds
 ndstool

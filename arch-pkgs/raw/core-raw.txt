@@ -39,6 +39,7 @@ dnsmasq
 dolphin
 dolphin-plugins
 dosfstools
+downgrade
 duf
 efibootmgr
 efitools
@@ -73,6 +74,7 @@ gnome-keyring
 gnome-network-displays
 gnome-text-editor
 go
+gparted
 gptfdisk
 greetd
 greetd-agreety
@@ -140,6 +142,7 @@ mediainfo-gui
 meld
 mesa-utils
 micro
+migraphx
 modemmanager
 mpv
 mpvpaper
@@ -162,6 +165,7 @@ noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 nss-mdns
+ntfsprogs
 nwg-displays
 nwg-look
 opencl-mesa
