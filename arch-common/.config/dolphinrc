@@ -14,7 +14,6 @@ ShowFullPathInTitlebar=true
 ShowStatusBar=FullWidth
 ShowToolTips=true
 ShowZoomSlider=true
-SortingChoice=CaseInsensitiveSorting
 SplitView=true
 UseTabForSwitchingSplitView=true
 Version=202
