@@ -1,8 +1,14 @@
 MenuBar=Disabled
 
+[CompactMode]
+PreviewSize=32
+
 [ContentDisplay]
 DirectorySizeMode=ContentSize
 ElidingMode=Right
+
+[DetailsMode]
+PreviewSize=22
 
 [General]
 AutoExpandFolders=true
@@ -14,7 +20,6 @@ ShowFullPathInTitlebar=true
 ShowStatusBar=FullWidth
 ShowToolTips=true
 ShowZoomSlider=true
-SortingChoice=CaseInsensitiveSorting
 SplitView=true
 UseTabForSwitchingSplitView=true
 Version=202
