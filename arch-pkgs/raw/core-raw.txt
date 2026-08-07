@@ -58,7 +58,6 @@ fnm
 font-manager
 fontforge
 fortune-mod
-freerdp-git
 fsarchiver
 fuse2
 fuzzel
@@ -281,7 +280,6 @@ vulkan-radeon
 wayfreeze-git
 wev
 wget
-winboat
 wine
 winetricks
 wireplumber
