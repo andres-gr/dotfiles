@@ -1,183 +1,406 @@
-[bar.main]
-position           = "top"
-thickness          = 42
-background_opacity = 0.75
-radius             = 12
-margin_ends        = 400
-margin_edge        = 12
-padding            = 14
-widget_spacing     = 8
-scale              = 1.1
-shadow             = true
-auto_hide          = false
-reserve_space      = true
-capsule            = true
-capsule_opacity    = 0.75
-layer              = "top"
-start  = ["launcher", "workspaces", "media"]
-center = ["active_window"]
-end    = ["plugin:usb-drive-manager", "tray", "volume", "plugin:update-count", "sysmon_cpu_temp", "sysmon_net_rx", "sysmon_net_tx", "notifications", "plugin:weather-indicator", "clock", "plugin:privacy-indicator", "control-center"]
-
-[bar.main.dead_zone.actions]
-right = "panel-toggle control-center"
-
-[widget.launcher]
-type = "launcher"
-glyph = "rocket"
-
-[widget.workspaces]
-type = "workspaces"
-
-[widget.media]
-type = "media"
-
-[widget.active_window]
-type = "active_window"
-max_length = 400
-
-[widget.tray]
-type = "tray"
-pinned = ["steam"]
-
-[widget.volume]
-type = "volume"
-
-[widget.sysmon_cpu_temp]
-type = "sysmon"
-stat = "cpu_temp"
-
-[widget.sysmon_net_rx]
-type = "sysmon"
-stat = "net_rx"
-
-[widget.sysmon_net_tx]
-type = "sysmon"
-stat = "net_tx"
-
-[widget.notifications]
-type = "notifications"
-
-[widget.clock]
-type   = "clock"
-format = "%a %-d %b, %-I:%M %p"
-tooltip_format = "%A %d %B %Y - %H:%M:%S %Z"
-
-[widget.control-center]
-type = "control-center"
-
-[dock]
-enabled             = true
-position            = "bottom"
-icon_size           = 48
-background_opacity  = 0.95
-radius              = 16
-auto_hide           = true
-show_running        = true
-magnification       = true
-magnification_scale = 1.7
-launcher_position   = "start"
-launcher_custom_image = "/usr/share/noctalia/assets/noctalia.svg"
-launcher_custom_image_colorize = true
-pinned = ["org.kde.dolphin", "zen", "spotify", "com.rtosta.zapzap", "com.mitchellh.ghostty"]
-
-[control_center]
-sidebar = "compact"
-
-[[control_center.shortcuts]]
-type = "wifi"
-[[control_center.shortcuts]]
-type = "bluetooth"
-[[control_center.shortcuts]]
-type = "wallpaper"
-[[control_center.shortcuts]]
-type = "power_profile"
-[[control_center.shortcuts]]
-type = "caffeine"
-
 [accessibility]
 ui_scale = 1.0
 
-[shell]
-font_family = "Noto Sans"
-clipboard_enabled = true
-clipboard_history_max_entries = 100
-avatar_path = "/home/agr/.face"
+[backdrop]
+enabled = true
 
-[notification]
-enable_daemon      = true
-show_app_name      = true
-layer              = "top"
-background_opacity = 0.92
-offset_x           = 20
-offset_y           = 8
-position            = "top_right"
+[bar.main]
+auto_hide = false
+background_opacity = 0.65
+capsule = true
+capsule_opacity = 0.75
+capsule_thickness = 0.7
+center = [ "active_window" ]
+end = [
+    "tray",
+    "volume",
+    "widget_2",
+    "sysmon_cpu_temp",
+    "sysmon_net_rx",
+    "sysmon_net_tx",
+    "notifications",
+    "weather",
+    "clock",
+    "control-center"
+]
+layer = "top"
+margin_edge = 8
+margin_ends = 400
+padding = 4
+position = "top"
+radius = 80
+reserve_space = true
+scale = 1.0
+shadow = true
+start = [ "launcher", "workspaces", "media" ]
+thickness = 42
+widget_spacing = 8
 
-[notification.filter.screenshot]
-enabled      = true
-match        = "Screenshot captured"
-show_toast   = false
-save_history = false
+    [bar.main.dead_zone.actions]
+    right = "panel-toggle control-center"
 
-[osd]
-position           = "top_right"
-background_opacity = 0.92
-offset_x           = 20
-offset_y           = 8
+[battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
+warning_threshold = 15
 
-[wallpaper]
-enabled   = true
-fill_mode = "fit"
-directory = "~/Pictures/Walls"
-transition = ["disc", "honeycomb"]
-transition_duration = 4000
-edge_smoothness = 0.08
+[control_center]
+sidebar = "full"
+sidebar_section = "full"
+width = 860
 
-[wallpaper.automation]
-enabled          = true
-interval_seconds = 420
-order            = "random"
+    [[control_center.shortcuts]]
+    type = "wifi"
+
+    [[control_center.shortcuts]]
+    type = "bluetooth"
+
+    [[control_center.shortcuts]]
+    type = "wallpaper"
+
+    [[control_center.shortcuts]]
+    type = "power_profile"
+
+    [[control_center.shortcuts]]
+    type = "caffeine"
+
+[desktop_widgets]
+enabled = false
+
+[dock]
+auto_hide = true
+background_opacity = 0.55
+enabled = true
+icon_size = 56
+item_spacing = 4
+launcher_custom_image = ""
+launcher_custom_image_colorize = false
+launcher_position = "none"
+magnification = true
+magnification_scale = 1.7
+pinned = [ "org.kde.dolphin", "zen", "spotify", "com.rtosta.zapzap", "com.mitchellh.ghostty" ]
+position = "bottom"
+radius = 16
+reserve_space = false
+shadow = false
+show_dots = true
+show_running = true
+
+[hooks]
+colors_changed = [ "~/.local/bin/fix-colors-hook" ]
+
+[idle.behavior.lock]
+action = "lock"
+enabled = true
+timeout = 600
+
+[idle.behavior.screen-off]
+action = "screen_off"
+enabled = true
+timeout = 720
+
+[idle.behavior.suspend]
+action = "suspend"
+enabled = true
+timeout = 900
+
+[location]
+address = "Monterrey"
+auto_locate = false
+
+[lockscreen]
+enabled = true
+monitors = [ "DP-1" ]
+
+[lockscreen_widgets]
+schema_version = 2
+widget_order = [ "lockscreen-login-box@DP-3", "lockscreen-login-box@DP-1" ]
+
+    [lockscreen_widgets.grid]
+    cell_size = 16
+    major_interval = 4
+    visible = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-1"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1280.0
+    cy = 1258.0
+    output = "DP-1"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
+
+    [lockscreen_widgets.widget."lockscreen-login-box@DP-3"]
+    box_height = 196.0
+    box_width = 810.0
+    cx = 1280.0
+    cy = 1258.0
+    output = "DP-3"
+    rotation = 0.0
+    type = "login_box"
+
+        [lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
+        background_color = "surface_variant"
+        background_opacity = 0.88
+        background_radius = 12.0
+        center_password_text = false
+        input_opacity = 1.0
+        input_radius = 6.0
+        layout = "regular"
+        show_caps_lock = true
+        show_keyboard_layout = true
+        show_login_button = true
+        show_media = true
+        show_session_buttons = true
+        show_unlock_hint = true
+        show_weather = true
 
 [nightlight]
 enabled = false
 
-[location]
-auto_locate = false
-address     = "Monterrey"
+[notification]
+background_opacity = 0.9
+enable_daemon = true
+layer = "overlay"
+offset_x = 8
+offset_y = 8
+position = "top_right"
+scale = 1.1
+show_app_name = true
 
-[weather]
-enabled = true
-unit    = "celsius"
-effects = true
+    [notification.filter.screenshot]
+    enabled = true
+    match = "Screenshot captured"
+    save_history = false
+    show_toast = false
 
-[lockscreen]
-enabled = true
+[osd]
+background_opacity = 0.9
+offset_x = 8
+offset_y = 8
+position = "top_right"
 
-[idle.behavior.lock]
-timeout = 600
-action  = "lock"
-enabled = true
+[plugin_settings."aristides/udiskie"]
+manager_open_near_click = true
+manager_placement = "attached"
 
-[idle.behavior.screen-off]
-timeout = 720
-action  = "screen_off"
-enabled = true
+[plugin_settings."decksters-lab/palette-creator"]
+creator_placement = "attached"
 
-[idle.behavior.suspend]
-timeout = 900
-action  = "suspend"
-enabled = true
+[plugin_settings."yuuto/arch-updater"]
+aur_helper = "yay"
+auto_check_hours = 6
+terminal = "ghostty --title=\"System Update\" -e bash -c {}"
 
-[hooks]
-colors_changed = ["~/.local/bin/fix-colors-hook"]
+[plugin_settings."yuuto/calculator"]
+panel_open_near_click = false
+
+[plugins]
+enabled = [ "aristides/udiskie", "yuuto/arch-updater", "yuuto/calculator", "decksters-lab/palette-creator" ]
+
+[shell]
+avatar_path = "/home/agr/.face"
+clipboard_enabled = true
+clipboard_history_max_entries = 100
+date_format = "%A %d/%m/%Y"
+font_family = "Noto Sans"
+password_style = "random"
+time_format = "{:%-I:%M %p}"
+
+    [shell.panel]
+    launcher_placement = "attached"
+
+    [[shell.session.actions]]
+    action = "lock"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "l"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "logout"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "o"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "lock_and_suspend"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "s"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "reboot"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "r"
+    variant = "default"
+
+    [[shell.session.actions]]
+    action = "shutdown"
+    countdown_seconds = 0.0
+    enabled = true
+    shortcut = "q"
+    variant = "destructive"
 
 [theme]
-mode = "dark"
-source = "custom"
+builtin = "Noctalia"
+community_palette = "Oxocarbon"
 custom_palette = "Dracula Pro"
+mode = "dark"
 pure_black_dark = false
+source = "custom"
+wallpaper_scheme = "m3-content"
 
-[theme.templates]
-enable_builtin_templates   = true
-builtin_ids   = ["gtk3", "gtk4", "btop", "cava", "niri", "hyprland", "qt", "kcolorscheme", "fuzzel"]
-enable_community_templates = true
-community_ids = ["pywalfox", "spicetify", "discord", "zen-browser", "vicinae", "vscode"]
+    [theme.templates]
+    builtin_ids = [ "gtk3", "gtk4", "btop", "cava", "niri", "hyprland", "qt", "kcolorscheme", "fuzzel" ]
+    community_ids = [ "pywalfox", "spicetify", "discord", "zen-browser", "vicinae", "vscode" ]
+    enable_builtin_templates = true
+    enable_community_templates = true
+
+        [theme.templates.user.bat]
+        input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/bat.tmTheme"
+        output_path = "~/.config/bat/themes/noctalia.tmTheme"
+        post_hook = "bat cache --build"
+
+        [theme.templates.user.hyprland]
+        input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/hyprland.lua"
+        output_path = "~/.config/hypr/noctalia/noctalia-colors.lua"
+
+        [theme.templates.user.niri]
+        input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/niri.kdl"
+        output_path = "~/.config/niri/noctalia.kdl"
+
+        [theme.templates.user.palette_creator_live]
+        input_path = "/home/agr/.local/state/noctalia/plugins/materialized/community/palette-creator/templates/live-snapshot.tpl"
+        output_path = "/home/agr/.local/state/noctalia/plugin-data/kyle-palette-creator/live-snapshot.json"
+
+        [theme.templates.user.reference]
+        input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/reference.toml"
+        output_path = "~/.config/noctalia/themes/reference.toml"
+
+[wallpaper]
+directory = "~/Pictures/Walls"
+edge_smoothness = 0.45
+enabled = true
+fill_mode = "stretch"
+per_monitor_directories = true
+transition = [ "disc", "honeycomb" ]
+transition_duration = 3500
+transition_on_startup = true
+
+    [wallpaper.automation]
+    enabled = true
+    interval_seconds = 420
+    order = "random"
+    recursive = false
+
+    [wallpaper.default]
+    path = "/home/agr/Pictures/Walls/Left/batman-eyeshadow.jpg"
+
+    [wallpaper.last]
+    path = "/home/agr/Pictures/Walls/Left/missingno.jpg"
+
+    [wallpaper.monitor.DP-1]
+    directory = "/home/agr/Pictures/Walls/Right"
+
+    [wallpaper.monitor.DP-3]
+    directory = "/home/agr/Pictures/Walls/Left"
+
+    [wallpaper.monitors.DP-1]
+    path = "/home/agr/Pictures/Walls/Right/dragon age wallpaper.jpg"
+
+    [wallpaper.monitors.DP-3]
+    path = "/home/agr/Pictures/Walls/Left/missingno.jpg"
+
+[weather]
+effects = true
+enabled = true
+unit = "celsius"
+
+[widget.active_window]
+icon_size = 24
+max_length = 400
+title_scroll = "always"
+type = "active_window"
+
+[widget.clock]
+format = "%a %-d %b, %-I:%M %p"
+tooltip_format = "%A %d %B %Y - %H:%M:%S %Z"
+type = "clock"
+
+[widget.control-center]
+type = "control-center"
+
+[widget.launcher]
+glyph = "rocket"
+type = "launcher"
+
+[widget.media]
+art_size = 24
+hide_when_no_media = true
+max_length = 240
+title_scroll = "always"
+type = "media"
+
+[widget.notifications]
+hide_when_no_unread = true
+type = "notifications"
+
+[widget.sysmon_cpu_temp]
+show_value = false
+stat = "cpu_temp"
+type = "sysmon"
+
+[widget.sysmon_net_rx]
+show_value = false
+stat = "net_rx"
+type = "sysmon"
+
+[widget.sysmon_net_tx]
+show_value = false
+stat = "net_tx"
+type = "sysmon"
+
+[widget.tray]
+pinned = [ "steam" ]
+type = "tray"
+
+[widget.volume]
+type = "volume"
+
+    [widget.volume.actions]
+    scroll_down = "volume-down 2"
+    scroll_up = "volume-up 2"
+
+[widget.weather]
+show_condition = false
+
+[widget.widget_2]
+enable_scroll = false
+glyph = "world-down"
+hide_on_empty = true
+type = "yuuto/arch-updater:widget"
+
+[widget.workspaces]
+empty_color = "on_surface_variant"
+labels_only_when_occupied = true
+scale = 1.1
+type = "workspaces"
+urgent_color = "tertiary"
