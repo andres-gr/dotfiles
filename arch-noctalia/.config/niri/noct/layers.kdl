@@ -1,17 +1,31 @@
 // Set the overview wallpaper on the backdrop.
 layer-rule {
-  match namespace="^noctalia-overview*"
+  match namespace="^noctalia-backdrop"
 
   place-within-backdrop true
 }
 
-/* Noctalia: blur everywhere without xray for a better look */
+/*
+  Noctalia
+  Disable xray on all our surfaces so it looks more realistic.
+  Noctalia publishes blur regions automatically when ext-background-effects is available.
+*/
 layer-rule {
-  match namespace="^noctalia-(background|launcher-overlay|dock|wallpaper)-.*$"
+  match namespace="^noctalia-(bar-[^\"]+|notification|dock|panel|attached-panel|osd)$"
 
   background-effect {
     xray false
+    // blur false
   }
+}
 
-  place-within-backdrop false
+
+/* Enable blur on noctalia's window switcher and disable xray. */
+layer-rule {
+    match namespace="noctalia-window-switcher"
+
+    background-effect {
+        blur true
+        xray false
+    }
 }
