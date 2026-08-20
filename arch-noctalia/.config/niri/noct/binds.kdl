@@ -2,85 +2,73 @@
 binds {
     // === Application Launchers ===
     Alt+Space hotkey-overlay-title="Application Launcher" {
-        spawn-sh "qs -c noctalia-shell ipc call launcher toggle"
+        spawn-sh "noctalia msg panel-toggle launcher"
     }
     Mod+Z hotkey-overlay-title="Control Center" {
-        spawn-sh "qs -c noctalia-shell ipc call controlCenter toggle"
+        spawn-sh "noctalia msg panel-toggle control-center"
     }
     Mod+Shift+E hotkey-overlay-title="Emoji Picker" {
-        spawn-sh "qs -c noctalia-shell ipc call launcher emoji"
+        spawn-sh "noctalia msg panel-toggle launcher /emo"
     }
     Mod+V hotkey-overlay-title="Clipboard Manager" {
-        spawn-sh "qs -c noctalia-shell ipc call launcher clipboard"
+        spawn-sh "noctalia msg panel-toggle clipboard"
     }
     Mod+Shift+backspace hotkey-overlay-title="Power Menu: Toggle" {
-        spawn-sh "qs -c noctalia-shell ipc call sessionMenu toggle"
+        spawn-sh "noctalia msg panel-toggle session"
     }
     Mod+N hotkey-overlay-title="Notification Center" {
-        spawn-sh "qs -c noctalia-shell ipc call notifications toggleHistory"
+        spawn-sh "noctalia msg panel-toggle control-center notifications"
     }
     Mod+Alt+N hotkey-overlay-title="Notifications Clear All" {
-        spawn-sh "qs -c noctalia-shell ipc call notifications clear"
+        spawn-sh "noctalia msg notification-clear-history"
     }
     Mod+Ctrl+N hotkey-overlay-title="Notifications Dismiss All" {
-        spawn-sh "qs -c noctalia-shell ipc call notifications dismissAll"
+        spawn-sh "noctalia msg notification-clear-active"
     }
     // === Security ===
     Mod+Ctrl+Alt+L hotkey-overlay-title="Lock Screen" {
-        spawn-sh "qs -c noctalia-shell ipc call lockScreen lock"
+        spawn-sh "noctalia msg session lock"
     }
     Mod+Ctrl+Shift+L hotkey-overlay-title="Lock & Suspend" {
-        spawn-sh "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
-    }
-    Ctrl+Alt+Delete hotkey-overlay-title="System Monitor" {
-        spawn-sh "qs -c noctalia-shell ipc call systemMonitor toggle"
+        spawn-sh "noctalia msg session lock-and-suspend"
     }
     // === Audio Controls ===
     XF86AudioRaiseVolume allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call volume increase"
+        spawn-sh "noctalia msg volume-up 2"
     }
     XF86AudioLowerVolume allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call volume decrease"
+        spawn-sh "noctalia msg volume-down 2"
     }
     XF86AudioMute allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call volume muteOutput"
+        spawn-sh "noctalia msg volume-mute"
     }
     XF86AudioMicMute allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call volume muteInput"
+        spawn-sh "noctalia msg mic-mute"
     }
     XF86AudioPause allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call media playPause"
+        spawn-sh "noctalia msg media toggle"
     }
     XF86AudioPlay allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call media playPause"
+        spawn-sh "noctalia msg media toggle"
     }
     XF86AudioPrev allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call media previous"
+        spawn-sh "noctalia msg media previous"
     }
     XF86AudioNext allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call media next"
+        spawn-sh "noctalia msg media next"
     }
     // === Brightness Controls ===
     XF86MonBrightnessUp allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call brightness increase"
+        spawn-sh "noctalia msg brightness-up"
     }
     XF86MonBrightnessDown allow-when-locked=true {
-        spawn-sh "qs -c noctalia-shell ipc call brightness decrease"
+        spawn-sh "noctalia msg brightness-down"
     }
     // === Misc ===
     Mod+Ctrl+Alt+Backslash hotkey-overlay-title="Toggle Idle Inhibitor" {
-        spawn-sh "qs -c noctalia-shell ipc call idleInhibitor toggle"
-    }
-    Mod+Slash hotkey-overlay-title="Toggle Keybinds Cheatsheet" {
-        spawn-sh "qs -c noctalia-shell ipc call plugin:keybind-cheatsheet toggle"
-    }
-    Mod+Ctrl+Alt+U hotkey-overlay-title="Run System Update" {
-        spawn-sh "qs -c noctalia-shell ipc call plugin:update-count run"
+        spawn-sh "noctalia msg caffeine-toggle"
     }
     Mod+Ctrl+Alt+W hotkey-overlay-title="Random Wallpaper" {
-        spawn-sh "qs -c noctalia-shell ipc call wallpaper random"
-    }
-    Mod+Ctrl+Alt+G hotkey-overlay-title="Toggle Performance Mode" {
-        spawn-sh "qs -c noctalia-shell ipc call powerProfile toggleNoctaliaPerformance"
+        spawn-sh "noctalia msg wallpaper-random"
     }
 }

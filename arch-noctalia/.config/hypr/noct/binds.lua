@@ -16,69 +16,66 @@ hl.unbind 'XF86AudioPause'
 hl.unbind 'XF86AudioNext'
 hl.unbind 'XF86AudioPrev'
 
-local noct_ipc = 'qs -c noctalia-shell ipc call'
+local noct_ipc = 'noctalia msg'
 
 -- 16. Noctalia Launchers
-hl.bind('ALT + SPACE', hl.dsp.exec_cmd(noct_ipc .. ' launcher toggle'), {
+hl.bind('ALT + SPACE', hl.dsp.exec_cmd(noct_ipc .. ' panel-toggle launcher'), {
   description = 'Application Launcher',
 })
-hl.bind(mod .. '+ Z', hl.dsp.exec_cmd(noct_ipc .. ' controlCenter toggle'), {
+hl.bind(mod .. '+ Z', hl.dsp.exec_cmd(noct_ipc .. ' panel-toggle control-center'), {
   description = 'Control Center',
 })
-hl.bind(mod .. '+ SHIFT + E', hl.dsp.exec_cmd(noct_ipc .. ' launcher emoji'), {
+hl.bind(mod .. '+ SHIFT + E', hl.dsp.exec_cmd(noct_ipc .. ' panel-toggle launcher /emo'), {
   description = 'Emoji Picker',
 })
-hl.bind(mod .. '+ V', hl.dsp.exec_cmd(noct_ipc .. ' launcher clipboard'), {
+hl.bind(mod .. '+ V', hl.dsp.exec_cmd(noct_ipc .. ' panel-toggle clipboard'), {
   description = 'Clipboard Manager',
 })
-hl.bind(mod .. '+ SHIFT + BACKSPACE', hl.dsp.exec_cmd(noct_ipc .. ' sessionMenu toggle'), {
+hl.bind(mod .. '+ SHIFT + BACKSPACE', hl.dsp.exec_cmd(noct_ipc .. ' panel-toggle session'), {
   description = 'Power Menu: Toggle',
 })
-hl.bind(mod .. '+ N', hl.dsp.exec_cmd(noct_ipc .. ' notifications toggleHistory'), {
+hl.bind(mod .. '+ N', hl.dsp.exec_cmd(noct_ipc .. ' panel-toggle control-center notifications'), {
   description = 'Notification Center',
 })
-hl.bind(mod .. '+ ALT + N', hl.dsp.exec_cmd(noct_ipc .. ' notifications clear'), {
+hl.bind(mod .. '+ ALT + N', hl.dsp.exec_cmd(noct_ipc .. ' notification-clear-history'), {
   description = 'Notifications: Clear All',
 })
-hl.bind(mod .. '+ CTRL + N', hl.dsp.exec_cmd(noct_ipc .. ' notifications dismissAll'), {
+hl.bind(mod .. '+ CTRL + N', hl.dsp.exec_cmd(noct_ipc .. ' notification-clear-active'), {
   description = 'Notifications: Dismiss All',
 })
 
 -- 17. Noctalia Session Controls
-hl.bind(mod .. '+ ALT + CTRL + L', hl.dsp.exec_cmd(noct_ipc .. ' lockScreen lock'), {
+hl.bind(mod .. '+ ALT + CTRL + L', hl.dsp.exec_cmd(noct_ipc .. ' session lock'), {
   description = 'Lock Screen',
 })
-hl.bind(mod .. '+ CTRL + SHIFT + L', hl.dsp.exec_cmd(noct_ipc .. ' sessionMenu lockAndSuspend'), {
+hl.bind(mod .. '+ CTRL + SHIFT + L', hl.dsp.exec_cmd(noct_ipc .. ' session lock-and-suspend'), {
   description = 'Lock & Suspend',
-})
-hl.bind('ALT + CTRL + DELETE', hl.dsp.exec_cmd(noct_ipc .. ' systemMonitor toggle'), {
-  description = 'System Monitor',
 })
 
 -- 18. Noctalia Hardware Controls
-hl.bind('XF86AudioRaiseVolume', hl.dsp.exec_cmd(noct_ipc .. ' volume increase'), {
+hl.bind('XF86AudioRaiseVolume', hl.dsp.exec_cmd(noct_ipc .. ' volume-up 2'), {
   description = 'Raise Volume',
   repeating = true,
   locked = true,
 })
-hl.bind('XF86AudioLowerVolume', hl.dsp.exec_cmd(noct_ipc .. ' volume decrease'), {
+hl.bind('XF86AudioLowerVolume', hl.dsp.exec_cmd(noct_ipc .. ' volume-down 2'), {
   description = 'Lower Volume',
   repeating = true,
   locked = true,
 })
-hl.bind('XF86AudioMute', hl.dsp.exec_cmd(noct_ipc .. ' volume muteOutput'), {
+hl.bind('XF86AudioMute', hl.dsp.exec_cmd(noct_ipc .. ' volume-mute'), {
   description = 'Mute Audio',
   locked = true,
 })
-hl.bind('XF86AudioMicMute', hl.dsp.exec_cmd(noct_ipc .. ' volume muteInput'), {
+hl.bind('XF86AudioMicMute', hl.dsp.exec_cmd(noct_ipc .. ' mic-mute'), {
   description = 'Mute Mic',
   locked = true,
 })
-hl.bind('XF86AudioPlay', hl.dsp.exec_cmd(noct_ipc .. ' media playPause'), {
+hl.bind('XF86AudioPlay', hl.dsp.exec_cmd(noct_ipc .. ' media toggle'), {
   description = 'Play Audio',
   locked = true,
 })
-hl.bind('XF86AudioPause', hl.dsp.exec_cmd(noct_ipc .. ' media playPause'), {
+hl.bind('XF86AudioPause', hl.dsp.exec_cmd(noct_ipc .. ' media toggle'), {
   description = 'Pause Audio',
   locked = true,
 })
@@ -91,30 +88,21 @@ hl.bind('XF86AudioPrev', hl.dsp.exec_cmd(noct_ipc .. ' media previous'), {
   locked = true,
 })
 
-hl.bind('XF86MonBrightnessUp', hl.dsp.exec_cmd(noct_ipc .. ' brightness increase'), {
+hl.bind('XF86MonBrightnessUp', hl.dsp.exec_cmd(noct_ipc .. ' brightness-up'), {
   description = 'Increase Brightness',
   repeating = true,
   locked = true,
 })
-hl.bind('XF86MonBrightnessDown', hl.dsp.exec_cmd(noct_ipc .. ' brightness decrease'), {
+hl.bind('XF86MonBrightnessDown', hl.dsp.exec_cmd(noct_ipc .. ' brightness-down'), {
   description = 'Decrease Brightness',
   repeating = true,
   locked = true,
 })
 
 -- 19. Noctalia Extras
-hl.bind(mod .. '+ ALT + CTRL + BACKSLASH', hl.dsp.exec_cmd(noct_ipc .. ' idleInhibitor toggle'), {
+hl.bind(mod .. '+ ALT + CTRL + BACKSLASH', hl.dsp.exec_cmd(noct_ipc .. ' caffeine-toggle'), {
   description = 'Toggle Idle Inhibitor',
 })
-hl.bind(mod .. '+ SLASH', hl.dsp.exec_cmd(noct_ipc .. ' plugin:keybind-cheatsheet toggle'), {
-  description = 'Toggle Keybinds Cheatsheet',
-})
-hl.bind(mod .. '+ ALT + CTRL + U', hl.dsp.exec_cmd(noct_ipc .. ' plugin:update-count run'), {
-  description = 'Run System Update',
-})
-hl.bind(mod .. '+ ALT + CTRL + W', hl.dsp.exec_cmd(noct_ipc .. ' wallpaper random'), {
+hl.bind(mod .. '+ ALT + CTRL + W', hl.dsp.exec_cmd(noct_ipc .. ' wallpaper-random'), {
   description = 'Random Wallpaper',
-})
-hl.bind(mod .. '+ ALT + CTRL + G', hl.dsp.exec_cmd(noct_ipc .. ' powerProfile toggleNoctaliaPerformance'), {
-  description = 'Toggle Performance Mode',
 })
