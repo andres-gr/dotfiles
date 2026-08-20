@@ -295,4 +295,8 @@ hl.window_rule {
     class = 'dev.noctalia.Noctalia',
   },
   float = true,
+  size = {
+    '(monitor_w*0.45)',
+    '(monitor_h*0.7)',
+  },
 }
