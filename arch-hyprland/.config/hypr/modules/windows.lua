@@ -287,3 +287,12 @@ hl.window_rule {
   },
   opacity = '1 override',
 }
+
+-- Noctalia
+hl.window_rule {
+  name = 'noctalia',
+  match = {
+    class = 'dev.noctalia.Noctalia',
+  },
+  float = true,
+}

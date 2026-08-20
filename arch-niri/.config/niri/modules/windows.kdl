@@ -301,3 +301,10 @@ window-rule {
     opacity 1.0
     open-maximized true
 }
+
+// Noctalia
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+
+    open-floating true
+}
