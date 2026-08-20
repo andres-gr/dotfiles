@@ -109,7 +109,7 @@
           "alias": "lock",
           "preferences": {
             "confirm": false,
-            "customProgram": "qs -c noctalia-shell ipc call sessionMenu lock"
+            "customProgram": "noctalia msg session lock"
           }
         },
         "logout": {
@@ -135,7 +135,7 @@
           "enabled": false,
           "preferences": {
             "confirm": true,
-            "customProgram": "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
+            "customProgram": "noctalia msg session lock-and-suspend"
           }
         },
         "soft-reboot": {
@@ -145,7 +145,7 @@
           "alias": "sleep",
           "preferences": {
             "confirm": false,
-            "customProgram": "qs -c noctalia-shell ipc call sessionMenu lockAndSuspend"
+            "customProgram": "noctalia msg session lock-and-suspend"
           }
         }
       }
