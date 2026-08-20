@@ -1,63 +1,26 @@
 #!/usr/bin/env bash
-# Set SDDM wallpaper from Noctalia wallpaper cache
-# Picks a random wallpaper from the available options based on dark/light mode
+# Set SDDM wallpaper from Noctalia current wallpaper
+# Uses Noctalia IPC to get theme mode and wallpaper path (v5)
 
 set -euo pipefail
 
 THEME_NAME="sddm-noctalia-theme"
 DEST_DIR="/usr/share/sddm/themes/$THEME_NAME/Assets/Wallpaper"
 SETTINGS_CONF="/usr/share/sddm/themes/$THEME_NAME/Commons/Settings.conf"
-WALLPAPER_JSON="$HOME/.cache/noctalia/wallpapers.json"
-SETTINGS_JSON="$HOME/.config/noctalia/settings.json"
 
-# Determine dark/light mode
+# Determine dark/light mode via IPC (correct even with mode = "auto")
 DARK_MODE="dark"
-if [[ -f "$SETTINGS_JSON" ]]; then
-  mode=$(jq -r '.colorSchemes.darkMode // true' "$SETTINGS_JSON" 2>/dev/null || echo "true")
-  if [[ "$mode" == "false" ]]; then
-    DARK_MODE="light"
-  fi
+mode=$(noctalia msg theme-mode-get 2>/dev/null || echo "dark")
+if [[ "$mode" == "light" ]]; then
+  DARK_MODE="light"
 fi
 
-# Check if wallpaper JSON file exists
-if [[ ! -f "$WALLPAPER_JSON" ]]; then
-  echo "Noctalia wallpaper config not found: $WALLPAPER_JSON"
-  exit 1
-fi
-
-# Determine which source to use based on monitor count in wallpapers
-# First get an array of candidate wallpapers (one per line), then pick randomly with bash
-WALLPAPER=$(
-  jq -r --arg mode "$DARK_MODE" '
-    if (.wallpapers | length) > 1 then
-      # Multiple monitors - collect all dark/light wallpapers (one per line)
-      [.wallpapers[].[$mode]] | .[]
-    elif (.wallpapers | length) == 1 then
-      # Single monitor - get from usedRandomWallpapers or wallpapers
-      if (.usedRandomWallpapers | length) > 0 then
-        [.usedRandomWallpapers[].[]] | .[]
-      else
-        [.wallpapers[].[$mode]] | .[]
-      end
-    else
-      # No wallpapers - use default or usedRandomWallpapers
-      if (.usedRandomWallpapers | length) > 0 then
-        [.usedRandomWallpapers[].[]] | .[]
-      else
-        .defaultWallpaper
-      end
-    end
-  ' "$WALLPAPER_JSON"
-)
-
-# Pick a random line from the results using shuf
-if [[ -n "$WALLPAPER" && "$WALLPAPER" != "null" ]]; then
-  WALLPAPER=$(echo "$WALLPAPER" | grep -v '^$' | shuf -n1)
-fi
+# Get current wallpaper path via IPC
+WALLPAPER=$(noctalia msg wallpaper-get 2>/dev/null || true)
 
 # Check if we got a valid wallpaper
 if [[ -z "$WALLPAPER" || "$WALLPAPER" == "null" ]]; then
-  echo "No wallpaper found in config"
+  echo "No wallpaper found via IPC"
   exit 1
 fi
 
