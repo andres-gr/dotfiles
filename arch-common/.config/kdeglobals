@@ -32,7 +32,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,222,238
+ForegroundVisited=255,223,238
 
 [Colors:Complementary]
 BackgroundAlternate=46,45,62
@@ -46,7 +46,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=212,204,255
 ForegroundPositive=138,255,128
-ForegroundVisited=255,222,238
+ForegroundVisited=255,223,238
 
 [Colors:Header]
 BackgroundAlternate=34,33,44
@@ -60,7 +60,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,222,238
+ForegroundVisited=255,223,238
 
 [Colors:Header][Inactive]
 BackgroundAlternate=59,57,80
@@ -74,7 +74,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,222,238
+ForegroundVisited=255,223,238
 
 [Colors:Selection]
 BackgroundAlternate=46,45,62
@@ -84,11 +84,11 @@ DecorationHover=149,128,255
 ForegroundActive=34,33,44
 ForegroundInactive=121,112,169
 ForegroundLink=255,128,191
-ForegroundNegative=204,34,0
-ForegroundNeutral=16,204,0
+ForegroundNegative=205,34,0
+ForegroundNeutral=16,205,0
 ForegroundNormal=34,33,44
-ForegroundPositive=16,204,0
-ForegroundVisited=255,222,238
+ForegroundPositive=16,205,0
+ForegroundVisited=255,223,238
 
 [Colors:Tooltip]
 BackgroundAlternate=34,33,44
@@ -102,7 +102,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,222,238
+ForegroundVisited=255,223,238
 
 [Colors:View]
 BackgroundAlternate=59,57,80
@@ -116,10 +116,10 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,222,238
+ForegroundVisited=255,223,238
 
 [Colors:Window]
-BackgroundAlternate=34,0,204
+BackgroundAlternate=34,0,205
 BackgroundNormal=59,57,80
 DecorationFocus=149,128,255
 DecorationHover=149,128,255
@@ -130,7 +130,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,222,238
+ForegroundVisited=255,223,238
 
 [General]
 ColorScheme=Noctalia
@@ -170,16 +170,16 @@ Dialog Size=600,480
 EnableRemoteFolderThumbnail=false
 MaximumRemoteSize=0
 
+[Sounds]
+Enable=false
+
 [UiSettings]
 ColorScheme=colors
 
 [WM]
-activeBackground=34,0,204
+activeBackground=34,0,205
 activeBlend=212,204,255
 activeForeground=212,204,255
 inactiveBackground=34,33,44
 inactiveBlend=121,112,169
 inactiveForeground=121,112,169
-
-[Sounds]
-Enable=false
