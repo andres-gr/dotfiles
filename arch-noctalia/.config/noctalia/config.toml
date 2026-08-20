@@ -1,0 +1,183 @@
+[bar.main]
+position           = "top"
+thickness          = 42
+background_opacity = 0.75
+radius             = 12
+margin_ends        = 400
+margin_edge        = 12
+padding            = 14
+widget_spacing     = 8
+scale              = 1.1
+shadow             = true
+auto_hide          = false
+reserve_space      = true
+capsule            = true
+capsule_opacity    = 0.75
+layer              = "top"
+start  = ["launcher", "workspaces", "media"]
+center = ["active_window"]
+end    = ["plugin:usb-drive-manager", "tray", "volume", "plugin:update-count", "sysmon_cpu_temp", "sysmon_net_rx", "sysmon_net_tx", "notifications", "plugin:weather-indicator", "clock", "plugin:privacy-indicator", "control-center"]
+
+[bar.main.dead_zone.actions]
+right = "panel-toggle control-center"
+
+[widget.launcher]
+type = "launcher"
+glyph = "rocket"
+
+[widget.workspaces]
+type = "workspaces"
+
+[widget.media]
+type = "media"
+
+[widget.active_window]
+type = "active_window"
+max_length = 400
+
+[widget.tray]
+type = "tray"
+pinned = ["steam"]
+
+[widget.volume]
+type = "volume"
+
+[widget.sysmon_cpu_temp]
+type = "sysmon"
+stat = "cpu_temp"
+
+[widget.sysmon_net_rx]
+type = "sysmon"
+stat = "net_rx"
+
+[widget.sysmon_net_tx]
+type = "sysmon"
+stat = "net_tx"
+
+[widget.notifications]
+type = "notifications"
+
+[widget.clock]
+type   = "clock"
+format = "%a %-d %b, %-I:%M %p"
+tooltip_format = "%A %d %B %Y - %H:%M:%S %Z"
+
+[widget.control-center]
+type = "control-center"
+
+[dock]
+enabled             = true
+position            = "bottom"
+icon_size           = 48
+background_opacity  = 0.95
+radius              = 16
+auto_hide           = true
+show_running        = true
+magnification       = true
+magnification_scale = 1.7
+launcher_position   = "start"
+launcher_custom_image = "/usr/share/noctalia/assets/noctalia.svg"
+launcher_custom_image_colorize = true
+pinned = ["org.kde.dolphin", "zen", "spotify", "com.rtosta.zapzap", "com.mitchellh.ghostty"]
+
+[control_center]
+sidebar = "compact"
+
+[[control_center.shortcuts]]
+type = "wifi"
+[[control_center.shortcuts]]
+type = "bluetooth"
+[[control_center.shortcuts]]
+type = "wallpaper"
+[[control_center.shortcuts]]
+type = "power_profile"
+[[control_center.shortcuts]]
+type = "caffeine"
+
+[accessibility]
+ui_scale = 1.0
+
+[shell]
+font_family = "Noto Sans"
+clipboard_enabled = true
+clipboard_history_max_entries = 100
+avatar_path = "/home/agr/.face"
+
+[notification]
+enable_daemon      = true
+show_app_name      = true
+layer              = "top"
+background_opacity = 0.92
+offset_x           = 20
+offset_y           = 8
+position            = "top_right"
+
+[notification.filter.screenshot]
+enabled      = true
+match        = "Screenshot captured"
+show_toast   = false
+save_history = false
+
+[osd]
+position           = "top_right"
+background_opacity = 0.92
+offset_x           = 20
+offset_y           = 8
+
+[wallpaper]
+enabled   = true
+fill_mode = "fit"
+directory = "~/Pictures/Walls"
+transition = ["disc", "honeycomb"]
+transition_duration = 4000
+edge_smoothness = 0.08
+
+[wallpaper.automation]
+enabled          = true
+interval_seconds = 420
+order            = "random"
+
+[nightlight]
+enabled = false
+
+[location]
+auto_locate = false
+address     = "Monterrey"
+
+[weather]
+enabled = true
+unit    = "celsius"
+effects = true
+
+[lockscreen]
+enabled = true
+
+[idle.behavior.lock]
+timeout = 600
+action  = "lock"
+enabled = true
+
+[idle.behavior.screen-off]
+timeout = 720
+action  = "screen_off"
+enabled = true
+
+[idle.behavior.suspend]
+timeout = 900
+action  = "suspend"
+enabled = true
+
+[hooks]
+colors_changed = ["~/.local/bin/fix-colors-hook"]
+
+[theme]
+mode = "dark"
+source = "custom"
+custom_palette = "Dracula Pro"
+pure_black_dark = false
+
+[theme.templates]
+enable_builtin_templates   = true
+builtin_ids   = ["gtk3", "gtk4", "btop", "cava", "niri", "hyprland", "qt", "kcolorscheme", "fuzzel"]
+enable_community_templates = true
+community_ids = ["pywalfox", "spicetify", "discord", "zen-browser", "vicinae", "vscode"]
