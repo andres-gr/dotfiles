@@ -11,6 +11,7 @@ input_path  = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/referen
 output_path = "~/.config/noctalia/themes/reference.toml"
 
 [theme.templates.user.bat]
+enabled     = false
 input_path  = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/bat.tmTheme"
 output_path = "~/.config/bat/themes/noctalia.tmTheme"
 post_hook   = "bat cache --build"
