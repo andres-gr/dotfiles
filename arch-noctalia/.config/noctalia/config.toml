@@ -11,18 +11,7 @@ capsule = true
 capsule_opacity = 0.75
 capsule_thickness = 0.7
 center = [ "active_window" ]
-end = [
-    "tray",
-    "volume",
-    "widget_2",
-    "sysmon_cpu_temp",
-    "sysmon_net_rx",
-    "sysmon_net_tx",
-    "notifications",
-    "weather",
-    "clock",
-    "control-center"
-]
+end = [ "tray", "volume", "widget_2", "group:g2", "notifications", "group:g1", "control-center" ]
 layer = "top"
 margin_edge = 8
 margin_ends = 400
@@ -38,6 +27,26 @@ widget_spacing = 8
 
     [bar.main.dead_zone.actions]
     right = "panel-toggle control-center"
+
+    [[bar.main.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
+    fill = "surface_variant"
+    id = "g1"
+    members = [ "weather", "clock" ]
+    opacity = 0.75
+    padding = 6.0
+
+    [[bar.main.capsule_group]]
+    accordion = false
+    accordion_direction = "end"
+    enabled = true
+    fill = "surface_variant"
+    id = "g2"
+    members = [ "sysmon_cpu_temp", "sysmon_net_rx", "sysmon_net_tx" ]
+    opacity = 0.75
+    padding = 6.0
 
 [battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
 warning_threshold = 15
@@ -201,16 +210,25 @@ manager_placement = "attached"
 [plugin_settings."decksters-lab/palette-creator"]
 creator_placement = "attached"
 
+[plugin_settings."noctalia/wallhaven"]
+download_dir = "/home/agr/Pictures/Walls"
+
 [plugin_settings."yuuto/arch-updater"]
 aur_helper = "yay"
-auto_check_hours = 6
+auto_check_hours = 1
 terminal = "ghostty --title=\"System Update\" -e bash -c {}"
 
 [plugin_settings."yuuto/calculator"]
 panel_open_near_click = false
 
 [plugins]
-enabled = [ "aristides/udiskie", "yuuto/arch-updater", "yuuto/calculator", "decksters-lab/palette-creator" ]
+enabled = [
+    "aristides/udiskie",
+    "yuuto/arch-updater",
+    "yuuto/calculator",
+    "decksters-lab/palette-creator",
+    "noctalia/wallhaven"
+]
 
 [shell]
 avatar_path = "/home/agr/.face"
@@ -311,23 +329,11 @@ transition_on_startup = true
     order = "random"
     recursive = false
 
-    [wallpaper.default]
-    path = "/home/agr/Pictures/Walls/Left/batman-eyeshadow.jpg"
-
-    [wallpaper.last]
-    path = "/home/agr/Pictures/Walls/Left/missingno.jpg"
-
     [wallpaper.monitor.DP-1]
     directory = "/home/agr/Pictures/Walls/Right"
 
     [wallpaper.monitor.DP-3]
     directory = "/home/agr/Pictures/Walls/Left"
-
-    [wallpaper.monitors.DP-1]
-    path = "/home/agr/Pictures/Walls/Right/dragon age wallpaper.jpg"
-
-    [wallpaper.monitors.DP-3]
-    path = "/home/agr/Pictures/Walls/Left/missingno.jpg"
 
 [weather]
 effects = true
