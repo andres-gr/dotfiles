@@ -71,4 +71,11 @@ binds {
     Mod+Ctrl+Alt+W hotkey-overlay-title="Random Wallpaper" {
         spawn-sh "noctalia msg wallpaper-random"
     }
+    Mod+Ctrl+Alt+U hotkey-overlay-title="Check System Updates" {
+        // spawn-sh "noctalia msg panel-toggle yuuto/arch-updater:panel"
+        spawn-sh "ghostty --title='System Update' -e zsh -c 'yay; read -n 1 -s -r -p \"Press any key to exit...\"; exit 0'"
+    }
+    Mod+Slash hotkey-overlay-title="Toggle Keybinds Cheatsheet" {
+        spawn-sh "noctalia msg panel-toggle kenn/keybind-cheatsheet:cheatsheet"
+    }
 }

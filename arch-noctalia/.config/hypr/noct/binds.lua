@@ -106,3 +106,9 @@ hl.bind(mod .. '+ ALT + CTRL + BACKSLASH', hl.dsp.exec_cmd(noct_ipc .. ' caffein
 hl.bind(mod .. '+ ALT + CTRL + W', hl.dsp.exec_cmd(noct_ipc .. ' wallpaper-random'), {
   description = 'Random Wallpaper',
 })
+hl.bind(mod .. '+ ALT + CTRL + U', hl.dsp.exec_cmd('ghostty --title="System Update" -e zsh -c "yay"'), {
+  description = 'Check System Updates',
+})
+hl.bind(mod .. '+ SLASH', hl.dsp.exec_cmd(noct_ipc .. ' panel-toggle kenn/keybind-cheatsheet:cheatsheet'), {
+  description = 'Toggle Keybinds Cheatsheet',
+})
