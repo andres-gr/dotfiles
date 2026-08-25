@@ -120,6 +120,7 @@ enabled = true
 monitors = [ "DP-1" ]
 
 [lockscreen_widgets]
+enabled = false
 schema_version = 2
 widget_order = [ "lockscreen-login-box@DP-3", "lockscreen-login-box@DP-1" ]
 
@@ -134,6 +135,8 @@ widget_order = [ "lockscreen-login-box@DP-3", "lockscreen-login-box@DP-1" ]
     cx = 1280.0
     cy = 1258.0
     output = "DP-1"
+    placement_height = 1440.0
+    placement_width = 2560.0
     rotation = 0.0
     type = "login_box"
 
@@ -159,6 +162,8 @@ widget_order = [ "lockscreen-login-box@DP-3", "lockscreen-login-box@DP-1" ]
     cx = 1280.0
     cy = 1258.0
     output = "DP-3"
+    placement_height = 1440.0
+    placement_width = 2560.0
     rotation = 0.0
     type = "login_box"
 
@@ -184,7 +189,7 @@ enabled = false
 [notification]
 background_opacity = 0.9
 enable_daemon = true
-layer = "overlay"
+layer = "top"
 offset_x = 8
 offset_y = 8
 position = "top_right"
@@ -210,13 +215,17 @@ manager_placement = "attached"
 [plugin_settings."decksters-lab/palette-creator"]
 creator_placement = "attached"
 
+[plugin_settings."kenn/keybind-cheatsheet"]
+columns = 4
+hyprland_parser = "lua"
+
 [plugin_settings."noctalia/wallhaven"]
 download_dir = "/home/agr/Pictures/Walls"
 
 [plugin_settings."yuuto/arch-updater"]
-aur_helper = "yay"
+aur_helper = "auto"
 auto_check_hours = 1
-terminal = "ghostty --title=\"System Update\" -e bash -c {}"
+terminal = "ghostty --title='System Update' --command='zsh'"
 
 [plugin_settings."yuuto/calculator"]
 panel_open_near_click = false
@@ -224,10 +233,10 @@ panel_open_near_click = false
 [plugins]
 enabled = [
     "aristides/udiskie",
-    "yuuto/arch-updater",
     "yuuto/calculator",
     "decksters-lab/palette-creator",
-    "noctalia/wallhaven"
+    "noctalia/wallhaven",
+    "kenn/keybind-cheatsheet"
 ]
 
 [shell]
@@ -287,12 +296,13 @@ source = "custom"
 wallpaper_scheme = "m3-content"
 
     [theme.templates]
-    builtin_ids = [ "gtk3", "gtk4", "btop", "cava", "niri", "hyprland", "qt", "kcolorscheme", "fuzzel" ]
+    builtin_ids = [ "btop", "cava", "gtk3", "gtk4", "kcolorscheme", "qt" ]
     community_ids = [ "pywalfox", "spicetify", "discord", "zen-browser", "vicinae", "vscode" ]
     enable_builtin_templates = true
     enable_community_templates = true
 
         [theme.templates.user.bat]
+        enabled = false
         input_path = "~/devel/dotfiles/arch-noctalia/.config/noctalia/templates/bat.tmTheme"
         output_path = "~/.config/bat/themes/noctalia.tmTheme"
         post_hook = "bat cache --build"
@@ -329,11 +339,23 @@ transition_on_startup = true
     order = "random"
     recursive = false
 
+    [wallpaper.default]
+    path = "/home/agr/Pictures/Walls/Left/batman-eyeshadow.jpg"
+
+    [wallpaper.last]
+    path = "/home/agr/Pictures/Walls/Left/metroid samus blue.png"
+
     [wallpaper.monitor.DP-1]
     directory = "/home/agr/Pictures/Walls/Right"
 
     [wallpaper.monitor.DP-3]
     directory = "/home/agr/Pictures/Walls/Left"
+
+    [wallpaper.monitors.DP-1]
+    path = "/home/agr/Pictures/Walls/Right/ff7_buster_sword_upscayl_2x_upscayl-standard-4x.jpg"
+
+    [wallpaper.monitors.DP-3]
+    path = "/home/agr/Pictures/Walls/Left/metroid samus blue.png"
 
 [weather]
 effects = true
@@ -352,10 +374,12 @@ tooltip_format = "%A %d %B %Y - %H:%M:%S %Z"
 type = "clock"
 
 [widget.control-center]
+icon_color = "primary"
 type = "control-center"
 
 [widget.launcher]
 glyph = "rocket"
+icon_color = "primary"
 type = "launcher"
 
 [widget.media]
@@ -375,11 +399,13 @@ stat = "cpu_temp"
 type = "sysmon"
 
 [widget.sysmon_net_rx]
+highlight_color = "tertiary"
 show_value = false
 stat = "net_rx"
 type = "sysmon"
 
 [widget.sysmon_net_tx]
+highlight_color = "secondary"
 show_value = false
 stat = "net_tx"
 type = "sysmon"
@@ -401,7 +427,7 @@ show_condition = false
 [widget.widget_2]
 enable_scroll = false
 glyph = "world-down"
-hide_on_empty = true
+hide_on_empty = false
 type = "yuuto/arch-updater:widget"
 
 [widget.workspaces]
