@@ -315,3 +315,19 @@ window-rule {
 
     open-floating true
 }
+
+// Obsidian
+window-rule {
+    match app-id="obsidian"
+
+    default-column-width {}
+
+    default-window-height {}
+
+    open-floating true
+}
+window-rule {
+    match app-id="obsidian" title="^(obsidian-notes.*)"
+
+    open-floating false
+}

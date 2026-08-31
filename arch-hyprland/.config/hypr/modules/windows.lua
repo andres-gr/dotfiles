@@ -300,3 +300,20 @@ hl.window_rule {
     '(monitor_h*0.7)',
   },
 }
+
+-- Obsidian
+hl.window_rule {
+  name = 'obsidian_sub',
+  match = {
+    class = 'obsidian',
+  },
+  float = true,
+}
+hl.window_rule {
+  name = 'obsidian_main',
+  match = {
+    class = 'obsidian',
+    initial_title = '^(obsidian-notes.*)',
+  },
+  float = false,
+}
