@@ -111,7 +111,7 @@ hl.bind(mod .. '+ SHIFT + B', function()
 end, {
   description = 'Half Focused Window',
 })
-hl.bind(mod .. '+ ALT + M', function()
+hl.bind(mod .. '+ ALT + SHIFT + M', function()
   local mon = hl.get_active_monitor()
   if mon == nil then return end
 
@@ -127,7 +127,7 @@ hl.bind(mod .. '+ ALT + M', function()
 end, {
   description = 'Maximize Focused Window',
 })
-hl.bind(mod .. '+ ALT + N', function()
+hl.bind(mod .. '+ ALT + SHIFT + N', function()
   local mon = hl.get_active_monitor()
   if mon == nil then return end
 
@@ -143,7 +143,7 @@ hl.bind(mod .. '+ ALT + N', function()
 end, {
   description = '3/4 Focused Window, Full Height',
 })
-hl.bind(mod .. '+ ALT + B', function()
+hl.bind(mod .. '+ ALT + SHIFT + B', function()
   local mon = hl.get_active_monitor()
   if mon == nil then return end
 
