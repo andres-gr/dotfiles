@@ -1,12 +1,12 @@
 pkgname=imageglass
-pkgver=10.0.3.720
+pkgver=10.0.5.825
 pkgrel=2
 pkgdesc="An image viewer for Linux"
 arch=('x86_64')
 url="https://github.com/d2phap/ImageGlass"
 license=('GPL')
 # Include both files in the tracking arrays
-source=("file:///ImageGlass_10.0.3.720-rc_linux-x64.tar.gz"
+source=("file:///ImageGlass_10.0.5.825_linux-x64.tar.gz"
         "imageglass.desktop")
 sha256sums=('SKIP' 'SKIP')
 
