@@ -68,7 +68,12 @@ N.setup = function ()
         },
         method = null_ls.methods.FORMATTING,
         name = 'beautysh',
-      }
+      },
+
+      -- SQL formatting (pgformatter)
+      null_ls.builtins.formatting.pg_format.with({
+        filetypes = { 'sql' },
+      }),
     },
   }
 end

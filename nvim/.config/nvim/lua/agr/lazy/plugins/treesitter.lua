@@ -50,6 +50,7 @@ T.config = function ()
     'markdown',
     'markdown_inline',
     'python',
+    'sql',
     'styled',
     'toml',
     'tsx',

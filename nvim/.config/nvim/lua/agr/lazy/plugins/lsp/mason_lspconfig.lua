@@ -125,7 +125,7 @@ M.setup = function ()
       if server_name == 'eslint' then
         opts = vim.tbl_deep_extend('force', default_opts, {
           root_dir = function (...)
-            return root(table.unpack(eslint_dirs))(...)
+            return root(unpack(eslint_dirs))(...)
           end,
         })
       end
@@ -163,6 +163,13 @@ M.setup = function ()
   -- tombi: not in mason-lspconfig mappings, register via nvim 0.12 vim.lsp API
   vim.lsp.config('tombi', default_opts)
   vim.lsp.enable('tombi')
+
+  -- postgres_lsp: override cmd (default 'postgrestools' not in PATH)
+  vim.lsp.config('postgres_lsp', vim.tbl_deep_extend('force', default_opts, {
+    cmd = { 'postgres-language-server', 'lsp-proxy' },
+    filetypes = { 'sql', 'pgsql' },
+  }))
+  vim.lsp.enable('postgres_lsp')
 
   --[[ for _, server_name in ipairs(config_servers) do
     ---@diagnostic disable-next-line: undefined-field
