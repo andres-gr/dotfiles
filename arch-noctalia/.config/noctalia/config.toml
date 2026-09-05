@@ -66,6 +66,9 @@ width = 860
     type = "wallpaper"
 
     [[control_center.shortcuts]]
+    type = "noctalia/wallhaven:shortcut"
+
+    [[control_center.shortcuts]]
     type = "power_profile"
 
     [[control_center.shortcuts]]
@@ -75,8 +78,8 @@ width = 860
 enabled = false
 
 [dock]
-auto_hide = true
-background_opacity = 0.55
+auto_hide = false
+background_opacity = 0.54999998770654202
 enabled = true
 icon_size = 56
 item_spacing = 4
@@ -92,6 +95,7 @@ reserve_space = false
 shadow = false
 show_dots = true
 show_running = true
+smart_auto_hide = true
 
 [hooks]
 colors_changed = [ "~/.local/bin/fix-colors-hook" ]
@@ -223,9 +227,9 @@ hyprland_parser = "lua"
 download_dir = "/home/agr/Pictures/Walls"
 
 [plugin_settings."yuuto/arch-updater"]
-aur_helper = "auto"
+aur_helper = "yay"
 auto_check_hours = 1
-terminal = "ghostty --title='System Update' --command='zsh'"
+terminal = "ghostty --title='System Update'"
 
 [plugin_settings."yuuto/calculator"]
 panel_open_near_click = false
@@ -236,7 +240,8 @@ enabled = [
     "yuuto/calculator",
     "decksters-lab/palette-creator",
     "noctalia/wallhaven",
-    "kenn/keybind-cheatsheet"
+    "kenn/keybind-cheatsheet",
+    "yuuto/arch-updater"
 ]
 
 [shell]
@@ -339,24 +344,6 @@ transition_on_startup = true
     order = "random"
     recursive = false
 
-    [wallpaper.default]
-    path = "/home/agr/Pictures/Walls/Left/batman-eyeshadow.jpg"
-
-    [wallpaper.last]
-    path = "/home/agr/Pictures/Walls/Left/metroid samus blue.png"
-
-    [wallpaper.monitor.DP-1]
-    directory = "/home/agr/Pictures/Walls/Right"
-
-    [wallpaper.monitor.DP-3]
-    directory = "/home/agr/Pictures/Walls/Left"
-
-    [wallpaper.monitors.DP-1]
-    path = "/home/agr/Pictures/Walls/Right/ff7_buster_sword_upscayl_2x_upscayl-standard-4x.jpg"
-
-    [wallpaper.monitors.DP-3]
-    path = "/home/agr/Pictures/Walls/Left/metroid samus blue.png"
-
 [weather]
 effects = true
 enabled = true
@@ -427,7 +414,7 @@ show_condition = false
 [widget.widget_2]
 enable_scroll = false
 glyph = "world-down"
-hide_on_empty = false
+hide_on_empty = true
 type = "yuuto/arch-updater:widget"
 
 [widget.workspaces]
