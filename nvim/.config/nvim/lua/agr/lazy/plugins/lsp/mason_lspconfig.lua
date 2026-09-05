@@ -167,7 +167,7 @@ M.setup = function ()
   -- postgres_lsp: override cmd (default 'postgrestools' not in PATH)
   vim.lsp.config('postgres_lsp', vim.tbl_deep_extend('force', default_opts, {
     cmd = { 'postgres-language-server', 'lsp-proxy' },
-    filetypes = { 'sql', 'pgsql' },
+    filetypes = { 'sql' },
   }))
   vim.lsp.enable('postgres_lsp')
 
