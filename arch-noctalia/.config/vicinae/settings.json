@@ -3,7 +3,9 @@
   "close_on_focus_loss": false,
   "pop_to_root_on_close": true,
   "activate_on_single_click": true,
+  "wrap_navigation": true,
   "escape_key_behavior": "close_window",
+  "keybinding": "vim",
   "font": {
     "normal": {
       "family": "Noto Sans",
