@@ -1,0 +1,12 @@
+#! /usr/bin/env bash
+
+yay
+
+read -n 1 -s -r -p "Press any key to exit..."
+
+# check if noctalia is installed
+if command -v "noctalia" &> /dev/null; then
+  noctalia msg plugin yuuto/arch-updater:service all check
+fi
+
+exit 0

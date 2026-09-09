@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=System Update
+GenericName=Arch Linux System Update
+Comment=Update system with yay
+Keywords=update;system;arch;linux;
+Icon=system-software-install
+Exec=ghostty --title="System Update" -e zsh -c "/usr/local/bin/system-update-check"
+Type=Application
+Terminal=false
+Categories=Utility;System;
