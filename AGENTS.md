@@ -16,12 +16,15 @@ These are the primary configuration directories that get symlinked into $HOME:
 #### Base Packages (Always Available)
 - `bat`: Configuration for bat (cat clone with syntax highlighting)
 - `eza`: Configuration for eza (modern ls replacement)
+- `fastfetch`: Configuration for fastfetch (system info tool)
+- `fonts`: Font configuration and installation
 - `ghostty`: Configuration for ghostty terminal emulator
 - `lazygit`: Configuration for lazygit (terminal UI for git)
 - `local`: Local user-specific configurations
 - `nvim`: Neovim configuration
 - `starship`: Starship prompt configuration
 - `tmux`: Tmux terminal multiplexer configuration
+- `yazi`: Configuration for yazi (terminal file manager)
 - `zsh`: Zsh shell configuration
 
 #### macOS-Specific
@@ -32,6 +35,10 @@ Selected based on detected desktop environment/window manager:
 - `arch-common`: Base Arch Linux configurations
 - `arch-hyde`: HyDE (Hyprland Development Environment) specific configurations
 - `arch-niri`: Niri window manager specific configurations
+- `arch-hyprland`: Hyprland window manager configurations
+- `arch-wayfire`: Wayfire window manager configurations
+- `arch-noctalia`: Noctalia window manager configurations
+- `arch-dank`: Dank Material Shell configurations
 
 ### Package Management
 - **Homebrew** (macOS): Managed via Brewfiles in `homebrew/` directory
@@ -46,11 +53,16 @@ Selected based on detected desktop environment/window manager:
 - `arch-common/`: Common Arch Linux configurations (zsh, etc.)
 - `arch-dank/`: Dank Material Shell configurations
 - `arch-hyde/`: HyDE-specific configurations (starship, zsh, etc.)
+- `arch-hyprland/`: Hyprland window manager configurations
 - `arch-niri/`: Niri window manager configurations
+- `arch-noctalia/`: Noctalia window manager configurations
 - `arch-patches/`: Patch files for Arch-specific post-install modifications
 - `arch-pkgs/`: Package lists for Arch installation (core.txt, aur.txt, work.txt, etc.)
+- `arch-wayfire/`: Wayfire window manager configurations
 - `bat/`: Bat configuration
 - `eza/`: Eza configuration
+- `fastfetch/`: Fastfetch configuration
+- `fonts/`: Font configurations and installation scripts
 - `ghostty/`: Ghostty terminal configuration
 - `homebrew/`: Brewfile definitions for macOS package management
 - `lazygit/`: Lazygit configuration
@@ -68,7 +80,14 @@ Selected based on detected desktop environment/window manager:
   - `dms.sh`: Dank Material Shell patches
 - `starship/`: Starship prompt configuration
 - `tmux/`: Tmux configuration
+- `yazi/`: Yazi file manager configuration
 - `zsh/`: Zsh configuration
+
+### Special Directories (Not Stow Packages)
+- `_bmad/`: BMAD agent framework files
+- `claude/`: Claude-specific configurations
+- `.opencode/`: OpenCode agent configurations
+- `opencode/`: OpenCode configurations
 
 ## Development Commands
 
