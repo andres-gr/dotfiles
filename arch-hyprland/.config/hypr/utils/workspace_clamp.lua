@@ -1,5 +1,5 @@
 --- Pure Lua replacement for hypr-workspace-clamp shell script.
---- Clamps workspace next/prev navigation to stay within the current monitor's workspace IDs.
+--- Clamps workspace next/prev navigation to stay within the current monitor's regular workspace IDs.
 --- All state is queried at keypress time (inside the closure) to avoid stale cur_id.
 --- dir: 'next' | 'prev', action: nil (navigate) | 'move' | 'movesilent'
 --- @param dir 'next' | 'prev'
@@ -11,22 +11,28 @@ local workspace_clamp = function(dir, action)
     if not mon then return end
 
     local ws_list = hl.get_workspaces()
-    local ws_ids = {}
+    local regular_ws_ids = {} -- Only regular workspace IDs (for clamping)
     for _, ws in ipairs(ws_list) do
       if ws.monitor == mon then
-        table.insert(ws_ids, ws.id)
+        -- Consider a workspace "regular" if its ID is a positive integer
+        -- Special workspaces (like scratchpad, minimized) typically have non-positive IDs
+        if type(ws.id) == "number" and ws.id > 0 and math.floor(ws.id) == ws.id then
+          table.insert(regular_ws_ids, ws.id)
+        end
       end
     end
 
-    table.sort(ws_ids)
+    table.sort(regular_ws_ids)
 
     local current_ws = hl.get_active_workspace()
     if not current_ws then return end
 
-    local min_id = ws_ids[1]
-    local max_id = ws_ids[#ws_ids]
+    -- Use regular workspaces for clamping boundaries
+    local min_id = regular_ws_ids[1]
+    local max_id = regular_ws_ids[#regular_ws_ids]
     local cur_id = current_ws.id
 
+    -- Only allow navigation if within regular workspace boundaries
     if dir == 'next' and cur_id < max_id then
       if action ~= nil then
         hl.dispatch(
