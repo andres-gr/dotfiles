@@ -8,16 +8,19 @@ local dont_kill_steam = require 'utils.dont_kill_steam'
 local toggle_prop = require 'utils.toggle_prop'
 local workspace_clamp = require 'utils.workspace_clamp'
 
+local ghostty = 'ghostty -e zsh -c'
+local ghosttyUpdate = 'ghostty --title="System Update" -e zsh -c'
+
 local apps = {
   browser = 'zen-browser',
   browser_alt = 'chromium',
-  btop = 'ghostty -e zsh -c btop',
+  btop = ghostty .. ' btop',
   explorer = 'dolphin',
   menu = 'fuzzel',
   terminal = 'ghostty',
   terminal_alt = 'kitty',
   terminal_no_tmux = '_NO_TMUX=1 ghostty -e zsh',
-  yazi = 'ghostty -e zsh -c yazi',
+  yazi = ghostty .. ' yazi',
 }
 
 local home = os.getenv('HOME')
@@ -563,4 +566,7 @@ hl.bind(mod .. '+ Print', hl.dsp.exec_cmd(scripts.screenshot .. ' full'), {
 -- 13. Misc
 hl.bind(mod .. '+ ALT + CTRL + BACKSPACE', hl.dsp.exit(), {
   description = 'Quit Hyprland',
+})
+hl.bind(mod .. '+ ALT + CTRL + U', hl.dsp.exec_cmd(ghosttyUpdate .. ' system-update-check'), {
+  description = 'Check System Updates',
 })

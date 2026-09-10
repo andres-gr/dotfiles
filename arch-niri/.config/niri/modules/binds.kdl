@@ -441,4 +441,8 @@ binds {
     Mod+Ctrl+Shift+M hotkey-overlay-title="Power Off Monitors" {
         power-off-monitors
     }
+    // === Misc ===
+    Mod+Ctrl+Alt+U hotkey-overlay-title="Check System Updates" {
+        spawn-sh "ghostty --title='System Update' -e zsh -c 'system-update-check'"
+    }
 }
