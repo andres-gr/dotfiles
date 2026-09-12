@@ -2,6 +2,8 @@
 
 yay
 
+printf "\n\n"
+
 read -n 1 -s -r -p "Press any key to exit..."
 
 # check if noctalia is installed
