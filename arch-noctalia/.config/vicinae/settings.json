@@ -54,6 +54,9 @@
         "localsend": {
           "alias": "send"
         },
+        "md.obsidian.Obsidian": {
+          "alias": "notes"
+        },
         "obsidian": {
           "alias": "notes"
         },
