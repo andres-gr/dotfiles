@@ -51,6 +51,15 @@ widget_spacing = 8
 [battery.device."/org/freedesktop/UPower/devices/battery_hidpp_battery_0"]
 warning_threshold = 15
 
+[calendar]
+enabled = true
+event_time_format = "{:%-I:%M %p}"
+refresh_minutes = 35
+
+    [calendar.account.personal_google]
+    color = "tertiary"
+    type = "google"
+
 [control_center]
 sidebar = "full"
 sidebar_section = "full"
@@ -88,7 +97,7 @@ launcher_custom_image_colorize = false
 launcher_position = "none"
 magnification = true
 magnification_scale = 1.7
-pinned = [ "org.kde.dolphin", "zen", "spotify", "com.rtosta.zapzap", "com.mitchellh.ghostty" ]
+pinned = [ "org.kde.dolphin", "zen", "md.obsidian.Obsidian", "spotify", "com.rtosta.zapzap", "com.mitchellh.ghostty" ]
 position = "bottom"
 radius = 16
 reserve_space = false
@@ -252,6 +261,9 @@ date_format = "%A %d/%m/%Y"
 font_family = "Noto Sans"
 password_style = "random"
 time_format = "{:%-I:%M %p}"
+
+    [shell.greeter_sync]
+    auto_sync = true
 
     [shell.panel]
     launcher_placement = "attached"
