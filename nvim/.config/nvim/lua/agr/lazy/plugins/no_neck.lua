@@ -14,8 +14,7 @@ N.config = function ()
       setNames = true,
     },
     integration = {
-      NeoTree = {
-        enabled = true,
+      ['neo-tree'] = {
         position = 'left',
       },
     },
