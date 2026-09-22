@@ -15,12 +15,16 @@ mkdir -p "$ZSH_CACHE_DIR"
 # --------------------------------------------------
 # Completion system
 # --------------------------------------------------
+# fpath already includes $ZDOTDIR/completions via 05-path.zsh (set before compinit).
+# Generate new completions: <tool> completion zsh > "$ZDOTDIR/completions/_<tool>"
+#
 # Skip if HyDE already ran _load_compinit (detected via its conf.d/hyde dir)
 _neo_hyde_zsh="${ZDOTDIR:-$HOME/.config/zsh}/conf.d/hyde"
 if [[ ! -d "$_neo_hyde_zsh" ]]; then
   autoload -Uz compinit
   _compdump="$ZSH_CACHE_DIR/.zcompdump"
-  if [[ -f "$_compdump" ]]; then
+  # Regenerate if dump is missing or older than 24h
+  if [[ -f "$_compdump" ]] && (( $(find "$_compdump" -mtime -7 -print 2>/dev/null | wc -l) )); then
     compinit -C -d "$_compdump"
   else
     compinit -d "$_compdump"

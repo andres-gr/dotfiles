@@ -24,9 +24,6 @@ if [[ -z "${_NEO_PLUGINS_LOADED:-}" ]]; then
   [[ -r "$ZDOTDIR/plugins.zsh" ]] && source "$ZDOTDIR/plugins.zsh"
 fi
 
-# bun completions
-[ -s "/Users/andres/.bun/_bun" ] && source "/Users/andres/.bun/_bun"
-
 # --------------------------------------------------
 # Load zsh functions
 # --------------------------------------------------

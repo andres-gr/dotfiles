@@ -39,4 +39,15 @@ if (( $+commands[go] )); then
   [[ -d "$GOPATH/bin" ]] && path+=("$GOPATH/bin")
 fi
 
+# --------------------------------------------------
+# Completion fpath (must be set before compinit runs)
+# Standard dir for CLI completion scripts (_toolname)
+# Generate: <tool> completion zsh > "$ZDOTDIR/completions/_<tool>"
+# --------------------------------------------------
+typeset -U fpath
+_fpath_completions="$ZDOTDIR/completions"
+[[ -d "$_fpath_completions" ]] || mkdir -p "$_fpath_completions"
+fpath=($_fpath_completions $fpath)
+unset _fpath_completions
+
 export PATH
