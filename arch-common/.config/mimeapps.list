@@ -78,3 +78,4 @@ x-scheme-handler/stremio=stremio-enhanced.desktop
 x-scheme-handler/unknown=zen.desktop
 x-scheme-handler/insomnia=insomnia.desktop
 x-scheme-handler/bruno=bruno.desktop
+x-scheme-handler/msteams=teams-for-linux.desktop
