@@ -74,6 +74,18 @@ N.setup = function ()
       null_ls.builtins.formatting.pg_format.with({
         filetypes = { 'sql' },
       }),
+
+      -- Dockerfile fmt
+      {
+        filetypes = { 'dockerfile' },
+        generator = h.formatter_factory {
+          command = 'dockerfmt',
+          args = { '-' },
+          to_stdin = true,
+        },
+        method = null_ls.methods.FORMATTING,
+        name = 'dockerfmt',
+      },
     },
   }
 end

@@ -171,6 +171,9 @@ M.setup = function ()
   }))
   vim.lsp.enable('postgres_lsp')
 
+  vim.lsp.config('docker_language_server', default_opts)
+  vim.lsp.enable('docker_language_server')
+
   --[[ for _, server_name in ipairs(config_servers) do
     ---@diagnostic disable-next-line: undefined-field
     local server_opts = utils.has_plugin(server_settings_path .. server_name).setup()
