@@ -1,15 +1,16 @@
 local G = {}
 
-G.setup = function()
+G.setup = function ()
   return {
     settings = {
       gopls = {
         -- Analysis settings
         analyses = {
+          fillstruct = true,
+          shadow = true,
           unusedparams = true,
           unusedwrite = true,
           useany = true,
-          shadow = true,
         },
         -- Code completion
         completeUnimported = true,
@@ -39,14 +40,14 @@ G.setup = function()
           upgrade_dependency = true,
           vendor = true,
         },
-        -- Semantic tokens
-        semanticTokens = true,
         -- Build tags
         directoryFilters = {
-          "-**/node_modules",
-          "-**/.git",
-          "-**/vendor",
+          '-**/.git',
+          '-**/node_modules',
+          '-**/vendor',
         },
+        -- Semantic tokens
+        semanticTokens = true,
       },
     },
     -- Additional gopls flags
