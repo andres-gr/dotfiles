@@ -331,3 +331,14 @@ window-rule {
 
     open-floating false
 }
+
+// Vicinae settings
+window-rule {
+    match app-id="vicinae" title="^Vicinae Settings"
+
+    default-column-width {}
+
+    default-window-height {}
+
+    open-floating true
+}

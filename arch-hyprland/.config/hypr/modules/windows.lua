@@ -317,3 +317,13 @@ hl.window_rule {
   },
   float = false,
 }
+
+-- Vicinae
+hl.window_rule {
+  name = 'vicinae_settings',
+  match = {
+    class = 'vicinae',
+    initial_title = '^(Vicinae Settings.*)',
+  },
+  float = true,
+}
