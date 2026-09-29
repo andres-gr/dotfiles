@@ -1,6 +1,9 @@
 [accessibility]
 ui_scale = 1.0
 
+[audio]
+enable_sounds = false
+
 [backdrop]
 enabled = true
 
@@ -11,7 +14,7 @@ capsule = true
 capsule_opacity = 0.75
 capsule_thickness = 0.7
 center = [ "active_window" ]
-end = [ "tray", "volume", "widget_2", "group:g2", "notifications", "group:g1", "control-center" ]
+end = [ "tray", "volume", "widget_2", "status", "group:g2", "notifications", "group:g1", "control-center" ]
 layer = "top"
 margin_edge = 8
 margin_ends = 400
@@ -129,8 +132,11 @@ address = "Monterrey"
 auto_locate = false
 
 [lockscreen]
+edge_smoothness = 0.45
 enabled = true
 monitors = [ "DP-1" ]
+transition = [ "disc", "honeycomb" ]
+transition_duration = 1000
 
 [lockscreen_widgets]
 enabled = false
@@ -229,7 +235,7 @@ manager_placement = "attached"
 creator_placement = "attached"
 
 [plugin_settings."kenn/keybind-cheatsheet"]
-columns = 4
+columns = 3
 hyprland_parser = "lua"
 
 [plugin_settings."noctalia/wallhaven"]
@@ -258,6 +264,7 @@ avatar_path = "/home/agr/.face"
 clipboard_enabled = true
 clipboard_history_max_entries = 100
 date_format = "%A %d/%m/%Y"
+external_ip_enabled = true
 font_family = "Noto Sans"
 password_style = "random"
 time_format = "{:%-I:%M %p}"
@@ -391,6 +398,10 @@ type = "media"
 [widget.notifications]
 hide_when_no_unread = true
 type = "notifications"
+
+[widget.status]
+hide_when_empty = true
+type = "aristides/udiskie:status"
 
 [widget.sysmon_cpu_temp]
 show_value = false
