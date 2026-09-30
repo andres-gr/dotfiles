@@ -14,8 +14,10 @@ A.config = function ()
     attach_mode = 'global',
     backends = {
       'lsp',
-      'markdown',
       'treesitter',
+      'markdown',
+      'asciidoc',
+      'man',
     },
     filter_kind = false,
     guides = {
@@ -26,6 +28,10 @@ A.config = function ()
     },
     layout = {
       min_width = 28,
+      max_width = {
+        50,
+        0.3,
+      },
     },
     on_attach = function (bufnr)
       local keymap = require 'agr.core.utils'.keymap
@@ -40,6 +46,8 @@ A.config = function ()
       -- Jump up the tree with '[Y' or ']Y'
       map('n', '[Y', '<CMD>AerialPrevUp<CR>', desc_opts('Previous and Up in Aerial'))
       map('n', ']Y', '<CMD>AerialNextUp<CR>', desc_opts('Next and Up in Aerial'))
+
+      map('n', '<leader>fA', '<CMD>AerialToggle<CR>', desc_opts('Toggle Aerial'))
     end,
     show_guides = true,
   }
