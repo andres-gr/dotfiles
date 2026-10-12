@@ -440,6 +440,9 @@ glyph = "world-down"
 hide_on_empty = true
 type = "yuuto/arch-updater:widget"
 
+    [widget.widget_2.actions]
+    left = "exec ghostty --title=\"System Update\" -e zsh -c \"/usr/local/bin/system-update-check\""
+
 [widget.workspaces]
 empty_color = "on_surface_variant"
 labels_only_when_occupied = true
