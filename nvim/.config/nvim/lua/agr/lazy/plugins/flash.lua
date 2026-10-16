@@ -3,12 +3,18 @@ local F = {
   event = 'BufReadPre',
 }
 
-local mode = function (str)
-  return '\\<' .. str
-end
-
 F.config = function ()
+  local mode = 'exact'
+
   local flash = require 'flash'
+
+  flash.setup {
+    modes = {
+      char = {
+        enabled = false,
+      },
+    },
+  }
 
   local keymap = require 'agr.core.utils'.keymap
   local map = keymap.map
