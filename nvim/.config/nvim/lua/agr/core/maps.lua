@@ -6,15 +6,12 @@ local desc_opts = function (desc)
   return keymap:desc_opts(desc)
 end
 local term_opts = { silent = true }
-local all = {
-  '',
-  '!',
-  't',
-}
 
--- Unmap space and Q
-map('', 'Q', '<Nop>', opts)
-map('', '<Space>', '<Nop>', opts)
+-- Unmap space and Q. Keep this out of Select mode: mappings registered for
+-- mode '' (":map") are also listed under Select mode and would turn space/Q
+-- into <Nop> there, breaking type-to-replace in snippet placeholders.
+map({ 'n', 'x', 'o' }, 'Q', '<Nop>', opts)
+map({ 'n', 'x', 'o' }, '<Space>', '<Nop>', opts)
 
 -- map('', '', '', desc_opts(''))
 
@@ -63,7 +60,16 @@ map('n', '\\t', '<CMD>windo bd<CR>', desc_opts('Quit window tab'))
 -- map('n', '<leader>e', ':Lex 30<cr>', desc_opts('Toggle Netrw file tree'))
 
 -- Escapes
-map(all, '<M-o>', '<ESC>', desc_opts('Escape'))
+-- NOTE: mode '' (":map") is listed by maparg() for Select mode but does not
+-- actually fire there, so 's' must be listed explicitly.
+map({ '', 's', '!', 't' }, '<M-o>', '<ESC>', desc_opts('Escape'))
+
+-- Select mode (charwise `s` from LuaSnip, linewise `S` from Lspsaga rename).
+-- Do NOT map i/a: in Select mode any printable key (including i/a) already
+-- replaces the selection and enters Insert mode. Mapping them consumed the
+-- first keypress and broke type-to-overwrite, especially for names starting
+-- with i/a. Only escape needs help here.
+map('s', 'jk', '<Esc>', desc_opts('Escape select mode'))
 
 -- Black hole deletes
 map({ 'n', 'v' }, '<leader>d', '"_d', desc_opts('Black hole delete'))

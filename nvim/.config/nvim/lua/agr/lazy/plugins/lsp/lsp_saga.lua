@@ -46,6 +46,25 @@ S.setup = function ()
       },
     },
   }
+
+  -- Lspsaga opens the rename prompt in Select mode (rename.in_select defaults
+  -- to true) but only installs its exec/quit keys for insert, normal and
+  -- visual modes. Leave Select mode first so those normal-mode maps can run.
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'sagarename',
+    callback = function (args)
+      vim.keymap.set('s', '<CR>', '<Esc><CR>', {
+        buffer = args.buf,
+        remap = true,
+        desc = 'Confirm LSP rename',
+      })
+      vim.keymap.set('s', '<C-k>', '<Esc><C-k>', {
+        buffer = args.buf,
+        remap = true,
+        desc = 'Cancel LSP rename',
+      })
+    end,
+  })
 end
 
 return S
