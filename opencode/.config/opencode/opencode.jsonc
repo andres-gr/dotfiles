@@ -1,29 +1,52 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "mcp": {
-    "context-mode": {
-      "type": "local",
-      "enabled": true,
-      "command": [
-        "bunx",
-        "-y",
-        "context-mode"
-      ]
+  "default_agent": "builder-lead",
+  "permissions": [
+    {
+      "action": "read",
+      "resource": "*.env",
+      "effect": "deny"
     },
-    "repomix": {
-      "type": "local",
-      "enabled": true,
-      "command": [
-        "bunx",
-        "-y",
-        "repomix",
-        "--mcp"
-      ]
+    {
+      "action": "read",
+      "resource": "*.env.*",
+      "effect": "deny"
+    },
+    {
+      "action": "read",
+      "resource": "*.env.example",
+      "effect": "allow"
+    },
+    {
+      "action": "external_directory",
+      "resource": "*",
+      "effect": "ask"
+    }
+  ],
+  "agents": {
+    "builder-lead": {
+      "steps": 40
+    },
+    "product-manager": {
+      "steps": 15
+    },
+    "tech-lead": {
+      "steps": 25
+    },
+    "backend-dev": {
+      "steps": 40
+    },
+    "frontend-dev": {
+      "steps": 40
+    },
+    "tester": {
+      "steps": 30
+    },
+    "code-reviewer": {
+      "steps": 25
     }
   },
-  "plugin": [
-    "context-mode",
-    "repomix",
+  "plugins": [
     "superpowers@git+https://github.com/obra/superpowers.git"
   ],
   "instructions": [
