@@ -1,19 +1,19 @@
 local O = {
   'nickjvandyke/opencode.nvim',
+  branch = 'main',
   dependencies = {
     {
       'folke/snacks.nvim',
       optional = true,
     },
   },
-  version = '*',
 }
 
-O.config = function()
+O.config = function ()
   -- Dynamically update theme env var before each toggle
   -- This ensures the theme matches vim.o.background at the time opencode is opened
   local original_toggle = require('opencode').toggle
-  require('opencode').toggle = function(...)
+  require('opencode').toggle = function (...)
     ---@module 'opencode.provider.snacks'
     local provider = require('opencode.config').provider
     if provider and provider.opts then
@@ -26,25 +26,25 @@ O.config = function()
   vim.o.autoread = true -- Required for `opts.events.reload`
 
   -- Recommended/example keymaps
-  vim.keymap.set({ 'n', 'x' }, '<M-.>', function() require('opencode').ask('@this: ', { submit = true }) end,
+  vim.keymap.set({ 'n', 'x' }, '<M-.>', function () require('opencode').ask('@this: ', { submit = true }) end,
     { desc = 'Ask opencode…' })
-  vim.keymap.set({ 'n', 'x' }, '<M-,>', function() require('opencode').ask('', { submit = true }) end,
+  vim.keymap.set({ 'n', 'x' }, '<M-,>', function () require('opencode').ask('', { submit = true }) end,
     { desc = 'Empty ask opencode…' })
-  vim.keymap.set({ 'n', 'x' }, '<M-/>', function() require('opencode').select() end,
+  vim.keymap.set({ 'n', 'x' }, '<M-/>', function () require('opencode').select() end,
     { desc = 'Execute opencode action…' })
 
-  vim.keymap.set({ 'n', 'x' }, '<leader>go', function() return require('opencode').operator('@this ') end,
+  vim.keymap.set({ 'n', 'x' }, '<leader>go', function () return require('opencode').operator('@this ') end,
     { desc = 'Add range to opencode', expr = true })
-  vim.keymap.set('n', 'goo', function() return require('opencode').operator('@this ') .. '_' end,
+  vim.keymap.set('n', 'goo', function () return require('opencode').operator('@this ') .. '_' end,
     { desc = 'Add line to opencode', expr = true })
-  vim.keymap.set('n', 'gos', function() return require('opencode').command('prompt.submit') end,
+  vim.keymap.set('n', 'gos', function () return require('opencode').command('prompt.submit') end,
     { desc = 'Submit prompt' })
-  vim.keymap.set('n', 'goc', function() return require('opencode').command('prompt.clear') end,
+  vim.keymap.set('n', 'goc', function () return require('opencode').command('prompt.clear') end,
     { desc = 'Clear prompt' })
 
-  vim.keymap.set('n', '<M-u>', function() require('opencode').command('session.half.page.up') end,
+  vim.keymap.set('n', '<M-u>', function () require('opencode').command('session.half.page.up') end,
     { desc = 'Scroll opencode up' })
-  vim.keymap.set('n', '<M-d>', function() require('opencode').command('session.half.page.down') end,
+  vim.keymap.set('n', '<M-d>', function () require('opencode').command('session.half.page.down') end,
     { desc = 'Scroll opencode down' })
 
   vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment under cursor', noremap = true })
