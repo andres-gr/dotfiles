@@ -32,7 +32,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,223,238
+ForegroundVisited=255,152,200
 
 [Colors:Complementary]
 BackgroundAlternate=46,45,62
@@ -44,9 +44,9 @@ ForegroundInactive=121,112,169
 ForegroundLink=255,128,191
 ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
-ForegroundNormal=212,204,255
+ForegroundNormal=175,164,255
 ForegroundPositive=138,255,128
-ForegroundVisited=255,223,238
+ForegroundVisited=255,152,200
 
 [Colors:Header]
 BackgroundAlternate=34,33,44
@@ -60,7 +60,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,223,238
+ForegroundVisited=255,152,200
 
 [Colors:Header][Inactive]
 BackgroundAlternate=59,57,80
@@ -74,7 +74,7 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,223,238
+ForegroundVisited=255,152,200
 
 [Colors:Selection]
 BackgroundAlternate=46,45,62
@@ -84,11 +84,11 @@ DecorationHover=149,128,255
 ForegroundActive=34,33,44
 ForegroundInactive=121,112,169
 ForegroundLink=255,128,191
-ForegroundNegative=205,34,0
-ForegroundNeutral=16,205,0
+ForegroundNegative=100,67,69
+ForegroundNeutral=65,99,69
 ForegroundNormal=34,33,44
-ForegroundPositive=16,205,0
-ForegroundVisited=255,223,238
+ForegroundPositive=65,99,69
+ForegroundVisited=255,152,200
 
 [Colors:Tooltip]
 BackgroundAlternate=34,33,44
@@ -102,12 +102,12 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,223,238
+ForegroundVisited=255,152,200
 
 [Colors:View]
 BackgroundAlternate=59,57,80
 BackgroundNormal=34,33,44
-DecorationFocus=212,204,255
+DecorationFocus=175,164,255
 DecorationHover=34,33,44
 ForegroundActive=149,128,255
 ForegroundInactive=121,112,169
@@ -116,10 +116,10 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,223,238
+ForegroundVisited=255,152,200
 
 [Colors:Window]
-BackgroundAlternate=34,0,205
+BackgroundAlternate=68,61,107
 BackgroundNormal=59,57,80
 DecorationFocus=149,128,255
 DecorationHover=149,128,255
@@ -130,10 +130,10 @@ ForegroundNegative=255,149,128
 ForegroundNeutral=138,255,128
 ForegroundNormal=248,248,242
 ForegroundPositive=138,255,128
-ForegroundVisited=255,223,238
+ForegroundVisited=255,152,200
 
 [General]
-ColorScheme=Noctalia
+ColorScheme=noctalia
 Name=noctalia
 TerminalApplication=ghostty
 
@@ -177,9 +177,9 @@ Enable=false
 ColorScheme=colors
 
 [WM]
-activeBackground=34,0,205
-activeBlend=212,204,255
-activeForeground=212,204,255
+activeBackground=68,61,107
+activeBlend=175,164,255
+activeForeground=175,164,255
 inactiveBackground=34,33,44
 inactiveBlend=121,112,169
 inactiveForeground=121,112,169
