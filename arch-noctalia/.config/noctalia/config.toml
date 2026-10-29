@@ -35,7 +35,7 @@ widget_spacing = 8
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g1"
     members = [ "weather", "clock" ]
     opacity = 0.75
@@ -45,7 +45,7 @@ widget_spacing = 8
     accordion = false
     accordion_direction = "end"
     enabled = true
-    fill = "surface_variant"
+    fill = "surface_container"
     id = "g2"
     members = [ "sysmon_cpu_temp", "sysmon_net_rx", "sysmon_net_tx" ]
     opacity = 0.75
@@ -100,7 +100,7 @@ launcher_custom_image_colorize = false
 launcher_position = "none"
 magnification = true
 magnification_scale = 1.7
-pinned = [ "org.kde.dolphin", "zen", "md.obsidian.Obsidian", "spotify", "com.rtosta.zapzap", "com.mitchellh.ghostty" ]
+pinned = [ "org.kde.dolphin", "zen", "md.obsidian.Obsidian", "spotify", "com.rtosta.zapzap", "steam", "com.mitchellh.ghostty" ]
 position = "bottom"
 radius = 16
 reserve_space = false
@@ -134,6 +134,7 @@ auto_locate = false
 [lockscreen]
 edge_smoothness = 0.45
 enabled = true
+grace_period_seconds = 2
 monitors = [ "DP-1" ]
 transition = [ "disc", "honeycomb" ]
 transition_duration = 1000
@@ -160,7 +161,7 @@ widget_order = [ "lockscreen-login-box@DP-3", "lockscreen-login-box@DP-1" ]
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@DP-1".settings]
-        background_color = "surface_variant"
+        background_color = "surface_container"
         background_opacity = 0.88
         background_radius = 12.0
         center_password_text = false
@@ -187,7 +188,7 @@ widget_order = [ "lockscreen-login-box@DP-3", "lockscreen-login-box@DP-1" ]
     type = "login_box"
 
         [lockscreen_widgets.widget."lockscreen-login-box@DP-3".settings]
-        background_color = "surface_variant"
+        background_color = "surface_container"
         background_opacity = 0.88
         background_radius = 12.0
         center_password_text = false
@@ -321,7 +322,7 @@ wallpaper_scheme = "m3-content"
 
     [theme.templates]
     builtin_ids = [ "btop", "cava", "gtk3", "gtk4", "kcolorscheme", "qt" ]
-    community_ids = [ "pywalfox", "spicetify", "discord", "zen-browser", "vicinae", "vscode" ]
+    community_ids = [ "spicetify", "pywalfox", "zen-browser", "discord", "vscode", "vicinae" ]
     enable_builtin_templates = true
     enable_community_templates = true
 
@@ -442,6 +443,7 @@ type = "yuuto/arch-updater:widget"
 
     [widget.widget_2.actions]
     left = "exec ghostty --title=\"System Update\" -e zsh -c \"/usr/local/bin/system-update-check\""
+    scroll_up = "exec noctalia msg panel-toggle yuuto/arch-updater:panel"
 
 [widget.workspaces]
 empty_color = "on_surface_variant"
