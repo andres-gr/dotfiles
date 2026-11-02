@@ -42,13 +42,35 @@ O.config = function ()
   vim.keymap.set('n', 'goc', function () return require('opencode').command('prompt.clear') end,
     { desc = 'Clear prompt' })
 
-  vim.keymap.set('n', '<M-u>', function () require('opencode').command('session.half.page.up') end,
-    { desc = 'Scroll opencode up' })
-  vim.keymap.set('n', '<M-d>', function () require('opencode').command('session.half.page.down') end,
-    { desc = 'Scroll opencode down' })
+  -- Scroll the opencode v2 TUI from nvim via tmux.
+  -- V2 removed the server-side built-in `session.*` command registry, so
+  -- opencode.nvim's `command()` API can no longer scroll the TUI
+  -- (POST /api/session/<id>/command runs only user-defined prompt commands).
+  -- Instead, locate the tmux pane running `opencode` and send its own TUI
+  -- scroll keybinds (default ctrl+alt+u / ctrl+alt+d) into that pane's PTY.
+  local function opencode_pane_id()
+    local out = vim.fn.systemlist({ 'tmux', 'list-panes', '-a', '-F', '#{pane_current_command}|#{pane_id}' })
+    if vim.v.shell_error ~= 0 then return nil, 'tmux unavailable' end
+    for _, line in ipairs(out) do
+      local cmd, pane = line:match('^([^|]+)|(.+)$')
+      if cmd == 'opencode' then return pane end
+    end
+    return nil, 'no opencode pane'
+  end
 
-  vim.keymap.set('n', '+', '<C-a>', { desc = 'Increment under cursor', noremap = true })
-  vim.keymap.set('n', '-', '<C-x>', { desc = 'Decrement under cursor', noremap = true })
+  local function scroll_opencode(keys)
+    local pane, err = opencode_pane_id()
+    if not pane then
+      vim.notify(('Cannot scroll opencode: %s'):format(err), vim.log.levels.WARN)
+      return
+    end
+    vim.fn.system({ 'tmux', 'send-keys', '-t', pane, keys })
+  end
+
+  vim.keymap.set('n', '<M-u>', function () scroll_opencode('C-M-u') end,
+    { desc = 'Scroll opencode pane half page up' })
+  vim.keymap.set('n', '<M-d>', function () scroll_opencode('C-M-d') end,
+    { desc = 'Scroll opencode pane half page down' })
 end
 
 return O
