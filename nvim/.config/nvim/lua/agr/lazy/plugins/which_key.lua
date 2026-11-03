@@ -56,6 +56,15 @@ W.config = function ()
       },
     },
   }
+
+  local keymap = require 'agr.core.utils'.keymap
+  local map = keymap.map
+  local desc_opts = function (desc)
+    return keymap:desc_opts(desc)
+  end
+
+  map('n', '<leader>?', which_key.show, desc_opts('Toggle which-key'))
+
 end
 
 return W
