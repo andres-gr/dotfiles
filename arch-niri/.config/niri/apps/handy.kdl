@@ -1,0 +1,5 @@
+binds {
+  Ctrl+Shift+Space repeat=false hotkey-overlay-title="Toggle Handy Dictation" {
+    spawn-sh "handy --toggle-transcription"
+  }
+}
