@@ -65,6 +65,30 @@ M.config = function ()
     Variable = '  ',
   }
 
+  cmp.event:on('menu_opened', function ()
+    if vim.b.copilot_cmp_prev ~= nil then return end
+
+    local prev = vim.b.copilot_enabled
+
+    vim.b.copilot_cmp_prev = prev == nil and 'unset' or prev
+    vim.b.copilot_enabled = false
+    pcall(vim.fn['copilot#Dismiss'])
+  end)
+
+  cmp.event:on('menu_closed', function ()
+    local prev = vim.b.copilot_cmp_prev
+
+    if prev == nil then return end
+
+    if prev == 'unset' then
+      vim.b.copilot_enabled = nil
+    else
+      vim.b.copilot_enabled = prev
+    end
+
+    vim.b.copilot_cmp_prev = nil
+  end)
+
   cmp.setup {
     cmdline = {
       view = {
@@ -154,7 +178,13 @@ M.config = function ()
         elseif luasnip.jumpable(1) then
           luasnip.jump(1)
         else
-          fallback()
+          local ok, keys = pcall(vim.fn['copilot#Accept'], '')
+
+          if ok and type(keys) == 'string' and keys ~= '' then
+            vim.api.nvim_feedkeys(keys, 'i', true)
+          else
+            fallback()
+          end
         end
       end, { 'i', 's' }),
       ['<S-Tab>'] = cmp.mapping(function (fallback)

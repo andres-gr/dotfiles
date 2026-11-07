@@ -846,11 +846,27 @@ function status.component.ai(opts)
   opts = utils.default_tbl(opts, {
     padding = { left = 1 },
     provider = function ()
-      local ok, result = pcall(vim.api.nvim_call_function, 'codeium#GetStatusString', {})
+      -- only plain buffers, avoids OFF noise in help, prompts, trees
+      if vim.bo.buftype ~= '' then return nil end
 
-      if ok == false or result == ' ON' then return nil end
+      local ok, enabled = pcall(vim.fn['copilot#Enabled'])
 
-      return '  ' .. result .. ' '
+      -- plugin not loaded or missing
+      if not ok then return nil end
+
+      if enabled == 1 or enabled == true then return nil end
+
+      -- the cmp hook disables Copilot while the menu is open, that is not a real OFF
+      -- do not use cmp.visible(): it syncs the filter with vim.wait(), which drains
+      -- scheduled callbacks from textlocked contexts and triggers E565
+      local cmp = package.loaded['cmp']
+      local ok_view, visible = pcall(function ()
+        return cmp ~= nil and (cmp.core.view:visible() or vim.fn.pumvisible() == 1)
+      end)
+
+      if ok_view and visible then return nil end
+
+      return '  OFF '
     end
   })
 
